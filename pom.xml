@@ -26,6 +26,17 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>5.3.6.Final</version>
+		</dependency>
+		<!-- idea注解 -->
+		<dependency>
+			<groupId>org.jetbrains</groupId>
+			<artifactId>annotations</artifactId>
+			<version>15.0</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.formdev/flatlaf -->
 		<dependency>
 			<groupId>com.formdev</groupId>

@@ -1,6 +1,6 @@
 package com.rh.note.factory;
 
-import com.rh.note.view.MainFrame;
+import com.rh.note.view.component.MainFrame;
 import groovy.swing.factory.FrameFactory;
 import groovy.util.FactoryBuilderSupport;
 
