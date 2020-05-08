@@ -1,6 +1,6 @@
 package com.rh.note.factory
 
-import com.rh.note.model.bound.BoundFactory
+import com.rh.note.view.bound.BoundFactory
 import com.rh.note.utils.IInit
 import groovy.swing.SwingBuilder
 
