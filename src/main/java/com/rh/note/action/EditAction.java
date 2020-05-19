@@ -1,69 +1,37 @@
 package com.rh.note.action;
 
+import com.rh.note.ao.CreateProjectAO;
+import com.rh.note.api.IFileAPIService;
+import com.rh.note.entity.adoc.impl.AdocProject;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
 /**
  * 编辑操作
  */
+@RequiredArgsConstructor
 public class EditAction {
 
+    @NonNull
+    private IFileAPIService fileAPIService;
+
     /**
-     * 鼠标按住选择
+     * 创建项目
+     */
+    public AdocProject createProject(CreateProjectAO ao) {
+        return fileAPIService.createProject(ao);
+    }
+
+    /**
+     * 创建标题
      */
 
     /**
-     * 选择文本块 <br>
-     * ctrl w
+     * 创建内容
      */
 
     /**
-     * 创建多个光标
-     * alt shift 鼠标点击或按住选择
-     */
-
-    /**
-     * 向上创建一行
-     */
-
-    /**
-     * 向下创建一行
-     */
-
-    /**
-     * 删除一行
-     */
-
-    /**
-     * 复制一行
-     * ctrl d
-     * 如果有选中文本, 则复制选中的文本
-     */
-
-    /**
-     * 复制
-     */
-
-    /**
-     * 粘贴
-     */
-
-    /**
-     * 编辑文本
-     */
-
-    /**
-     * 保存 <br>
-     * ctrl s
-     */
-
-    /**
-     * 折叠块 <br>
-     * 点击折叠 <br>
-     * ctrl -
-     */
-
-    /**
-     * 展开块 <br>
-     * 点击展开 <br>
-     * ctrl +
+     * 编辑内容
      */
 
 }
