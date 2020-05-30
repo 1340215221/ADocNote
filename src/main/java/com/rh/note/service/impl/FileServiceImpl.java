@@ -2,33 +2,37 @@ package com.rh.note.service.impl;
 
 import cn.hutool.core.util.ArrayUtil;
 import com.rh.note.ao.CreateProjectAO;
+import com.rh.note.constant.AdocFilePathEnum;
 import com.rh.note.entity.adoc.impl.AdocProject;
 import com.rh.note.entity.adoc.impl.AdocReadMe;
 import com.rh.note.service.IFileService;
+import com.rh.note.util.FileUtil;
 import lombok.NonNull;
 import org.apache.commons.lang3.mutable.MutableInt;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 /**
  * 文件服务
  */
 public class FileServiceImpl implements IFileService {
 
+    private FileUtil fileUtil = new FileUtil();
+
     @Override
     public AdocProject createProject(@NonNull AdocProject adocProject) {
         // 项目目录
-        adocProject.
+        String path = adocProject.getPath();
+        fileUtil.createFileDirectory(path);
         // 项目文件
-    }
-
-    private void writeFile(@NonNull String path, Supplier<byte[]> supplier) {
+        List<String> filePaths = adocProject.getAllFilePaths();
+        fileUtil.createFiles(filePaths);
     }
 
     @Override
@@ -65,14 +69,28 @@ public class FileServiceImpl implements IFileService {
      */
     private void readFiles(@NonNull String path, @NonNull BiConsumer<File, String> consumer) {
         MutableInt readNum = new MutableInt(0);
-        List<File> files = new ArrayList<>();
+        List<String> allAdocFiles = new ArrayList<>();
         int pageSize = 7;
 
-        Supplier<File> findFileSupplier = () -> {
-        };
+        //readMe
+        allAdocFiles.add(AdocFilePathEnum.read_me_file.getAdocFilePath(path));
+        //twoLevel
+        List<String> twoLevelFilePaths = this.getTwoLevelFiles(path);
+        allAdocFiles.addAll(twoLevelFilePaths);
+        //content
+    }
 
-        Stream.generate(findFileSupplier).
+    /**
+     * 得到二级目录路径
+     */
+    private List<String> getTwoLevelFiles(@NonNull String path) {
+        File file = new File(AdocFilePathEnum.two_level_folder.getAdocFilePath(path));
+        if (!file.exists()) {
+            return Collections.emptyList();
+        }
 
+        String[] filePaths = file.list();
+        return ArrayUtil.isNotEmpty(filePaths) ? Arrays.asList(filePaths) : Collections.emptyList();
     }
 
 }
