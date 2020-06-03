@@ -10,7 +10,7 @@ import lombok.NonNull;
  * 或 从文件中解析出来adoc对象
  */
 public interface IFileService {
-    AdocProject createProject(@NonNull AdocProject adocProject);
+    void createProject(@NonNull AdocProject adocProject);
 
     boolean checkProjectExist(@NonNull CreateProjectAO ao);
 

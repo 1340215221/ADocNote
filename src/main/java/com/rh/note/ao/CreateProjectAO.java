@@ -2,18 +2,25 @@ package com.rh.note.ao;
 
 import com.rh.note.constant.ErrorCodeEnum;
 import com.rh.note.exception.AdocException;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.io.File;
+
+
+
+
+
+
+
+
+
 
 /**
  * 创建项目
  */
 @Data
 @RequiredArgsConstructor
+@NoArgsConstructor
 @Builder
 public class CreateProjectAO {
 
@@ -34,7 +41,7 @@ public class CreateProjectAO {
             path = File.separator;
         }
 
-        if (!File.separator.equals(path.charAt(path.length() - 1))) {
+        if (File.separatorChar != path.charAt(path.length() - 1)) {
             path += File.separator;
         }
     }
@@ -55,6 +62,6 @@ public class CreateProjectAO {
      */
     public String generateAbsolutePath() {
         this.checkFieldValue();
-        return path + name;
+        return path + name + File.separator;
     }
 }

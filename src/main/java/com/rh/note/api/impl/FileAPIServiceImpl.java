@@ -27,11 +27,12 @@ public class FileAPIServiceImpl implements IFileAPIService {
         //判断项目是否存在
         if (fileService.checkProjectExist(ao)) {
             //存在, 解析项目
-            return fileService.readProjectFile();
+            return fileService.readProjectFile(ao);
         }
 
         //不存在, 初始化项目
         AdocProject adocProject = adocService.createProject(ao);
-        return fileService.createProject(adocProject);
+        fileService.createProject(adocProject);
+        return adocProject;
     }
 }

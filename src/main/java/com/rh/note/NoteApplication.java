@@ -1,6 +1,7 @@
 package com.rh.note;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
+import com.rh.note.factory.ViewFactoryImpl;
 import com.rh.note.view.MainFrame;
 
 /**
@@ -12,7 +13,7 @@ public class NoteApplication {
         System.out.println("启动笔记软件");
         FlatDarculaLaf.install();
         System.out.println("完成Darcula主题初始化");
-        new MainFrame().init();
+        new ViewFactoryImpl().init();
         System.out.println("完成[笔记APP]初始化");
     }
 

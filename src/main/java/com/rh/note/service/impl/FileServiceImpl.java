@@ -16,7 +16,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.function.Supplier;
 
 /**
  * 文件服务
@@ -26,14 +25,13 @@ public class FileServiceImpl implements IFileService {
     private FileUtil fileUtil = new FileUtil();
 
     @Override
-    public AdocProject createProject(@NonNull AdocProject adocProject) {
-        // 项目目录
-        String path = adocProject.getPath();
-        fileUtil.createFileDirectory(path);
-        // 项目文件
-        List<String> filePaths = adocProject.getAllFilePaths();
+    public void createProject(@NonNull AdocProject adocProject) {
+        // 创建项目结构目录
+        List<String> directorPaths = adocProject.getProjectStructureDirectorPaths();
+        fileUtil.createFileDirectorys(directorPaths);
+        // 创建项目文件
+        List<String> filePaths = adocProject.getAllProjectFilePaths();
         fileUtil.createFiles(filePaths);
-        // 不返回值可以吗
     }
 
     @Override
@@ -50,7 +48,7 @@ public class FileServiceImpl implements IFileService {
             return false;
         }
 
-        return ArrayUtil.isNotEmpty(file.list((dir, name) -> AdocReadMe.readMeFileName.equals(name)));
+        return Arrays.stream(list).anyMatch(AdocReadMe.readMeFileName::equalsIgnoreCase);
     }
 
     @Override
@@ -59,6 +57,9 @@ public class FileServiceImpl implements IFileService {
         BiConsumer<File, String> consumer = (file, line) -> {
         };
         this.readFiles(path, consumer);
+        // todo
+        System.err.println("TODO 读取项目文件为 AdocProject 对象");
+        return null;
     }
 
     /**

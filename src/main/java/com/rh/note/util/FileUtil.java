@@ -3,6 +3,7 @@ package com.rh.note.util;
 import com.rh.note.constant.ErrorCodeEnum;
 import com.rh.note.exception.AdocException;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -38,11 +39,29 @@ public class FileUtil {
             return;
         }
 
+        // 创建父目录
+        File parentFile = file.getParentFile();
+        if (parentFile == null) {
+            throw new AdocException(ErrorCodeEnum.file_creation_failed);
+        }
+        if (!parentFile.exists()) {
+            parentFile.mkdirs();
+        }
+
+        // 创建文件
         try {
             file.createNewFile();
         } catch (Exception e) {
             throw new AdocException(ErrorCodeEnum.file_creation_failed);
         }
+    }
+
+    public void createFileDirectorys(List<String> paths) {
+        if (CollectionUtils.isEmpty(paths)) {
+            return;
+        }
+
+        paths.forEach(this::createFileDirectory);
     }
 
     /**

@@ -1,46 +1,25 @@
 package com.rh.note.view
 
-import groovy.swing.SwingBuilder
+import com.rh.note.model.BoundEnum
 
 import javax.swing.*
 
-class MainFrame extends JFrame {
+class MainFrame implements SwingBuilderImpl {
 
-    void init() {
-        def swingBuilder = new SwingBuilder()
-
-        def text = {
-            swingBuilder.textArea(id: 'text',
-                    rows: 20,
-                    columns: 50,
-            )
-        }
-
-        def scrollPane = {
-            swingBuilder.scrollPane(id: 'scrollPane') {
-                text()
-            }
-        }
-
-        def panel = {
-            swingBuilder.panel(id: 'panel'){
-                scrollPane()
-            }
-        }
-
-        def frame = swingBuilder.frame(id: 'frame',
-                title: '笔记app',
-                bounds: [0, 0, 800, 600],
+    @Override
+    init(Closure runnable) {
+        swingBuilder.frame(id: id,
+                title: 'adoc笔记',
+                bounds: BoundEnum.main_frame.bound,
                 defaultCloseOperation: WindowConstants.EXIT_ON_CLOSE,
-        ) {
-            panel()
+        ){
+            runnable()
         }
+    }
 
-        frame.visible = true
-
-
-        def p = swingBuilder.panel
-        println p
+    @Override
+    final String getId() {
+        return 'main_frame'
     }
 
 }

@@ -1,11 +1,15 @@
 package com.rh.note.entity.adoc.impl;
 
+import com.rh.note.constant.AdocFilePathEnum;
 import com.rh.note.entity.adoc.AdocFile;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.File;
+import java.io.FilenameFilter;
+import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * adoc项目
@@ -48,6 +52,40 @@ public class AdocProject {
      */
     private void initMainAdocFile() {
 
+    }
+
+    /**
+     * 获得项目结构目录路径
+     */
+    public List<String> getProjectStructureDirectorPaths() {
+        // 二级标题
+        String twoLevel = this.getTwoLevelPath();
+        // 内容
+        String content = this.getContentPath();
+        return Arrays.asList(twoLevel, content);
+    }
+
+    /**
+     * 得到内容目录路径
+     */
+    private String getContentPath() {
+        return AdocFilePathEnum.content.getAdocFilePath(path);
+    }
+
+    /**
+     * 得到二级标题路径
+     */
+    private String getTwoLevelPath() {
+        return AdocFilePathEnum.two_level_folder.getAdocFilePath(path);
+    }
+
+    /**
+     * 获得项目所有文件路径
+     */
+    public List<String> getAllProjectFilePaths() {
+        // todo
+        System.err.println("TODO 获得所有项目文件路径");
+        return Collections.emptyList();
     }
 
 }
