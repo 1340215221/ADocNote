@@ -1,20 +1,20 @@
 package com.rh.note.view
 
-import com.rh.note.model.BoundEnum
+import com.rh.note.model.MainViewBoundEnum
 
 class EditFileContent implements SwingBuilderImpl {
     @Override
     init(Closure run) {
         def textArea = {
             swingBuilder.textArea(id: "${id}_text",
-                    bounds: BoundEnum.edit_file_content.bound,
+                    bounds: MainViewBoundEnum.edit_file_content.bound,
             ) {
                 run()
             }
         }
 
         swingBuilder.scrollPane(id: "${id}_scroll",
-                bounds: BoundEnum.edit_file_content.bound,
+                bounds: MainViewBoundEnum.edit_file_content.bound,
         ) {
             textArea()
         }

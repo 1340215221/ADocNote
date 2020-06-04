@@ -1,6 +1,6 @@
 package com.rh.note.model
 
-enum BoundEnum implements Bound {
+enum MainViewBoundEnum implements Bound {
 
     main_frame{
         @Override

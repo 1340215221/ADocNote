@@ -1,13 +1,13 @@
 package com.rh.note.view
 
-import com.rh.note.model.MainViewBoundEnum
+
 import com.rh.note.view.layout.BorderLayoutBuilder
 
-import java.awt.Color
+import java.awt.*
 
-class EditArea implements SwingBuilderImpl {
+class ProjectPanel implements SwingBuilderImpl {
     @Override
-    init(Closure run) {
+    def init(Closure run) {
         def layout = {
             def builder = new BorderLayoutBuilder()
             run.delegate = builder
@@ -16,15 +16,14 @@ class EditArea implements SwingBuilderImpl {
         }
 
         swingBuilder.panel(id: id,
-                bounds: MainViewBoundEnum.edit_area.bound,
-                background: Color.cyan,
-        ) {
+                background: Color.red,
+        ){
             layout()
         }
     }
 
     @Override
     String getId() {
-        return 'edit_area'
+        return 'project_panel'
     }
 }

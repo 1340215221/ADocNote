@@ -3,7 +3,7 @@ package com.rh.note.factory;
 import com.rh.note.view.*;
 import groovy.lang.Closure;
 
-public interface IViewFactory {
+public interface IMainViewFactory {
 
     default Object editFileContent(Closure run) {
         return new EditFileContent().init(run);
@@ -41,4 +41,15 @@ public interface IViewFactory {
         return new MainFrame().init(run);
     }
 
+    default void leftTitlePanel(Closure closure) {
+        new LeftTitlePanel().init(closure);
+    }
+
+    default void fileListTitleButton(Closure closure) {
+        new FileListTitleButton().init(closure);
+    }
+
+    default void fileList(Closure closure) {
+        new FileList().init(closure);
+    }
 }
