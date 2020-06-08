@@ -1,6 +1,5 @@
 package com.rh.note.view
 
-
 import com.rh.note.view.layout.BorderLayoutBuilder
 
 import java.awt.*

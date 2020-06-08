@@ -1,14 +1,12 @@
 package com.rh.note.factory
 
-import com.rh.note.entity.adoc.AdocTitile
+
 import com.rh.note.model.MainViewBoundEnum
 import com.rh.note.util.ISwingBuilder
-import org.apache.commons.collections4.CollectionUtils
-import org.apache.commons.lang3.StringUtils
 
-import javax.swing.tree.DefaultMutableTreeNode
-import javax.swing.tree.DefaultTreeSelectionModel
-import javax.swing.tree.TreePath
+import java.awt.*
+import java.awt.event.AWTEventListener
+import java.awt.event.KeyEvent
 
 /**
  * 窗口工厂
@@ -39,11 +37,11 @@ class MainViewFactoryImpl implements ISwingBuilder, IMainViewFactory {
                     }
                 }
                 // 打开项目时, 不构建编辑区
-//                center { editArea {
+                center { editArea {
 //                    north{ openFileTitle {} }
 //                    west { lineNumSidebar {} }
 //                    center { editFileContent {} }
-//                }}
+                }}
             }
         }
     }
@@ -60,11 +58,32 @@ class MainViewFactoryImpl implements ISwingBuilder, IMainViewFactory {
      * 初始化主要控件
      */
     void init() {
+        this.keyMapListener()
         MainViewBoundEnum.initAllBound()
         this.registerFactory()
         this.build()
         this.loadConfig()
         this.show()
+    }
+
+    /**
+     * 全局快捷键
+     */
+    private void keyMapListener() {
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        toolkit.addAWTEventListener(new AWTEventListener() {
+            @Override
+            void eventDispatched(AWTEvent event) {
+                if (event.class != KeyEvent || event.ID != KeyEvent.KEY_PRESSED) {
+                    return
+                }
+
+                def keyEvent = event as KeyEvent
+                if (keyEvent.keyCode == 83 && keyEvent.modifiers == 2) {
+                    ActionFactory.action_factory.editAction.saveOperation(path)
+                }
+            }
+        }, AWTEvent.KEY_EVENT_MASK)
     }
 
     /**
@@ -76,64 +95,6 @@ class MainViewFactoryImpl implements ISwingBuilder, IMainViewFactory {
 
     private void loadConfig() {
         // 加载文件列表
-        def list = ActionFactory.action_factory.projectListAction.queryProjectList(path)
-
-        def node = swingBuilder.node(userObject: this.getProjectName()){
-            this.buildNode(list)
-        }
-
-        swingBuilder.file_list_model.root = node
-    }
-
-    /**
-     * 构建节点
-     */
-    private void buildNode(List<AdocTitile> list) {
-        if (CollectionUtils.isEmpty(list)) {
-            return
-        }
-
-        list.each {AdocTitile titile ->
-            swingBuilder.node(userObject: titile.displayName) {
-                this.buildNode(titile.childrenTitle)
-            }
-        }
-
-    }
-
-    /**
-     * 获得项目名字
-     */
-    private String getProjectName() {
-        if (StringUtils.isBlank(path)) {
-            return ''
-        }
-
-        def split = path.split(this.getFileSeparatorAsRegex())
-        if (split == null || split.length < 1) {
-            return ''
-        }
-
-        def lastStr = split[split.length - 1]
-        if (StringUtils.isNotBlank(lastStr)) {
-            return lastStr
-        }
-
-        if (split.length > 1) {
-            return split[split.length - 2]
-        }
-
-        return ''
-    }
-
-    /**
-     * 获得文件分隔符的正则字符串
-     */
-    private String getFileSeparatorAsRegex() {
-        if ('\\' == File.separator) {
-            return '\\\\'
-        }
-
-        return File.separator
+        ActionFactory.action_factory.projectListAction.queryProjectList(path)
     }
 }

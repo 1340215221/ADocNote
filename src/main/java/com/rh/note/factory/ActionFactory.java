@@ -22,6 +22,6 @@ public class ActionFactory {
 
     private ProjectManageAction projectManageAction = new ProjectManageAction();
 
-    private ProjectListAction projectListAction = new ProjectListAction();
+    private ProjectListAction projectListAction = new ProjectListAction(new FileAPIServiceImpl(new FileServiceImpl(), new AdocServiceImpl()));
 
 }

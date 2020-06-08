@@ -1,7 +1,9 @@
 package com.rh.note.view
 
+import com.rh.note.factory.ActionFactory
+
 import javax.swing.*
-import javax.swing.tree.DefaultMutableTreeNode
+import javax.swing.tree.TreePath
 import java.awt.event.MouseEvent
 
 class FileList implements SwingBuilderImpl {
@@ -15,11 +17,27 @@ class FileList implements SwingBuilderImpl {
             swingBuilder.tree(id: "${id}_tree",
                     model: model(),
                     mouseClicked: { MouseEvent e ->
-                        println 'clicked'
+                        /*
                         def tree = swingBuilder.file_list_tree as JTree
-                        def root = tree.model.root as DefaultMutableTreeNode
-                        def node = swingBuilder.node(userObject: 'hah')
-                        root.add(node)
+                        def location = tree.getPathForLocation(e.x, e.y)
+                        if (location == null) {
+                            return
+                        }
+
+                        def model1 = swingBuilder.file_list_model as DefaultTreeModel
+                        model1.insertNodeInto(new DefaultMutableTreeNode("name"), location.lastPathComponent, 0)
+                         */
+                        if (e.clickCount < 2) {
+                            return
+                        }
+
+                        def tree = swingBuilder.file_list_tree as JTree
+                        def selectPath = tree.selectionPath
+                        if (selectPath == null) {
+                            return
+                        }
+
+                        ActionFactory.action_factory.editAction.openAdocFile(selectPath.lastPathComponent.userObject)
                     }
             ) {
                 run()

@@ -3,6 +3,7 @@ package com.rh.note.view
 import com.rh.note.model.MainViewBoundEnum
 
 import javax.swing.*
+import java.awt.event.KeyEvent
 
 class MainFrame implements SwingBuilderImpl {
 
