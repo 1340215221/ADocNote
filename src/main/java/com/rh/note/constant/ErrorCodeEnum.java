@@ -12,6 +12,7 @@ public enum ErrorCodeEnum {
     file_directory_creation_failed("文件目录创建失败"),
     file_creation_failed("文件创建失败"),
     file_read_failed("文件读取失败"),
+    file_write_failed("文件写入失败"),
     ;
     private String msg;
 

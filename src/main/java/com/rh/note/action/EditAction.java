@@ -22,12 +22,31 @@ public class EditAction {
     private EditAreaActionImpl editAreaAction = new EditAreaActionImpl();
 
     /**
+     * include文件重命名
+     * shift F6
+     */
+    public void reNameOfIncludeFile() {
+        // 从弹窗中获得新的名字
+        // 修改指向的文件名和标题内容
+        // 修改include语句
+        // 刷新文件列表
+    }
+
+    /**
      * 全局Ctrl+S保存
      */
     public void saveOperation(String path) {
         // 保存
         editAreaAction.saveOperation();
         // 重新加载文件列表
+        ActionFactory.action_factory.getProjectListAction().queryProjectList(path);
+        editAreaAction.refreshFileList();
+    }
+
+    /**
+     * 重新加载文件列表
+     */
+    public void refreshFileList(String path) {
         ActionFactory.action_factory.getProjectListAction().queryProjectList(path);
         editAreaAction.refreshFileList();
     }
