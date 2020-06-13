@@ -75,6 +75,7 @@ class EditAreaActionImpl implements ISwingBuilder {
                         layout: new BorderLayout(),
                 ) {
                     swingBuilder.textArea(id: "${id}_text_area_${filePath}",
+                            font: new Font(null, 0, 17),
                             keyPressed: { KeyEvent event ->
                                 // 创建文件
                                 if (event.keyCode == 10 && event.modifiers == 0) {

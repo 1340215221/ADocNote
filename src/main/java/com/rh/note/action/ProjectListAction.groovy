@@ -6,6 +6,9 @@ import com.rh.note.util.ISwingBuilder
 import org.apache.commons.collections4.CollectionUtils
 import org.apache.commons.lang3.StringUtils
 
+import javax.swing.JTree
+import java.util.stream.Stream
+
 class ProjectListAction implements ISwingBuilder {
 
     private IFileAPIService fileAPIService
@@ -25,6 +28,11 @@ class ProjectListAction implements ISwingBuilder {
         }
 
         swingBuilder.file_list_model.root = node
+
+        def tree = swingBuilder.file_list_tree as JTree
+        for (int i = 1; i <= tree.rowCount; i++) {
+            tree.expandRow(i)
+        }
     }
 
     /**

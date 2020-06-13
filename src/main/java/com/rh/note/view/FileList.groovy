@@ -4,6 +4,7 @@ import com.rh.note.factory.ActionFactory
 
 import javax.swing.*
 import javax.swing.tree.TreePath
+import java.awt.BorderLayout
 import java.awt.event.MouseEvent
 
 class FileList implements SwingBuilderImpl {
@@ -15,6 +16,7 @@ class FileList implements SwingBuilderImpl {
 
         def fileList = {
             swingBuilder.tree(id: "${id}_tree",
+                    constraints: BorderLayout.EAST,
                     model: model(),
                     mouseClicked: { MouseEvent e ->
                         /*
