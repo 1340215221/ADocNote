@@ -29,9 +29,10 @@ class FileList implements SwingBuilderImpl {
                         def model1 = swingBuilder.file_list_model as DefaultTreeModel
                         model1.insertNodeInto(new DefaultMutableTreeNode("name"), location.lastPathComponent, 0)
                          */
-                        if (e.clickCount < 2) {
-                            return
-                        }
+                        // 单击打开
+//                        if (e.clickCount < 2) {
+//                            return
+//                        }
 
                         def tree = swingBuilder.file_list_tree as JTree
                         def selectPath = tree.selectionPath
