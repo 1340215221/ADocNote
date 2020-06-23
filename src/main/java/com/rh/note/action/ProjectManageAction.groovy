@@ -27,7 +27,7 @@ class ProjectManageAction implements ISwingBuilder {
      */
     RecentlyOpenedRecordVO[] queryRecentlyOpenedRecords() {
         [
-                new RecentlyOpenedRecordVO(projectName: 'Java笔记', projectPath: '/home/hang/Documents/Java-note'),
+                new RecentlyOpenedRecordVO(projectName: 'Java笔记', projectPath: '/home/hang/Documents/Java-not'),
         ]
     }
 
