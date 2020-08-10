@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.rh.note</groupId>
-	<artifactId>ADocNote</artifactId>
+	<artifactId>note-app</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ADocNote</name>
+	<name>note-app</name>
 	<packaging>jar</packaging>
 	<description>Demo project for Spring Boot</description>
 
@@ -136,6 +136,57 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>lib/</classpathPrefix>
+							<mainClass>com.rh.note.NoteApplication</mainClass> <!-- 运行jar的main class  -->
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.gmaven</groupId>
+				<artifactId>gmaven-plugin</artifactId>
+				<version>1.2</version>
+				<configuration>
+					<providerSelection>1.7</providerSelection>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.codehaus.gmaven.runtime</groupId>
+						<artifactId>gmaven-runtime-1.7</artifactId>
+						<version>1.2</version>
+						<exclusions>
+							<exclusion>
+								<groupId>org.codehaus.groovy</groupId>
+								<artifactId>groovy-all</artifactId>
+							</exclusion>
+						</exclusions>
+					</dependency>
+					<dependency>
+						<groupId>org.codehaus.groovy</groupId>
+						<artifactId>groovy-all</artifactId>
+						<version>1.7.0</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generateStubs</goal>
+							<goal>compile</goal>
+							<goal>generateTestStubs</goal>
+							<goal>testCompile</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>

@@ -1,0 +1,56 @@
+package com.rh.note.model.component;
+
+import com.rh.note.view.TextArea;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.swing.*;
+import java.awt.*;
+
+/**
+ * 编辑区滚动面板
+ */
+public class TextAreaScrollImpl extends Init<JScrollPane> {
+
+    /**
+     * 判断该文件是否已经打开
+     */
+    @Override
+    public TextAreaScrollImpl init(String filePath) {
+        if (StringUtils.isBlank(filePath)) {
+            return null;
+        }
+
+        return super.init(TextArea.scrollId(filePath));
+    }
+
+    private JScrollPane scrollPane() {
+        return getBean();
+    }
+
+    /**
+     * 展示当前编辑区
+     */
+    public void show(EditAreaImpl editArea) {
+        if (editArea == null) {
+            return;
+        }
+        LayoutManager layout = editArea.getLayout();
+
+        if (!(layout instanceof CardLayout)) {
+            return;
+        }
+        ((CardLayout) layout).show(scrollPane(), scrollPane().getName());
+    }
+
+    /**
+     * 将当前控件添加到编辑面板
+     * 展示该控件
+     */
+    public void addTo(EditAreaImpl editArea) {
+        if (editArea == null) {
+            return;
+        }
+
+        editArea.getBean().add(scrollPane(), scrollPane().getName());
+    }
+}
