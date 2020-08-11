@@ -1,6 +1,7 @@
 package com.rh.note.model.component;
 
 import com.rh.note.view.EditArea;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,6 +17,21 @@ public class EditAreaImpl extends Init<JPanel> {
 
     private JPanel editArea() {
         return getBean();
+    }
+
+    /**
+     * 展示编辑区,通过编辑区id
+     */
+    public void show(String cardId) {
+        if (StringUtils.isBlank(cardId)) {
+            return;
+        }
+
+        LayoutManager layout = editArea().getLayout();
+        if (!(layout instanceof CardLayout)) {
+            return;
+        }
+        ((CardLayout) layout).show(editArea(), cardId);
     }
 
     /**

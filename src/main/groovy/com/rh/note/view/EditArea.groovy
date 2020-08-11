@@ -22,4 +22,8 @@ class EditArea implements SwingComponent {
     static String getId() {
         'edit_area'
     }
+
+    static String getLayoutId() {
+        'edit_area_layout'
+    }
 }

@@ -1,7 +1,6 @@
 package com.rh.note.factory
 
 import com.rh.note.build.ActionBuild
-import com.rh.note.build.LoaderBuild
 import com.rh.note.build.WorkFrameBuild
 import com.rh.note.event.WorkFrameEvent
 import com.rh.note.factory.component.TreeModelFactory
@@ -16,7 +15,7 @@ import java.awt.*
 /**
  * 工作窗口工厂
  */
-class WorkFrameFactory implements WorkFrameBuild, ISwingBuilder, LoaderBuild, ActionBuild, FrameFactory {
+class WorkFrameFactory implements WorkFrameBuild, ISwingBuilder, ActionBuild, FrameFactory {
 
     static final ProjectInfo projectInfo = new ProjectInfo()
 
@@ -25,7 +24,8 @@ class WorkFrameFactory implements WorkFrameBuild, ISwingBuilder, LoaderBuild, Ac
         Toolkit toolkit = Toolkit.getDefaultToolkit()
         toolkit.addAWTEventListener(WorkFrameEvent.saveOperation, AWTEvent.KEY_EVENT_MASK)
     }
-/**
+
+    /**
      * 初始化数据
      */
     @Override

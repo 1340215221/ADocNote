@@ -2,24 +2,25 @@ package com.rh.note.action
 
 import com.rh.note.api.FileAPIService
 import com.rh.note.build.ActionBuild
-import com.rh.note.build.LoaderBuild
-import com.rh.note.factory.WorkFrameFactory
-import com.rh.note.load.ProjectListLoader
+import com.rh.note.model.component.ProjectListFrameImpl
 import com.rh.note.util.ISwingBuilder
 import com.rh.note.view.ProjectList
 import com.rh.note.vo.RecentlyOpenedRecordVO
 import org.apache.commons.lang3.StringUtils
 
-class ProjectListAction implements ISwingBuilder, LoaderBuild, ActionBuild {
+class ProjectListAction implements ISwingBuilder, ActionBuild {
 
     FileAPIService fileAPIService
 
+    /**
+     * 打开项目
+     */
     void openProject(String projectPath) {
         if (StringUtils.isBlank(projectPath)) {
             return
         }
-        workLoader.setProjectPath(projectPath)
-        projectListLoader.closeFrame()
+        workAction.setProjectPath(projectPath)
+        new ProjectListFrameImpl().init()?.close()
         workAction.openFrame()
     }
 

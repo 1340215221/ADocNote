@@ -4,7 +4,6 @@ import com.rh.note.view.TextArea;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * 编辑区滚动面板
@@ -28,18 +27,10 @@ public class TextAreaScrollImpl extends Init<JScrollPane> {
     }
 
     /**
-     * 展示当前编辑区
+     * 获得id
      */
-    public void show(EditAreaImpl editArea) {
-        if (editArea == null) {
-            return;
-        }
-        LayoutManager layout = editArea.getLayout();
-
-        if (!(layout instanceof CardLayout)) {
-            return;
-        }
-        ((CardLayout) layout).show(scrollPane(), scrollPane().getName());
+    public String getId() {
+        return scrollPane().getName();
     }
 
     /**
