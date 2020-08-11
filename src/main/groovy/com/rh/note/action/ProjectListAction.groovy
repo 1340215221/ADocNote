@@ -1,6 +1,7 @@
 package com.rh.note.action
 
 import com.rh.note.api.FileAPIService
+import com.rh.note.build.ActionBuild
 import com.rh.note.build.LoaderBuild
 import com.rh.note.factory.WorkFrameFactory
 import com.rh.note.load.ProjectListLoader
@@ -9,7 +10,7 @@ import com.rh.note.view.ProjectList
 import com.rh.note.vo.RecentlyOpenedRecordVO
 import org.apache.commons.lang3.StringUtils
 
-class ProjectListAction implements ISwingBuilder, LoaderBuild {
+class ProjectListAction implements ISwingBuilder, LoaderBuild, ActionBuild {
 
     FileAPIService fileAPIService
 
@@ -19,7 +20,7 @@ class ProjectListAction implements ISwingBuilder, LoaderBuild {
         }
         workLoader.setProjectPath(projectPath)
         projectListLoader.closeFrame()
-        workLoader.openFrame()
+        workAction.openFrame()
     }
 
     /**

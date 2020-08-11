@@ -33,4 +33,12 @@ public class TreeImpl extends Init<JTree> {
         return getBean();
     }
 
+    /**
+     * 展开所有节点
+     */
+    public void expandAllRow() {
+        for (int i = 0; i < tree().getRowCount(); i++) {
+            tree().expandRow(i);
+        }
+    }
 }
