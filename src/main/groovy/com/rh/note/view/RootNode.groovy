@@ -15,6 +15,10 @@ class RootNode implements SwingComponent {
         this.title = title
     }
 
+    void init() {
+        init{}
+    }
+
     @Override
     void init(Closure children) {
         swingBuilder.node(id: id(),

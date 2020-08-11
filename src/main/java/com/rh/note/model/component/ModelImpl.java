@@ -17,6 +17,9 @@ public class ModelImpl extends Init<DefaultTreeModel> {
      * 设置根节点
      */
     public void setRoot(RootNodeImpl rootNode) {
+        if (rootNode == null) {
+            return;
+        }
         model().setRoot(rootNode.getBean());
     }
 

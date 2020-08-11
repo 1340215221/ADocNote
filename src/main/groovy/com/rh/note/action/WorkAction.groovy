@@ -2,6 +2,7 @@ package com.rh.note.action
 
 import com.rh.note.api.FileAPIService
 import com.rh.note.build.LoaderBuild
+import com.rh.note.factory.WorkFrameFactory
 import com.rh.note.model.component.EditAreaImpl
 import com.rh.note.model.component.ModelImpl
 import com.rh.note.model.component.RootNodeImpl
@@ -12,8 +13,6 @@ import com.rh.note.model.file.Title
 import com.rh.note.model.grammar.Include
 import com.rh.note.util.ISwingBuilder
 import com.rh.note.view.InputWindow
-import com.rh.note.view.RootNode
-import org.apache.commons.collections4.CollectionUtils
 
 /**
  * 工作区时间触发
@@ -24,26 +23,10 @@ class WorkAction implements ISwingBuilder, LoaderBuild {
     FileAPIService fileAPIService
 
     /**
-     * 显示或隐藏标题列表
+     * 打开work_frame
      */
-    static def hiddenOrShowTitleList = {
-        workLoader.hiddenOrShowTitleList()
-    }
-
-    /**
-     * 构建节点
-     */
-    private void buildNode(List<Title> list) {
-        if (CollectionUtils.isEmpty(list)) {
-            return
-        }
-
-        list.each { Title titile ->
-            swingBuilder.node(userObject: titile) {
-                this.buildNode(titile.childrenTitle)
-            }
-        }
-
+    void openFrame() {
+        new WorkFrameFactory().start()
     }
 
     /**
@@ -51,13 +34,10 @@ class WorkAction implements ISwingBuilder, LoaderBuild {
      */
     void showTitleList() {
         Title rootTitle = fileAPIService.findAllTitle()
-        workLoader.setTitleTree(rootTitle)
-        if (rootTitle != null) {
-            new RootNode(rootTitle).init {}
-            def rootNode = new RootNodeImpl().init()
-            new ModelImpl().init().setRoot(rootNode)
-        }
-        workLoader.expandAllNode()
+        RootNodeImpl.create(rootTitle)
+        def rootNode = new RootNodeImpl().init()
+        new ModelImpl().init()?.setRoot(rootNode)
+        new TreeImpl().init()?.expandAllRow()
     }
 
     /**

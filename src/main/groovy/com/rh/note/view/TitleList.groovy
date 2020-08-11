@@ -25,7 +25,7 @@ class TitleList implements SwingComponent {
             }
         }
 
-        swingBuilder.scrollPane(id: "${panelId}") {
+        swingBuilder.scrollPane(id: "${id}") {
             fileList()
         }
     }
@@ -40,9 +40,5 @@ class TitleList implements SwingComponent {
 
     static String getModelId() {
         'title_list_model'
-    }
-
-    static String getPanelId() {
-        'title_list_panel'
     }
 }
