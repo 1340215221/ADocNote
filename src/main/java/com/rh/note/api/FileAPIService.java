@@ -1,5 +1,7 @@
 package com.rh.note.api;
 
+import com.rh.note.model.file.AdocFile;
+import com.rh.note.model.file.Config;
 import com.rh.note.model.file.Title;
 import com.rh.note.service.AdocService;
 import com.rh.note.service.FileService;
@@ -47,11 +49,11 @@ public class FileAPIService {
         root.setAbsolutePath("root");
         Title t1 = new Title();
         t1.setName("java基础");
-        t1.setAbsolutePath("t1");
+        t1.setAbsolutePath("adoc/twoLevel/t1");
         root.addChildrenTitle(t1);
         Title t2 = new Title();
         t2.setName("java框架");
-        t2.setAbsolutePath("t2");
+        t2.setAbsolutePath("adoc/twoLevel/t2");
         root.addChildrenTitle(t2);
         return root;
     }
@@ -79,5 +81,20 @@ public class FileAPIService {
             }
             return temp;
         }
+    }
+
+    /**
+     * 获取配置文件对象
+     */
+    public Config findConfigFile() {
+        //todo
+        return new Config().setProjectPath("/home/hang/adoc/");
+    }
+
+    /**
+     * 创建adoc文件
+     */
+    public void createFile(AdocFile adocFile) {
+        //todo
     }
 }

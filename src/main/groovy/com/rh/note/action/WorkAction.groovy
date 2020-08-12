@@ -3,6 +3,7 @@ package com.rh.note.action
 import com.rh.note.api.FileAPIService
 import com.rh.note.api.WorkViewAPI
 import com.rh.note.model.component.WorkFrameImpl
+import com.rh.note.model.file.Config
 import com.rh.note.model.file.Title
 import com.rh.note.util.ISwingBuilder
 import org.apache.commons.lang3.StringUtils
@@ -33,7 +34,7 @@ class WorkAction implements ISwingBuilder {
     /**
      * 加载文件标题列表
      */
-    void showTitleList() {
+    void loadTitleList() {
         Title rootTitle = fileAPIService.findAllTitle()
         workViewAPI.showTitleList(rootTitle)
     }
@@ -69,7 +70,12 @@ class WorkAction implements ISwingBuilder {
      * 生成include语法块
      */
     void generateIncludeBlock(String componentId) {
-        workViewAPI.generateIncludeBlock(componentId)
+        Config config = fileAPIService.findConfigFile()
+        def adocFile = workViewAPI.generateIncludeBlock(componentId, config)
+        if (adocFile != null) {
+            fileAPIService.createFile(adocFile)
+        }
+        loadTitleList()
     }
 
     /**

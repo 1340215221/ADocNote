@@ -1,8 +1,9 @@
-package com.rh.note.factory
+package com.rh.note.factory.frame
 
 import com.rh.note.build.ActionBuild
 import com.rh.note.build.WorkFrameBuild
 import com.rh.note.event.WorkFrameEvent
+import com.rh.note.factory.component.TextAreaFactory
 import com.rh.note.factory.component.TreeModelFactory
 import com.rh.note.factory.component.TreeNodeFactory
 import com.rh.note.util.ISwingBuilder
@@ -27,7 +28,7 @@ class WorkFrameFactory implements WorkFrameBuild, ISwingBuilder, ActionBuild, Fr
      */
     @Override
     void config() {
-        workAction.showTitleList()
+        workAction.loadTitleList()
     }
 
     /**
@@ -66,6 +67,7 @@ class WorkFrameFactory implements WorkFrameBuild, ISwingBuilder, ActionBuild, Fr
     void registerFactory() {
         swingBuilder.registerFactory('model', new TreeModelFactory())
         swingBuilder.registerFactory('node', new TreeNodeFactory())
+        swingBuilder.registerFactory('textArea', new TextAreaFactory())
     }
 
 }

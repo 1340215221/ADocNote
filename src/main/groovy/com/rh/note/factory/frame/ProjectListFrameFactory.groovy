@@ -1,4 +1,4 @@
-package com.rh.note.factory
+package com.rh.note.factory.frame
 
 import com.rh.note.action.ProjectListAction
 import com.rh.note.build.ActionBuild

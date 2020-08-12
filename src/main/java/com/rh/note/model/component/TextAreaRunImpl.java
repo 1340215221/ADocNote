@@ -3,6 +3,8 @@ package com.rh.note.model.component;
 import com.rh.note.constant.ErrorMessage;
 import com.rh.note.constant.GroovyCommonConstant;
 import com.rh.note.exception.AdocException;
+import com.rh.note.model.grammar.Include;
+import com.rh.note.view.AdocTextArea;
 import com.rh.note.view.TextArea;
 import org.apache.commons.lang3.StringUtils;
 
@@ -17,7 +19,7 @@ import java.io.Reader;
 /**
  * 编辑区
  */
-public class TextAreaRunImpl extends Init<JTextArea> {
+public class TextAreaRunImpl extends Init<AdocTextArea> {
 
     @Override
     public TextAreaRunImpl init(String componentId) {
@@ -66,7 +68,7 @@ public class TextAreaRunImpl extends Init<JTextArea> {
         return textArea().getText(startOffset, endOffset - startOffset);
     }
 
-    private JTextArea textArea() {
+    private AdocTextArea textArea() {
         return getBean();
     }
 
@@ -82,5 +84,31 @@ public class TextAreaRunImpl extends Init<JTextArea> {
         int endOffset = textArea().getLineEndOffset(line);
         int index = endOffset - ".adoc[]".length() - oldTitleName.length();
         textArea().replaceRange(newTitleName, index, index + oldTitleName.length());
+    }
+
+    /**
+     * 编辑文件路径
+     */
+    public String getFilePath() {
+        AdocTextArea textArea = textArea();
+        return textArea.getFilePath();
+    }
+
+    /**
+     * 替换include语句
+     */
+    public void replaceIncludeGrammar(Include include) throws Exception {
+        if (include == null) {
+            return;
+        }
+        // todo
+        // 生成include语句
+        String grammar = include.generateGrammar();
+        // 在编辑区中修改
+        Caret caret = textArea().getCaret();
+        int line = textArea().getLineOfOffset(caret.getDot());
+        int startOffset = textArea().getLineStartOffset(line);
+        int endOffset = textArea().getLineEndOffset(line);
+        textArea().replaceRange(grammar, startOffset, endOffset);
     }
 }

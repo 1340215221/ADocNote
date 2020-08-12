@@ -24,6 +24,11 @@ public enum ProjectStructureEnum implements BaseEnum {
             }
             return filePath.endsWith("readme.adoc") || filePath.endsWith("README.adoc");
         }
+
+        @Override
+        public String getChildrenPath() {
+            return "adoc/twoLevel/";
+        }
     },
     /**
      * global-config
@@ -46,13 +51,26 @@ public enum ProjectStructureEnum implements BaseEnum {
             if (StringUtils.isBlank(filePath)) {
                 return false;
             }
-            filePath.contains("twoLevel")
+            return filePath.contains("twoLevel");
+        }
+
+        @Override
+        public String getChildrenPath() {
+            return "adoc/content/";
         }
     },
     /**
      * content
      */
-    content(),
+    content() {
+        @Override
+        public boolean match(String filePath) {
+            if (StringUtils.isBlank(filePath)) {
+                return false;
+            }
+            return filePath.contains("content");
+        }
+    },
     ;
 
     /**
@@ -78,5 +96,12 @@ public enum ProjectStructureEnum implements BaseEnum {
                 .filter(e -> e.match(filePath))
                 .findFirst()
                 .orElseThrow(() -> new AdocException(ErrorMessage.PARAMETER_ERROR));
+    }
+
+    /**
+     * 获得子文件目录
+     */
+    public String getChildrenPath() {
+        return null;
     }
 }

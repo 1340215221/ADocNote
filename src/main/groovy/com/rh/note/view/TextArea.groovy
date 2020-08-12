@@ -1,8 +1,8 @@
 package com.rh.note.view
 
 import com.rh.note.event.TextAreaEvent
+import com.rh.note.model.file.AdocFile
 import com.rh.note.util.SwingComponent
-import com.rh.note.view.TextArea
 
 import java.awt.*
 
@@ -26,6 +26,7 @@ class TextArea implements SwingComponent {
                         TextAreaEvent.generateIncludeBlock(it)
                         TextAreaEvent.rename(it)
                     },
+                    adocFile: new AdocFile(path: filePath),
             )
         }
 

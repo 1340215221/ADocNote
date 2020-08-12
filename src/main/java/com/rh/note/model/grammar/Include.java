@@ -1,11 +1,15 @@
 package com.rh.note.model.grammar;
 
+import com.rh.note.constant.ErrorMessage;
 import com.rh.note.constant.ProjectStructureEnum;
+import com.rh.note.exception.AdocException;
+import com.rh.note.model.file.AdocFile;
+import com.rh.note.model.file.Config;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
-import java.util.Optional;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -75,8 +79,22 @@ public class Include {
         if (StringUtils.isBlank(fileName) || StringUtils.isBlank(parentFilePath)) {
             return null;
         }
+        ProjectStructureEnum parentStructure = Arrays.stream(ProjectStructureEnum.values())
+                .filter(e -> e.match(parentFilePath))
+                .findFirst()
+                .orElseThrow(() -> new AdocException(ErrorMessage.PARAMETER_ERROR));
+        return parentStructure.getChildrenPath() + fileName;
+    }
+
+    /**
+     * 生成语法语句
+     */
+    public String generateGrammar() {
+        return indent + "include::" + Config.project_path + File.separator + filePath + ".adoc[]";
+    }
+
+    public AdocFile generateAdocFile(Config config) {
         //todo
-        ProjectStructureEnum parentStructure = ProjectStructureEnum.getInstance(parentFilePath);
-        return parentStructure.getChildrenPath(parentFilePath);
+        return new AdocFile();
     }
 }

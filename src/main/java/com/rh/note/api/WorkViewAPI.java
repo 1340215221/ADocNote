@@ -1,6 +1,6 @@
 package com.rh.note.api;
 
-import com.rh.note.factory.WorkFrameFactory;
+import com.rh.note.factory.frame.WorkFrameFactory;
 import com.rh.note.model.component.BasePanelImpl;
 import com.rh.note.model.component.EditAreaImpl;
 import com.rh.note.model.component.ModelImpl;
@@ -9,10 +9,11 @@ import com.rh.note.model.component.TextAreaRunImpl;
 import com.rh.note.model.component.TextAreaScrollImpl;
 import com.rh.note.model.component.TitleListImpl;
 import com.rh.note.model.component.TreeImpl;
+import com.rh.note.model.file.AdocFile;
+import com.rh.note.model.file.Config;
 import com.rh.note.model.file.Title;
 import com.rh.note.model.grammar.Include;
 import com.rh.note.view.InputWindow;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 
@@ -20,16 +21,19 @@ public class WorkViewAPI {
     /**
      * 生成include语法块
      */
-    public void generateIncludeBlock(String componentId) throws Exception {
+    public AdocFile generateIncludeBlock(String componentId, Config config) throws Exception {
         TextAreaRunImpl textArea = new TextAreaRunImpl().init(componentId);
         if (textArea == null) {
-            return;
+            return null;
         }
         String lineContent = textArea.getLineContent();
-        Include include = new Include().initByGrammar(lineContent);
+        Include include = new Include().initByGrammar(lineContent, textArea.getFilePath());
         if (include == null) {
-            return;
+            return null;
         }
+        // 替换为include语句
+        textArea.replaceIncludeGrammar(include);
+        return include.generateAdocFile(config);
     }
 
 
@@ -122,5 +126,12 @@ public class WorkViewAPI {
     public void hiddenOrShowTitleList() {
         new TitleListImpl().init().hiddenOrShow();
         new BasePanelImpl().init().refreshShow();
+    }
+
+    /**
+     * 刷新标题树
+     */
+    public void refreshTitleTree() {
+        //todo
     }
 }

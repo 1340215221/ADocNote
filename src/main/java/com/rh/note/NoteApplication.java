@@ -2,8 +2,7 @@ package com.rh.note;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.rh.note.build.CoreBuild;
-import com.rh.note.factory.ProjectListFrameFactory;
-import com.rh.note.factory.WorkFrameFactory;
+import com.rh.note.factory.frame.ProjectListFrameFactory;
 
 /**
  * 笔记软件启动程序
