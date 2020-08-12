@@ -46,7 +46,7 @@ public enum ProjectStructureEnum implements BaseEnum {
             if (StringUtils.isBlank(filePath)) {
                 return false;
             }
-            return filePath.matches("[0-9a-zA-Z\\u4e00-\\u9fa5_\\\\/]+twoLevel[\\\\/]{1}")
+            filePath.contains("twoLevel")
         }
     },
     /**
