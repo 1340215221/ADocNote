@@ -13,20 +13,18 @@ class TextAreaEvent implements ActionBuild {
      * include语法块生成
      */
     static def generateIncludeBlock = {KeyEvent event ->
-        if (event.keyCode != 10 || event.modifiers != 0) {
-            return
+        if (event.keyCode == 10 && event.modifiers == 0) {
+            workAction.generateIncludeBlock(event.source.name)
         }
-        workAction.generateIncludeBlock()
     }
 
     /**
      * 重命名include
      */
     static def rename = {KeyEvent event ->
-        if (event.keyCode != 117 || event.modifiers != 1) {
-            return
+        if (event.keyCode == 117 && event.modifiers == 1) {
+            workAction.rename(event.source.name)
         }
-        workAction.rename(event.source.name)
     }
 
 }

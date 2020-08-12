@@ -5,17 +5,33 @@ import com.rh.note.model.component.BasePanelImpl;
 import com.rh.note.model.component.EditAreaImpl;
 import com.rh.note.model.component.ModelImpl;
 import com.rh.note.model.component.RootNodeImpl;
-import com.rh.note.model.component.TextAreaImpl;
+import com.rh.note.model.component.TextAreaRunImpl;
 import com.rh.note.model.component.TextAreaScrollImpl;
 import com.rh.note.model.component.TitleListImpl;
 import com.rh.note.model.component.TreeImpl;
 import com.rh.note.model.file.Title;
 import com.rh.note.model.grammar.Include;
 import com.rh.note.view.InputWindow;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 
 public class WorkViewAPI {
+    /**
+     * 生成include语法块
+     */
+    public void generateIncludeBlock(String componentId) throws Exception {
+        TextAreaRunImpl textArea = new TextAreaRunImpl().init(componentId);
+        if (textArea == null) {
+            return;
+        }
+        String lineContent = textArea.getLineContent();
+        Include include = new Include().initByGrammar(lineContent);
+        if (include == null) {
+            return;
+        }
+    }
+
 
     /**
      * 打开work_frame
@@ -69,14 +85,14 @@ public class WorkViewAPI {
      */
     public void openNewEditingAreaForSelected(String absolutePath, File file) {
         //创建添加编辑区控件
-        TextAreaImpl.create(absolutePath);
+        TextAreaRunImpl.create(absolutePath);
         TextAreaScrollImpl tas = new TextAreaScrollImpl().init(absolutePath);
         EditAreaImpl editArea = new EditAreaImpl().init();
         tas.addTo(editArea);
         editArea.showLast();
 
         //将数据显示到编辑区
-        TextAreaImpl textArea = new TextAreaImpl().initByFilePath(absolutePath);
+        TextAreaRunImpl textArea = new TextAreaRunImpl().initByFilePath(absolutePath);
         textArea.read(file);
     }
 
@@ -84,11 +100,11 @@ public class WorkViewAPI {
      * include语法重命名
      */
     public void rename(String componentId) throws Exception {
-        TextAreaImpl textArea = new TextAreaImpl().init(componentId);
+        TextAreaRunImpl textArea = new TextAreaRunImpl().init(componentId);
         if (textArea == null) {
             return;
         }
-        String lineContent = textArea.getLineContentOfTextArea();
+        String lineContent = textArea.getLineContent();
         //获得include语法对象
         Include include = new Include().init(lineContent);
         if (include == null) {

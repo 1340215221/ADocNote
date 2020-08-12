@@ -5,7 +5,6 @@ import com.rh.note.build.WorkFrameBuild
 import com.rh.note.event.WorkFrameEvent
 import com.rh.note.factory.component.TreeModelFactory
 import com.rh.note.factory.component.TreeNodeFactory
-import com.rh.note.model.file.ProjectInfo
 import com.rh.note.util.ISwingBuilder
 import com.rh.note.util.common.FrameFactory
 import com.rh.note.view.WorkFrame
@@ -16,8 +15,6 @@ import java.awt.*
  * 工作窗口工厂
  */
 class WorkFrameFactory implements WorkFrameBuild, ISwingBuilder, ActionBuild, FrameFactory {
-
-    static final ProjectInfo projectInfo = new ProjectInfo()
 
     @Override
     void globalSettings() {

@@ -14,10 +14,8 @@ class ProjectListEvent implements ActionBuild {
      * 项目列表点击事件
      */
     static def project_list_mouse_client = { MouseEvent event ->
-        if (event.clickCount < 2) {
-            return
+        if (event.clickCount > 1) {
+            projectListAction.openProject()
         }
-
-        projectListAction.openProject()
     }
 }

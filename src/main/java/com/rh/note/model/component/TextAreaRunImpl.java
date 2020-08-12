@@ -17,9 +17,14 @@ import java.io.Reader;
 /**
  * 编辑区
  */
-public class TextAreaImpl extends Init<JTextArea> {
+public class TextAreaRunImpl extends Init<JTextArea> {
 
-    public TextAreaImpl initByFilePath(String filePath) {
+    @Override
+    public TextAreaRunImpl init(String componentId) {
+        return super.init(componentId);
+    }
+
+    public TextAreaRunImpl initByFilePath(String filePath) {
         if (StringUtils.isBlank(filePath)) {
             return null;
         }
@@ -53,7 +58,7 @@ public class TextAreaImpl extends Init<JTextArea> {
     /**
      * 获取光标所在行的内容
      */
-    public String getLineContentOfTextArea() throws Exception {
+    public String getLineContent() throws Exception {
         Caret caret = textArea().getCaret();
         int line = textArea().getLineOfOffset(caret.getDot());
         int startOffset = textArea().getLineStartOffset(line);

@@ -2,9 +2,7 @@ package com.rh.note.action
 
 import com.rh.note.api.FileAPIService
 import com.rh.note.api.WorkViewAPI
-import com.rh.note.factory.WorkFrameFactory
-import com.rh.note.model.component.BasePanelImpl
-import com.rh.note.model.component.TitleListImpl
+import com.rh.note.model.component.WorkFrameImpl
 import com.rh.note.model.file.Title
 import com.rh.note.util.ISwingBuilder
 import org.apache.commons.lang3.StringUtils
@@ -22,7 +20,7 @@ class WorkAction implements ISwingBuilder {
      * 设置项目地址
      */
     void setProjectPath(String projectPath) {
-        WorkFrameFactory.projectInfo.setAbsolutePath(projectPath)
+        WorkFrameImpl.absolutePath = projectPath
     }
 
     /**
@@ -65,5 +63,19 @@ class WorkAction implements ISwingBuilder {
      */
     void hiddenOrShowTitleList() {
         workViewAPI.hiddenOrShowTitleList()
+    }
+
+    /**
+     * 生成include语法块
+     */
+    void generateIncludeBlock(String componentId) {
+        workViewAPI.generateIncludeBlock(componentId)
+    }
+
+    /**
+     * 保存编辑内容
+     */
+    void saveAllEditContent() {
+        //todo
     }
 }
