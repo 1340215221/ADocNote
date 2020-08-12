@@ -40,9 +40,10 @@ class ProjectListAction implements ISwingBuilder, ActionBuild {
     void importProject() {
         String projectPath = projectListAPI.selectProjectDirectory()
         if (StringUtils.isBlank(projectPath)) {
-            return;
+            return
         }
         workAction.setProjectPath(projectPath)
+        workAction.initProjectStructure()
         workAction.openFrame()
     }
 }

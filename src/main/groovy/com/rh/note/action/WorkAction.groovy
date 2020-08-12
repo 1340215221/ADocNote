@@ -84,4 +84,14 @@ class WorkAction implements ISwingBuilder {
     void saveAllEditContent() {
         //todo
     }
+
+    /**
+     * 扫描初始化项目结构
+     */
+    void initProjectStructure() {
+        // 初始化config文件
+        fileAPIService.initConfigFile()
+        // 初始化readme文件
+        fileAPIService.initReadMeFile()
+    }
 }

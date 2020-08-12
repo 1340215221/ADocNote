@@ -97,4 +97,24 @@ public class FileAPIService {
     public void createFile(AdocFile adocFile) {
         //todo
     }
+
+    /**
+     * 初始化readme文件
+     */
+    public void initReadMeFile() {
+        // todo
+        // 获得文件路径
+        // 检查是否存在
+        // 检查内容,引用config,初始化目录
+    }
+
+    /**
+     * 初始化config文件
+     */
+    public void initConfigFile() {
+        //todo
+        // 获得文件路径
+        // 检查是否存在
+        // 检查内容,是否配置项目路径变量
+    }
 }
