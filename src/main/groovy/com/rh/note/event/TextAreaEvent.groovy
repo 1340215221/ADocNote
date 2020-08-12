@@ -16,7 +16,7 @@ class TextAreaEvent implements ActionBuild {
         if (event.keyCode != 10 || event.modifiers != 0) {
             return
         }
-        //todo
+        workAction.generateIncludeBlock()
     }
 
     /**
