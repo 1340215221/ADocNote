@@ -16,7 +16,9 @@ class ProjectListFrameFactory implements ISwingBuilder,FrameFactory, ProjectList
         project_frame {
             project_panel {
                 project_list{}
-                project_menu{}
+                project_menu{
+                    openProjectButton{}
+                }
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.rh.note.build;
 
+import com.rh.note.view.OpenProjectButton;
 import com.rh.note.view.ProjectListFrame;
 import com.rh.note.view.ProjectList;
 import com.rh.note.view.ProjectMenu;
@@ -25,6 +26,10 @@ public interface ProjectListFrameBuild {
 
     static void project_menu(Closure closure) {
         new ProjectMenu().init(closure);
+    }
+
+    static void openProjectButton(Closure closure) {
+        new OpenProjectButton().init(closure);
     }
 
 }

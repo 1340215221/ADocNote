@@ -1,6 +1,7 @@
 package com.rh.note.action
 
 import com.rh.note.api.FileAPIService
+import com.rh.note.api.ProjectListAPI
 import com.rh.note.build.ActionBuild
 import com.rh.note.model.component.ProjectListFrameImpl
 import com.rh.note.model.component.ProjectListImpl
@@ -12,6 +13,7 @@ import org.apache.commons.lang3.StringUtils
 class ProjectListAction implements ISwingBuilder, ActionBuild {
 
     FileAPIService fileAPIService
+    ProjectListAPI projectListAPI
 
     /**
      * 打开项目
@@ -30,5 +32,17 @@ class ProjectListAction implements ISwingBuilder, ActionBuild {
     void setProjectList() {
         RecentlyOpenedRecordVO[] projectInfos = fileAPIService.writeOpenRecord()
         swingBuilder."${ProjectList.id}".listData = projectInfos
+    }
+
+    /**
+     * 导入新项目
+     */
+    void importProject() {
+        String projectPath = projectListAPI.selectProjectDirectory()
+        if (StringUtils.isBlank(projectPath)) {
+            return;
+        }
+        workAction.setProjectPath(projectPath)
+        workAction.openFrame()
     }
 }
