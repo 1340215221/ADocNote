@@ -19,8 +19,7 @@ import java.io.Reader;
  */
 public class TextAreaImpl extends Init<JTextArea> {
 
-    @Override
-    public TextAreaImpl init(String filePath) {
+    public TextAreaImpl initByFilePath(String filePath) {
         if (StringUtils.isBlank(filePath)) {
             return null;
         }

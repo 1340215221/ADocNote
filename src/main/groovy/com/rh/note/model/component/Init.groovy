@@ -25,7 +25,7 @@ abstract class Init<T> {
             this.bean = bean
             return this
         } catch (Exception e) {
-            System.err.println String.format("IComponent 获取控件失败=[{}]", componentId)
+            System.err.println String.format("IComponent 获取控件失败=[%s]", componentId)
             return
         }
     }

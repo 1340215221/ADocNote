@@ -3,13 +3,10 @@ package com.rh.note.action
 import com.rh.note.api.FileAPIService
 import com.rh.note.api.WorkViewAPI
 import com.rh.note.factory.WorkFrameFactory
-import com.rh.note.model.component.EditAreaImpl
-import com.rh.note.model.component.TextAreaImpl
-import com.rh.note.model.component.TextAreaScrollImpl
+import com.rh.note.model.component.BasePanelImpl
+import com.rh.note.model.component.TitleListImpl
 import com.rh.note.model.file.Title
-import com.rh.note.model.grammar.Include
 import com.rh.note.util.ISwingBuilder
-import com.rh.note.view.InputWindow
 import org.apache.commons.lang3.StringUtils
 
 /**
@@ -61,5 +58,12 @@ class WorkAction implements ISwingBuilder {
      */
     void rename(String componentId) {
         workViewAPI.rename(componentId)
+    }
+
+    /**
+     * 显示或隐藏标题列表
+     */
+    void hiddenOrShowTitleList() {
+        workViewAPI.hiddenOrShowTitleList()
     }
 }

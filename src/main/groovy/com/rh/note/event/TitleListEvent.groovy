@@ -23,8 +23,7 @@ class TitleListEvent implements ISwingBuilder, ActionBuild {
      * 显示或隐藏标题列表
      */
     static def hiddenOrShowTitleList = {
-        new TitleListImpl().init()?.hiddenOrShow()
-        new BasePanelImpl().init()?.refreshShow()
+        workAction.hiddenOrShowTitleList()
     }
 
 }

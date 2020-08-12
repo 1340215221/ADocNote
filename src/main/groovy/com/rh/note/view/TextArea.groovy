@@ -1,11 +1,9 @@
 package com.rh.note.view
 
-import com.rh.note.event.TextAreaIncludEvent
-import com.rh.note.event.TextAreaRenameEvent
+import com.rh.note.event.TextAreaEvent
 import com.rh.note.util.SwingComponent
 import com.rh.note.view.TextArea
 
-import javax.swing.JScrollPane
 import java.awt.*
 
 /**
@@ -25,8 +23,8 @@ class TextArea implements SwingComponent {
             swingBuilder.textArea(id: id(filePath),
                     font: new Font(null, 0, 17),
                     keyPressed: {
-                        new TextAreaIncludEvent().accept(it)
-                        new TextAreaRenameEvent().accept(it)
+                        TextAreaEvent.generateIncludeBlock(it)
+                        TextAreaEvent.rename(it)
                     },
             )
         }

@@ -18,9 +18,6 @@ class ProjectListEvent implements ActionBuild {
             return
         }
 
-        def list = event.source as JList
-        def value = list.selectedValue as RecentlyOpenedRecordVO
-
-        projectListAction.openProject(value.projectPath)
+        projectListAction.openProject()
     }
 }

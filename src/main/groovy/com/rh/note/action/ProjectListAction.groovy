@@ -3,6 +3,7 @@ package com.rh.note.action
 import com.rh.note.api.FileAPIService
 import com.rh.note.build.ActionBuild
 import com.rh.note.model.component.ProjectListFrameImpl
+import com.rh.note.model.component.ProjectListImpl
 import com.rh.note.util.ISwingBuilder
 import com.rh.note.view.ProjectList
 import com.rh.note.vo.RecentlyOpenedRecordVO
@@ -15,10 +16,9 @@ class ProjectListAction implements ISwingBuilder, ActionBuild {
     /**
      * 打开项目
      */
-    void openProject(String projectPath) {
-        if (StringUtils.isBlank(projectPath)) {
-            return
-        }
+    void openProject() {
+        def projectList = new ProjectListImpl().init()
+        String projectPath = projectList.getSelectedProject()
         workAction.setProjectPath(projectPath)
         new ProjectListFrameImpl().init()?.close()
         workAction.openFrame()
