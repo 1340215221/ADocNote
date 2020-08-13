@@ -45,6 +45,7 @@ public class ProjectListAction {
         workAction.setProjectPath(projectPath);
         workAction.initProjectStructure();
         workAction.openFrame();
+        fileAPIService.addOpenProjectRecord(projectPath);
     }
 
     /**

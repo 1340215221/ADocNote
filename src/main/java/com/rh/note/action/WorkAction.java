@@ -90,6 +90,9 @@ public class WorkAction {
      */
     public void saveAllEditContent() {
         //todo
+        //遍历编辑区
+        //获取编辑区内容，和文件地址
+        //将内容保存写入到文件中
     }
 
     /**

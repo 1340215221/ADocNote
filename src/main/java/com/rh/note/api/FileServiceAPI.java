@@ -114,4 +114,11 @@ public class FileServiceAPI {
         // 检查是否存在
         // 检查内容,是否配置项目路径变量
     }
+
+    /**
+     * 添加项目打开记录
+     */
+    public void addOpenProjectRecord(String projectPath) {
+        //todo
+    }
 }

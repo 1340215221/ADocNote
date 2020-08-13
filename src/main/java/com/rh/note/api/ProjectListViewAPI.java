@@ -22,7 +22,6 @@ public class ProjectListViewAPI {
         }
         // 关闭旧
         new ProjectListFrameRunView().init().close();
-        // todo 记录到打开记录中
         return projectPath;
     }
 
