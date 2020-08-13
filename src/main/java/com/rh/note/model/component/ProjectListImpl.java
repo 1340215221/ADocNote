@@ -2,6 +2,7 @@ package com.rh.note.model.component;
 
 import com.rh.note.view.ProjectList;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
+import org.apache.commons.lang3.ArrayUtils;
 
 import javax.swing.*;
 
@@ -27,5 +28,15 @@ public class ProjectListImpl extends Init<JList<RecentlyOpenedRecordVO>> {
 
     private JList<RecentlyOpenedRecordVO> projectList() {
         return getBean();
+    }
+
+    /**
+     * 加载项目列表
+     */
+    public void loadProjectList(RecentlyOpenedRecordVO[] projectInfos) {
+        if (ArrayUtils.isEmpty(projectInfos)) {
+            return;
+        }
+        projectList().setListData(projectInfos);
     }
 }
