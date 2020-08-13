@@ -1,19 +1,19 @@
 package com.rh.note.api;
 
-import com.rh.note.factory.frame.WorkFrameFactory;
-import com.rh.note.model.component.BasePanelImpl;
-import com.rh.note.model.component.EditAreaImpl;
-import com.rh.note.model.component.ModelImpl;
-import com.rh.note.model.component.RootNodeImpl;
-import com.rh.note.model.component.TextAreaRunImpl;
-import com.rh.note.model.component.TextAreaScrollImpl;
-import com.rh.note.model.component.TitleListImpl;
-import com.rh.note.model.component.TreeImpl;
-import com.rh.note.model.file.AdocFile;
-import com.rh.note.model.file.Config;
-import com.rh.note.model.file.Title;
-import com.rh.note.model.grammar.Include;
-import com.rh.note.view.InputWindow;
+import com.rh.note.frame.WorkFrameFactory;
+import com.rh.note.view.BasePanelView;
+import com.rh.note.view.EditAreaView;
+import com.rh.note.view.ModelView;
+import com.rh.note.view.RootNodeView;
+import com.rh.note.view.TextAreaRunView;
+import com.rh.note.view.TextAreaScrollView;
+import com.rh.note.view.TitleListView;
+import com.rh.note.view.TreeView;
+import com.rh.note.file.AdocFile;
+import com.rh.note.file.ConfigFile;
+import com.rh.note.grammar.TitleGrammar;
+import com.rh.note.grammar.IncludeGrammar;
+import com.rh.note.view.InputWindowView;
 
 import java.io.File;
 
@@ -21,13 +21,13 @@ public class WorkViewAPI {
     /**
      * 生成include语法块
      */
-    public AdocFile generateIncludeBlock(String componentId, Config config) throws Exception {
-        TextAreaRunImpl textArea = new TextAreaRunImpl().init(componentId);
+    public AdocFile generateIncludeBlock(String componentId, ConfigFile config) throws Exception {
+        TextAreaRunView textArea = new TextAreaRunView().init(componentId);
         if (textArea == null) {
             return null;
         }
         String lineContent = textArea.getLineContent();
-        Include include = new Include().initByGrammar(lineContent, textArea.getFilePath());
+        IncludeGrammar include = new IncludeGrammar().initByGrammar(lineContent, textArea.getFilePath());
         if (include == null) {
             return null;
         }
@@ -47,16 +47,16 @@ public class WorkViewAPI {
     /**
      * 加载文件标题列表
      */
-    public void showTitleList(Title rootTitle) {
-        RootNodeImpl.create(rootTitle);
-        RootNodeImpl rootNode = new RootNodeImpl().init();
-        ModelImpl model = new ModelImpl().init();
+    public void showTitleList(TitleGrammar rootTitle) {
+        RootNodeView.create(rootTitle);
+        RootNodeView rootNode = new RootNodeView().init();
+        ModelView model = new ModelView().init();
         if (model == null) {
             return;
         }
         model.setRoot(rootNode);
 
-        TreeImpl tree = new TreeImpl().init();
+        TreeView tree = new TreeView().init();
         if (tree == null) {
             return;
         }
@@ -67,19 +67,19 @@ public class WorkViewAPI {
      * 展示已打开的编辑区,通过被选择的标题
      */
     public String showEditingAreaForExistingSelected() {
-        TreeImpl tree = new TreeImpl().init();
+        TreeView tree = new TreeView().init();
         if (tree == null) {
             return null;
         }
-        Title title = tree.getSelectionUserObject();
+        TitleGrammar title = tree.getSelectionUserObject();
         if (title == null) {
             return null;
         }
-        TextAreaScrollImpl textAreaScroll = new TextAreaScrollImpl().init(title.getAbsolutePath());
+        TextAreaScrollView textAreaScroll = new TextAreaScrollView().init(title.getAbsolutePath());
         if (textAreaScroll == null) {
             return title.getAbsolutePath();
         }
-        EditAreaImpl editArea = new EditAreaImpl().init();
+        EditAreaView editArea = new EditAreaView().init();
         editArea.show(textAreaScroll.getId());
         return null;
     }
@@ -89,14 +89,14 @@ public class WorkViewAPI {
      */
     public void openNewEditingAreaForSelected(String absolutePath, File file) {
         //创建添加编辑区控件
-        TextAreaRunImpl.create(absolutePath);
-        TextAreaScrollImpl tas = new TextAreaScrollImpl().init(absolutePath);
-        EditAreaImpl editArea = new EditAreaImpl().init();
+        TextAreaRunView.create(absolutePath);
+        TextAreaScrollView tas = new TextAreaScrollView().init(absolutePath);
+        EditAreaView editArea = new EditAreaView().init();
         tas.addTo(editArea);
         editArea.showLast();
 
         //将数据显示到编辑区
-        TextAreaRunImpl textArea = new TextAreaRunImpl().initByFilePath(absolutePath);
+        TextAreaRunView textArea = new TextAreaRunView().initByFilePath(absolutePath);
         textArea.read(file);
     }
 
@@ -104,18 +104,18 @@ public class WorkViewAPI {
      * include语法重命名
      */
     public void rename(String componentId) throws Exception {
-        TextAreaRunImpl textArea = new TextAreaRunImpl().init(componentId);
+        TextAreaRunView textArea = new TextAreaRunView().init(componentId);
         if (textArea == null) {
             return;
         }
         String lineContent = textArea.getLineContent();
         //获得include语法对象
-        Include include = new Include().init(lineContent);
+        IncludeGrammar include = new IncludeGrammar().init(lineContent);
         if (include == null) {
             return;
         }
         //弹窗修改为新名字
-        String newTitleName = new InputWindow(include.getTitleName()).getInputValue();
+        String newTitleName = new InputWindowView(include.getTitleName()).getInputValue();
         //在编辑控件中修改为新的语法语句
         textArea.replaceName(include.getTitleName(), newTitleName);
     }
@@ -124,8 +124,8 @@ public class WorkViewAPI {
      * 显示或隐藏标题列表
      */
     public void hiddenOrShowTitleList() {
-        new TitleListImpl().init().hiddenOrShow();
-        new BasePanelImpl().init().refreshShow();
+        new TitleListView().init().hiddenOrShow();
+        new BasePanelView().init().refreshShow();
     }
 
     /**

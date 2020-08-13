@@ -3,7 +3,6 @@ package com.rh.note.build;
 import com.rh.note.api.FileAPIService;
 import com.rh.note.api.ProjectListAPI;
 import com.rh.note.api.WorkViewAPI;
-import com.rh.note.model.component.ProjectListImpl;
 import com.rh.note.service.AdocService;
 import com.rh.note.service.FileService;
 

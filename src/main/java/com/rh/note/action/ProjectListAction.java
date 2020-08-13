@@ -3,25 +3,30 @@ package com.rh.note.action;
 import com.rh.note.api.FileAPIService;
 import com.rh.note.api.ProjectListAPI;
 import com.rh.note.build.ActionBuild;
-import com.rh.note.model.component.ProjectListFrameImpl;
-import com.rh.note.model.component.ProjectListImpl;
+import com.rh.note.view.ProjectListFrameView;
+import com.rh.note.view.ProjectListView;
 import com.rh.note.util.ISwingBuilder;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
+@RequiredArgsConstructor
 class ProjectListAction implements ISwingBuilder, ActionBuild {
 
-    FileAPIService fileAPIService;
-    ProjectListAPI projectListAPI;
+    @NonNull
+    private FileAPIService fileAPIService;
+    @NonNull
+    private ProjectListAPI projectListAPI;
 
     /**
      * 打开项目
      */
     public void openProject() {
-        ProjectListImpl projectList = new ProjectListImpl().init();
+        ProjectListView projectList = new ProjectListView().init();
         String projectPath = projectList.getSelectedProject();
         workAction.setProjectPath(projectPath);
-        new ProjectListFrameImpl().init().close();
+        new ProjectListFrameView().init().close();
         workAction.openFrame();
     }
 
@@ -30,7 +35,7 @@ class ProjectListAction implements ISwingBuilder, ActionBuild {
      */
     public void setProjectList() {
         RecentlyOpenedRecordVO[] projectInfos = fileAPIService.writeOpenRecord();
-        new ProjectListImpl().init().loadProjectList(projectInfos);
+        new ProjectListView().init().loadProjectList(projectInfos);
     }
 
     /**

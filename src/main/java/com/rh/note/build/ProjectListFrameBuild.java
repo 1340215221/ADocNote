@@ -1,10 +1,10 @@
 package com.rh.note.build;
 
-import com.rh.note.view.OpenProjectButton;
-import com.rh.note.view.ProjectListFrame;
-import com.rh.note.view.ProjectList;
-import com.rh.note.view.ProjectMenu;
-import com.rh.note.view.ProjectListPanel;
+import com.rh.note.builder.OpenProjectButtonBuilder;
+import com.rh.note.builder.ProjectListFrameBuilder;
+import com.rh.note.builder.ProjectListBuilder;
+import com.rh.note.builder.ProjectMenuBuilder;
+import com.rh.note.builder.ProjectListPanelBuilder;
 import groovy.lang.Closure;
 
 /**
@@ -13,23 +13,23 @@ import groovy.lang.Closure;
 public interface ProjectListFrameBuild {
 
     static void project_frame(Closure children) {
-        new ProjectListFrame().init(children);
+        new ProjectListFrameBuilder().init(children);
     }
 
     static void project_panel(Closure closure) {
-        new ProjectListPanel().init(closure);
+        new ProjectListPanelBuilder().init(closure);
     }
 
     static void project_list(Closure closure){
-        new ProjectList().init(closure);
+        new ProjectListBuilder().init(closure);
     }
 
     static void project_menu(Closure closure) {
-        new ProjectMenu().init(closure);
+        new ProjectMenuBuilder().init(closure);
     }
 
     static void openProjectButton(Closure closure) {
-        new OpenProjectButton().init(closure);
+        new OpenProjectButtonBuilder().init(closure);
     }
 
 }

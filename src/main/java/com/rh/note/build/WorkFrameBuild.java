@@ -1,6 +1,14 @@
 package com.rh.note.build;
 
-import com.rh.note.view.*;
+import com.rh.note.builder.BasePanelBuilder;
+import com.rh.note.builder.BottomSidebarBuilder;
+import com.rh.note.builder.EditAreaBuilder;
+import com.rh.note.builder.FileListTitleButtonBuilder;
+import com.rh.note.builder.HeadMenuBuilder;
+import com.rh.note.builder.LeftSidebarBuilder;
+import com.rh.note.builder.LeftTitlePanelBuilder;
+import com.rh.note.builder.TitleListBuilder;
+import com.rh.note.builder.WorkFrameBuilder;
 import groovy.lang.Closure;
 
 /**
@@ -9,38 +17,38 @@ import groovy.lang.Closure;
 public interface WorkFrameBuild {
 
     default void workFrame(Closure children) {
-        new WorkFrame().init(children);
+        new WorkFrameBuilder().init(children);
     }
 
     default void basePanel(Closure children) {
-        new BasePanel().init(children);
+        new BasePanelBuilder().init(children);
     }
 
     default void headMenu(Closure children) {
-        new HeadMenu().init(children);
+        new HeadMenuBuilder().init(children);
     }
 
     default void bottomSidebar(Closure children) {
-        new BottomSidebar().init(children);
+        new BottomSidebarBuilder().init(children);
     }
 
     default void leftSidebar(Closure children) {
-        new LeftSidebar().init(children);
+        new LeftSidebarBuilder().init(children);
     }
 
     default void leftTitlePanel(Closure children) {
-        new LeftTitlePanel().init(children);
+        new LeftTitlePanelBuilder().init(children);
     }
 
     default void fileListTitleButton(Closure children) {
-        new FileListTitleButton().init(children);
+        new FileListTitleButtonBuilder().init(children);
     }
 
     default void titleList(Closure children) {
-        new TitleList().init(children);
+        new TitleListBuilder().init(children);
     }
 
     default void editArea(Closure children) {
-        new EditArea().init(children);
+        new EditAreaBuilder().init(children);
     }
 }

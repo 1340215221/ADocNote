@@ -1,7 +1,7 @@
 package com.rh.note.api;
 
-import com.rh.note.model.component.ProjectChooserImpl;
-import com.rh.note.model.component.ProjectListFrameImpl;
+import com.rh.note.view.ProjectChooserView;
+import com.rh.note.view.ProjectListFrameView;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -13,12 +13,12 @@ public class ProjectListAPI {
      */
     public String selectProjectDirectory() {
         // 选择项目文件
-        String projectPath = new ProjectChooserImpl().showOpenDialog();
+        String projectPath = new ProjectChooserView().showOpenDialog();
         if (StringUtils.isBlank(projectPath)) {
             return null;
         }
         // 关闭旧
-        new ProjectListFrameImpl().init().close();
+        new ProjectListFrameView().init().close();
         // todo 记录到打开记录中
         return projectPath;
     }

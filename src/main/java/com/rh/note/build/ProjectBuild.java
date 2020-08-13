@@ -1,17 +1,17 @@
 package com.rh.note.build;
 
-import com.rh.note.model.file.Config;
-import com.rh.note.model.file.Content;
-import com.rh.note.model.file.ProjectInfo;
-import com.rh.note.model.file.ReadMe;
-import com.rh.note.model.file.TwoLevel;
+import com.rh.note.file.ConfigFile;
+import com.rh.note.file.ContentFile;
+import com.rh.note.file.ProjectDirectory;
+import com.rh.note.file.ReadMeFile;
+import com.rh.note.file.TwoLevelFile;
 
 /**
  * 项目信息
  */
 public interface ProjectBuild {
 
-    ProjectInfo pi = new ProjectInfo();
+    ProjectDirectory pi = new ProjectDirectory();
 
     static String getAbsolutePath(){
         return pi.getAbsolutePath();
@@ -29,35 +29,35 @@ public interface ProjectBuild {
         pi.setProjectName(projectName);
     }
 
-    static ReadMe getReadMe() {
+    static ReadMeFile getReadMe() {
         return pi.getReadMe();
     }
 
-    static void setReadMe(ReadMe readMe) {
+    static void setReadMe(ReadMeFile readMe) {
         pi.setReadMe(readMe);
     }
 
-    static Config getConfig() {
+    static ConfigFile getConfig() {
         return pi.getConfig();
     }
 
-    static void setConfig(Config config) {
+    static void setConfig(ConfigFile config) {
         pi.setConfig(config);
     }
 
-    static TwoLevel getTwoLevel() {
+    static TwoLevelFile getTwoLevel() {
         return pi.getTwoLevel();
     }
 
-    static void setTwoLevel(TwoLevel twoLevel) {
+    static void setTwoLevel(TwoLevelFile twoLevel) {
         pi.setTwoLevel(twoLevel);
     }
 
-    static Content getContent() {
+    static ContentFile getContent() {
         return pi.getContent();
     }
 
-    static void setContent(Content content) {
+    static void setContent(ContentFile content) {
         pi.setContent(content);
     }
 

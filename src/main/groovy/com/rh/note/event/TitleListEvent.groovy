@@ -1,8 +1,6 @@
 package com.rh.note.event
 
 import com.rh.note.build.ActionBuild
-import com.rh.note.model.component.BasePanelImpl
-import com.rh.note.model.component.TitleListImpl
 import com.rh.note.util.ISwingBuilder
 
 import java.awt.event.MouseEvent

@@ -1,8 +1,8 @@
 package com.rh.note.api;
 
-import com.rh.note.model.file.AdocFile;
-import com.rh.note.model.file.Config;
-import com.rh.note.model.file.Title;
+import com.rh.note.file.AdocFile;
+import com.rh.note.file.ConfigFile;
+import com.rh.note.grammar.TitleGrammar;
 import com.rh.note.service.AdocService;
 import com.rh.note.service.FileService;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
@@ -43,15 +43,15 @@ public class FileAPIService {
     /**
      * 查找项目中所有的标题
      */
-    public Title findAllTitle() {
-        Title root = new Title();
+    public TitleGrammar findAllTitle() {
+        TitleGrammar root = new TitleGrammar();
         root.setName("java-note");
         root.setAbsolutePath("root");
-        Title t1 = new Title();
+        TitleGrammar t1 = new TitleGrammar();
         t1.setName("java基础");
         t1.setAbsolutePath("adoc/twoLevel/t1");
         root.addChildrenTitle(t1);
-        Title t2 = new Title();
+        TitleGrammar t2 = new TitleGrammar();
         t2.setName("java框架");
         t2.setAbsolutePath("adoc/twoLevel/t2");
         root.addChildrenTitle(t2);
@@ -86,9 +86,9 @@ public class FileAPIService {
     /**
      * 获取配置文件对象
      */
-    public Config findConfigFile() {
+    public ConfigFile findConfigFile() {
         //todo
-        return new Config().setProjectPath("/home/hang/adoc/");
+        return new ConfigFile().setProjectPath("/home/hang/adoc/");
     }
 
     /**
