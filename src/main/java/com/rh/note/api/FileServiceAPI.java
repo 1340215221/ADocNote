@@ -3,11 +3,11 @@ package com.rh.note.api;
 import com.rh.note.file.AdocFile;
 import com.rh.note.file.ConfigFile;
 import com.rh.note.grammar.TitleGrammar;
-import com.rh.note.service.AdocService;
 import com.rh.note.service.FileService;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,13 +16,10 @@ import java.io.FileWriter;
 /**
  * 文件操作api
  */
-@RequiredArgsConstructor
-public class FileAPIService {
+@Setter
+public class FileServiceAPI {
 
-    @NonNull
     private FileService fileService;
-    @NonNull
-    private AdocService adocService;
 
     /**
      * 读取打开记录

@@ -1,23 +1,19 @@
 package com.rh.note.action;
 
-import com.rh.note.api.FileAPIService;
-import com.rh.note.api.ProjectListAPI;
-import com.rh.note.build.ActionBuild;
-import com.rh.note.view.ProjectListFrameView;
+import com.rh.note.api.FileServiceAPI;
+import com.rh.note.api.ProjectListViewAPI;
+import com.rh.note.view.ProjectListFrameRunView;
 import com.rh.note.view.ProjectListView;
-import com.rh.note.util.ISwingBuilder;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 
-@RequiredArgsConstructor
-class ProjectListAction implements ISwingBuilder, ActionBuild {
+@Setter
+public class ProjectListAction {
 
-    @NonNull
-    private FileAPIService fileAPIService;
-    @NonNull
-    private ProjectListAPI projectListAPI;
+    private FileServiceAPI fileAPIService;
+    private ProjectListViewAPI projectListAPI;
+    private WorkAction workAction;
 
     /**
      * 打开项目
@@ -26,7 +22,7 @@ class ProjectListAction implements ISwingBuilder, ActionBuild {
         ProjectListView projectList = new ProjectListView().init();
         String projectPath = projectList.getSelectedProject();
         workAction.setProjectPath(projectPath);
-        new ProjectListFrameView().init().close();
+        new ProjectListFrameRunView().init().close();
         workAction.openFrame();
     }
 
@@ -49,5 +45,24 @@ class ProjectListAction implements ISwingBuilder, ActionBuild {
         workAction.setProjectPath(projectPath);
         workAction.initProjectStructure();
         workAction.openFrame();
+    }
+
+    /**
+     * 显示项目管理窗口
+     */
+    public void showFrame() {
+        projectListAPI.showFrame();
+    }
+
+    /**
+     * 启动窗口
+     */
+    public void startFrame() {
+        // 加载数据
+        RecentlyOpenedRecordVO[] voArr = fileAPIService.writeOpenRecord();
+        // 构建控件
+        projectListAPI.loadMainFrame();
+        // 设置数据并展示
+        projectListAPI.showFrame(voArr);
     }
 }

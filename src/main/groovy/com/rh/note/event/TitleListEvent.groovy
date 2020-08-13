@@ -1,14 +1,16 @@
 package com.rh.note.event
 
-import com.rh.note.build.ActionBuild
-import com.rh.note.util.ISwingBuilder
+import com.rh.note.action.WorkAction
+import com.rh.note.config.BeanConfig
 
 import java.awt.event.MouseEvent
 
 /**
  * 标题列表
  */
-class TitleListEvent implements ISwingBuilder, ActionBuild {
+class TitleListEvent {
+
+    private static final WorkAction workAction = BeanConfig.workAction
 
     /**
      * 打开标题内容

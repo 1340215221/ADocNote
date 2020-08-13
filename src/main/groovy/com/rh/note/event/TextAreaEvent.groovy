@@ -1,13 +1,16 @@
 package com.rh.note.event
 
-import com.rh.note.build.ActionBuild
+import com.rh.note.action.WorkAction
+import com.rh.note.config.BeanConfig
 
 import java.awt.event.KeyEvent
 
 /**
  * 编辑区事件
  */
-class TextAreaEvent implements ActionBuild {
+class TextAreaEvent {
+
+    private static final WorkAction workAction = BeanConfig.workAction
 
     /**
      * include语法块生成

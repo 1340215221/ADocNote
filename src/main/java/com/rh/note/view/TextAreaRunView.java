@@ -1,12 +1,11 @@
 package com.rh.note.view;
 
+import com.rh.note.builder.TextAreaBuilder;
+import com.rh.note.component.AdocTextArea;
 import com.rh.note.constant.ErrorMessage;
-import com.rh.note.constant.GroovyCommonConstant;
 import com.rh.note.exception.AdocException;
 import com.rh.note.grammar.IncludeGrammar;
-import com.rh.note.component.AdocTextArea;
-import com.rh.note.builder.TextAreaBuilder;
-import com.rh.note.model.component.Init;
+import com.rh.note.view.Init;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.text.Caret;
@@ -54,7 +53,7 @@ public class TextAreaRunView extends Init<AdocTextArea> {
         if (StringUtils.isBlank(filePath)) {
             return;
         }
-        new TextAreaBuilder(filePath).init(GroovyCommonConstant.closure);
+        new TextAreaBuilder(filePath).init();
     }
 
     /**

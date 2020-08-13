@@ -1,15 +1,17 @@
 package com.rh.note.event
 
-import com.rh.note.build.ActionBuild
-import com.rh.note.vo.RecentlyOpenedRecordVO
+import com.rh.note.action.ProjectListAction
+import com.rh.note.config.BeanConfig
 
-import javax.swing.JList
 import java.awt.event.MouseEvent
 
 /**
  * 项目列表
  */
-class ProjectListEvent implements ActionBuild {
+class ProjectListEvent {
+
+    private static final ProjectListAction projectListAction = BeanConfig.projectListAction
+
     /**
      * 项目列表点击事件
      */

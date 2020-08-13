@@ -1,10 +1,9 @@
 package com.rh.note.api;
 
-import com.rh.note.frame.WorkFrameFactory;
 import com.rh.note.view.BasePanelView;
 import com.rh.note.view.EditAreaView;
 import com.rh.note.view.ModelView;
-import com.rh.note.view.RootNodeView;
+import com.rh.note.view.RootNodeRunView;
 import com.rh.note.view.TextAreaRunView;
 import com.rh.note.view.TextAreaScrollView;
 import com.rh.note.view.TitleListView;
@@ -13,7 +12,8 @@ import com.rh.note.file.AdocFile;
 import com.rh.note.file.ConfigFile;
 import com.rh.note.grammar.TitleGrammar;
 import com.rh.note.grammar.IncludeGrammar;
-import com.rh.note.view.InputWindowView;
+import com.rh.note.view.InputWindowRunView;
+import com.rh.note.view.WorkFrameRunView;
 
 import java.io.File;
 
@@ -40,16 +40,16 @@ public class WorkViewAPI {
     /**
      * 打开work_frame
      */
-    public void openFrame() {
-        new WorkFrameFactory().start();
+    public void initFrame() {
+        WorkFrameRunView.create();
     }
 
     /**
      * 加载文件标题列表
      */
-    public void showTitleList(TitleGrammar rootTitle) {
-        RootNodeView.create(rootTitle);
-        RootNodeView rootNode = new RootNodeView().init();
+    public void loadTitleList(TitleGrammar rootTitle) {
+        RootNodeRunView.create(rootTitle);
+        RootNodeRunView rootNode = new RootNodeRunView().init();
         ModelView model = new ModelView().init();
         if (model == null) {
             return;
@@ -115,7 +115,7 @@ public class WorkViewAPI {
             return;
         }
         //弹窗修改为新名字
-        String newTitleName = new InputWindowView(include.getTitleName()).getInputValue();
+        String newTitleName = new InputWindowRunView(include.getTitleName()).getInputValue();
         //在编辑控件中修改为新的语法语句
         textArea.replaceName(include.getTitleName(), newTitleName);
     }
@@ -133,5 +133,12 @@ public class WorkViewAPI {
      */
     public void refreshTitleTree() {
         //todo
+    }
+
+    /**
+     * 展示主窗口
+     */
+    public void showMainFrame() {
+        new WorkFrameRunView().init().show();
     }
 }

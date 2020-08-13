@@ -7,9 +7,9 @@ import java.io.File;
 /**
  * 选择项目文件夹
  */
-public class ProjectChooserView {
+public class ProjectChooserRunView {
 
-    public static String showOpenDialog(Component component) {
+    private static String showOpenDialog(Component component) {
         if (component == null) {
             return null;
         }
@@ -24,9 +24,9 @@ public class ProjectChooserView {
         return null;
     }
 
-    public String showOpenDialog() {
+    public static String showOpenDialog() {
         ProjectListView projectList = new ProjectListView().init();
-        return ProjectChooserView.showOpenDialog(projectList.getBean());
+        return ProjectChooserRunView.showOpenDialog(projectList.getBean());
     }
 
 }

@@ -1,14 +1,12 @@
 package com.rh.note.action;
 
-import com.rh.note.api.FileAPIService;
+import com.rh.note.api.FileServiceAPI;
 import com.rh.note.api.WorkViewAPI;
-import com.rh.note.view.WorkFrameView;
 import com.rh.note.file.AdocFile;
 import com.rh.note.file.ConfigFile;
 import com.rh.note.grammar.TitleGrammar;
-import com.rh.note.util.ISwingBuilder;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import com.rh.note.view.WorkFrameRunView;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -17,34 +15,35 @@ import java.io.File;
  * 工作区时间触发
  * 用户操作,监听器,定时器触发处
  */
-@RequiredArgsConstructor
-class WorkAction implements ISwingBuilder {
+@Setter
+public class WorkAction {
 
-    @NonNull
-    private FileAPIService fileAPIService;
-    @NonNull
+    private FileServiceAPI fileServiceAPI;
     private WorkViewAPI workViewAPI;
 
     /**
      * 设置项目地址
      */
     public void setProjectPath(String projectPath) {
-        WorkFrameView.setAbsolutePath(projectPath);
+        WorkFrameRunView.setAbsolutePath(projectPath);
     }
 
     /**
      * 打开work_frame
      */
     public void openFrame() {
-        workViewAPI.openFrame();
+        TitleGrammar rootTitle = fileServiceAPI.findAllTitle();
+        workViewAPI.initFrame();
+        workViewAPI.loadTitleList(rootTitle);
+        workViewAPI.showMainFrame();
     }
 
     /**
      * 加载文件标题列表
      */
     public void loadTitleList() {
-        TitleGrammar rootTitle = fileAPIService.findAllTitle();
-        workViewAPI.showTitleList(rootTitle);
+        TitleGrammar rootTitle = fileServiceAPI.findAllTitle();
+        workViewAPI.loadTitleList(rootTitle);
     }
 
     /**
@@ -56,7 +55,7 @@ class WorkAction implements ISwingBuilder {
             return;
         }
         //读取文件内容
-        File file = fileAPIService.readTitleFileContent(absolutePath);
+        File file = fileServiceAPI.readTitleFileContent(absolutePath);
         workViewAPI.openNewEditingAreaForSelected(absolutePath, file);
     }
 
@@ -78,10 +77,10 @@ class WorkAction implements ISwingBuilder {
      * 生成include语法块
      */
     public void generateIncludeBlock(String componentId) throws Exception {
-        ConfigFile config = fileAPIService.findConfigFile();
+        ConfigFile config = fileServiceAPI.findConfigFile();
         AdocFile adocFile = workViewAPI.generateIncludeBlock(componentId, config);
         if (adocFile != null) {
-            fileAPIService.createFile(adocFile);
+            fileServiceAPI.createFile(adocFile);
         }
         loadTitleList();
     }
@@ -98,8 +97,8 @@ class WorkAction implements ISwingBuilder {
      */
     public void initProjectStructure() {
         // 初始化config文件
-        fileAPIService.initConfigFile();
+        fileServiceAPI.initConfigFile();
         // 初始化readme文件
-        fileAPIService.initReadMeFile();
+        fileServiceAPI.initReadMeFile();
     }
 }

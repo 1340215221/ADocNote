@@ -17,6 +17,10 @@ class TextAreaBuilder implements SwingComponent {
         this.filePath = filePath
     }
 
+    void init() {
+        init{}
+    }
+
     @Override
     void init(Closure children) {
         def text_area = {
@@ -61,11 +65,10 @@ class TextAreaBuilder implements SwingComponent {
             }
         }
 
-        def pane = swingBuilder.scrollPane(id: scrollId(filePath),
+        swingBuilder.scrollPane(id: scrollId(filePath),
         ) {
             base_panel()
         }
-        println ''
     }
 
     static String id(String filePath) {

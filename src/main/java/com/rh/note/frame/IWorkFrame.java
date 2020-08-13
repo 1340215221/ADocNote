@@ -1,4 +1,4 @@
-package com.rh.note.build;
+package com.rh.note.frame;
 
 import com.rh.note.builder.BasePanelBuilder;
 import com.rh.note.builder.BottomSidebarBuilder;
@@ -14,7 +14,7 @@ import groovy.lang.Closure;
 /**
  * 构建工作窗口
  */
-public interface WorkFrameBuild {
+public interface IWorkFrame {
 
     default void workFrame(Closure children) {
         new WorkFrameBuilder().init(children);

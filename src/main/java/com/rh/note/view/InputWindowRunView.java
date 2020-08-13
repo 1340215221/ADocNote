@@ -1,19 +1,20 @@
 package com.rh.note.view;
 
 import com.rh.note.constant.HintConstant;
-import lombok.Getter;
 
 import javax.swing.*;
 
 /**
- * 弹窗口
+ * 输入弹窗口
  */
-@Getter
-public class InputWindowView {
+public class InputWindowRunView {
 
+    /**
+     * 默认输入值
+     */
     private String defaultValue;
 
-    public InputWindowView(String defaultValue) {
+    public InputWindowRunView(String defaultValue) {
         this.defaultValue = defaultValue;
     }
 

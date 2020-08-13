@@ -1,7 +1,7 @@
 package com.rh.note.view;
 
 import com.rh.note.builder.TitleListBuilder;
-import com.rh.note.model.component.Init;
+import com.rh.note.view.Init;
 
 import javax.swing.tree.DefaultTreeModel;
 
@@ -17,7 +17,7 @@ public class ModelView extends Init<DefaultTreeModel> {
     /**
      * 设置根节点
      */
-    public void setRoot(RootNodeView rootNode) {
+    public void setRoot(RootNodeRunView rootNode) {
         if (rootNode == null) {
             return;
         }

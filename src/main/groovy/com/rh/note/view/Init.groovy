@@ -1,9 +1,7 @@
-package com.rh.note.model.component
+package com.rh.note.view
 
 import com.rh.note.util.ISwingBuilder
 import org.apache.commons.lang3.StringUtils
-
-import java.awt.*
 
 /**
  * 控件
@@ -33,7 +31,7 @@ abstract class Init<T> {
     /**
      * 获得控件
      */
-    protected final T getBean() {
+     final T getBean() {
         return this.bean;
     }
 

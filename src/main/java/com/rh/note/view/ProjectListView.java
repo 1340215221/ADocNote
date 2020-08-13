@@ -1,7 +1,7 @@
 package com.rh.note.view;
 
 import com.rh.note.builder.ProjectListBuilder;
-import com.rh.note.model.component.Init;
+import com.rh.note.view.Init;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
 import org.apache.commons.lang3.ArrayUtils;
 

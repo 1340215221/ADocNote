@@ -1,7 +1,7 @@
 package com.rh.note.view;
 
 import com.rh.note.builder.BasePanelBuilder;
-import com.rh.note.model.component.Init;
+import com.rh.note.view.Init;
 
 import javax.swing.*;
 

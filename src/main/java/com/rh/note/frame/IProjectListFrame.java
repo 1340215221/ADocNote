@@ -1,4 +1,4 @@
-package com.rh.note.build;
+package com.rh.note.frame;
 
 import com.rh.note.builder.OpenProjectButtonBuilder;
 import com.rh.note.builder.ProjectListFrameBuilder;
@@ -10,7 +10,7 @@ import groovy.lang.Closure;
 /**
  * 构建项目列表组建
  */
-public interface ProjectListFrameBuild {
+public interface IProjectListFrame {
 
     static void project_frame(Closure children) {
         new ProjectListFrameBuilder().init(children);

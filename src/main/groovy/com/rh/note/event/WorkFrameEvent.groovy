@@ -1,15 +1,18 @@
 package com.rh.note.event
 
-import com.rh.note.build.ActionBuild
+import com.rh.note.action.WorkAction
+import com.rh.note.config.BeanConfig
 
-import java.awt.AWTEvent
+import java.awt.*
 import java.awt.event.AWTEventListener
 import java.awt.event.KeyEvent
 
 /**
  * 全局设置
  */
-class WorkFrameEvent implements ActionBuild {
+class WorkFrameEvent {
+
+    private WorkAction workAction = BeanConfig.workAction
 
     /**
      * 全局保存
