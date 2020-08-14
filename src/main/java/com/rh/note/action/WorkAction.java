@@ -5,7 +5,6 @@ import com.rh.note.api.WorkViewAPI;
 import com.rh.note.file.AdocFile;
 import com.rh.note.file.ConfigFile;
 import com.rh.note.grammar.TitleGrammar;
-import com.rh.note.view.WorkFrameRunView;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 
@@ -20,13 +19,6 @@ public class WorkAction {
 
     private FileServiceAPI fileServiceAPI;
     private WorkViewAPI workViewAPI;
-
-    /**
-     * 设置项目地址
-     */
-    public void setProjectPath(String projectPath) {
-        WorkFrameRunView.setAbsolutePath(projectPath);
-    }
 
     /**
      * 打开work_frame

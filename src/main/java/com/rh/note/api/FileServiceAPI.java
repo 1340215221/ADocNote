@@ -6,10 +6,7 @@ import com.rh.note.file.ProjectDirectory;
 import com.rh.note.file.ReadMeFile;
 import com.rh.note.grammar.TitleGrammar;
 import com.rh.note.service.FileService;
-import com.rh.note.view.WorkFrameRunView;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.io.BufferedWriter;
@@ -47,20 +44,22 @@ public class FileServiceAPI {
     public TitleGrammar findAllTitle() {
         TitleGrammar root = new TitleGrammar();
         root.setName("java-note");
-        root.setAbsolutePath("root");
+        root.setFilePath("root");
         TitleGrammar t1 = new TitleGrammar();
         t1.setName("java基础");
-        t1.setAbsolutePath("adoc/twoLevel/t1");
+        t1.setFilePath("adoc/twoLevel/t1");
         root.addChildrenTitle(t1);
         TitleGrammar t2 = new TitleGrammar();
         t2.setName("java框架");
-        t2.setAbsolutePath("adoc/twoLevel/t2");
+        t2.setFilePath("adoc/twoLevel/t2");
         root.addChildrenTitle(t2);
 
         // 依次读取readme twoLevel content文件内容
         ReadMeFile readMe = new ReadMeFile().init();
         // 生成嵌套的标题对象
-        AdocFile adocFile = new AdocFile().init(readMe);
+        new AdocFile().title().include().init(readMe);
+        return readMe.getRootTitle();
+
         return root;
     }
 
@@ -94,7 +93,7 @@ public class FileServiceAPI {
      */
     public ConfigFile findConfigFile() {
         //todo
-        return new ConfigFile().setProjectPath("/home/hang/adoc/");
+        return new ConfigFile().setFilePath("/home/hang/adoc/");
     }
 
     /**
@@ -129,5 +128,12 @@ public class FileServiceAPI {
      */
     public void addOpenProjectRecord(String projectPath) {
         //todo
+    }
+
+    /**
+     * 设置项目地址
+     */
+    public void setProjectPath(String projectPath) {
+        new ProjectDirectory().setAbsolutePath(projectPath);
     }
 }

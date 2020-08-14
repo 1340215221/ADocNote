@@ -75,9 +75,9 @@ public class WorkViewAPI {
         if (title == null) {
             return null;
         }
-        TextAreaScrollView textAreaScroll = new TextAreaScrollView().init(title.getAbsolutePath());
+        TextAreaScrollView textAreaScroll = new TextAreaScrollView().init(title.getFilePath());
         if (textAreaScroll == null) {
-            return title.getAbsolutePath();
+            return title.getFilePath();
         }
         EditAreaView editArea = new EditAreaView().init();
         editArea.show(textAreaScroll.getId());

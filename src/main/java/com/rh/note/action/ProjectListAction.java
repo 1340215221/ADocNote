@@ -21,7 +21,7 @@ public class ProjectListAction {
     public void openProject() {
         ProjectListView projectList = new ProjectListView().init();
         String projectPath = projectList.getSelectedProject();
-        workAction.setProjectPath(projectPath);
+        fileAPIService.setProjectPath(projectPath);
         new ProjectListFrameRunView().init().close();
         workAction.openFrame();
     }
@@ -34,7 +34,7 @@ public class ProjectListAction {
         if (StringUtils.isBlank(projectPath)) {
             return;
         }
-        workAction.setProjectPath(projectPath);
+        fileAPIService.setProjectPath(projectPath);
         workAction.initProjectStructure();
         workAction.openFrame();
         fileAPIService.addOpenProjectRecord(projectPath);

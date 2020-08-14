@@ -1,5 +1,6 @@
 package com.rh.note.grammar;
 
+import com.rh.note.common.IAdocFile;
 import com.rh.note.constant.ErrorMessage;
 import com.rh.note.constant.ProjectStructureEnum;
 import com.rh.note.exception.AdocException;
@@ -21,6 +22,10 @@ public class IncludeGrammar {
      */
     private String filePath;
     /**
+     * 引用文件路径
+     */
+    private String targetFilePath;
+    /**
      * 文件后缀
      */
     private String fileSuffix;
@@ -32,6 +37,10 @@ public class IncludeGrammar {
      * 缩进空白字符
      */
     private String indent;
+    /**
+     * 行号
+     */
+    private Integer lineNumber;
 
     public IncludeGrammar init(String lineContent) {
         if (StringUtils.isBlank(lineContent)) {
@@ -96,5 +105,20 @@ public class IncludeGrammar {
     public AdocFile generateAdocFile(ConfigFile config) {
         //todo
         return new AdocFile();
+    }
+
+    /**
+     * 获得指向的adoc文件对象
+     */
+    public IAdocFile buildSimpleTargetAdocFile() {
+        // todo 这里要解析变量，组装绝对地址, 或者在复制时组装
+        return ProjectStructureEnum.buildSimpleAdocFile(targetFilePath);
+    }
+
+    /**
+     * 设置指向标题
+     */
+    public void setTargetTitle(TitleGrammar rootTitle) {
+        //todo
     }
 }

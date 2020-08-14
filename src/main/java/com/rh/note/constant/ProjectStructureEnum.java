@@ -1,6 +1,12 @@
 package com.rh.note.constant;
 
+import com.rh.note.common.IAdocFile;
 import com.rh.note.exception.AdocException;
+import com.rh.note.file.AdocFile;
+import com.rh.note.file.ConfigFile;
+import com.rh.note.file.ContentFile;
+import com.rh.note.file.ReadMeFile;
+import com.rh.note.file.TwoLevelFile;
 import com.rh.note.util.BaseEnum;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
@@ -29,6 +35,11 @@ public enum ProjectStructureEnum implements BaseEnum {
         public String getChildrenPath() {
             return "adoc/twoLevel/";
         }
+
+        @Override
+        protected IAdocFile newAdocFile() {
+            return new ReadMeFile();
+        }
     },
     /**
      * global-config
@@ -40,6 +51,11 @@ public enum ProjectStructureEnum implements BaseEnum {
                 return false;
             }
             return filePath.endsWith("config.adoc");
+        }
+
+        @Override
+        protected IAdocFile newAdocFile() {
+            return new ConfigFile();
         }
     },
     /**
@@ -58,6 +74,11 @@ public enum ProjectStructureEnum implements BaseEnum {
         public String getChildrenPath() {
             return "adoc/content/";
         }
+
+        @Override
+        protected IAdocFile newAdocFile() {
+            return new TwoLevelFile();
+        }
     },
     /**
      * content
@@ -70,13 +91,27 @@ public enum ProjectStructureEnum implements BaseEnum {
             }
             return filePath.contains("content");
         }
+
+        @Override
+        protected IAdocFile newAdocFile() {
+            return new ContentFile();
+        }
     },
     ;
+
+    protected abstract IAdocFile newAdocFile();
 
     /**
      * 配置实例，通过文件地址
      */
     public abstract boolean match(String filePath);
+
+    /**
+     * 构建简单的adoc文件对象
+     */
+    public static IAdocFile buildSimpleAdocFile(String filePath) {
+        return matchInstance(filePath).newAdocFile().setFilePath(filePath);
+    }
 
     /**
      * 获得实例

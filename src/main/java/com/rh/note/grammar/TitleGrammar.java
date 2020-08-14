@@ -37,7 +37,7 @@ public class TitleGrammar {
     /**
      * 地址
      */
-    private String absolutePath;
+    private String filePath;
 
     /**
      * 添加
