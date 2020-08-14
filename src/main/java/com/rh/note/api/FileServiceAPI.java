@@ -25,6 +25,7 @@ public class FileServiceAPI {
      * 读取打开记录
      */
     public RecentlyOpenedRecordVO[] writeOpenRecord() {
+        //todo
         RecentlyOpenedRecordVO vo1 = new RecentlyOpenedRecordVO();
         vo1.setProjectPath("/home/hang/java-note");
         vo1.setProjectName("java笔记");

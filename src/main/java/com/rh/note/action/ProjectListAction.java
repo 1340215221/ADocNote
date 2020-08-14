@@ -27,14 +27,6 @@ public class ProjectListAction {
     }
 
     /**
-     * 设置项目列表
-     */
-    public void setProjectList() {
-        RecentlyOpenedRecordVO[] projectInfos = fileAPIService.writeOpenRecord();
-        new ProjectListView().init().loadProjectList(projectInfos);
-    }
-
-    /**
      * 导入新项目
      */
     public void importProject() {
@@ -46,13 +38,6 @@ public class ProjectListAction {
         workAction.initProjectStructure();
         workAction.openFrame();
         fileAPIService.addOpenProjectRecord(projectPath);
-    }
-
-    /**
-     * 显示项目管理窗口
-     */
-    public void showFrame() {
-        projectListAPI.showFrame();
     }
 
     /**

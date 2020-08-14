@@ -26,13 +26,6 @@ public class ProjectListViewAPI {
     }
 
     /**
-     * 显示项目管理窗口
-     */
-    public void showFrame() {
-        new ProjectListFrameRunView().init().show();
-    }
-
-    /**
      * 加载主窗口
      */
     public void loadMainFrame() {

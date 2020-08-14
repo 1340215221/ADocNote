@@ -1,18 +1,18 @@
 package com.rh.note.api;
 
+import com.rh.note.file.AdocFile;
+import com.rh.note.file.ConfigFile;
+import com.rh.note.grammar.IncludeGrammar;
+import com.rh.note.grammar.TitleGrammar;
 import com.rh.note.view.BasePanelView;
 import com.rh.note.view.EditAreaView;
+import com.rh.note.view.InputWindowRunView;
 import com.rh.note.view.ModelView;
 import com.rh.note.view.RootNodeRunView;
 import com.rh.note.view.TextAreaRunView;
 import com.rh.note.view.TextAreaScrollView;
 import com.rh.note.view.TitleListView;
 import com.rh.note.view.TreeView;
-import com.rh.note.file.AdocFile;
-import com.rh.note.file.ConfigFile;
-import com.rh.note.grammar.TitleGrammar;
-import com.rh.note.grammar.IncludeGrammar;
-import com.rh.note.view.InputWindowRunView;
 import com.rh.note.view.WorkFrameRunView;
 
 import java.io.File;
@@ -126,13 +126,6 @@ public class WorkViewAPI {
     public void hiddenOrShowTitleList() {
         new TitleListView().init().hiddenOrShow();
         new BasePanelView().init().refreshShow();
-    }
-
-    /**
-     * 刷新标题树
-     */
-    public void refreshTitleTree() {
-        //todo
     }
 
     /**
