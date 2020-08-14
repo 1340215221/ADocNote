@@ -2,8 +2,11 @@ package com.rh.note.api;
 
 import com.rh.note.file.AdocFile;
 import com.rh.note.file.ConfigFile;
+import com.rh.note.file.ProjectDirectory;
+import com.rh.note.file.ReadMeFile;
 import com.rh.note.grammar.TitleGrammar;
 import com.rh.note.service.FileService;
+import com.rh.note.view.WorkFrameRunView;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -52,6 +55,11 @@ public class FileServiceAPI {
         t2.setName("java框架");
         t2.setAbsolutePath("adoc/twoLevel/t2");
         root.addChildrenTitle(t2);
+
+        // 依次读取readme twoLevel content文件内容
+        ReadMeFile readMe = new ReadMeFile().init();
+        // 生成嵌套的标题对象
+        AdocFile adocFile = new AdocFile().init(readMe);
         return root;
     }
 
