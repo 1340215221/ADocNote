@@ -1,6 +1,6 @@
 package com.rh.note.frame
 
-import com.rh.note.action.WorkAction
+
 import com.rh.note.common.IFrame
 import com.rh.note.event.WorkFrameEvent
 import com.rh.note.register.TextAreaFactory
@@ -14,13 +14,6 @@ import java.awt.*
  * 工作窗口工厂
  */
 class WorkFrame implements IWorkFrame, IFrame, ISwingBuilder {
-
-    private WorkAction workAction
-
-    WorkFrame setWorkAction(WorkAction workAction) {
-        this.workAction = workAction
-        return this
-    }
 
     @Override
     void globalSettings() {
