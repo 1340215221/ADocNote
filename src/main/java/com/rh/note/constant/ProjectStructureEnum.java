@@ -2,7 +2,6 @@ package com.rh.note.constant;
 
 import com.rh.note.common.IAdocFile;
 import com.rh.note.exception.AdocException;
-import com.rh.note.file.AdocFile;
 import com.rh.note.file.ConfigFile;
 import com.rh.note.file.ContentFile;
 import com.rh.note.file.ReadMeFile;
@@ -40,6 +39,11 @@ public enum ProjectStructureEnum implements BaseEnum {
         protected IAdocFile newAdocFile() {
             return new ReadMeFile();
         }
+
+        @Override
+        protected String includePathToFilePath(String filePath) {
+            throw new AdocException(ErrorMessage.PARAMETER_ERROR);
+        }
     },
     /**
      * global-config
@@ -56,6 +60,11 @@ public enum ProjectStructureEnum implements BaseEnum {
         @Override
         protected IAdocFile newAdocFile() {
             return new ConfigFile();
+        }
+
+        @Override
+        protected String includePathToFilePath(String filePath) {
+            return "config.adoc";
         }
     },
     /**
@@ -79,6 +88,11 @@ public enum ProjectStructureEnum implements BaseEnum {
         protected IAdocFile newAdocFile() {
             return new TwoLevelFile();
         }
+
+        @Override
+        protected String includePathToFilePath(String filePath) {
+            return filePath;
+        }
     },
     /**
      * content
@@ -96,6 +110,14 @@ public enum ProjectStructureEnum implements BaseEnum {
         protected IAdocFile newAdocFile() {
             return new ContentFile();
         }
+
+        @Override
+        protected String includePathToFilePath(String filePath) {
+            if (StringUtils.isBlank(filePath)) {
+                throw new AdocException(ErrorMessage.PARAMETER_ERROR);
+            }
+            return "adoc" + filePath.substring(2);
+        }
     },
     ;
 
@@ -110,8 +132,14 @@ public enum ProjectStructureEnum implements BaseEnum {
      * 构建简单的adoc文件对象
      */
     public static IAdocFile buildSimpleAdocFile(String filePath) {
-        return matchInstance(filePath).newAdocFile().setFilePath(filePath);
+        ProjectStructureEnum projectStructureEnum = matchInstance(filePath);
+        return projectStructureEnum.newAdocFile().setFilePath(projectStructureEnum.includePathToFilePath(filePath));
     }
+
+    /**
+     * 处理相对路径为项目路径
+     */
+    protected abstract String includePathToFilePath(String filePath);
 
     /**
      * 获得实例
@@ -137,6 +165,7 @@ public enum ProjectStructureEnum implements BaseEnum {
      * 获得子文件目录
      */
     public String getChildrenPath() {
+        //todo
         return null;
     }
 }

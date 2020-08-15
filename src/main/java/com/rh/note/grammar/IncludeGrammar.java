@@ -1,6 +1,7 @@
 package com.rh.note.grammar;
 
 import com.rh.note.common.IAdocFile;
+import com.rh.note.common.IGrammar;
 import com.rh.note.constant.ErrorMessage;
 import com.rh.note.constant.ProjectStructureEnum;
 import com.rh.note.exception.AdocException;
@@ -15,8 +16,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Data
-public class IncludeGrammar {
+public class IncludeGrammar implements IGrammar {
 
+    /**
+     * 指向标题
+     */
+    private TitleGrammar targetTitle;
     /**
      * 文件路径
      */
@@ -47,12 +52,12 @@ public class IncludeGrammar {
             return null;
         }
 
-        Matcher matcher = Pattern.compile("^\\s*include::([^\\.]+)\\.(\\S+)\\[\\S*\\]$").matcher(lineContent);
+        Matcher matcher = Pattern.compile("^\\s*include::((?:\\.\\.|adoc)[\\\\/][a-zA-Z\u4e00-\u9fa5\\\\/]+)\\.([a-zA-Z0-9]+)\\[(lines[0-9\\.]+){0,1}\\]$").matcher(lineContent);
         if (!matcher.find()) {
             return null;
         }
 
-        filePath = matcher.group(1) + ".adoc";
+        targetFilePath = matcher.group(1) + ".adoc"; // todo 待处理 {} 变量
         fileSuffix = matcher.group(2);
         return this;
     }
@@ -111,14 +116,6 @@ public class IncludeGrammar {
      * 获得指向的adoc文件对象
      */
     public IAdocFile buildSimpleTargetAdocFile() {
-        // todo 这里要解析变量，组装绝对地址, 或者在复制时组装
-        return ProjectStructureEnum.buildSimpleAdocFile(targetFilePath);
-    }
-
-    /**
-     * 设置指向标题
-     */
-    public void setTargetTitle(TitleGrammar rootTitle) {
-        //todo
+        return ProjectStructureEnum.buildSimpleAdocFile(getTargetFilePath());
     }
 }

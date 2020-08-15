@@ -6,7 +6,6 @@ import com.rh.note.file.AdocFile;
 import com.rh.note.file.ConfigFile;
 import com.rh.note.grammar.TitleGrammar;
 import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 
@@ -42,13 +41,13 @@ public class WorkAction {
      * 打开选择标题
      */
     public void openAdocFile() {
-        String absolutePath = workViewAPI.showEditingAreaForExistingSelected();
-        if (StringUtils.isBlank(absolutePath)) {
+        TitleGrammar titleGrammar = workViewAPI.showEditingAreaForExistingSelected();
+        if (titleGrammar == null) {
             return;
         }
         //读取文件内容
-        File file = fileServiceAPI.readTitleFileContent(absolutePath);
-        workViewAPI.openNewEditingAreaForSelected(absolutePath, file);
+        File file = fileServiceAPI.readTitleFileContent(titleGrammar.getAbsolutePath());
+        workViewAPI.openNewEditingAreaForSelected(titleGrammar.getFilePath(), file);
     }
 
     /**
@@ -81,10 +80,8 @@ public class WorkAction {
      * 保存编辑内容
      */
     public void saveAllEditContent() {
-        //todo
-        //遍历编辑区
-        //获取编辑区内容，和文件地址
-        //将内容保存写入到文件中
+        workViewAPI.saveAllEditContent().forEach(filePath ->
+                fileServiceAPI.openFileOutputStream(filePath));
     }
 
     /**

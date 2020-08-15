@@ -1,5 +1,7 @@
 package com.rh.note.api;
 
+import com.rh.note.constant.ErrorMessage;
+import com.rh.note.exception.AdocException;
 import com.rh.note.file.AdocFile;
 import com.rh.note.file.ConfigFile;
 import com.rh.note.file.ProjectDirectory;
@@ -8,10 +10,13 @@ import com.rh.note.grammar.TitleGrammar;
 import com.rh.note.service.FileService;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.tools.ant.Project;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 
 /**
  * 文件操作api
@@ -42,50 +47,29 @@ public class FileServiceAPI {
      * 查找项目中所有的标题
      */
     public TitleGrammar findAllTitle() {
-        TitleGrammar root = new TitleGrammar();
-        root.setName("java-note");
-        root.setFilePath("root");
-        TitleGrammar t1 = new TitleGrammar();
-        t1.setName("java基础");
-        t1.setFilePath("adoc/twoLevel/t1");
-        root.addChildrenTitle(t1);
-        TitleGrammar t2 = new TitleGrammar();
-        t2.setName("java框架");
-        t2.setFilePath("adoc/twoLevel/t2");
-        root.addChildrenTitle(t2);
-
         // 依次读取readme twoLevel content文件内容
         ReadMeFile readMe = new ReadMeFile().init();
         // 生成嵌套的标题对象
-        new AdocFile().title().include().init(readMe);
+        new AdocFile()
+                .title()
+                .include()
+                .init(readMe);
         return readMe.getRootTitle();
-
-        return root;
     }
 
     /**
      * 读取文件内容
      */
     public File readTitleFileContent(String filePath) {
-        //todo
-        File temp = null;
-        BufferedWriter bw = null;
-        try {
-            temp = File.createTempFile("aaa", "bbb");
-            bw = new BufferedWriter(new FileWriter(temp));
-            bw.write("请输入内容......");
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (StringUtils.isBlank(filePath)) {
             return null;
-        } finally {
-            try {
-                bw.flush();
-                bw.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return temp;
         }
+
+        File file = new File(filePath);
+        if (!file.exists() || !file.isFile()) {
+            return null;
+        }
+        return file;
     }
 
     /**
@@ -135,5 +119,25 @@ public class FileServiceAPI {
      */
     public void setProjectPath(String projectPath) {
         new ProjectDirectory().setAbsolutePath(projectPath);
+    }
+
+    /**
+     * 通过文件路径获得输出流
+     */
+    public Writer openFileOutputStream(String filePath) {
+        if (StringUtils.isBlank(filePath)) {
+            return null;
+        }
+        File file = new File(new ProjectDirectory().getAbsolutePath() + filePath);
+        if (!file.exists() || !file.isFile()) {
+            return null;
+        }
+
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            return new OutputStreamWriter(fos);
+        } catch (Exception e) {
+            throw new AdocException(ErrorMessage.file_read_failed);
+        }
     }
 }

@@ -22,7 +22,7 @@ public class AdocTextArea extends JTextArea {
      * 获得编辑文件路径
      */
     public String getFilePath() {
-        return file.getPath();
+        return file.getFilePath();
     }
 
 }

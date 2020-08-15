@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
+
 /**
  * 项目信息
  */
@@ -18,9 +20,14 @@ public class ProjectDirectory {
     private ContentFile content;
 
     public void setAbsolutePath(String absolutePath) {
-        if (StringUtils.isBlank(absolutePath)) {
-            ProjectDirectory.absolutePath = absolutePath;
+        if (StringUtils.isNotBlank(ProjectDirectory.absolutePath) || StringUtils.isBlank(absolutePath)) {
+            return;
         }
+        if (!absolutePath.endsWith(File.separator)) {
+            absolutePath += File.separator;
+        }
+
+        ProjectDirectory.absolutePath = absolutePath;
     }
 
     public String getAbsolutePath() {

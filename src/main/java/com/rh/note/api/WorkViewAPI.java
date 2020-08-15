@@ -1,5 +1,6 @@
 package com.rh.note.api;
 
+import com.rh.note.common.IForEach;
 import com.rh.note.file.AdocFile;
 import com.rh.note.file.ConfigFile;
 import com.rh.note.grammar.IncludeGrammar;
@@ -16,6 +17,7 @@ import com.rh.note.view.TreeView;
 import com.rh.note.view.WorkFrameRunView;
 
 import java.io.File;
+import java.io.Writer;
 
 public class WorkViewAPI {
     /**
@@ -66,7 +68,7 @@ public class WorkViewAPI {
     /**
      * 展示已打开的编辑区,通过被选择的标题
      */
-    public String showEditingAreaForExistingSelected() {
+    public TitleGrammar showEditingAreaForExistingSelected() {
         TreeView tree = new TreeView().init();
         if (tree == null) {
             return null;
@@ -75,9 +77,10 @@ public class WorkViewAPI {
         if (title == null) {
             return null;
         }
+        System.out.println("[TextAreaScrollView] 将尝试获取已打开的编辑区");
         TextAreaScrollView textAreaScroll = new TextAreaScrollView().init(title.getFilePath());
         if (textAreaScroll == null) {
-            return title.getFilePath();
+            return title;
         }
         EditAreaView editArea = new EditAreaView().init();
         editArea.show(textAreaScroll.getId());
@@ -133,5 +136,19 @@ public class WorkViewAPI {
      */
     public void showMainFrame() {
         new WorkFrameRunView().init().show();
+    }
+
+    /**
+     * 遍历所有编辑控件,并将内容写入文件
+     */
+    public IForEach<String, Writer> saveAllEditContent() {
+        return handler ->
+                TextAreaRunView.forEach(view -> {
+                    if (view == null) {
+                        return;
+                    }
+                    Writer writer = handler.handle(view.getFilePath());
+                    view.write(writer);
+                });
     }
 }

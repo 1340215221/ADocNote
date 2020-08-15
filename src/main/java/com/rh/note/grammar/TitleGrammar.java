@@ -1,26 +1,32 @@
 package com.rh.note.grammar;
 
+import com.rh.note.common.IGrammar;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 标题
  */
 @Getter
 @Setter
-public class TitleGrammar {
+public class TitleGrammar implements IGrammar {
 
     /**
-     * 父标签
+     * 父标题
      */
     private TitleGrammar parentTitle;
     /**
-     * 子标签
+     * 子标题
      */
-    @Getter
+    @Setter(AccessLevel.NONE)
     private List<TitleGrammar> childrenTitle = new ArrayList<>();
     /**
      * 标题名
@@ -39,20 +45,44 @@ public class TitleGrammar {
      */
     private String filePath;
 
-    /**
-     * 添加
-     */
-    public void addChildrenTitle(TitleGrammar title) {
-        if (title == null) {
-            return;
-        }
-
-        childrenTitle.add(title);
-        title.setParentTitle(this);
-    }
-
     @Override
     public String toString() {
         return name;
+    }
+
+    public TitleGrammar init(String lineContent) {
+        if (StringUtils.isBlank(lineContent)) {
+            return null;
+        }
+        Matcher matcher = Pattern.compile("^(=+)\\s(\\S+)\\s*$").matcher(lineContent);
+        if (!matcher.find()) {
+            return null;
+        }
+        String titleLevel = matcher.group(1);
+        String titleName = matcher.group(2);
+        level = titleLevel.length();
+        name = titleName;
+        return this;
+    }
+
+    /**
+     * 添加子标题
+     */
+    public TitleGrammar addChildrenTitle(TitleGrammar titleGrammar) {
+        if (titleGrammar != null) {
+            childrenTitle.add(titleGrammar);
+            titleGrammar.setParentTitle(this);
+        }
+        return this;
+    }
+
+    /**
+     * 获得 param 的父标题
+     */
+    public TitleGrammar findParentOf(@NonNull TitleGrammar titleGrammar) {
+        if (level < titleGrammar.level) {
+            return this;
+        }
+        return parentTitle.findParentOf(titleGrammar);
     }
 }

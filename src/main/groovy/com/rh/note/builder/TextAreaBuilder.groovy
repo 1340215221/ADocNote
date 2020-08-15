@@ -30,7 +30,7 @@ class TextAreaBuilder implements SwingComponent {
                         TextAreaEvent.generateIncludeBlock(it)
                         TextAreaEvent.rename(it)
                     },
-                    adocFile: new AdocFile(path: filePath),
+                    adocFile: new AdocFile(filePath: filePath),
             )
         }
 

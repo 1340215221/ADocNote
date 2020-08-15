@@ -12,7 +12,7 @@ import java.awt.event.KeyEvent
  */
 class WorkFrameEvent {
 
-    private WorkAction workAction = BeanConfig.workAction
+    private static WorkAction workAction = BeanConfig.workAction
 
     /**
      * 全局保存

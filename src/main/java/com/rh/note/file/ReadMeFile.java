@@ -1,8 +1,12 @@
 package com.rh.note.file;
 
 import com.rh.note.common.IAdocFile;
+import com.rh.note.grammar.TitleGrammar;
 import lombok.Data;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.Optional;
 
 /**
  * readMe文件
@@ -10,18 +14,27 @@ import org.apache.commons.lang3.StringUtils;
 @Data
 public class ReadMeFile implements IAdocFile {
 
-    public static final String readMeFileName = "README.adoc";
     /**
      * 文件绝对地址
      */
-    private String filePath;
+    private String filePath = "README.adoc";
+    /**
+     * 根标题
+     */
+    private TitleGrammar rootTitle;
 
     public ReadMeFile init() {
-        String projectPath = new ProjectDirectory().getAbsolutePath();
-        if (StringUtils.isBlank(projectPath)) {
-            return null;
-        }
-        filePath = projectPath + readMeFileName;
         return this;
+    }
+
+    @Override
+    public void copy(AdocFile adocFile) {
+        if (adocFile == null) {
+            return;
+        }
+        Optional.ofNullable(adocFile.getTitleGrammars())
+                .filter(CollectionUtils::isNotEmpty)
+                .map(list -> list.get(0))
+                .ifPresent(this::setRootTitle);
     }
 }

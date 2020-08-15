@@ -1,6 +1,9 @@
 package com.rh.note.file;
 
 import com.rh.note.common.IAdocFile;
+import com.rh.note.common.IGrammar;
+import com.rh.note.constant.ErrorMessage;
+import com.rh.note.exception.AdocException;
 import com.rh.note.grammar.IncludeGrammar;
 import com.rh.note.grammar.TitleGrammar;
 import lombok.Data;
@@ -14,8 +17,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * adoc语法文件
@@ -34,19 +35,24 @@ public class AdocFile implements IAdocFile {
      * include
      */
     private List<IncludeGrammar> includeGrammars;
+    /**
+     * 获得
+     */
+    private TitleGrammar rootTitle;
 
     public void init(IAdocFile adocFile) {
         if (adocFile == null || StringUtils.isBlank(adocFile.getFilePath())) {
             return;
         }
         filePath = adocFile.getFilePath();
-        File file = new File(adocFile.getFilePath());
+        File file = new File(adocFile.getAbsolutePath());
         this.read(file).forEach((lineNumber, lineContent) -> {
             this.matchTitle(lineNumber, lineContent);
             this.matchInclude(lineNumber, lineContent);
         });
         this.scanChildrenFile();
         this.titleBuildRelationships();
+        adocFile.copy(this);
     }
 
     /**
@@ -86,23 +92,57 @@ public class AdocFile implements IAdocFile {
         if (CollectionUtils.isEmpty(titleGrammars)) {
             return;
         }
-        // todo
+        List<IGrammar> grammars;
         // 处理titleList的关系
-        // 处理include中的title的关系
+        if (CollectionUtils.isEmpty(includeGrammars)) {
+            grammars = (List) titleGrammars;
+        } else {
+            // 处理include中的title的关系
+            grammars = new ArrayList<>(titleGrammars.size() + includeGrammars.size());
+            grammars.addAll(titleGrammars);
+            grammars.addAll(includeGrammars);
+        }
+        grammars.stream()
+                .sorted(Comparator.comparing(IGrammar::getLineNumber))
+                .reduce((a, b) -> {
+                    //标题 标题
+                    if (a instanceof TitleGrammar && b instanceof TitleGrammar) {
+                        ((TitleGrammar) a).findParentOf((TitleGrammar) b).addChildrenTitle((TitleGrammar) b);
+                        return b;
+                    }
+                    //标题 include
+                    if (a instanceof TitleGrammar && b instanceof IncludeGrammar) {
+                        TitleGrammar targetTitle = ((IncludeGrammar) b).getTargetTitle();
+                        ((TitleGrammar) a).findParentOf(targetTitle).addChildrenTitle(targetTitle);
+                        return a;
+                    }
+                    //include include
+                    if (a instanceof IncludeGrammar && b instanceof IncludeGrammar) {
+                        ((IncludeGrammar) a).getTargetTitle().findParentOf(((IncludeGrammar) b).getTargetTitle());
+                        return ((IncludeGrammar) a).getTargetTitle().getParentTitle();
+                    }
+                    //include 标题
+                    if (a instanceof IncludeGrammar && b instanceof TitleGrammar) {
+                        ((IncludeGrammar) a).getTargetTitle().findParentOf((TitleGrammar) b).addChildrenTitle((TitleGrammar) b);
+                        return b;
+                    }
+                    throw new AdocException(ErrorMessage.PARAMETER_ERROR);
+                });
     }
 
     /**
      * 匹配处理include
      */
     private void matchInclude(Integer lineNumber, String lineContent) {
-        if (StringUtils.isBlank(lineContent) || CollectionUtils.isEmpty(includeGrammars)) {
+        if (StringUtils.isBlank(lineContent) || includeGrammars == null) {
             return;
         }
-        Matcher matcher = Pattern.compile("^\\s*include::([^\\.]+)\\.(\\S+)\\[\\S*\\]$").matcher(lineContent);
-        if (!matcher.find()) {
+        IncludeGrammar includeGrammar = new IncludeGrammar().init(lineContent);
+        if (includeGrammar == null) {
             return;
         }
-        IncludeGrammar includeGrammar = new IncludeGrammar().setFilePath(filePath).setLineNumber(lineNumber);
+        includeGrammar.setFilePath(filePath);
+        includeGrammar.setLineNumber(lineNumber);
         includeGrammars.add(includeGrammar);
     }
 
@@ -110,19 +150,15 @@ public class AdocFile implements IAdocFile {
      * 匹配处理标题
      */
     private void matchTitle(Integer lineNumber, String lineContent) {
-        if (StringUtils.isBlank(lineContent) || CollectionUtils.isEmpty(titleGrammars)) {
+        if (StringUtils.isBlank(lineContent) || titleGrammars == null) {
             return;
         }
-        Matcher matcher = Pattern.compile("^(=+)\\s(\\S+)\\s*$").matcher(lineContent);
-        if (!matcher.find()) {
+        TitleGrammar titleGrammar = new TitleGrammar().init(lineContent);
+        if (titleGrammar == null) {
             return;
         }
-        String titleLevel = matcher.group(1);
-        String titleName = matcher.group(2);
-        TitleGrammar titleGrammar = new TitleGrammar().setLevel(titleLevel.length())
-                .setName(titleName)
-                .setFilePath(filePath)
-                .setLineNumber(lineNumber);
+        titleGrammar.setFilePath(filePath);
+        titleGrammar.setLineNumber(lineNumber);
         titleGrammars.add(titleGrammar);
     }
 
@@ -150,18 +186,21 @@ public class AdocFile implements IAdocFile {
             return empty_foreach_impl;
         }
 
-        try (FileInputStream fis = new FileInputStream(file);
-             InputStreamReader isr = new InputStreamReader(fis);
-             BufferedReader br = new BufferedReader(isr)
-        ) {
-            LineNumber lineNumber = new LineNumber();
-            return handleLine -> br.lines().forEach(lineContent -> handleLine.handle(lineNumber.next(), lineContent));
-        } catch (Exception e) {
-            return empty_foreach_impl;
-        }
+        LineNumber lineNumber = new LineNumber();
+        return handleLine -> {
+            try (FileInputStream fis = new FileInputStream(file);
+                 InputStreamReader isr = new InputStreamReader(fis);
+                 BufferedReader br = new BufferedReader(isr)
+            ) {
+                br.lines().forEach(lineContent -> handleLine.handle(lineNumber.next(), lineContent));
+            } catch (Exception e) {
+                throw new AdocException(ErrorMessage.file_read_failed, e);
+            }
+        };
     }
 
-    private static final IForEach empty_foreach_impl = forEach -> {};
+    private static final IForEach empty_foreach_impl = forEach -> {
+    };
 
     /**
      * 每一行内容查看接口

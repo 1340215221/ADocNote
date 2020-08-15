@@ -5,7 +5,8 @@ import com.rh.note.component.AdocTextArea;
 import com.rh.note.constant.ErrorMessage;
 import com.rh.note.exception.AdocException;
 import com.rh.note.grammar.IncludeGrammar;
-import com.rh.note.view.Init;
+import lombok.NonNull;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.text.Caret;
@@ -14,11 +15,19 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 编辑区
  */
 public class TextAreaRunView extends Init<AdocTextArea> {
+
+    /**
+     * 编辑区控件
+     */
+    private static final List<String> openedTextAreaComponentIds = new ArrayList<>();
 
     @Override
     public TextAreaRunView init(String componentId) {
@@ -30,6 +39,17 @@ public class TextAreaRunView extends Init<AdocTextArea> {
             return null;
         }
         return super.init(TextAreaBuilder.id(filePath));
+    }
+
+    /**
+     * 遍历编辑区控件
+     */
+    public static void forEach(@NonNull IForEach forEach) {
+        if (CollectionUtils.isEmpty(openedTextAreaComponentIds)) {
+            return;
+        }
+        openedTextAreaComponentIds.forEach(componentId ->
+            forEach.handle(new TextAreaRunView().init(componentId)));
     }
 
     /**
@@ -54,6 +74,7 @@ public class TextAreaRunView extends Init<AdocTextArea> {
             return;
         }
         new TextAreaBuilder(filePath).init();
+        openedTextAreaComponentIds.add(TextAreaBuilder.id(filePath));
     }
 
     /**
@@ -109,5 +130,27 @@ public class TextAreaRunView extends Init<AdocTextArea> {
         int startOffset = textArea().getLineStartOffset(line);
         int endOffset = textArea().getLineEndOffset(line);
         textArea().replaceRange(grammar, startOffset, endOffset);
+    }
+
+    /**
+     * 将编辑区内容写入到文件
+     */
+    public void write(Writer writer) {
+        if (writer == null) {
+            return;
+        }
+
+        try {
+            textArea().write(writer);
+        } catch (Exception e) {
+            throw new AdocException(ErrorMessage.file_write_failed);
+        }
+    }
+
+    /**
+     * 遍历编辑区接口
+     */
+    public interface IForEach {
+        void handle(TextAreaRunView view);
     }
 }

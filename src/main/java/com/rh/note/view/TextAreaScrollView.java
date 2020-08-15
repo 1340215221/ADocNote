@@ -1,7 +1,6 @@
 package com.rh.note.view;
 
 import com.rh.note.builder.TextAreaBuilder;
-import com.rh.note.view.Init;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;

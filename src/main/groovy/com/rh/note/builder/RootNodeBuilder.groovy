@@ -36,9 +36,9 @@ class RootNodeBuilder implements SwingComponent {
             return
         }
 
-        title.getChildrenTitle().each {
-            swingBuilder.node(userObject: it) {
-                this.setChildrenNode(it)
+        title.getChildrenTitle().each {children ->
+            swingBuilder.node(userObject: children) {
+                this.setChildrenNode(children)
             }
         }
     }
