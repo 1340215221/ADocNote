@@ -23,4 +23,9 @@ public interface IGrammar {
     default String getAbsolutePath() {
         return new ProjectDirectory().getAbsolutePath() + getFilePath();
     }
+
+    /**
+     * 转换为行内容
+     */
+    String toLineContent();
 }

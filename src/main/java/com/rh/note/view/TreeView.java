@@ -1,8 +1,7 @@
 package com.rh.note.view;
 
-import com.rh.note.grammar.TitleGrammar;
 import com.rh.note.builder.TitleListBuilder;
-import com.rh.note.view.Init;
+import com.rh.note.grammar.TitleGrammar;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;

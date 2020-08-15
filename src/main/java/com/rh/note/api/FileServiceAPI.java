@@ -3,20 +3,21 @@ package com.rh.note.api;
 import com.rh.note.constant.ErrorMessage;
 import com.rh.note.exception.AdocException;
 import com.rh.note.file.AdocFile;
-import com.rh.note.file.ConfigFile;
 import com.rh.note.file.ProjectDirectory;
 import com.rh.note.file.ReadMeFile;
 import com.rh.note.grammar.TitleGrammar;
 import com.rh.note.service.FileService;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
 import lombok.Setter;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.tools.ant.Project;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.Optional;
 
 /**
  * 文件操作api
@@ -73,18 +74,33 @@ public class FileServiceAPI {
     }
 
     /**
-     * 获取配置文件对象
-     */
-    public ConfigFile findConfigFile() {
-        //todo
-        return new ConfigFile().setFilePath("/home/hang/adoc/");
-    }
-
-    /**
      * 创建adoc文件
      */
     public void createFile(AdocFile adocFile) {
-        //todo
+        if (adocFile == null || StringUtils.isBlank(adocFile.getFilePath())) {
+            return;
+        }
+        File file = new File(adocFile.getAbsolutePath());
+        if (file.exists()) {
+            throw new AdocException(ErrorMessage.file_creation_failed);
+        }
+        File parentFile = file.getParentFile();
+        if (parentFile.exists() && !parentFile.isDirectory()) {
+            throw new AdocException(ErrorMessage.file_creation_failed);
+        }
+        if (!parentFile.exists()) {
+            parentFile.mkdirs();
+        }
+        FileWriter fw = null;
+        try {
+            file.createNewFile();
+            fw = new FileWriter(file);
+            fw.write(adocFile.toString());
+        } catch (Exception e) {
+            throw new AdocException(ErrorMessage.file_creation_failed);
+        }finally {
+            IOUtils.closeQuietly(fw);
+        }
     }
 
     /**

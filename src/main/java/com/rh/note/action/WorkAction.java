@@ -3,7 +3,6 @@ package com.rh.note.action;
 import com.rh.note.api.FileServiceAPI;
 import com.rh.note.api.WorkViewAPI;
 import com.rh.note.file.AdocFile;
-import com.rh.note.file.ConfigFile;
 import com.rh.note.grammar.TitleGrammar;
 import lombok.Setter;
 
@@ -68,12 +67,11 @@ public class WorkAction {
      * 生成include语法块
      */
     public void generateIncludeBlock(String componentId) throws Exception {
-        ConfigFile config = fileServiceAPI.findConfigFile();
-        AdocFile adocFile = workViewAPI.generateIncludeBlock(componentId, config);
+        AdocFile adocFile = workViewAPI.generateIncludeBlock(componentId);
         if (adocFile != null) {
             fileServiceAPI.createFile(adocFile);
         }
-        loadTitleList();
+        this.saveAllEditContent();
     }
 
     /**
@@ -82,6 +80,7 @@ public class WorkAction {
     public void saveAllEditContent() {
         workViewAPI.saveAllEditContent().forEach(filePath ->
                 fileServiceAPI.openFileOutputStream(filePath));
+        this.loadTitleList();
     }
 
     /**

@@ -5,7 +5,6 @@ import com.rh.note.common.IGrammar;
 import com.rh.note.constant.ErrorMessage;
 import com.rh.note.constant.ProjectStructureEnum;
 import com.rh.note.exception.AdocException;
-import com.rh.note.file.AdocFile;
 import com.rh.note.file.ConfigFile;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
@@ -36,6 +35,7 @@ public class IncludeGrammar implements IGrammar {
     private String fileSuffix;
     /**
      * 标题级别
+     * todo 级别放在这里不合适, 应该放到指向的标题对象里
      */
     private Integer level;
     /**
@@ -72,8 +72,8 @@ public class IncludeGrammar implements IGrammar {
     /**
      * 初始化，通过当前行是否为include简单语法
      */
-    public IncludeGrammar initByGrammar(String lineContent, String parentFilePath) {
-        if (StringUtils.isBlank(lineContent) || StringUtils.isBlank(parentFilePath)) {
+    public IncludeGrammar initByGrammar(String lineContent, String filePath) {
+        if (StringUtils.isBlank(lineContent) || StringUtils.isBlank(filePath)) {
             return null;
         }
         Matcher matcher = Pattern.compile("^(\\s*)=>([1-9])\\s([\\u4e00-\\u9fa5a-zA-Z0-9_-]+)\\s*$").matcher(lineContent);
@@ -82,34 +82,31 @@ public class IncludeGrammar implements IGrammar {
         }
         indent = matcher.group(1);
         level = Integer.valueOf(matcher.group(2));
-        filePath = this.generateFilePath(matcher.group(3), parentFilePath);
+        targetFilePath = this.generateTargetFilePath(matcher.group(3), filePath);
+        this.filePath = filePath;
         return this;
     }
 
     /**
-     * 生成完整文件路径
+     * 生成指向文件的完整路径
      */
-    private String generateFilePath(String fileName, String parentFilePath) {
-        if (StringUtils.isBlank(fileName) || StringUtils.isBlank(parentFilePath)) {
+    private String generateTargetFilePath(String fileName, String filePath) {
+        if (StringUtils.isBlank(fileName) || StringUtils.isBlank(filePath)) {
             return null;
         }
         ProjectStructureEnum parentStructure = Arrays.stream(ProjectStructureEnum.values())
-                .filter(e -> e.match(parentFilePath))
+                .filter(e -> e.match(filePath))
                 .findFirst()
                 .orElseThrow(() -> new AdocException(ErrorMessage.PARAMETER_ERROR));
-        return parentStructure.getChildrenPath() + fileName;
+        return parentStructure.getChildrenPath() + fileName + ".adoc";
     }
 
     /**
      * 生成语法语句
      */
     public String generateGrammar() {
-        return indent + "include::" + ConfigFile.project_path + File.separator + filePath + ".adoc[]";
-    }
-
-    public AdocFile generateAdocFile(ConfigFile config) {
-        //todo
-        return new AdocFile();
+        String targetFilePath = ProjectStructureEnum.generateIncludeTargetPath(this.targetFilePath);
+        return indent + "include::" + targetFilePath + "[]";
     }
 
     /**
@@ -117,5 +114,34 @@ public class IncludeGrammar implements IGrammar {
      */
     public IAdocFile buildSimpleTargetAdocFile() {
         return ProjectStructureEnum.buildSimpleAdocFile(getTargetFilePath());
+    }
+
+    public TitleGrammar copyTo() {
+        TitleGrammar titleGrammar = new TitleGrammar()
+                .setLevel(level)
+                .setFilePath(targetFilePath)
+                .setName(getTargetTitleName());
+        return titleGrammar;
+    }
+
+    /**
+     * 获得指向文件标题名, 通过指向文件路径
+     */
+    private String getTargetTitleName() {
+        if (StringUtils.isBlank(targetFilePath)) {
+            return null;
+        }
+
+        Matcher matcher = Pattern.compile("^[\\.\\\\/\\u4e00-\\u9fa5a-zA-Z0-9_-]+[\\\\/]([\\u4e00-\\u9fa5a-zA-Z0-9_-]+)\\.adoc$").matcher(targetFilePath);
+        if (!matcher.find()) {
+            return null;
+        }
+        return matcher.group(1);
+    }
+
+    @Override
+    public String toLineContent() {
+        //todo
+        return null;
     }
 }

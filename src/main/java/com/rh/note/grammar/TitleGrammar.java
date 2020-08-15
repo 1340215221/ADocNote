@@ -45,11 +45,6 @@ public class TitleGrammar implements IGrammar {
      */
     private String filePath;
 
-    @Override
-    public String toString() {
-        return name;
-    }
-
     public TitleGrammar init(String lineContent) {
         if (StringUtils.isBlank(lineContent)) {
             return null;
@@ -84,5 +79,22 @@ public class TitleGrammar implements IGrammar {
             return this;
         }
         return parentTitle.findParentOf(titleGrammar);
+    }
+
+    @Override
+    public String toLineContent() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < level; i++) {
+            sb.append("=");
+        }
+        return sb.append(" ").append(name).append(System.lineSeparator()).toString();
+    }
+
+    /**
+     * 在标题列表显示的内容
+     */
+    @Override
+    public String toString() {
+        return name;
     }
 }

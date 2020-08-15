@@ -2,7 +2,6 @@ package com.rh.note.api;
 
 import com.rh.note.common.IForEach;
 import com.rh.note.file.AdocFile;
-import com.rh.note.file.ConfigFile;
 import com.rh.note.grammar.IncludeGrammar;
 import com.rh.note.grammar.TitleGrammar;
 import com.rh.note.view.BasePanelView;
@@ -23,7 +22,7 @@ public class WorkViewAPI {
     /**
      * 生成include语法块
      */
-    public AdocFile generateIncludeBlock(String componentId, ConfigFile config) throws Exception {
+    public AdocFile generateIncludeBlock(String componentId) throws Exception {
         TextAreaRunView textArea = new TextAreaRunView().init(componentId);
         if (textArea == null) {
             return null;
@@ -35,7 +34,7 @@ public class WorkViewAPI {
         }
         // 替换为include语句
         textArea.replaceIncludeGrammar(include);
-        return include.generateAdocFile(config);
+        return new AdocFile().init(include);
     }
 
 

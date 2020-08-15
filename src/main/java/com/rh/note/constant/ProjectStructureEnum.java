@@ -10,6 +10,7 @@ import com.rh.note.util.BaseEnum;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 
+import java.text.FieldPosition;
 import java.util.Arrays;
 
 /**
@@ -44,6 +45,11 @@ public enum ProjectStructureEnum implements BaseEnum {
         protected String includePathToFilePath(String filePath) {
             throw new AdocException(ErrorMessage.PARAMETER_ERROR);
         }
+
+        @Override
+        public String generateTargetPathForInclude(String targetFilePath) {
+            throw new AdocException(ErrorMessage.PARAMETER_ERROR);
+        }
     },
     /**
      * global-config
@@ -64,6 +70,11 @@ public enum ProjectStructureEnum implements BaseEnum {
 
         @Override
         protected String includePathToFilePath(String filePath) {
+            return "config.adoc";
+        }
+
+        @Override
+        public String generateTargetPathForInclude(String targetFilePath) {
             return "config.adoc";
         }
     },
@@ -93,6 +104,11 @@ public enum ProjectStructureEnum implements BaseEnum {
         protected String includePathToFilePath(String filePath) {
             return filePath;
         }
+
+        @Override
+        public String generateTargetPathForInclude(String targetFilePath) {
+            return targetFilePath;
+        }
     },
     /**
      * content
@@ -117,6 +133,14 @@ public enum ProjectStructureEnum implements BaseEnum {
                 throw new AdocException(ErrorMessage.PARAMETER_ERROR);
             }
             return "adoc" + filePath.substring(2);
+        }
+
+        @Override
+        public String generateTargetPathForInclude(String targetFilePath) {
+            if (StringUtils.isBlank(targetFilePath)) {
+                throw new AdocException(ErrorMessage.PARAMETER_ERROR);
+            }
+            return ".." + targetFilePath.substring(4);
         }
     },
     ;
@@ -168,4 +192,16 @@ public enum ProjectStructureEnum implements BaseEnum {
         //todo
         return null;
     }
+
+    /**
+     * 生成include中的相对地址
+     */
+    public static String generateIncludeTargetPath(String targetFilePath) {
+        return matchInstance(targetFilePath).generateTargetPathForInclude(targetFilePath);
+    }
+
+    /**
+     * 生成include中的相对地址
+     */
+    public abstract String generateTargetPathForInclude(String targetFilePath);
 }

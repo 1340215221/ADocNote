@@ -6,7 +6,9 @@ import com.rh.note.constant.ErrorMessage;
 import com.rh.note.exception.AdocException;
 import com.rh.note.grammar.IncludeGrammar;
 import com.rh.note.grammar.TitleGrammar;
-import lombok.Data;
+import com.rh.note.grammar.UnknownGrammar;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -17,15 +19,18 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * adoc语法文件
  */
-@Data
+@Getter
 public class AdocFile implements IAdocFile {
     /**
      * 文件路径
      */
+    @Setter
+    @Getter
     private String filePath;
     /**
      * 标题
@@ -36,9 +41,9 @@ public class AdocFile implements IAdocFile {
      */
     private List<IncludeGrammar> includeGrammars;
     /**
-     * 获得
+     * 普通文本
      */
-    private TitleGrammar rootTitle;
+    private List<UnknownGrammar> unknownGrammars;
 
     public void init(IAdocFile adocFile) {
         if (adocFile == null || StringUtils.isBlank(adocFile.getFilePath())) {
@@ -179,6 +184,14 @@ public class AdocFile implements IAdocFile {
     }
 
     /**
+     * 设置保存普通文本
+     */
+    public AdocFile unknown() {
+        unknownGrammars = new ArrayList<>();
+        return this;
+    }
+
+    /**
      * 遍历文件每一行
      */
     public IForEach read(File file) {
@@ -199,8 +212,51 @@ public class AdocFile implements IAdocFile {
         };
     }
 
-    private static final IForEach empty_foreach_impl = forEach -> {
-    };
+    private static final IForEach empty_foreach_impl = forEach -> {};
+
+    /**
+     * 通过include生成adoc文件
+     */
+    public AdocFile init(IncludeGrammar includeGrammar) {
+        if (includeGrammar == null) {
+            return null;
+        }
+        title().unknown();
+        LineNumber lineNumber = new LineNumber();
+        unknownGrammars.add(UnknownGrammar.emptyLine().setLineNumber(lineNumber.next()));
+        titleGrammars.add(includeGrammar.copyTo().setLineNumber(lineNumber.next()));
+        unknownGrammars.add(UnknownGrammar.emptyLine().setLineNumber(lineNumber.next()));
+        filePath = includeGrammar.getTargetFilePath();
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        Integer countLineNumber = 0;
+        if (CollectionUtils.isNotEmpty(includeGrammars)) {
+            countLineNumber += includeGrammars.size();
+        }
+        if (CollectionUtils.isNotEmpty(titleGrammars)) {
+            countLineNumber += titleGrammars.size();
+        }
+        if (CollectionUtils.isNotEmpty(unknownGrammars)) {
+            countLineNumber += unknownGrammars.size();
+        }
+        List<IGrammar> grammars = new ArrayList<>(countLineNumber);
+        if (CollectionUtils.isNotEmpty(includeGrammars)) {
+            grammars.addAll(includeGrammars);
+        }
+        if (CollectionUtils.isNotEmpty(titleGrammars)) {
+            grammars.addAll(titleGrammars);
+        }
+        if (CollectionUtils.isNotEmpty(unknownGrammars)) {
+            grammars.addAll(unknownGrammars);
+        }
+        return grammars.stream()
+                .sorted(Comparator.comparing(IGrammar::getLineNumber))
+                .map(IGrammar::toLineContent)
+                .collect(Collectors.joining());
+    }
 
     /**
      * 每一行内容查看接口
