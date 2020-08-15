@@ -10,19 +10,14 @@ import com.rh.note.event.ProjectManagerMenuEvent;
 import com.rh.note.event.TextAreaEvent;
 import com.rh.note.event.TitleListEvent;
 import com.rh.note.event.WorkFrameEvent;
-import com.rh.note.service.FileService;
 
 /**
  * 对象配置
  */
 public interface BeanConfig {
 
-    //------------------------------------------------service-----------------------------------------------------------
-    FileService fileService = new FileService();
-    //------------------------------------------------service-----------------------------------------------------------
     //------------------------------------------------api---------------------------------------------------------------
-    FileServiceAPI fileServiceApi = new FileServiceAPI()
-            .setFileService(fileService);
+    FileServiceAPI fileServiceApi = new FileServiceAPI();
     ProjectListViewAPI projectListViewApi = new ProjectListViewAPI();
     WorkViewAPI workViewApi = new WorkViewAPI();
     //------------------------------------------------api---------------------------------------------------------------

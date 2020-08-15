@@ -6,7 +6,6 @@ import com.rh.note.file.AdocFile;
 import com.rh.note.file.ProjectDirectory;
 import com.rh.note.file.ReadMeFile;
 import com.rh.note.grammar.TitleGrammar;
-import com.rh.note.service.FileService;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
 import lombok.Setter;
 import org.apache.commons.io.IOUtils;
@@ -17,15 +16,12 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.util.Optional;
 
 /**
  * 文件操作api
  */
 @Setter
 public class FileServiceAPI {
-
-    private FileService fileService;
 
     /**
      * 读取打开记录
