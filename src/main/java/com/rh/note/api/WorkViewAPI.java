@@ -82,7 +82,7 @@ public class WorkViewAPI {
             return title;
         }
         EditAreaView editArea = new EditAreaView().init();
-        editArea.show(textAreaScroll.getId());
+        editArea.show(textAreaScroll);
         return null;
     }
 
@@ -94,7 +94,7 @@ public class WorkViewAPI {
         TextAreaRunView.create(absolutePath);
         TextAreaScrollView tas = new TextAreaScrollView().init(absolutePath);
         EditAreaView editArea = new EditAreaView().init();
-        tas.addTo(editArea);
+        tas.addTo(editArea, file);
         editArea.showLast();
 
         //将数据显示到编辑区

@@ -14,7 +14,7 @@ class LeftSidebarBuilder implements SwingComponent {
         swingBuilder.panel(id: id,
                 layout: new BorderLayout(),
                 constraints: BorderLayout.WEST,
-                background: Color.yellow,
+//                background: Color.yellow,
         ){
             children()
         }

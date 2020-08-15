@@ -11,7 +11,7 @@ class BottomSidebarBuilder implements SwingComponent {
         swingBuilder.panel(id: id,
                 bounds: [0,0,20,20],
                 constraints: BorderLayout.SOUTH,
-                background: Color.pink,
+//                background: Color.pink,
         ){
             children()
         }

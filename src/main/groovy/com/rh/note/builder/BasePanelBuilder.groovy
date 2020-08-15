@@ -13,7 +13,7 @@ class BasePanelBuilder implements SwingComponent {
     void init(Closure children) {
         swingBuilder.panel(id: id,
                 layout: new BorderLayout(),
-                background: Color.red,
+//                background: Color.red,
         ){
             children()
         }

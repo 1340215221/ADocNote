@@ -4,6 +4,7 @@ import com.rh.note.builder.TextAreaBuilder;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
+import java.io.File;
 
 /**
  * 编辑区滚动面板
@@ -27,21 +28,14 @@ public class TextAreaScrollView extends Init<JScrollPane> {
     }
 
     /**
-     * 获得id
-     */
-    public String getId() {
-        return scrollPane().getName();
-    }
-
-    /**
      * 将当前控件添加到编辑面板
      * 展示该控件
      */
-    public void addTo(EditAreaView editArea) {
-        if (editArea == null) {
+    public void addTo(EditAreaView editArea, File file) {
+        if (editArea == null || file == null) {
             return;
         }
 
-        editArea.getBean().add(scrollPane(), scrollPane().getName());
+        editArea.getBean().addTab(file.getName(), scrollPane());
     }
 }

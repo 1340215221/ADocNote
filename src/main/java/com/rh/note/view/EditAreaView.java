@@ -1,60 +1,43 @@
 package com.rh.note.view;
 
 import com.rh.note.builder.EditAreaBuilder;
-import com.rh.note.view.Init;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * 编辑面板
  */
-public class EditAreaView extends Init<JPanel> {
+public class EditAreaView extends Init<JTabbedPane> {
 
     public EditAreaView init() {
         return init(EditAreaBuilder.getId());
     }
 
-    private JPanel editArea() {
+    protected JTabbedPane editArea() {
         return getBean();
     }
 
     /**
      * 展示编辑区,通过编辑区id
      */
-    public void show(String cardId) {
-        if (StringUtils.isBlank(cardId)) {
+    public void show(TextAreaScrollView textArea) {
+        if (textArea == null) {
             return;
         }
-
-        LayoutManager layout = editArea().getLayout();
-        if (!(layout instanceof CardLayout)) {
+        int index = editArea().indexOfComponent(textArea.getBean());
+        if (index < 0) {
             return;
         }
-        ((CardLayout) layout).show(editArea(), cardId);
+        editArea().setSelectedIndex(index);
     }
 
-    /**
-     * 获得布局
-     */
-    public LayoutManager getLayout() {
-        return editArea().getLayout();
-    }
 
     /**
      * 展示新添加或最后一个的控件
+     * todo
      */
     public void showLast() {
-        LayoutManager layout = editArea().getLayout();
-        if (!(layout instanceof CardLayout)) {
-            return;
-        }
-        ((CardLayout) layout).last(editArea());
-
-        if (editArea().getComponentCount() == 1) {
-            editArea().validate();
-            editArea().repaint();
-        }
+        int tabCount = editArea().getTabCount();
+        editArea().setSelectedIndex(tabCount - 1);
     }
 }

@@ -12,7 +12,7 @@ class HeadMenuBuilder implements SwingComponent {
     void init(Closure children) {
         swingBuilder.panel(id: id,
                 constraints: BorderLayout.NORTH,
-                background: Color.green,
+//                background: Color.green,
         ){
             children()
         }
