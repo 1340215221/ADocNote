@@ -14,10 +14,12 @@ import com.rh.note.view.TextAreaScrollView;
 import com.rh.note.view.TitleListView;
 import com.rh.note.view.TreeView;
 import com.rh.note.view.WorkFrameRunView;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.Writer;
 
+@Slf4j
 public class WorkViewAPI {
     /**
      * 生成include语法块
@@ -76,7 +78,7 @@ public class WorkViewAPI {
         if (title == null) {
             return null;
         }
-        System.out.println("[TextAreaScrollView] 将尝试获取已打开的编辑区");
+        log.info("TextAreaScrollView 将尝试获取已打开的编辑区");
         TextAreaScrollView textAreaScroll = new TextAreaScrollView().init(title.getFilePath());
         if (textAreaScroll == null) {
             return title;

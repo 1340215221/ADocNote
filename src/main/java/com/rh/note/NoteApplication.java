@@ -2,15 +2,13 @@ package com.rh.note;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.rh.note.config.BeanConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 笔记软件启动程序
  */
+@Slf4j
 public class NoteApplication {
-
-    private static Logger log = LoggerFactory.getLogger(NoteApplication.class);
 
     public static void main(String[] args) {
         log.info("启动笔记软件");
