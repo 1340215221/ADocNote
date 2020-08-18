@@ -1,6 +1,6 @@
 package com.rh.note.event
 
-import com.rh.note.action.ProjectListAction
+import com.rh.note.action.IProjectListAction
 import com.rh.note.config.BeanConfig
 
 import java.awt.event.MouseEvent
@@ -10,7 +10,7 @@ import java.awt.event.MouseEvent
  */
 class ProjectListEvent {
 
-    private static final ProjectListAction projectListAction = BeanConfig.projectListAction
+    private static final IProjectListAction projectListAction = BeanConfig.projectListAction
 
     /**
      * 项目列表点击事件

@@ -1,11 +1,8 @@
 package com.rh.note.util.aop;
 
-import com.rh.note.config.AOPConfigEnum;
 import com.rh.note.constant.ErrorMessage;
 import com.rh.note.exception.NoteException;
-import com.rh.note.util.LambdaUtil;
 import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.annotation.Annotation;
@@ -20,7 +17,7 @@ public class ProxyUtil {
     /**
      * 判断类上是否有该注解
      */
-    public static <T extends Annotation> boolean matchAnnotationOnClass(Class targetClass, Class<T> annotationClass) {
+    private static <T extends Annotation> boolean matchAnnotationOnClass(Class targetClass, Class<T> annotationClass) {
         if (targetClass == null || annotationClass == null) {
             return false;
         }
@@ -30,7 +27,7 @@ public class ProxyUtil {
     /**
      * 判断类的方法上是否有该注解
      */
-    public static <T extends Annotation> boolean matchAnnotationOnMethod(Class targetClass, Class<T> annotationClass) {
+    private static <T extends Annotation> boolean matchAnnotationOnMethod(Class targetClass, Class<T> annotationClass) {
         if (targetClass == null || annotationClass == null) {
             return false;
         }
@@ -43,8 +40,13 @@ public class ProxyUtil {
     }
 
     /**
-     * 初始化
+     * 通过目标类或方法上的注解匹配拦截器
      */
+    public static boolean match(Class<Annotation> annotationClass, Method method) {
+        return matchAnnotationOnClass(method.getDeclaringClass(), annotationClass)
+                || matchAnnotationOnMethod(method.getDeclaringClass(), annotationClass);
+    }
+
 
     /**
      * 生成代理对象
@@ -55,38 +57,12 @@ public class ProxyUtil {
         }
         Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(clazz);
-        MethodInterceptor[] handlers = this.getHandler(clazz);
-        if (ArrayUtils.isEmpty(handlers)) {
-            return LambdaUtil.hiddenExceptionSup(clazz::newInstance);
-        }
-        enhancer.setCallbacks(handlers);
+        enhancer.setCallback(new NoteMethodInterceptor());
         Object bean = enhancer.create();
         if (bean == null || !clazz.isInstance(bean)) {
             throw new NoteException(ErrorMessage.DYNAMIC_PROXY_CREATION_FAILED);
         }
         return (T) bean;
-    }
-
-    /**
-     * 获取方法拦截器, 通过class
-     */
-    private <T> MethodInterceptor[] getHandler(Class<T> clazz) {
-        return Arrays.stream(AOPConfigEnum.values())
-                .filter(e -> findAnnotationInClass(e, clazz))
-                .map(AOPConfigEnum::getInterceptor)
-                .toArray(MethodInterceptor[]::new);
-    }
-
-    /**
-     * 在类中查找该注解
-     */
-    private <T> boolean findAnnotationInClass(AOPConfigEnum e, Class<T> clazz) {
-        if (clazz == null) {
-            return false;
-        }
-        Class<Annotation> annotation = e.getAnnotationClass();
-        return matchAnnotationOnClass(clazz, annotation)
-                || matchAnnotationOnMethod(clazz, annotation);
     }
 
 }

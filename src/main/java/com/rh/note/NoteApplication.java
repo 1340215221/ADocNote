@@ -1,11 +1,7 @@
 package com.rh.note;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
-import com.rh.note.aspect.GlobalExceptionHandler;
 import com.rh.note.config.BeanConfig;
-import com.rh.note.exception.ErrorCodeEnum;
-import com.rh.note.exception.NoteException;
-import com.rh.note.util.aop.ProxyUtil;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -20,7 +16,6 @@ public class NoteApplication {
         log.info("完成Darcula主题初始化");
         BeanConfig.projectListAction.startFrame();
         log.info("完成[笔记APP]初始化");
-
     }
 
 }

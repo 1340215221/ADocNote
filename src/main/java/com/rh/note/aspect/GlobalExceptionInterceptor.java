@@ -2,7 +2,7 @@ package com.rh.note.aspect;
 
 import com.rh.note.exception.NoteException;
 import com.rh.note.exception.RequestParamsValidException;
-import com.rh.note.util.aop.IAdocMethodInterceptor;
+import com.rh.note.util.aop.INoteMethodInterceptor;
 import com.rh.note.util.aop.MethodInterceptorParam;
 import com.rh.note.view.ExceptionDialogRunView;
 import lombok.NonNull;
@@ -12,15 +12,15 @@ import lombok.extern.slf4j.Slf4j;
  * action全局异常处理拦截器
  */
 @Slf4j
-public class GlobalExceptionInterceptor implements IAdocMethodInterceptor<GlobalExceptionHandler> {
+public class GlobalExceptionInterceptor implements INoteMethodInterceptor {
     @Override
-    public Object apply(@NonNull MethodInterceptorParam<GlobalExceptionHandler> param) throws Throwable {
+    public Object doResult(@NonNull MethodInterceptorParam param) throws Throwable {
         try {
             return param.getResult();
         } catch (Exception e) {
             handleException(e);
-            return null;
         }
+        return null;
     }
 
     /**

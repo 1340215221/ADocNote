@@ -2,55 +2,79 @@ package com.rh.note.util.aop;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.Iterator;
 
 /**
  * 方法连接器参数
  */
-@Getter
 @Setter(AccessLevel.PACKAGE)
-public class MethodInterceptorParam<T> {
+public class MethodInterceptorParam {
 
     /**
-     * 类名
+     * 目标方法对象
      */
-    private String className;
-    /**
-     * 方法名
-     */
-    private String methodName;
-    /**
-     * 注解
-     */
-    private T annotation;
-    /**
-     * 方法返回值
-     */
-    private Object result;
+    private Method method;
     /**
      * 方法参数
      */
+    @Getter
     @Setter(AccessLevel.PUBLIC)
     private Object[] args;
     /**
-     * 方法操作
+     * 拦截器迭代器
      */
     @Getter(AccessLevel.NONE)
+    private Iterator<INoteMethodInterceptor> iterator;
+    /**
+     * 执行目标方法
+     */
     private IFunction function;
 
     public MethodInterceptorParam() {
     }
 
-    public Object getResult(Object[] args) throws Throwable {
-        if (function != null) {
-            result = function.invoke(args);
-            function = null;
-        }
-        return result;
+    /**
+     * 获得方法名
+     */
+    public String getMethodName() {
+        return method.getName();
     }
 
+    /**
+     * 获得类名
+     */
+    public String getClassName() {
+        return method.getDeclaringClass().getSimpleName();
+    }
+
+    /**
+     * 获取注解
+     */
+    public <T extends Annotation> T getAnnotation(@NonNull Class<T> annotationClass) {
+        return method.getAnnotation(annotationClass);
+    }
+
+    /**
+     * 获得返回值
+     */
     public Object getResult() throws Throwable {
-        return this.getResult(args);
+        return getResult(this.args);
+    }
+
+    /**
+     * 获得返回值
+     */
+    public Object getResult(Object[] args) throws Throwable {
+        this.args = args;
+        if (iterator.hasNext()) {
+            return iterator.next().doResult(this);
+        }
+        return function.invoke(this.args);
     }
 
 }

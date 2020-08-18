@@ -4,7 +4,7 @@ import com.rh.note.aspect.DoActionLog;
 import com.rh.note.aspect.DoActionLogInterceptor;
 import com.rh.note.aspect.GlobalExceptionHandler;
 import com.rh.note.aspect.GlobalExceptionInterceptor;
-import com.rh.note.util.aop.IAdocMethodInterceptor;
+import com.rh.note.util.aop.INoteMethodInterceptor;
 
 import java.lang.annotation.Annotation;
 
@@ -24,7 +24,7 @@ public enum AOPConfigEnum {
         }
 
         @Override
-        public IAdocMethodInterceptor getInterceptor() {
+        public INoteMethodInterceptor getInterceptor() {
             return new GlobalExceptionInterceptor();
         }
     },
@@ -38,7 +38,7 @@ public enum AOPConfigEnum {
         }
 
         @Override
-        public IAdocMethodInterceptor getInterceptor() {
+        public INoteMethodInterceptor getInterceptor() {
             return new DoActionLogInterceptor();
         }
     },
@@ -47,7 +47,7 @@ public enum AOPConfigEnum {
     /**
      * 获得方法拦截器实例
      */
-    public abstract IAdocMethodInterceptor getInterceptor();
+    public abstract INoteMethodInterceptor getInterceptor();
 
     /**
      * 获得注解类型

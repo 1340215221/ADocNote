@@ -11,11 +11,12 @@ import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 
 @Setter
-public class ProjectListAction {
+@GlobalExceptionHandler
+public class ProjectListAction implements IProjectListAction {
 
     private FileServiceAPI fileAPIService;
     private ProjectListViewAPI projectListAPI;
-    private WorkAction workAction;
+    private IWorkAction workAction;
 
     /**
      * 打开项目

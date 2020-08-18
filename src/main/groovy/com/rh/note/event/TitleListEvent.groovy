@@ -1,6 +1,6 @@
 package com.rh.note.event
 
-import com.rh.note.action.WorkAction
+import com.rh.note.action.IWorkAction
 import com.rh.note.config.BeanConfig
 
 import java.awt.event.MouseEvent
@@ -10,7 +10,7 @@ import java.awt.event.MouseEvent
  */
 class TitleListEvent {
 
-    private static final WorkAction workAction = BeanConfig.workAction
+    private static final IWorkAction workAction = BeanConfig.workAction
 
     /**
      * 打开标题内容
