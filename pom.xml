@@ -26,6 +26,12 @@
     </properties>
 
     <dependencies>
+        <!-- aop -->
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>3.1</version>
+        </dependency>
         <!-- 日志 -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -137,34 +143,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>aspectj-maven-plugin</artifactId>
-                <version>1.11</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>compile</goal>       <!-- use this goal to weave all your main classes -->
-                            <goal>test-compile</goal>  <!-- use this goal to weave all your test classes -->
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.6</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.rh.note.NoteApplication</mainClass> <!-- 运行jar的main class  -->
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
-
             <plugin>
                 <groupId>org.codehaus.gmaven</groupId>
                 <artifactId>gmaven-plugin</artifactId>
