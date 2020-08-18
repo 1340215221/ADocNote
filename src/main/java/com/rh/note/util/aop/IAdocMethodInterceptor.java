@@ -7,7 +7,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
-import java.util.function.Supplier;
 
 /**
  * 处理拦截器链
@@ -24,10 +23,11 @@ public interface IAdocMethodInterceptor<T extends Annotation> extends MethodInte
             return methodProxy.invokeSuper(bean, args);
         }
 
-        MethodInterceptorParam<T> param = new MethodInterceptorParam<>();
-        String className = "";
-        String methodName = "";
-        Supplier<Object> supplier = () -> methodProxy.invokeSuper(bean, param.getArgs());
+        MethodInterceptorParam<T> param = new MethodInterceptorParam<T>()
+                .setClassName(method.getDeclaringClass().getSimpleName())
+                .setMethodName(method.getName())
+                .setAnnotation(method.getAnnotation(annotationClass))
+                .setFunction(arr -> methodProxy.invokeSuper(bean, arr));
         return apply(param);
     }
 
@@ -47,5 +47,5 @@ public interface IAdocMethodInterceptor<T extends Annotation> extends MethodInte
     /**
      * 切面业务处理方法
      */
-    Object apply(MethodInterceptorParam<T> param);
+    Object apply(MethodInterceptorParam<T> param) throws Throwable;
 }

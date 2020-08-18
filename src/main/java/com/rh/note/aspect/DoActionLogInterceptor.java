@@ -11,8 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DoActionLogInterceptor implements IAdocMethodInterceptor<DoActionLog> {
     @Override
-    public Object apply(@NonNull MethodInterceptorParam<DoActionLog> param) {
-        log.info("{}.{}, {}", param.getClassName(), param.getMethodName(), param.getAnnotation().value());
+    public Object apply(@NonNull MethodInterceptorParam<DoActionLog> param) throws Throwable {
+        log.info("{}.{}, doAction-[{}]", param.getClassName(), param.getMethodName(), param.getAnnotation().value());
         return param.getResult();
     }
 }

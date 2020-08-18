@@ -20,14 +20,6 @@ public class WorkAction {
     private WorkViewAPI workViewAPI;
 
     /**
-     * 测试方法
-     */
-    @DoActionLog("测试方法")
-    public void hello() {
-        System.out.println("hello");
-    }
-
-    /**
      * 打开work_frame
      */
     @DoActionLog("打开work_frame")

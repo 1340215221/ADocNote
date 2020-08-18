@@ -2,13 +2,13 @@ package com.rh.note.util.aop;
 
 import lombok.AccessLevel;
 import lombok.Getter;
-
-import java.util.function.Supplier;
+import lombok.Setter;
 
 /**
  * 方法连接器参数
  */
 @Getter
+@Setter(AccessLevel.PACKAGE)
 public class MethodInterceptorParam<T> {
 
     /**
@@ -30,22 +30,27 @@ public class MethodInterceptorParam<T> {
     /**
      * 方法参数
      */
+    @Setter(AccessLevel.PUBLIC)
     private Object[] args;
     /**
      * 方法操作
      */
     @Getter(AccessLevel.NONE)
-    private Supplier<Object> supplier;
+    private IFunction function;
 
     public MethodInterceptorParam() {
     }
 
-    public Object getResult() {
-        if (supplier != null) {
-            result = supplier.get();
-            supplier = null;
+    public Object getResult(Object[] args) throws Throwable {
+        if (function != null) {
+            result = function.invoke(args);
+            function = null;
         }
         return result;
+    }
+
+    public Object getResult() throws Throwable {
+        return this.getResult(args);
     }
 
 }
