@@ -2,6 +2,7 @@ package com.rh.note.action;
 
 import com.rh.note.api.FileServiceAPI;
 import com.rh.note.api.WorkViewAPI;
+import com.rh.note.aspect.DoActionLog;
 import com.rh.note.file.AdocFile;
 import com.rh.note.grammar.TitleGrammar;
 import lombok.Setter;
@@ -19,8 +20,17 @@ public class WorkAction {
     private WorkViewAPI workViewAPI;
 
     /**
+     * 测试方法
+     */
+    @DoActionLog("测试方法")
+    public void hello() {
+        System.out.println("hello");
+    }
+
+    /**
      * 打开work_frame
      */
+    @DoActionLog("打开work_frame")
     public void openFrame() {
         TitleGrammar rootTitle = fileServiceAPI.findAllTitle();
         workViewAPI.initFrame();
@@ -31,6 +41,7 @@ public class WorkAction {
     /**
      * 加载文件标题列表
      */
+    @DoActionLog("加载文件标题列表")
     public void loadTitleList() {
         TitleGrammar rootTitle = fileServiceAPI.findAllTitle();
         workViewAPI.loadTitleList(rootTitle);
@@ -39,6 +50,7 @@ public class WorkAction {
     /**
      * 打开选择标题
      */
+    @DoActionLog("打开选择标题")
     public void openAdocFile() {
         TitleGrammar titleGrammar = workViewAPI.showEditingAreaForExistingSelected();
         if (titleGrammar == null) {
@@ -52,6 +64,7 @@ public class WorkAction {
     /**
      * 修改include文件名字
      */
+    @DoActionLog("修改include文件名字")
     public void rename(String componentId) throws Exception {
         workViewAPI.rename(componentId);
     }
@@ -59,6 +72,7 @@ public class WorkAction {
     /**
      * 显示或隐藏标题列表
      */
+    @DoActionLog("显示或隐藏标题列表")
     public void hiddenOrShowTitleList() {
         workViewAPI.hiddenOrShowTitleList();
     }
@@ -66,6 +80,7 @@ public class WorkAction {
     /**
      * 生成include语法块
      */
+    @DoActionLog("生成include语法块")
     public void generateIncludeBlock(String componentId) throws Exception {
         AdocFile adocFile = workViewAPI.generateIncludeBlock(componentId);
         if (adocFile != null) {
@@ -77,6 +92,7 @@ public class WorkAction {
     /**
      * 保存编辑内容
      */
+    @DoActionLog("保存编辑内容")
     public void saveAllEditContent() {
         workViewAPI.saveAllEditContent().forEach(filePath ->
                 fileServiceAPI.openFileOutputStream(filePath));
@@ -86,6 +102,7 @@ public class WorkAction {
     /**
      * 扫描初始化项目结构
      */
+    @DoActionLog("扫描初始化项目结构")
     public void initProjectStructure() {
         // 初始化config文件
         fileServiceAPI.initConfigFile();
