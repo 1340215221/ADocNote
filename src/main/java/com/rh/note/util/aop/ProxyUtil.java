@@ -1,13 +1,18 @@
 package com.rh.note.util.aop;
 
-import com.rh.note.constant.ErrorMessage;
+import com.rh.note.config.AOPConfigEnum;
+import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.exception.NoteException;
-import net.sf.cglib.proxy.Enhancer;
+import com.rh.note.util.LambdaUtil;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 静态代理工具
@@ -42,27 +47,29 @@ public class ProxyUtil {
     /**
      * 通过目标类或方法上的注解匹配拦截器
      */
-    public static boolean match(Class<Annotation> annotationClass, Method method) {
-        return matchAnnotationOnClass(method.getDeclaringClass(), annotationClass)
-                || matchAnnotationOnMethod(method.getDeclaringClass(), annotationClass);
+    public static boolean match(Class<Annotation> annotationClass, Class clazz) {
+        return matchAnnotationOnClass(clazz, annotationClass)
+                || matchAnnotationOnMethod(clazz, annotationClass);
     }
 
 
     /**
      * 生成代理对象
      */
-    public <T> T getBean(Class<T> clazz) {
+    public <T> Object getBean(Class<T> clazz) {
         if (clazz == null) {
-            return null;
+            throw new NoteException(ErrorCodeEnum.DYNAMIC_PROXY_FAILED);
         }
-        Enhancer enhancer = new Enhancer();
-        enhancer.setSuperclass(clazz);
-        enhancer.setCallback(new NoteMethodInterceptor());
-        Object bean = enhancer.create();
-        if (bean == null || !clazz.isInstance(bean)) {
-            throw new NoteException(ErrorMessage.DYNAMIC_PROXY_CREATION_FAILED);
+        T target = LambdaUtil.hiddenExceptionSup(clazz::newInstance);
+        Map<Class<Annotation>, INoteMethodInterceptor> map = Arrays.stream(AOPConfigEnum.values())
+                .filter(e -> match(e.getAnnotationClass(), clazz))
+                .collect(Collectors.toMap(AOPConfigEnum::getAnnotationClass, AOPConfigEnum::getInterceptor));
+        if (MapUtils.isEmpty(map)) {
+            return target;
         }
-        return (T) bean;
+        return Proxy.newProxyInstance(clazz.getClassLoader(),
+                clazz.getInterfaces(),
+                new NoteMethodInterceptor(target, map));
     }
 
 }

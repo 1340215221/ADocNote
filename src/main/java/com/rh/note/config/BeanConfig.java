@@ -21,13 +21,15 @@ public interface BeanConfig {
     WorkViewAPI workViewApi = new WorkViewAPI();
     //------------------------------------------------api---------------------------------------------------------------
     //------------------------------------------------action------------------------------------------------------------
-    IWorkAction workAction = proxy.getBean(WorkAction.class)
-            .setFileServiceAPI(fileServiceApi)
-            .setWorkViewAPI(workViewApi);
-    IProjectListAction projectListAction = proxy.getBean(ProjectListAction.class)
-            .setFileAPIService(fileServiceApi)
-            .setProjectListAPI(projectListViewApi)
-            .setWorkAction(workAction);
+    IWorkAction workAction = new WorkAction();
+    //    IWorkAction workAction = proxy.getBean(WorkAction.class)
+//            .setFileServiceAPI(fileServiceApi)
+//            .setWorkViewAPI(workViewApi);
+    IProjectListAction projectListAction = new ProjectListAction();
+//    IProjectListAction projectListAction = proxy.getBean(ProjectListAction.class)
+//            .setFileAPIService(fileServiceApi)
+//            .setProjectListAPI(projectListViewApi)
+//            .setWorkAction(workAction);
     //------------------------------------------------action------------------------------------------------------------
 
 }
