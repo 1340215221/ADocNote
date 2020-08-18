@@ -2,6 +2,7 @@ package com.rh.note.util.aop;
 
 import com.rh.note.constant.ErrorMessage;
 import com.rh.note.exception.AdocException;
+import com.rh.note.util.LambdaUtil;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import org.apache.commons.lang3.ArrayUtils;
@@ -47,7 +48,7 @@ public class ProxyUtil {
     /**
      * 生成代理对象
      */
-    public <T> T getBean(Class<T> clazz) throws Exception {
+    public <T> T getBean(Class<T> clazz) {
         if (clazz == null) {
             return null;
         }
@@ -55,7 +56,7 @@ public class ProxyUtil {
         enhancer.setSuperclass(clazz);
         MethodInterceptor[] handlers = this.getHandler(clazz);
         if (ArrayUtils.isEmpty(handlers)) {
-            return clazz.newInstance();
+            return LambdaUtil.hiddenExceptionSup(clazz::newInstance);
         }
         enhancer.setCallbacks(handlers);
         Object bean = enhancer.create();

@@ -2,6 +2,7 @@ package com.rh.note.action;
 
 import com.rh.note.api.FileServiceAPI;
 import com.rh.note.api.ProjectListViewAPI;
+import com.rh.note.aspect.DoActionLog;
 import com.rh.note.view.ProjectListFrameRunView;
 import com.rh.note.view.ProjectListView;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
@@ -18,6 +19,7 @@ public class ProjectListAction {
     /**
      * 打开项目
      */
+    @DoActionLog("打开项目")
     public void openProject() {
         ProjectListView projectList = new ProjectListView().init();
         String projectPath = projectList.getSelectedProject();
@@ -29,6 +31,7 @@ public class ProjectListAction {
     /**
      * 导入新项目
      */
+    @DoActionLog("导入新项目")
     public void importProject() {
         String projectPath = projectListAPI.selectProjectDirectory();
         if (StringUtils.isBlank(projectPath)) {
@@ -43,6 +46,7 @@ public class ProjectListAction {
     /**
      * 启动窗口
      */
+    @DoActionLog("启动窗口")
     public void startFrame() {
         // 加载数据
         RecentlyOpenedRecordVO[] voArr = fileAPIService.writeOpenRecord();

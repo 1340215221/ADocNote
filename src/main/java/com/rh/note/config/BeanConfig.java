@@ -10,22 +10,24 @@ import com.rh.note.event.ProjectManagerMenuEvent;
 import com.rh.note.event.TextAreaEvent;
 import com.rh.note.event.TitleListEvent;
 import com.rh.note.event.WorkFrameEvent;
+import com.rh.note.util.aop.ProxyUtil;
 
 /**
  * 对象配置
  */
 public interface BeanConfig {
 
+    ProxyUtil proxy = new ProxyUtil();
     //------------------------------------------------api---------------------------------------------------------------
     FileServiceAPI fileServiceApi = new FileServiceAPI();
     ProjectListViewAPI projectListViewApi = new ProjectListViewAPI();
     WorkViewAPI workViewApi = new WorkViewAPI();
     //------------------------------------------------api---------------------------------------------------------------
     //------------------------------------------------action------------------------------------------------------------
-    WorkAction workAction = new WorkAction()
+    WorkAction workAction = proxy.getBean(WorkAction.class)
             .setFileServiceAPI(fileServiceApi)
             .setWorkViewAPI(workViewApi);
-    ProjectListAction projectListAction = new ProjectListAction()
+    ProjectListAction projectListAction = proxy.getBean(ProjectListAction.class)
             .setFileAPIService(fileServiceApi)
             .setProjectListAPI(projectListViewApi)
             .setWorkAction(workAction);
