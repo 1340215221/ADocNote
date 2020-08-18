@@ -6,8 +6,8 @@ import net.sf.cglib.proxy.MethodProxy;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.Arrays;
+import java.util.function.Supplier;
 
 /**
  * 处理拦截器链
@@ -17,21 +17,31 @@ public interface IAdocMethodInterceptor<T extends Annotation> extends MethodInte
     @Override
     default Object intercept(Object bean, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
         //todo
-        // 获得当前拦截器要处理的注解类型
-        Class<T> annotationClass = Arrays.stream(this.getClass().getGenericInterfaces()) // 获得到包括IAdocMethodInterceptor的数组. 当前拦截器实现的所有接口
+        Class<T> annotationClass = getAnnotation();
+        //判断目标类上是否加有该注解, 全部方法都走拦截apply方法, 否则直接执行并返回结果
+        //判断目标方法上是否加有该注解, 所有带有该注解的方法才走apply方法, 否则直接执行并返回结果
+        if (bean.getClass().getSuperclass().getAnnotation(annotationClass) == null && method.getAnnotation(annotationClass) == null) {
+            return methodProxy.invokeSuper(bean, args);
+        }
+
+        MethodInterceptorParam<T> param = new MethodInterceptorParam<>();
+        String className = "";
+        String methodName = "";
+        Supplier<Object> supplier = () -> methodProxy.invokeSuper(bean, param.getArgs());
+        return apply(param);
+    }
+
+    /**
+     * 获得拦截器要处理的注解类型
+     */
+    default Class<T> getAnnotation() {
+        return Arrays.stream(this.getClass().getGenericInterfaces()) // 获得到包括IAdocMethodInterceptor的数组. 当前拦截器实现的所有接口
                 .map(e -> (ParameterizedType) e)
                 .filter(e -> e.getRawType().equals(IAdocMethodInterceptor.class))
                 .map(e -> e.getActualTypeArguments()[0]) // 获得接口泛型的实现, 已知IAdocMethodInterceptor只有一个泛型
                 .findFirst()
                 .map(e -> (Class<T>) e)
                 .get();
-        //判断目标类上是否加有该注解, 全部方法都走拦截apply方法, 否则直接执行并返回结果
-        //判断目标方法上是否加有该注解, 所有带有该注解的方法才走apply方法, 否则直接执行并返回结果
-        if (bean.getClass().getSuperclass().getAnnotation(annotationClass) == null && method.getAnnotation(annotationClass) == null) {
-            return methodProxy.invokeSuper(bean, args);
-        }
-        MethodInterceptorParam<T> param = new MethodInterceptorParam<>();
-        return apply(param);
     }
 
     /**
