@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 /**
  * 调用action日志
  */
-@Target({ElementType.METHOD, ElementType.TYPE})
+@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface DoActionLog {

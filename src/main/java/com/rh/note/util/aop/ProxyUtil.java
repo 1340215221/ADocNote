@@ -72,9 +72,21 @@ public class ProxyUtil {
      */
     private <T> MethodInterceptor[] getHandler(Class<T> clazz) {
         return Arrays.stream(AOPConfigEnum.values())
-                .filter(e -> e.match(clazz))
+                .filter(e -> findAnnotationInClass(e, clazz))
                 .map(AOPConfigEnum::getInterceptor)
                 .toArray(MethodInterceptor[]::new);
+    }
+
+    /**
+     * 在类中查找该注解
+     */
+    private <T> boolean findAnnotationInClass(AOPConfigEnum e, Class<T> clazz) {
+        if (clazz == null) {
+            return false;
+        }
+        Class<Annotation> annotation = e.getAnnotationClass();
+        return matchAnnotationOnClass(clazz, annotation)
+                || matchAnnotationOnMethod(clazz, annotation);
     }
 
 }

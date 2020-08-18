@@ -2,8 +2,11 @@ package com.rh.note.config;
 
 import com.rh.note.aspect.DoActionLog;
 import com.rh.note.aspect.DoActionLogInterceptor;
+import com.rh.note.aspect.GlobalExceptionHandler;
+import com.rh.note.aspect.GlobalExceptionInterceptor;
 import com.rh.note.util.aop.IAdocMethodInterceptor;
-import com.rh.note.util.aop.ProxyUtil;
+
+import java.lang.annotation.Annotation;
 
 /**
  * 注册aop类型
@@ -12,17 +15,26 @@ import com.rh.note.util.aop.ProxyUtil;
 public enum AOPConfigEnum {
 
     /**
+     * action全局错误弹窗提示处理
+     */
+    action_exception() {
+        @Override
+        public Class<GlobalExceptionHandler> getAnnotationClass() {
+            return GlobalExceptionHandler.class;
+        }
+
+        @Override
+        public IAdocMethodInterceptor getInterceptor() {
+            return new GlobalExceptionInterceptor();
+        }
+    },
+    /**
      * action调用日志
      */
     do_action() {
         @Override
-        public boolean match(Class clazz) {
-            if (clazz == null) {
-                return false;
-            }
-            //获得class的类上注解和方法注解, 如果存在匹配的则执行
-            return ProxyUtil.matchAnnotationOnClass(clazz, DoActionLog.class)
-                    || ProxyUtil.matchAnnotationOnMethod(clazz, DoActionLog.class);
+        public Class<DoActionLog> getAnnotationClass() {
+            return DoActionLog.class;
         }
 
         @Override
@@ -33,13 +45,12 @@ public enum AOPConfigEnum {
     ;
 
     /**
-     * 匹配注解类型
-     */
-    public abstract boolean match(Class clazz);
-
-    /**
      * 获得方法拦截器实例
      */
     public abstract IAdocMethodInterceptor getInterceptor();
 
+    /**
+     * 获得注解类型
+     */
+    public abstract <T extends Annotation> Class<T> getAnnotationClass();
 }

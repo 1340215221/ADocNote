@@ -1,7 +1,5 @@
 package com.rh.note.aspect;
 
-import com.rh.note.common.ActionResult;
-import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.exception.NoteException;
 import com.rh.note.exception.RequestParamsValidException;
 import com.rh.note.util.aop.IAdocMethodInterceptor;

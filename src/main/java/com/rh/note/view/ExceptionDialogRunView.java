@@ -1,6 +1,5 @@
 package com.rh.note.view;
 
-import com.rh.note.exception.ErrorCodeEnum;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
