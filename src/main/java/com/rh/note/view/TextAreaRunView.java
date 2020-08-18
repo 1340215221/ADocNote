@@ -3,7 +3,7 @@ package com.rh.note.view;
 import com.rh.note.builder.TextAreaBuilder;
 import com.rh.note.component.AdocTextArea;
 import com.rh.note.constant.ErrorMessage;
-import com.rh.note.exception.AdocException;
+import com.rh.note.exception.NoteException;
 import com.rh.note.grammar.IncludeGrammar;
 import lombok.NonNull;
 import org.apache.commons.collections4.CollectionUtils;
@@ -62,7 +62,7 @@ public class TextAreaRunView extends Init<AdocTextArea> {
         try (InputStream is = new FileInputStream(file); Reader read = new InputStreamReader(is)) {
             textArea().read(read, null);
         } catch (Exception e) {
-            throw new AdocException(ErrorMessage.file_read_failed);
+            throw new NoteException(ErrorMessage.file_read_failed);
         }
     }
 
@@ -143,7 +143,7 @@ public class TextAreaRunView extends Init<AdocTextArea> {
         try {
             textArea().write(writer);
         } catch (Exception e) {
-            throw new AdocException(ErrorMessage.file_write_failed);
+            throw new NoteException(ErrorMessage.file_write_failed);
         }
     }
 

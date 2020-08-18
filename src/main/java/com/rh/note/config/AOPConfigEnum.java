@@ -1,13 +1,15 @@
-package com.rh.note.util.aop;
+package com.rh.note.config;
 
 import com.rh.note.aspect.DoActionLog;
 import com.rh.note.aspect.DoActionLogInterceptor;
+import com.rh.note.util.aop.IAdocMethodInterceptor;
+import com.rh.note.util.aop.ProxyUtil;
 
 /**
  * 注册aop类型
  * 注解和对应的拦截器
  */
-public enum AOPEnum {
+public enum AOPConfigEnum {
 
     /**
      * action调用日志

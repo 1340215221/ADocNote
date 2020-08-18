@@ -4,8 +4,7 @@ import com.rh.note.common.IAdocFile;
 import com.rh.note.common.IGrammar;
 import com.rh.note.constant.ErrorMessage;
 import com.rh.note.constant.ProjectStructureEnum;
-import com.rh.note.exception.AdocException;
-import com.rh.note.file.ConfigFile;
+import com.rh.note.exception.NoteException;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
@@ -97,7 +96,7 @@ public class IncludeGrammar implements IGrammar {
         ProjectStructureEnum parentStructure = Arrays.stream(ProjectStructureEnum.values())
                 .filter(e -> e.match(filePath))
                 .findFirst()
-                .orElseThrow(() -> new AdocException(ErrorMessage.PARAMETER_ERROR));
+                .orElseThrow(() -> new NoteException(ErrorMessage.PARAMETER_ERROR));
         return parentStructure.getChildrenPath() + fileName + ".adoc";
     }
 

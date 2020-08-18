@@ -1,7 +1,8 @@
 package com.rh.note.util.aop;
 
+import com.rh.note.config.AOPConfigEnum;
 import com.rh.note.constant.ErrorMessage;
-import com.rh.note.exception.AdocException;
+import com.rh.note.exception.NoteException;
 import com.rh.note.util.LambdaUtil;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
@@ -61,7 +62,7 @@ public class ProxyUtil {
         enhancer.setCallbacks(handlers);
         Object bean = enhancer.create();
         if (bean == null || !clazz.isInstance(bean)) {
-            throw new AdocException(ErrorMessage.DYNAMIC_PROXY_CREATION_FAILED);
+            throw new NoteException(ErrorMessage.DYNAMIC_PROXY_CREATION_FAILED);
         }
         return (T) bean;
     }
@@ -70,9 +71,9 @@ public class ProxyUtil {
      * 获取方法拦截器, 通过class
      */
     private <T> MethodInterceptor[] getHandler(Class<T> clazz) {
-        return Arrays.stream(AOPEnum.values())
+        return Arrays.stream(AOPConfigEnum.values())
                 .filter(e -> e.match(clazz))
-                .map(AOPEnum::getInterceptor)
+                .map(AOPConfigEnum::getInterceptor)
                 .toArray(MethodInterceptor[]::new);
     }
 

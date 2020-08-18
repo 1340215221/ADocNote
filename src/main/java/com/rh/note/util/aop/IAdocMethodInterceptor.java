@@ -1,5 +1,6 @@
 package com.rh.note.util.aop;
 
+import lombok.NonNull;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
@@ -47,5 +48,5 @@ public interface IAdocMethodInterceptor<T extends Annotation> extends MethodInte
     /**
      * 切面业务处理方法
      */
-    Object apply(MethodInterceptorParam<T> param) throws Throwable;
+    Object apply(@NonNull MethodInterceptorParam<T> param) throws Throwable;
 }

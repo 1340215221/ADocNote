@@ -3,7 +3,7 @@ package com.rh.note.file;
 import com.rh.note.common.IAdocFile;
 import com.rh.note.common.IGrammar;
 import com.rh.note.constant.ErrorMessage;
-import com.rh.note.exception.AdocException;
+import com.rh.note.exception.NoteException;
 import com.rh.note.grammar.IncludeGrammar;
 import com.rh.note.grammar.TitleGrammar;
 import com.rh.note.grammar.UnknownGrammar;
@@ -131,7 +131,7 @@ public class AdocFile implements IAdocFile {
                         ((IncludeGrammar) a).getTargetTitle().findParentOf((TitleGrammar) b).addChildrenTitle((TitleGrammar) b);
                         return b;
                     }
-                    throw new AdocException(ErrorMessage.PARAMETER_ERROR);
+                    throw new NoteException(ErrorMessage.PARAMETER_ERROR);
                 });
     }
 
@@ -207,7 +207,7 @@ public class AdocFile implements IAdocFile {
             ) {
                 br.lines().forEach(lineContent -> handleLine.handle(lineNumber.next(), lineContent));
             } catch (Exception e) {
-                throw new AdocException(ErrorMessage.file_read_failed, e);
+                throw new NoteException(ErrorMessage.file_read_failed, e);
             }
         };
     }

@@ -1,7 +1,7 @@
 package com.rh.note.ao;
 
 import com.rh.note.constant.ErrorMessage;
-import com.rh.note.exception.AdocException;
+import com.rh.note.exception.NoteException;
 import lombok.*;
 
 import java.io.File;
@@ -40,7 +40,7 @@ public class CreateProjectAO {
 
     private void checkNameValue() {
         if (name.length() < 1) {
-            throw new AdocException(ErrorMessage.project_name_is_not_blank);
+            throw new NoteException(ErrorMessage.project_name_is_not_blank);
         }
     }
 

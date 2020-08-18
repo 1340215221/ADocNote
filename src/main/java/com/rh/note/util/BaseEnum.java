@@ -1,7 +1,7 @@
 package com.rh.note.util;
 
 import com.rh.note.constant.ErrorMessage;
-import com.rh.note.exception.AdocException;
+import com.rh.note.exception.NoteException;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -14,17 +14,17 @@ public interface BaseEnum {
     }
 
     static String name() {
-        throw new AdocException(ErrorMessage.PARAMETER_ERROR);
+        throw new NoteException(ErrorMessage.PARAMETER_ERROR);
     }
 
     static <T extends BaseEnum> T getInstance(String name) {
         if (StringUtils.isBlank(name)) {
-            throw new AdocException(ErrorMessage.PARAMETER_ERROR);
+            throw new NoteException(ErrorMessage.PARAMETER_ERROR);
         }
         return valueOf(name);
     }
 
     static <T extends BaseEnum> T valueOf(String name) {
-        throw new AdocException(ErrorMessage.PARAMETER_ERROR);
+        throw new NoteException(ErrorMessage.PARAMETER_ERROR);
     }
 }
