@@ -33,12 +33,12 @@ public class GlobalExceptionInterceptor implements INoteMethodInterceptor {
             return;
         }
         if (e instanceof RequestParamsValidException || e instanceof IllegalArgumentException) {
-            log.error("关键业务参数错误, ", e);
+            log.error("关键业务参数错误", e);
             ExceptionDialogRunView.create(ExceptionDialogRunView.found_system_vulnerabilities);
             return;
         }
         if (e instanceof NoteException) {
-            log.error("发生业务异常, ", e);
+            log.error("发生业务异常", e);
             ExceptionDialogRunView.create(e.getMessage());
             return;
         }
