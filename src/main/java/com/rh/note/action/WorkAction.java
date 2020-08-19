@@ -57,6 +57,20 @@ public class WorkAction {
     }
 
     /**
+     * 打开选择标题
+     */
+    @DoActionLog("打开选择标题")
+    public void openAdocFile2() {
+        TitleGrammar titleGrammar = workViewAPI.showEditingAreaForExistingSelected2();
+        if (titleGrammar == null) {
+            return;
+        }
+        //读取文件内容
+        File file = fileServiceAPI.readTitleFileContent(titleGrammar.getAbsolutePath());
+        workViewAPI.openNewEditingAreaForSelected2(titleGrammar.getFilePath(), file);
+    }
+
+    /**
      * 修改include文件名字
      */
     @DoActionLog("修改include文件名字")

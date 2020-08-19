@@ -2,6 +2,7 @@ package com.rh.note.frame
 
 
 import com.rh.note.common.IFrame
+import com.rh.note.config.IWorkFrame
 import com.rh.note.event.WorkFrameEvent
 import com.rh.note.register.TextAreaFactory
 import com.rh.note.register.TreeModelFactory

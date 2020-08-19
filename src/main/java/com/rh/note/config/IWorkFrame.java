@@ -1,4 +1,4 @@
-package com.rh.note.frame;
+package com.rh.note.config;
 
 import com.rh.note.builder.BasePanelBuilder;
 import com.rh.note.builder.BottomSidebarBuilder;

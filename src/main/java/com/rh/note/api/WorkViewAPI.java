@@ -1,5 +1,6 @@
 package com.rh.note.api;
 
+import com.rh.note.builder.TextPaneBuilder;
 import com.rh.note.common.IForEach;
 import com.rh.note.file.AdocFile;
 import com.rh.note.grammar.IncludeGrammar;
@@ -11,6 +12,8 @@ import com.rh.note.view.ModelView;
 import com.rh.note.view.RootNodeRunView;
 import com.rh.note.view.TextAreaRunView;
 import com.rh.note.view.TextAreaScrollView;
+import com.rh.note.view.TextPaneRunView;
+import com.rh.note.view.TextPaneScrollView;
 import com.rh.note.view.TitleListView;
 import com.rh.note.view.TreeView;
 import com.rh.note.view.WorkFrameRunView;
@@ -89,19 +92,57 @@ public class WorkViewAPI {
     }
 
     /**
+     * 展示已打开的编辑区,通过被选择的标题
+     */
+    public TitleGrammar showEditingAreaForExistingSelected2() {
+        TreeView tree = new TreeView().init();
+        if (tree == null) {
+            return null;
+        }
+        TitleGrammar title = tree.getSelectionUserObject();
+        if (title == null) {
+            return null;
+        }
+        log.info("TextAreaScrollView 将尝试获取已打开的编辑区");
+        TextPaneScrollView textPaneScroll = new TextPaneScrollView().init(title.getFilePath());
+        if (textPaneScroll == null) {
+            return title;
+        }
+        EditAreaView editArea = new EditAreaView().init();
+        editArea.show(textPaneScroll.getId());
+        return null;
+    }
+
+    /**
      * 打开新的编辑区,通过被选择的标题
      */
-    public void openNewEditingAreaForSelected(String absolutePath, File file) {
+    public void openNewEditingAreaForSelected(String filePath, File file) {
         //创建添加编辑区控件
-        TextAreaRunView.create(absolutePath);
-        TextAreaScrollView tas = new TextAreaScrollView().init(absolutePath);
+        TextAreaRunView.create(filePath);
+        TextAreaScrollView tas = new TextAreaScrollView().init(filePath);
         EditAreaView editArea = new EditAreaView().init();
         tas.addTo(editArea);
         editArea.showLast();
 
         //将数据显示到编辑区
-        TextAreaRunView textArea = new TextAreaRunView().initByFilePath(absolutePath);
+        TextAreaRunView textArea = new TextAreaRunView().initByFilePath(filePath);
         textArea.read(file);
+    }
+
+    /**
+     * 打开新的编辑区,通过被选择的标题
+     */
+    public void openNewEditingAreaForSelected2(String filePath, File file) {
+        //创建添加编辑区控件
+        TextPaneRunView.create(filePath);
+        TextPaneScrollView tps = new TextPaneScrollView().init(filePath);
+        EditAreaView editArea = new EditAreaView().init();
+        tps.addTo(editArea);
+        editArea.showLast();
+
+        //将数据显示到编辑区
+        TextPaneRunView textPane = new TextPaneRunView().initByFilePath(filePath);
+        textPane.read(file);
     }
 
     /**
