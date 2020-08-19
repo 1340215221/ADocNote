@@ -13,11 +13,11 @@ import org.apache.commons.lang3.StringUtils;
 
 @Setter
 @GlobalExceptionHandler
-public class ProjectListAction implements IProjectListAction {
+public class ProjectListAction {
 
     private FileServiceAPI fileAPIService = BeanConfig.fileServiceApi;
     private ProjectListViewAPI projectListAPI = BeanConfig.projectListViewApi;
-    private IWorkAction workAction = BeanConfig.workAction;
+    private WorkAction workAction = BeanConfig.workAction;
 
     /**
      * 打开项目

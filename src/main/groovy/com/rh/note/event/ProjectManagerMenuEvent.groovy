@@ -1,6 +1,7 @@
 package com.rh.note.event
 
-import com.rh.note.action.IProjectListAction
+
+import com.rh.note.action.ProjectListAction
 import com.rh.note.config.BeanConfig
 
 /**
@@ -8,7 +9,7 @@ import com.rh.note.config.BeanConfig
  */
 class ProjectManagerMenuEvent{
 
-    private static final IProjectListAction projectListAction = BeanConfig.projectListAction
+    private static final ProjectListAction projectListAction = BeanConfig.projectListAction
 
     /**
      * 导入新项目

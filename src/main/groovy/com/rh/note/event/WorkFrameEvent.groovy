@@ -1,6 +1,7 @@
 package com.rh.note.event
 
-import com.rh.note.action.IWorkAction
+
+import com.rh.note.action.WorkAction
 import com.rh.note.config.BeanConfig
 
 import java.awt.*
@@ -12,7 +13,7 @@ import java.awt.event.KeyEvent
  */
 class WorkFrameEvent {
 
-    private static IWorkAction workAction = BeanConfig.workAction
+    private static WorkAction workAction = BeanConfig.workAction
 
     /**
      * 全局保存

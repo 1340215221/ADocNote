@@ -17,7 +17,7 @@ import java.io.File;
  */
 @Setter
 @GlobalExceptionHandler
-public class WorkAction implements IWorkAction {
+public class WorkAction {
 
     private FileServiceAPI fileServiceAPI = BeanConfig.fileServiceApi;
     private WorkViewAPI workViewAPI = BeanConfig.workViewApi;
