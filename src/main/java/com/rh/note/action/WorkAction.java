@@ -4,6 +4,7 @@ import com.rh.note.api.FileServiceAPI;
 import com.rh.note.api.WorkViewAPI;
 import com.rh.note.aspect.DoActionLog;
 import com.rh.note.aspect.GlobalExceptionHandler;
+import com.rh.note.config.BeanConfig;
 import com.rh.note.file.AdocFile;
 import com.rh.note.grammar.TitleGrammar;
 import lombok.Setter;
@@ -18,8 +19,8 @@ import java.io.File;
 @GlobalExceptionHandler
 public class WorkAction implements IWorkAction {
 
-    private FileServiceAPI fileServiceAPI;
-    private WorkViewAPI workViewAPI;
+    private FileServiceAPI fileServiceAPI = BeanConfig.fileServiceApi;
+    private WorkViewAPI workViewAPI = BeanConfig.workViewApi;
 
     /**
      * 打开work_frame

@@ -1,7 +1,5 @@
 package com.rh.note.config;
 
-import com.rh.note.action.IProjectListAction;
-import com.rh.note.action.IWorkAction;
 import com.rh.note.action.ProjectListAction;
 import com.rh.note.action.WorkAction;
 import com.rh.note.api.FileServiceAPI;
@@ -21,15 +19,8 @@ public interface BeanConfig {
     WorkViewAPI workViewApi = new WorkViewAPI();
     //------------------------------------------------api---------------------------------------------------------------
     //------------------------------------------------action------------------------------------------------------------
-    IWorkAction workAction = new WorkAction();
-    //    IWorkAction workAction = proxy.getBean(WorkAction.class)
-//            .setFileServiceAPI(fileServiceApi)
-//            .setWorkViewAPI(workViewApi);
-    IProjectListAction projectListAction = new ProjectListAction();
-//    IProjectListAction projectListAction = proxy.getBean(ProjectListAction.class)
-//            .setFileAPIService(fileServiceApi)
-//            .setProjectListAPI(projectListViewApi)
-//            .setWorkAction(workAction);
+    WorkAction workAction = proxy.getBean(WorkAction.class);
+    ProjectListAction projectListAction = proxy.getBean(ProjectListAction.class);
     //------------------------------------------------action------------------------------------------------------------
 
 }

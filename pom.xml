@@ -26,6 +26,12 @@
     </properties>
 
     <dependencies>
+        <!-- aop -->
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>3.1</version>
+        </dependency>
         <!-- 日志 -->
         <dependency>
             <groupId>org.slf4j</groupId>

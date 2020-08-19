@@ -7,9 +7,14 @@ import lombok.Getter;
  */
 @Getter
 public enum ErrorCodeEnum {
+    /**
+     * 参数错误
+     */
     PARAMETER_ERROR(1000, "参数错误"),
+    /**
+     * 文件读取失败
+     */
     FILE_READ_FAILED(1001, "文件读取失败"),
-    DYNAMIC_PROXY_FAILED(1002, "动态代理失败"),
     ;
     private Integer code;
     private String msg;

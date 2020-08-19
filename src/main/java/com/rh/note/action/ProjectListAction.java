@@ -4,6 +4,7 @@ import com.rh.note.api.FileServiceAPI;
 import com.rh.note.api.ProjectListViewAPI;
 import com.rh.note.aspect.DoActionLog;
 import com.rh.note.aspect.GlobalExceptionHandler;
+import com.rh.note.config.BeanConfig;
 import com.rh.note.view.ProjectListFrameRunView;
 import com.rh.note.view.ProjectListView;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
@@ -14,9 +15,9 @@ import org.apache.commons.lang3.StringUtils;
 @GlobalExceptionHandler
 public class ProjectListAction implements IProjectListAction {
 
-    private FileServiceAPI fileAPIService;
-    private ProjectListViewAPI projectListAPI;
-    private IWorkAction workAction;
+    private FileServiceAPI fileAPIService = BeanConfig.fileServiceApi;
+    private ProjectListViewAPI projectListAPI = BeanConfig.projectListViewApi;
+    private IWorkAction workAction = BeanConfig.workAction;
 
     /**
      * 打开项目
