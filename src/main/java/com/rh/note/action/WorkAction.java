@@ -6,6 +6,7 @@ import com.rh.note.aspect.DoActionLog;
 import com.rh.note.aspect.GlobalExceptionHandler;
 import com.rh.note.config.BeanConfig;
 import com.rh.note.file.AdocFile;
+import com.rh.note.grammar.IncludeGrammar;
 import com.rh.note.grammar.TitleGrammar;
 import lombok.Setter;
 
@@ -79,6 +80,14 @@ public class WorkAction {
     }
 
     /**
+     * 修改include文件名字
+     */
+    @DoActionLog("修改include文件名字")
+    public void rename2(String componentId) throws Exception {
+        workViewAPI.rename2(componentId);
+    }
+
+    /**
      * 显示或隐藏标题列表
      */
     @DoActionLog("显示或隐藏标题列表")
@@ -91,6 +100,10 @@ public class WorkAction {
      */
     @DoActionLog("生成include语法块")
     public void generateIncludeBlock(String componentId) throws Exception {
+        IncludeGrammar includeGrammar = workViewAPI.matchIncludeForTextLine(componentId);
+        if (includeGrammar == null) {
+            return;
+        }
         AdocFile adocFile = workViewAPI.generateIncludeBlock(componentId);
         if (adocFile != null) {
             fileServiceAPI.createFile(adocFile);
@@ -99,11 +112,37 @@ public class WorkAction {
     }
 
     /**
+     * 生成include语法块
+     */
+    @DoActionLog("生成include语法块")
+    public void generateIncludeBlock2(String componentId) throws Exception {
+        IncludeGrammar includeGrammar = workViewAPI.matchIncludeForTextLine(componentId);
+        if (includeGrammar == null) {
+            return;
+        }
+        AdocFile adocFile = workViewAPI.generateIncludeBlock2(componentId);
+        if (adocFile != null) {
+            fileServiceAPI.createFile(adocFile);
+        }
+        this.saveAllEditContent2();
+    }
+
+    /**
      * 保存编辑内容
      */
     @DoActionLog("保存编辑内容")
     public void saveAllEditContent() {
         workViewAPI.saveAllEditContent().forEach(filePath ->
+                fileServiceAPI.openFileOutputStream(filePath));
+        this.loadTitleList();
+    }
+
+    /**
+     * 保存编辑内容
+     */
+    @DoActionLog("保存编辑内容")
+    public void saveAllEditContent2() {
+        workViewAPI.saveAllEditContent2().forEach(filePath ->
                 fileServiceAPI.openFileOutputStream(filePath));
         this.loadTitleList();
     }

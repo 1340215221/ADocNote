@@ -78,6 +78,9 @@ public class TitleGrammar implements IGrammar {
         if (level < titleGrammar.level) {
             return this;
         }
+        if (parentTitle == null) {
+            return null;
+        }
         return parentTitle.findParentOf(titleGrammar);
     }
 

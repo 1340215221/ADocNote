@@ -25,6 +25,19 @@ import java.io.Writer;
 @Slf4j
 public class WorkViewAPI {
     /**
+     * 判断光标所在行是否为include语句
+     * todo 可抽取重复的部分, 调整代码顺序
+     */
+    public IncludeGrammar matchIncludeForTextLine(String componentId) throws Exception {
+        TextAreaRunView textArea = new TextAreaRunView().init(componentId);
+        if (textArea == null) {
+            return null;
+        }
+        String lineContent = textArea.getLineContent();
+        return new IncludeGrammar().initByGrammar(lineContent, textArea.getFilePath());
+    }
+
+    /**
      * 生成include语法块
      */
     public AdocFile generateIncludeBlock(String componentId) throws Exception {
@@ -39,6 +52,23 @@ public class WorkViewAPI {
         }
         // 替换为include语句
         textArea.replaceIncludeGrammar(include);
+        return new AdocFile().init(include);
+    }
+    /**
+     * 生成include语法块
+     */
+    public AdocFile generateIncludeBlock2(String componentId) throws Exception {
+        TextPaneRunView textPane = new TextPaneRunView().init(componentId);
+        if (textPane == null) {
+            return null;
+        }
+        String lineContent = textPane.getLineContent();
+        IncludeGrammar include = new IncludeGrammar().initByGrammar(lineContent, textPane.getFilePath());
+        if (include == null) {
+            return null;
+        }
+        // 替换为include语句
+        textPane.replaceIncludeGrammar(include);
         return new AdocFile().init(include);
     }
 
@@ -166,6 +196,26 @@ public class WorkViewAPI {
     }
 
     /**
+     * include语法重命名
+     */
+    public void rename2(String componentId) throws Exception {
+        TextPaneRunView textPane = new TextPaneRunView().init(componentId);
+        if (textPane == null) {
+            return;
+        }
+        String lineContent = textPane.getLineContent();
+        //获得include语法对象
+        IncludeGrammar include = new IncludeGrammar().init(lineContent);
+        if (include == null) {
+            return;
+        }
+        //弹窗修改为新名字
+        String newTitleName = new InputWindowRunView(include.getTitleName()).getInputValue();
+        //在编辑控件中修改为新的语法语句
+        textPane.replaceName(include.getTitleName(), newTitleName);
+    }
+
+    /**
      * 显示或隐藏标题列表
      */
     public void hiddenOrShowTitleList() {
@@ -186,6 +236,20 @@ public class WorkViewAPI {
     public IForEach<String, Writer> saveAllEditContent() {
         return handler ->
                 TextAreaRunView.forEach(view -> {
+                    if (view == null) {
+                        return;
+                    }
+                    Writer writer = handler.handle(view.getFilePath());
+                    view.write(writer);
+                });
+    }
+
+    /**
+     * 遍历所有编辑控件,并将内容写入文件
+     */
+    public IForEach<String, Writer> saveAllEditContent2() {
+        return handler ->
+                TextPaneRunView.forEach(view -> {
                     if (view == null) {
                         return;
                     }

@@ -112,13 +112,21 @@ public class AdocFile implements IAdocFile {
                 .reduce((a, b) -> {
                     //标题 标题
                     if (a instanceof TitleGrammar && b instanceof TitleGrammar) {
-                        ((TitleGrammar) a).findParentOf((TitleGrammar) b).addChildrenTitle((TitleGrammar) b);
+                        TitleGrammar parent = ((TitleGrammar) a).findParentOf((TitleGrammar) b);
+                        if (parent == null) {
+                            return a;
+                        }
+                        parent.addChildrenTitle((TitleGrammar) b);
                         return b;
                     }
                     //标题 include
                     if (a instanceof TitleGrammar && b instanceof IncludeGrammar) {
                         TitleGrammar targetTitle = ((IncludeGrammar) b).getTargetTitle();
-                        ((TitleGrammar) a).findParentOf(targetTitle).addChildrenTitle(targetTitle);
+                        TitleGrammar parent = ((TitleGrammar) a).findParentOf(targetTitle);
+                        if (parent == null) {
+                            return a;
+                        }
+                        parent.addChildrenTitle(targetTitle);
                         return a;
                     }
                     //include include
