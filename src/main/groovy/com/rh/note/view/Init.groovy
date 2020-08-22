@@ -1,11 +1,13 @@
 package com.rh.note.view
 
 import com.rh.note.util.ISwingBuilder
+import groovy.util.logging.Slf4j
 import org.apache.commons.lang3.StringUtils
 
 /**
  * 控件
  */
+@Slf4j
 abstract class Init<T> {
 
     private T bean
@@ -23,7 +25,7 @@ abstract class Init<T> {
             this.bean = bean
             return this
         } catch (Exception e) {
-            System.err.println String.format("IComponent 获取控件失败=[%s]", componentId)
+            log.error("Init.init error, 获取控件失败, componentId=[{}]", componentId)
             return
         }
     }

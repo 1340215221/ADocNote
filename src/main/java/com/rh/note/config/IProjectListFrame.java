@@ -1,4 +1,4 @@
-package com.rh.note.frame;
+package com.rh.note.config;
 
 import com.rh.note.builder.OpenProjectButtonBuilder;
 import com.rh.note.builder.ProjectListFrameBuilder;

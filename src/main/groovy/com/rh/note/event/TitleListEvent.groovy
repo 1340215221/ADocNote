@@ -1,5 +1,6 @@
 package com.rh.note.event
 
+
 import com.rh.note.action.WorkAction
 import com.rh.note.config.BeanConfig
 

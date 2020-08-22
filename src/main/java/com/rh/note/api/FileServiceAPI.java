@@ -1,7 +1,7 @@
 package com.rh.note.api;
 
 import com.rh.note.constant.ErrorMessage;
-import com.rh.note.exception.AdocException;
+import com.rh.note.exception.NoteException;
 import com.rh.note.file.AdocFile;
 import com.rh.note.file.ProjectDirectory;
 import com.rh.note.file.ReadMeFile;
@@ -78,11 +78,11 @@ public class FileServiceAPI {
         }
         File file = new File(adocFile.getAbsolutePath());
         if (file.exists()) {
-            throw new AdocException(ErrorMessage.file_creation_failed);
+            throw new NoteException(ErrorMessage.file_creation_failed);
         }
         File parentFile = file.getParentFile();
         if (parentFile.exists() && !parentFile.isDirectory()) {
-            throw new AdocException(ErrorMessage.file_creation_failed);
+            throw new NoteException(ErrorMessage.file_creation_failed);
         }
         if (!parentFile.exists()) {
             parentFile.mkdirs();
@@ -93,7 +93,7 @@ public class FileServiceAPI {
             fw = new FileWriter(file);
             fw.write(adocFile.toString());
         } catch (Exception e) {
-            throw new AdocException(ErrorMessage.file_creation_failed);
+            throw new NoteException(ErrorMessage.file_creation_failed);
         }finally {
             IOUtils.closeQuietly(fw);
         }
@@ -149,7 +149,7 @@ public class FileServiceAPI {
             FileOutputStream fos = new FileOutputStream(file);
             return new OutputStreamWriter(fos);
         } catch (Exception e) {
-            throw new AdocException(ErrorMessage.file_read_failed);
+            throw new NoteException(ErrorMessage.file_read_failed);
         }
     }
 }

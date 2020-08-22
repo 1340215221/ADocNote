@@ -3,7 +3,7 @@ package com.rh.note.file;
 import com.rh.note.common.IAdocFile;
 import com.rh.note.common.IGrammar;
 import com.rh.note.constant.ErrorMessage;
-import com.rh.note.exception.AdocException;
+import com.rh.note.exception.NoteException;
 import com.rh.note.grammar.IncludeGrammar;
 import com.rh.note.grammar.TitleGrammar;
 import com.rh.note.grammar.UnknownGrammar;
@@ -112,13 +112,21 @@ public class AdocFile implements IAdocFile {
                 .reduce((a, b) -> {
                     //标题 标题
                     if (a instanceof TitleGrammar && b instanceof TitleGrammar) {
-                        ((TitleGrammar) a).findParentOf((TitleGrammar) b).addChildrenTitle((TitleGrammar) b);
+                        TitleGrammar parent = ((TitleGrammar) a).findParentOf((TitleGrammar) b);
+                        if (parent == null) {
+                            return a;
+                        }
+                        parent.addChildrenTitle((TitleGrammar) b);
                         return b;
                     }
                     //标题 include
                     if (a instanceof TitleGrammar && b instanceof IncludeGrammar) {
                         TitleGrammar targetTitle = ((IncludeGrammar) b).getTargetTitle();
-                        ((TitleGrammar) a).findParentOf(targetTitle).addChildrenTitle(targetTitle);
+                        TitleGrammar parent = ((TitleGrammar) a).findParentOf(targetTitle);
+                        if (parent == null) {
+                            return a;
+                        }
+                        parent.addChildrenTitle(targetTitle);
                         return a;
                     }
                     //include include
@@ -131,7 +139,7 @@ public class AdocFile implements IAdocFile {
                         ((IncludeGrammar) a).getTargetTitle().findParentOf((TitleGrammar) b).addChildrenTitle((TitleGrammar) b);
                         return b;
                     }
-                    throw new AdocException(ErrorMessage.PARAMETER_ERROR);
+                    throw new NoteException(ErrorMessage.PARAMETER_ERROR);
                 });
     }
 
@@ -207,7 +215,7 @@ public class AdocFile implements IAdocFile {
             ) {
                 br.lines().forEach(lineContent -> handleLine.handle(lineNumber.next(), lineContent));
             } catch (Exception e) {
-                throw new AdocException(ErrorMessage.file_read_failed, e);
+                throw new NoteException(ErrorMessage.file_read_failed, e);
             }
         };
     }

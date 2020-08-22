@@ -1,6 +1,7 @@
 package com.rh.note.frame
 
 import com.rh.note.common.IFrame
+import com.rh.note.config.IProjectListFrame
 
 /**
  * 项目列表

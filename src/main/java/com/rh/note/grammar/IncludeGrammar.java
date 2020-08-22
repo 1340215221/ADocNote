@@ -4,8 +4,7 @@ import com.rh.note.common.IAdocFile;
 import com.rh.note.common.IGrammar;
 import com.rh.note.constant.ErrorMessage;
 import com.rh.note.constant.ProjectStructureEnum;
-import com.rh.note.exception.AdocException;
-import com.rh.note.file.ConfigFile;
+import com.rh.note.exception.NoteException;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
@@ -52,12 +51,12 @@ public class IncludeGrammar implements IGrammar {
             return null;
         }
 
-        Matcher matcher = Pattern.compile("^\\s*include::((?:\\.\\.|adoc)[\\\\/][a-zA-Z\u4e00-\u9fa5\\\\/]+)\\.([a-zA-Z0-9]+)\\[(lines[0-9\\.]+){0,1}\\]$").matcher(lineContent);
+        Matcher matcher = Pattern.compile("^\\s*include::((?:\\.\\.|adoc)[\\\\/][a-zA-Z0-9\u4e00-\u9fa5\\\\/\\-_]+)\\.([a-zA-Z0-9]+)\\[(lines[0-9\\.]+){0,1}\\]$").matcher(lineContent);
         if (!matcher.find()) {
             return null;
         }
 
-        targetFilePath = matcher.group(1) + ".adoc"; // todo 待处理 {} 变量
+        targetFilePath = matcher.group(1) + ".adoc";
         fileSuffix = matcher.group(2);
         return this;
     }
@@ -76,7 +75,7 @@ public class IncludeGrammar implements IGrammar {
         if (StringUtils.isBlank(lineContent) || StringUtils.isBlank(filePath)) {
             return null;
         }
-        Matcher matcher = Pattern.compile("^(\\s*)=>([1-9])\\s([\\u4e00-\\u9fa5a-zA-Z0-9_-]+)\\s*$").matcher(lineContent);
+        Matcher matcher = Pattern.compile("^(\\s*)=>([1-9])\\s([\\u4e00-\\u9fa5a-zA-Z0-9_\\-]+)\\s*$").matcher(lineContent);
         if (!matcher.find()) {
             return null;
         }
@@ -97,7 +96,7 @@ public class IncludeGrammar implements IGrammar {
         ProjectStructureEnum parentStructure = Arrays.stream(ProjectStructureEnum.values())
                 .filter(e -> e.match(filePath))
                 .findFirst()
-                .orElseThrow(() -> new AdocException(ErrorMessage.PARAMETER_ERROR));
+                .orElseThrow(() -> new NoteException(ErrorMessage.PARAMETER_ERROR));
         return parentStructure.getChildrenPath() + fileName + ".adoc";
     }
 
@@ -132,7 +131,7 @@ public class IncludeGrammar implements IGrammar {
             return null;
         }
 
-        Matcher matcher = Pattern.compile("^[\\.\\\\/\\u4e00-\\u9fa5a-zA-Z0-9_-]+[\\\\/]([\\u4e00-\\u9fa5a-zA-Z0-9_-]+)\\.adoc$").matcher(targetFilePath);
+        Matcher matcher = Pattern.compile("^[\\.\\\\/\\u4e00-\\u9fa5a-zA-Z0-9_\\-]+[\\\\/]([\\u4e00-\\u9fa5a-zA-Z0-9_\\-]+)\\.adoc$").matcher(targetFilePath);
         if (!matcher.find()) {
             return null;
         }

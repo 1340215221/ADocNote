@@ -1,7 +1,7 @@
 package com.rh.note.constant;
 
 import com.rh.note.common.IAdocFile;
-import com.rh.note.exception.AdocException;
+import com.rh.note.exception.NoteException;
 import com.rh.note.file.ConfigFile;
 import com.rh.note.file.ContentFile;
 import com.rh.note.file.ReadMeFile;
@@ -10,7 +10,6 @@ import com.rh.note.util.BaseEnum;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 
-import java.text.FieldPosition;
 import java.util.Arrays;
 
 /**
@@ -43,12 +42,12 @@ public enum ProjectStructureEnum implements BaseEnum {
 
         @Override
         protected String includePathToFilePath(String filePath) {
-            throw new AdocException(ErrorMessage.PARAMETER_ERROR);
+            throw new NoteException(ErrorMessage.PARAMETER_ERROR);
         }
 
         @Override
         public String generateTargetPathForInclude(String targetFilePath) {
-            throw new AdocException(ErrorMessage.PARAMETER_ERROR);
+            throw new NoteException(ErrorMessage.PARAMETER_ERROR);
         }
     },
     /**
@@ -130,7 +129,7 @@ public enum ProjectStructureEnum implements BaseEnum {
         @Override
         protected String includePathToFilePath(String filePath) {
             if (StringUtils.isBlank(filePath)) {
-                throw new AdocException(ErrorMessage.PARAMETER_ERROR);
+                throw new NoteException(ErrorMessage.PARAMETER_ERROR);
             }
             return "adoc" + filePath.substring(2);
         }
@@ -138,7 +137,7 @@ public enum ProjectStructureEnum implements BaseEnum {
         @Override
         public String generateTargetPathForInclude(String targetFilePath) {
             if (StringUtils.isBlank(targetFilePath)) {
-                throw new AdocException(ErrorMessage.PARAMETER_ERROR);
+                throw new NoteException(ErrorMessage.PARAMETER_ERROR);
             }
             return ".." + targetFilePath.substring(4);
         }
@@ -177,12 +176,12 @@ public enum ProjectStructureEnum implements BaseEnum {
      */
     public static ProjectStructureEnum matchInstance(String filePath) {
         if (StringUtils.isBlank(filePath)) {
-            throw new AdocException(ErrorMessage.PARAMETER_ERROR);
+            throw new NoteException(ErrorMessage.PARAMETER_ERROR);
         }
         return Arrays.stream(values())
                 .filter(e -> e.match(filePath))
                 .findFirst()
-                .orElseThrow(() -> new AdocException(ErrorMessage.PARAMETER_ERROR));
+                .orElseThrow(() -> new NoteException(ErrorMessage.PARAMETER_ERROR));
     }
 
     /**
