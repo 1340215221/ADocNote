@@ -1,6 +1,5 @@
 package com.rh.note.view;
 
-import com.rh.note.builder.TextAreaBuilder;
 import com.rh.note.builder.TextPaneBuilder;
 import org.apache.commons.lang3.StringUtils;
 

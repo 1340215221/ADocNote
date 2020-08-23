@@ -15,6 +15,10 @@ public enum ErrorCodeEnum {
      * 文件读取失败
      */
     FILE_READ_FAILED(1001, "文件读取失败"),
+    /**
+     * 获取当前行内容失败
+     */
+    FAILED_TO_GET_CURRENT_LINE_CONTENT(1002, "获取当前行内容失败"),
     ;
     private Integer code;
     private String msg;

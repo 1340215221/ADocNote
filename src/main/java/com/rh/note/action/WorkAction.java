@@ -6,7 +6,6 @@ import com.rh.note.aspect.DoActionLog;
 import com.rh.note.aspect.GlobalExceptionHandler;
 import com.rh.note.config.BeanConfig;
 import com.rh.note.file.AdocFile;
-import com.rh.note.grammar.IncludeGrammar;
 import com.rh.note.grammar.TitleGrammar;
 import lombok.Setter;
 
@@ -47,20 +46,6 @@ public class WorkAction {
      * 打开选择标题
      */
     @DoActionLog("打开选择标题")
-    public void openAdocFile() {
-        TitleGrammar titleGrammar = workViewAPI.showEditingAreaForExistingSelected();
-        if (titleGrammar == null) {
-            return;
-        }
-        //读取文件内容
-        File file = fileServiceAPI.readTitleFileContent(titleGrammar.getAbsolutePath());
-        workViewAPI.openNewEditingAreaForSelected(titleGrammar.getFilePath(), file);
-    }
-
-    /**
-     * 打开选择标题
-     */
-    @DoActionLog("打开选择标题")
     public void openAdocFile2() {
         TitleGrammar titleGrammar = workViewAPI.showEditingAreaForExistingSelected2();
         if (titleGrammar == null) {
@@ -75,16 +60,12 @@ public class WorkAction {
      * 修改include文件名字
      */
     @DoActionLog("修改include文件名字")
-    public void rename(String componentId) throws Exception {
-        workViewAPI.rename(componentId);
-    }
-
-    /**
-     * 修改include文件名字
-     */
-    @DoActionLog("修改include文件名字")
     public void rename2(String componentId) throws Exception {
+        if (!workViewAPI.selectIncludeLine(componentId)) {
+            return;
+        }
         workViewAPI.rename2(componentId);
+        // todo 修改指向文件名, 和文件根标题
     }
 
     /**
@@ -99,25 +80,8 @@ public class WorkAction {
      * 生成include语法块
      */
     @DoActionLog("生成include语法块")
-    public void generateIncludeBlock(String componentId) throws Exception {
-        IncludeGrammar includeGrammar = workViewAPI.matchIncludeForTextLine(componentId);
-        if (includeGrammar == null) {
-            return;
-        }
-        AdocFile adocFile = workViewAPI.generateIncludeBlock(componentId);
-        if (adocFile != null) {
-            fileServiceAPI.createFile(adocFile);
-        }
-        this.saveAllEditContent();
-    }
-
-    /**
-     * 生成include语法块
-     */
-    @DoActionLog("生成include语法块")
     public void generateIncludeBlock2(String componentId) throws Exception {
-        IncludeGrammar includeGrammar = workViewAPI.matchIncludeForTextLine(componentId);
-        if (includeGrammar == null) {
+        if (workViewAPI.selectIncludeGrammar(componentId)) {
             return;
         }
         AdocFile adocFile = workViewAPI.generateIncludeBlock2(componentId);
@@ -125,16 +89,6 @@ public class WorkAction {
             fileServiceAPI.createFile(adocFile);
         }
         this.saveAllEditContent2();
-    }
-
-    /**
-     * 保存编辑内容
-     */
-    @DoActionLog("保存编辑内容")
-    public void saveAllEditContent() {
-        workViewAPI.saveAllEditContent().forEach(filePath ->
-                fileServiceAPI.openFileOutputStream(filePath));
-        this.loadTitleList();
     }
 
     /**

@@ -51,13 +51,13 @@ public class IncludeGrammar implements IGrammar {
             return null;
         }
 
-        Matcher matcher = Pattern.compile("^\\s*include::((?:\\.\\.|adoc)[\\\\/][a-zA-Z0-9\u4e00-\u9fa5\\\\/\\-_]+)\\.([a-zA-Z0-9]+)\\[(lines[0-9\\.]+){0,1}\\]$").matcher(lineContent);
+        Matcher matcher = Pattern.compile("^(\\s*)include::((?:\\.\\.|adoc)[\\\\/][a-zA-Z0-9\u4e00-\u9fa5\\\\/\\-_]+)\\.([a-zA-Z0-9]+)\\[(lines[0-9\\.]+){0,1}\\]$").matcher(lineContent);
         if (!matcher.find()) {
             return null;
         }
-
-        targetFilePath = matcher.group(1) + ".adoc";
-        fileSuffix = matcher.group(2);
+        indent = matcher.group(1);
+        targetFilePath = matcher.group(2) + ".adoc";
+        fileSuffix = matcher.group(3);
         return this;
     }
 
@@ -142,5 +142,13 @@ public class IncludeGrammar implements IGrammar {
     public String toLineContent() {
         //todo
         return null;
+    }
+
+    public int getStartOffset() {
+        return indent.length() + 9 + targetFilePath.lastIndexOf(File.separator) + 1;
+    }
+
+    public int getEndOffset() {
+        return indent.length() + 9 + targetFilePath.lastIndexOf(".");
     }
 }

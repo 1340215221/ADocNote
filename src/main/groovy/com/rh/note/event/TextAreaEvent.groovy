@@ -18,7 +18,7 @@ class TextAreaEvent {
      */
     static def generateIncludeBlock = {KeyEvent event ->
         if (event.keyCode == 10 && event.modifiers == 0) {
-            workAction.generateIncludeBlock(event.source.name)
+            workAction.generateIncludeBlock2(event.source.name)
         }
     }
 
@@ -27,7 +27,7 @@ class TextAreaEvent {
      */
     static def rename = {KeyEvent event ->
         if (event.keyCode == 117 && event.modifiers == 1) {
-            workAction.rename(event.source.name)
+            workAction.rename2(event.source.name)
         }
     }
 

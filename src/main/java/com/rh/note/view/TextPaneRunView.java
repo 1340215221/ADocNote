@@ -1,17 +1,18 @@
 package com.rh.note.view;
 
 import com.rh.note.builder.TextPaneBuilder;
-import com.rh.note.component.AdocTextArea;
 import com.rh.note.component.NoteTextPane;
 import com.rh.note.constant.ErrorMessage;
+import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.exception.NoteException;
 import com.rh.note.grammar.IncludeGrammar;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.swing.*;
 import javax.swing.text.Caret;
+import javax.swing.text.Element;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -24,6 +25,7 @@ import java.util.List;
 /**
  * 编辑区
  */
+@Slf4j
 public class TextPaneRunView extends Init<NoteTextPane> {
 
     /**
@@ -57,7 +59,7 @@ public class TextPaneRunView extends Init<NoteTextPane> {
         try (InputStream is = new FileInputStream(file); Reader read = new InputStreamReader(is)) {
             textPane().read(read, null);
         } catch (Exception e) {
-            throw new NoteException(ErrorMessage.file_read_failed);
+            throw new NoteException(ErrorMessage.file_read_failed, e);
         }
     }
 
@@ -104,26 +106,73 @@ public class TextPaneRunView extends Init<NoteTextPane> {
      */
     public String getLineContent() {
         Caret caret = textPane().getCaret();
-        // todo
-//        int line = textPane().getLineOfOffset(caret.getDot());
-//        int startOffset = textPane().getLineStartOffset(line);
-//        int endOffset = textPane().getLineEndOffset(line);
-//        return textPane().getText(startOffset, endOffset - startOffset);
-        return null;
+        Element rootElement = textPane().getDocument().getDefaultRootElement();
+        int index = rootElement.getElementIndex(caret.getDot());
+        if (index < 0) {
+            log.error(ErrorCodeEnum.FAILED_TO_GET_CURRENT_LINE_CONTENT.getMsg());
+            return "";
+        }
+        Element element = rootElement.getElement(index);
+        if (element == null) {
+            log.error(ErrorCodeEnum.FAILED_TO_GET_CURRENT_LINE_CONTENT.getMsg());
+            return "";
+        }
+        try {
+            return textPane().getText(element.getStartOffset(), element.getEndOffset() - element.getStartOffset());
+        } catch (Exception e) {
+            log.error(ErrorCodeEnum.FAILED_TO_GET_CURRENT_LINE_CONTENT.getMsg(), e);
+            return "";
+        }
     }
 
     /**
-     * 替换include语法块
+     * 替换选中内容
      */
-    public void replaceIncludeGrammar(IncludeGrammar include) {
-        //todo
+    public void replaceSelectContent(String newContent) {
+        if (StringUtils.isBlank(newContent)) {
+            return;
+        }
+        textPane().replaceSelection(newContent);
     }
 
     /**
-     * 在编辑控件中修改为新的语法语句
+     * 选择当前行
      */
-    public void replaceName(String titleName, String newTitleName) {
-        //todo
+    public boolean selectCurrentLine() {
+        int dot = textPane().getCaret().getDot();
+        Element rootElement = textPane().getDocument().getDefaultRootElement();
+        int index = rootElement.getElementIndex(dot);
+        if (index < 0) {
+            return false;
+        }
+        Element element = rootElement.getElement(index);
+        if (element == null) {
+            return false;
+        }
+        textPane().select(element.getStartOffset(), element.getEndOffset() - 1);
+        return true;
+    }
+
+    /**
+     * 选择include文件名
+     */
+    public boolean selectIncludeFileName(IncludeGrammar includeGrammar) {
+        if (includeGrammar == null) {
+            return false;
+        }
+        int dot = textPane().getCaret().getDot();
+        Element rootElement = textPane().getDocument().getDefaultRootElement();
+        int index = rootElement.getElementIndex(dot);
+        if (index < 0) {
+            return false;
+        }
+        Element element = rootElement.getElement(index);
+        if (element == null) {
+            return false;
+        }
+        textPane().select(element.getStartOffset() + includeGrammar.getStartOffset(),
+                element.getStartOffset() + includeGrammar.getEndOffset());
+        return true;
     }
 
     /**

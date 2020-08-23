@@ -1,6 +1,5 @@
 package com.rh.note.api;
 
-import com.rh.note.builder.TextPaneBuilder;
 import com.rh.note.common.IForEach;
 import com.rh.note.file.AdocFile;
 import com.rh.note.grammar.IncludeGrammar;
@@ -10,8 +9,6 @@ import com.rh.note.view.EditAreaView;
 import com.rh.note.view.InputWindowRunView;
 import com.rh.note.view.ModelView;
 import com.rh.note.view.RootNodeRunView;
-import com.rh.note.view.TextAreaRunView;
-import com.rh.note.view.TextAreaScrollView;
 import com.rh.note.view.TextPaneRunView;
 import com.rh.note.view.TextPaneScrollView;
 import com.rh.note.view.TitleListView;
@@ -24,36 +21,6 @@ import java.io.Writer;
 
 @Slf4j
 public class WorkViewAPI {
-    /**
-     * 判断光标所在行是否为include语句
-     * todo 可抽取重复的部分, 调整代码顺序
-     */
-    public IncludeGrammar matchIncludeForTextLine(String componentId) throws Exception {
-        TextAreaRunView textArea = new TextAreaRunView().init(componentId);
-        if (textArea == null) {
-            return null;
-        }
-        String lineContent = textArea.getLineContent();
-        return new IncludeGrammar().initByGrammar(lineContent, textArea.getFilePath());
-    }
-
-    /**
-     * 生成include语法块
-     */
-    public AdocFile generateIncludeBlock(String componentId) throws Exception {
-        TextAreaRunView textArea = new TextAreaRunView().init(componentId);
-        if (textArea == null) {
-            return null;
-        }
-        String lineContent = textArea.getLineContent();
-        IncludeGrammar include = new IncludeGrammar().initByGrammar(lineContent, textArea.getFilePath());
-        if (include == null) {
-            return null;
-        }
-        // 替换为include语句
-        textArea.replaceIncludeGrammar(include);
-        return new AdocFile().init(include);
-    }
     /**
      * 生成include语法块
      */
@@ -68,7 +35,7 @@ public class WorkViewAPI {
             return null;
         }
         // 替换为include语句
-        textPane.replaceIncludeGrammar(include);
+        textPane.replaceSelectContent(include.generateGrammar());
         return new AdocFile().init(include);
     }
 
@@ -102,28 +69,6 @@ public class WorkViewAPI {
     /**
      * 展示已打开的编辑区,通过被选择的标题
      */
-    public TitleGrammar showEditingAreaForExistingSelected() {
-        TreeView tree = new TreeView().init();
-        if (tree == null) {
-            return null;
-        }
-        TitleGrammar title = tree.getSelectionUserObject();
-        if (title == null) {
-            return null;
-        }
-        log.info("TextAreaScrollView 将尝试获取已打开的编辑区");
-        TextAreaScrollView textAreaScroll = new TextAreaScrollView().init(title.getFilePath());
-        if (textAreaScroll == null) {
-            return title;
-        }
-        EditAreaView editArea = new EditAreaView().init();
-        editArea.show(textAreaScroll);
-        return null;
-    }
-
-    /**
-     * 展示已打开的编辑区,通过被选择的标题
-     */
     public TitleGrammar showEditingAreaForExistingSelected2() {
         TreeView tree = new TreeView().init();
         if (tree == null) {
@@ -146,22 +91,6 @@ public class WorkViewAPI {
     /**
      * 打开新的编辑区,通过被选择的标题
      */
-    public void openNewEditingAreaForSelected(String filePath, File file) {
-        //创建添加编辑区控件
-        TextAreaRunView.create(filePath);
-        TextAreaScrollView tas = new TextAreaScrollView().init(filePath);
-        EditAreaView editArea = new EditAreaView().init();
-        tas.addTo(editArea, file);
-        editArea.showLast();
-
-        //将数据显示到编辑区
-        TextAreaRunView textArea = new TextAreaRunView().initByFilePath(filePath);
-        textArea.read(file);
-    }
-
-    /**
-     * 打开新的编辑区,通过被选择的标题
-     */
     public void openNewEditingAreaForSelected2(String filePath, File file) {
         //创建添加编辑区控件
         TextPaneRunView.create(filePath);
@@ -173,26 +102,6 @@ public class WorkViewAPI {
         //将数据显示到编辑区
         TextPaneRunView textPane = new TextPaneRunView().initByFilePath(filePath);
         textPane.read(file);
-    }
-
-    /**
-     * include语法重命名
-     */
-    public void rename(String componentId) throws Exception {
-        TextAreaRunView textArea = new TextAreaRunView().init(componentId);
-        if (textArea == null) {
-            return;
-        }
-        String lineContent = textArea.getLineContent();
-        //获得include语法对象
-        IncludeGrammar include = new IncludeGrammar().init(lineContent);
-        if (include == null) {
-            return;
-        }
-        //弹窗修改为新名字
-        String newTitleName = new InputWindowRunView(include.getTitleName()).getInputValue();
-        //在编辑控件中修改为新的语法语句
-        textArea.replaceName(include.getTitleName(), newTitleName);
     }
 
     /**
@@ -212,7 +121,7 @@ public class WorkViewAPI {
         //弹窗修改为新名字
         String newTitleName = new InputWindowRunView(include.getTitleName()).getInputValue();
         //在编辑控件中修改为新的语法语句
-        textPane.replaceName(include.getTitleName(), newTitleName);
+        textPane.replaceSelectContent(newTitleName);
     }
 
     /**
@@ -233,20 +142,6 @@ public class WorkViewAPI {
     /**
      * 遍历所有编辑控件,并将内容写入文件
      */
-    public IForEach<String, Writer> saveAllEditContent() {
-        return handler ->
-                TextAreaRunView.forEach(view -> {
-                    if (view == null) {
-                        return;
-                    }
-                    Writer writer = handler.handle(view.getFilePath());
-                    view.write(writer);
-                });
-    }
-
-    /**
-     * 遍历所有编辑控件,并将内容写入文件
-     */
     public IForEach<String, Writer> saveAllEditContent2() {
         return handler ->
                 TextPaneRunView.forEach(view -> {
@@ -256,5 +151,37 @@ public class WorkViewAPI {
                     Writer writer = handler.handle(view.getFilePath());
                     view.write(writer);
                 });
+    }
+
+    /**
+     * 选择include行
+     */
+    public boolean selectIncludeLine(String componentId) {
+        TextPaneRunView textPane = new TextPaneRunView().init(componentId);
+        if (textPane == null) {
+            return false;
+        }
+        String lineContent = textPane.getLineContent();
+        IncludeGrammar includeGrammar = new IncludeGrammar().init(lineContent);
+        if (includeGrammar == null) {
+            return false;
+        }
+        return textPane.selectIncludeFileName(includeGrammar);
+    }
+
+    /**
+     * 选择include语法
+     */
+    public boolean selectIncludeGrammar(String componentId) {
+        TextPaneRunView textPane = new TextPaneRunView().init(componentId);
+        if (textPane == null) {
+            return false;
+        }
+        String lineContent = textPane.getLineContent();
+        IncludeGrammar includeGrammar = new IncludeGrammar().initByGrammar(lineContent, textPane.getFilePath());
+        if (includeGrammar == null) {
+            return false;
+        }
+        return textPane.selectCurrentLine();
     }
 }

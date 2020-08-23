@@ -16,13 +16,13 @@ public class NoteTextPane extends JTextPane {
      * adoc对象
      */
     @NonNull
-    private final AdocFile file;
+    private final AdocFile adocFile;
 
     /**
      * 获得编辑文件路径
      */
     public String getFilePath() {
-        return file.getFilePath();
+        return adocFile.getFilePath();
     }
 
 }
