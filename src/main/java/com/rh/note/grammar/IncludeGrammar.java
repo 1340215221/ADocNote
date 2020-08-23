@@ -5,6 +5,7 @@ import com.rh.note.common.IGrammar;
 import com.rh.note.constant.ErrorMessage;
 import com.rh.note.constant.ProjectStructureEnum;
 import com.rh.note.exception.NoteException;
+import com.rh.note.file.ProjectDirectory;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
@@ -150,5 +151,13 @@ public class IncludeGrammar implements IGrammar {
 
     public int getEndOffset() {
         return indent.length() + 9 + targetFilePath.lastIndexOf(".");
+    }
+
+    /**
+     * 得到指向文件的绝对路径
+     * todo 可以将指向文件的逻辑抽取到 targetTitle 对象里
+     */
+    public String getTargetFileAbsolutePath() {
+        return new ProjectDirectory().getAbsolutePath() + ProjectStructureEnum.generateIncludeTargetPath(this.targetFilePath);
     }
 }

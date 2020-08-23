@@ -8,6 +8,7 @@ import com.rh.note.config.BeanConfig;
 import com.rh.note.file.AdocFile;
 import com.rh.note.grammar.TitleGrammar;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 
@@ -64,8 +65,19 @@ public class WorkAction {
         if (!workViewAPI.selectIncludeLine(componentId)) {
             return;
         }
-        workViewAPI.rename(componentId);
+        String newName = workViewAPI.rename(componentId);
+        if (StringUtils.isBlank(newName)) {
+            return;
+        }
+        String includeFilePath = workViewAPI.changeRootTitleOfIncludeFile(componentId, newName);
+        if (StringUtils.isBlank(includeFilePath)) {
+            return;
+        }
+        workViewAPI.saveAllEditContent();
+        String filePath = workViewAPI.getIncludeFilePathByTextPaneId(componentId);
         // todo 修改指向文件名, 和文件根标题
+        fileServiceAPI.changeFileName(filePath, newName);
+        // todo 重新打开指向文件的编辑区
     }
 
     /**

@@ -15,6 +15,7 @@ import com.rh.note.view.TitleListView;
 import com.rh.note.view.TreeView;
 import com.rh.note.view.WorkFrameRunView;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.Writer;
@@ -107,21 +108,22 @@ public class WorkViewAPI {
     /**
      * include语法重命名
      */
-    public void rename(String componentId) {
+    public String rename(String componentId) {
         TextPaneRunView textPane = new TextPaneRunView().init(componentId);
         if (textPane == null) {
-            return;
+            return null;
         }
         String lineContent = textPane.getLineContent();
         //获得include语法对象
         IncludeGrammar include = new IncludeGrammar().init(lineContent);
         if (include == null) {
-            return;
+            return null;
         }
         //弹窗修改为新名字
         String newTitleName = new InputWindowRunView(include.getTitleName()).getInputValue();
         //在编辑控件中修改为新的语法语句
         textPane.replaceSelectContent(newTitleName);
+        return newTitleName;
     }
 
     /**
@@ -183,5 +185,21 @@ public class WorkViewAPI {
             return false;
         }
         return textPane.selectCurrentLine();
+    }
+
+    /**
+     * 获得include指向文件路径, 通过控件id
+     */
+    public String getIncludeFilePathByTextPaneId(String componentId) {
+        if (StringUtils.isBlank(componentId)) {
+            return null;
+        }
+        TextPaneRunView textPane = new TextPaneRunView().init(componentId);
+        if (textPane == null) {
+            return null;
+        }
+        String lineContent = textPane.getLineContent();
+        IncludeGrammar includeGrammar = new IncludeGrammar().init(lineContent);
+        return includeGrammar.getTargetFileAbsolutePath();
     }
 }

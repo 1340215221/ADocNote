@@ -152,4 +152,10 @@ public class FileServiceAPI {
             throw new NoteException(ErrorMessage.file_read_failed);
         }
     }
+
+    /**
+     * 修改文件名
+     */
+    public void changeFileName(String filePath, String newName) {
+    }
 }
