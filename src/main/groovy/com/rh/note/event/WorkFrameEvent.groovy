@@ -25,7 +25,7 @@ class WorkFrameEvent {
 
         def keyEvent = event as KeyEvent
         if (keyEvent.keyCode == 83 && keyEvent.modifiers == 2) {
-            workAction.saveAllEditContent2()
+            workAction.saveAllEditContent()
         }
     }
 

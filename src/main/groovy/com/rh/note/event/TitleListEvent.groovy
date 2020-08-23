@@ -17,7 +17,7 @@ class TitleListEvent {
      * 打开标题内容
      */
     static def mouseClicked = { MouseEvent e ->
-        workAction.openAdocFile2()
+        workAction.openAdocFile()
     }
 
     /**

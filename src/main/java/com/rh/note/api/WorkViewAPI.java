@@ -24,7 +24,7 @@ public class WorkViewAPI {
     /**
      * 生成include语法块
      */
-    public AdocFile generateIncludeBlock2(String componentId) throws Exception {
+    public AdocFile generateIncludeBlock(String componentId) throws Exception {
         TextPaneRunView textPane = new TextPaneRunView().init(componentId);
         if (textPane == null) {
             return null;
@@ -107,7 +107,7 @@ public class WorkViewAPI {
     /**
      * include语法重命名
      */
-    public void rename2(String componentId) throws Exception {
+    public void rename(String componentId) {
         TextPaneRunView textPane = new TextPaneRunView().init(componentId);
         if (textPane == null) {
             return;
@@ -142,7 +142,7 @@ public class WorkViewAPI {
     /**
      * 遍历所有编辑控件,并将内容写入文件
      */
-    public IForEach<String, Writer> saveAllEditContent2() {
+    public IForEach<String, Writer> saveAllEditContent() {
         return handler ->
                 TextPaneRunView.forEach(view -> {
                     if (view == null) {
