@@ -9,6 +9,7 @@ class ProjectListPanelBuilder implements SwingComponent {
     @Override
     void init(Closure children) {
         swingBuilder.panel(id: id,
+                preferredSize: [800, 500],
                 background: Color.red,
                 layout: new BorderLayout(),
         ){
