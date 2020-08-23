@@ -2,6 +2,7 @@ package com.rh.note.builder
 
 import com.rh.note.util.SwingComponent
 
+import javax.swing.JTabbedPane
 import java.awt.*
 
 /**
@@ -13,6 +14,7 @@ class EditAreaBuilder implements SwingComponent {
         swingBuilder.tabbedPane(id: id,
 //                background: Color.cyan,
                 constraints: BorderLayout.CENTER,
+                tabLayoutPolicy: JTabbedPane.SCROLL_TAB_LAYOUT,
         ){
             children()
         }

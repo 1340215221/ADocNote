@@ -139,7 +139,7 @@ public class WorkViewAPI {
             return title;
         }
         EditAreaView editArea = new EditAreaView().init();
-        editArea.show(textPaneScroll.getId());
+//        editArea.show(textPaneScroll.getId()); todo
         return null;
     }
 

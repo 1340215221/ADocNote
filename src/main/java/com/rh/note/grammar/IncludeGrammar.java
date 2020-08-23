@@ -65,7 +65,7 @@ public class IncludeGrammar implements IGrammar {
      * 获得主标题名字
      */
     public String getTitleName() {
-        return filePath.substring(filePath.lastIndexOf(File.separator) + 1, filePath.length() - 5);
+        return targetFilePath.substring(targetFilePath.lastIndexOf(File.separator) + 1, targetFilePath.length() - 5);
     }
 
     /**

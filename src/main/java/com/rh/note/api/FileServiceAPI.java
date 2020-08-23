@@ -29,7 +29,7 @@ public class FileServiceAPI {
     public RecentlyOpenedRecordVO[] writeOpenRecord() {
         //todo
         RecentlyOpenedRecordVO vo1 = new RecentlyOpenedRecordVO();
-        vo1.setProjectPath("/home/hang/java-note");
+        vo1.setProjectPath("/home/hang/Documents/Java-not");
         vo1.setProjectName("java笔记");
         RecentlyOpenedRecordVO vo2 = new RecentlyOpenedRecordVO();
         vo2.setProjectPath("/home/hang/life-note");

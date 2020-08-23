@@ -108,6 +108,7 @@ public class AdocFile implements IAdocFile {
             grammars.addAll(includeGrammars);
         }
         grammars.stream()
+                .filter(grammar -> !(grammar instanceof IncludeGrammar && ((IncludeGrammar) grammar).getTargetTitle() == null))
                 .sorted(Comparator.comparing(IGrammar::getLineNumber))
                 .reduce((a, b) -> {
                     //标题 标题
