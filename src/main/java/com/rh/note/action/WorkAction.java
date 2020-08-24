@@ -48,13 +48,13 @@ public class WorkAction {
      */
     @DoActionLog("打开选择标题")
     public void openAdocFile() {
-        TitleGrammar titleGrammar = workViewAPI.showEditingAreaForExistingSelected2();
+        TitleGrammar titleGrammar = workViewAPI.showEditingAreaForExistingSelected();
         if (titleGrammar == null) {
             return;
         }
         //读取文件内容
         File file = fileServiceAPI.readTitleFileContent(titleGrammar.getAbsolutePath());
-        workViewAPI.openNewEditingAreaForSelected2(titleGrammar.getFilePath(), file);
+        workViewAPI.openNewEditingAreaForSelected(titleGrammar.getFilePath(), file);
     }
 
     /**
@@ -69,12 +69,9 @@ public class WorkAction {
         if (StringUtils.isBlank(newName)) {
             return;
         }
-        String includeFilePath = workViewAPI.changeRootTitleOfIncludeFile(componentId, newName);
-        if (StringUtils.isBlank(includeFilePath)) {
-            return;
-        }
         workViewAPI.saveAllEditContent();
         String filePath = workViewAPI.getIncludeFilePathByTextPaneId(componentId);
+        fileServiceAPI.changeRootTitleOfIncludeFile(filePath, newName);
         // todo 修改指向文件名, 和文件根标题
         fileServiceAPI.changeFileName(filePath, newName);
         // todo 重新打开指向文件的编辑区

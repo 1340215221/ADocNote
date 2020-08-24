@@ -70,7 +70,7 @@ public class WorkViewAPI {
     /**
      * 展示已打开的编辑区,通过被选择的标题
      */
-    public TitleGrammar showEditingAreaForExistingSelected2() {
+    public TitleGrammar showEditingAreaForExistingSelected() {
         TreeView tree = new TreeView().init();
         if (tree == null) {
             return null;
@@ -92,7 +92,7 @@ public class WorkViewAPI {
     /**
      * 打开新的编辑区,通过被选择的标题
      */
-    public void openNewEditingAreaForSelected2(String filePath, File file) {
+    public void openNewEditingAreaForSelected(String filePath, File file) {
         //创建添加编辑区控件
         TextPaneRunView.create(filePath);
         TextPaneScrollView tps = new TextPaneScrollView().init(filePath);

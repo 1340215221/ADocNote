@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -154,8 +155,33 @@ public class FileServiceAPI {
     }
 
     /**
+     * 修改文件根标题名
+     */
+    public void changeRootTitleOfIncludeFile(String filePath, String newName) {
+        if (StringUtils.isBlank(filePath) || StringUtils.isBlank(newName)) {
+            return;
+        }
+        File file = new File(filePath);
+        if (!file.exists() || !file.isFile()) {
+            return;
+        }
+        new FileReader()
+    }
+
+    /**
      * 修改文件名
      */
     public void changeFileName(String filePath, String newName) {
+        if (StringUtils.isBlank(filePath) || StringUtils.isBlank(newName)) {
+            return;
+        }
+        File file = new File(filePath);
+        if (!file.exists() || !file.isFile()) {
+            return;
+        }
+        int start = filePath.lastIndexOf(File.separator);
+        int end = filePath.lastIndexOf(".");
+        filePath.re
+        file.renameTo(new File())
     }
 }
