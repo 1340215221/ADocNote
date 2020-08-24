@@ -19,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.Writer;
+import java.util.regex.Pattern;
 
 @Slf4j
 public class WorkViewAPI {
@@ -201,5 +202,23 @@ public class WorkViewAPI {
         String lineContent = textPane.getLineContent();
         IncludeGrammar includeGrammar = new IncludeGrammar().init(lineContent);
         return includeGrammar.getTargetFileAbsolutePath();
+    }
+
+    /**
+     * 关闭include指向文件编辑区
+     */
+    public void closeIncludeTargetTextPane(String absolutePath) {
+        if (StringUtils.isBlank(absolutePath)) {
+            return;
+        }
+        int start = absolutePath.lastIndexOf("/adoc/") + 1;
+        // 获得项目内的相对路径
+        String filePath = absolutePath.substring(start);
+        TextPaneScrollView textPaneScroll = new TextPaneScrollView().init(filePath);
+        if (textPaneScroll == null) {
+            return;
+        }
+        EditAreaView editArea = new EditAreaView().init();
+        textPaneScroll.closeFrom(editArea);
     }
 }

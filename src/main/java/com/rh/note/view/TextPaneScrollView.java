@@ -44,4 +44,15 @@ public class TextPaneScrollView extends Init<JScrollPane> {
 
         editArea.getBean().add(scrollPane(), scrollPane().getName());
     }
+
+    /**
+     * 关闭当前编辑区
+     */
+    public void closeFrom(EditAreaView editArea) {
+        if (editArea == null) {
+            return;
+        }
+        editArea.getBean().remove(scrollPane());
+    }
+
 }

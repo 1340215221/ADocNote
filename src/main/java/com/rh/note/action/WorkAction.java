@@ -5,6 +5,8 @@ import com.rh.note.api.WorkViewAPI;
 import com.rh.note.aspect.DoActionLog;
 import com.rh.note.aspect.GlobalExceptionHandler;
 import com.rh.note.config.BeanConfig;
+import com.rh.note.exception.ErrorCodeEnum;
+import com.rh.note.exception.NoteException;
 import com.rh.note.file.AdocFile;
 import com.rh.note.grammar.TitleGrammar;
 import lombok.Setter;
@@ -65,16 +67,20 @@ public class WorkAction {
         if (!workViewAPI.selectIncludeLine(componentId)) {
             return;
         }
+        String absolutePath = workViewAPI.getIncludeFilePathByTextPaneId(componentId);
+        if (fileServiceAPI.checkFileIsExists(absolutePath)) {
+            throw new NoteException(ErrorCodeEnum.FILE_ALREADY_EXIST);
+        }
         String newName = workViewAPI.rename(componentId);
         if (StringUtils.isBlank(newName)) {
             return;
         }
         workViewAPI.saveAllEditContent();
-        String filePath = workViewAPI.getIncludeFilePathByTextPaneId(componentId);
-        fileServiceAPI.changeRootTitleOfIncludeFile(filePath, newName);
+        fileServiceAPI.changeRootTitleOfIncludeFile(absolutePath, newName);
         // todo 修改指向文件名, 和文件根标题
-        fileServiceAPI.changeFileName(filePath, newName);
+        fileServiceAPI.changeFileName(absolutePath, newName);
         // todo 重新打开指向文件的编辑区
+        workViewAPI.closeIncludeTargetTextPane(absolutePath);
     }
 
     /**

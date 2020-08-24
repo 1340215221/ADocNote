@@ -1,22 +1,28 @@
 package com.rh.note.api;
 
 import com.rh.note.constant.ErrorMessage;
+import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.exception.NoteException;
 import com.rh.note.file.AdocFile;
 import com.rh.note.file.ProjectDirectory;
 import com.rh.note.file.ReadMeFile;
 import com.rh.note.grammar.TitleGrammar;
+import com.rh.note.view.TextPaneRunView;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
 import lombok.Setter;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * 文件操作api
@@ -157,15 +163,41 @@ public class FileServiceAPI {
     /**
      * 修改文件根标题名
      */
-    public void changeRootTitleOfIncludeFile(String filePath, String newName) {
-        if (StringUtils.isBlank(filePath) || StringUtils.isBlank(newName)) {
+    public void changeRootTitleOfIncludeFile(String absolutePath, String newName) {
+        if (StringUtils.isBlank(absolutePath) || StringUtils.isBlank(newName)) {
             return;
         }
-        File file = new File(filePath);
+        File file = new File(absolutePath);
         if (!file.exists() || !file.isFile()) {
             return;
         }
-        new FileReader()
+        int start = absolutePath.lastIndexOf(File.separator) + 1;
+        int end = absolutePath.lastIndexOf(".");
+        String fileName = absolutePath.substring(start, end);
+        String fileContent = null;
+        try (FileReader fileReader = new FileReader(file);BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+            fileContent = bufferedReader.lines().map(lineContent -> {
+                if (StringUtils.isBlank(lineContent)) {
+                    return lineContent;
+                }
+                Matcher matcher = Pattern.compile("^(=+)\\s+" + fileName + "\\s*$").matcher(lineContent);
+                if (matcher.find()) {
+                    String level = matcher.group(1);
+                    return level + " " + newName;
+                }
+                return lineContent;
+            }).collect(Collectors.joining("\n"));
+            if (StringUtils.isBlank(fileContent)) {
+                return;
+            }
+        } catch (Exception e) {
+            throw new NoteException(ErrorCodeEnum.FILE_READ_FAILED, e);
+        }
+        try (FileWriter fileWriter = new FileWriter(file)) {
+            fileWriter.write(fileContent);
+        } catch (Exception e) {
+            throw new NoteException(ErrorCodeEnum.FILE_WRITE_FAILED, e);
+        }
     }
 
     /**
@@ -179,9 +211,23 @@ public class FileServiceAPI {
         if (!file.exists() || !file.isFile()) {
             return;
         }
-        int start = filePath.lastIndexOf(File.separator);
+        //todo 这里没考虑没有文件后缀的情况
+        int start = filePath.lastIndexOf(File.separator) + 1;
         int end = filePath.lastIndexOf(".");
-        filePath.re
-        file.renameTo(new File())
+        String newFilePath = filePath.substring(0, start) + newName + filePath.substring(end, filePath.length());
+        // todo 这里没有处理文件已存在的情况
+        File newFile = new File(newFilePath);
+        file.renameTo(newFile);
+    }
+
+    /**
+     * 判断文件是否存在
+     */
+    public boolean checkFileIsExists(String absolutePath) {
+        if (StringUtils.isBlank(absolutePath)) {
+            return true;
+        }
+        File file = new File(absolutePath);
+        return file.exists();
     }
 }

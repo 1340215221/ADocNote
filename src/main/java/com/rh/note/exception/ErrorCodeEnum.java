@@ -7,18 +7,11 @@ import lombok.Getter;
  */
 @Getter
 public enum ErrorCodeEnum {
-    /**
-     * 参数错误
-     */
     PARAMETER_ERROR(1000, "参数错误"),
-    /**
-     * 文件读取失败
-     */
     FILE_READ_FAILED(1001, "文件读取失败"),
-    /**
-     * 获取当前行内容失败
-     */
     FAILED_TO_GET_CURRENT_LINE_CONTENT(1002, "获取当前行内容失败"),
+    FILE_WRITE_FAILED(1003, "文件写入失败"),
+    FILE_ALREADY_EXIST(1004, "文件已存在"),
     ;
     private Integer code;
     private String msg;
