@@ -2,6 +2,10 @@ package com.rh.note.action;
 
 public interface IWorkAction {
     /**
+     * 判断当前行是否为include语法
+     */
+    boolean isIncludeGrammarLine(String componentId);
+    /**
      * 生成include语法块
      */
     void generateIncludeBlock(String componentId) throws Exception;
@@ -25,4 +29,9 @@ public interface IWorkAction {
      * 全局保存
      */
     void saveAllEditContent();
+
+    /**
+     * 输入回车
+     */
+    void insertEnter(String componentId) throws Exception;
 }

@@ -1,10 +1,16 @@
 package com.rh.note.builder
 
+import com.rh.note.component.NoteTextPane
 import com.rh.note.event.TextAreaEvent
 import com.rh.note.util.SwingComponent
 
+import javax.swing.*
 import javax.swing.text.DefaultStyledDocument
+import javax.swing.text.JTextComponent
+import javax.swing.text.TextAction
 import java.awt.*
+import java.awt.event.ActionEvent
+import java.awt.event.KeyEvent
 
 /**
  * 编辑区
@@ -29,11 +35,12 @@ class TextPaneBuilder implements SwingComponent {
                     styledDocument: new DefaultStyledDocument(),
                     font: new Font(null, 0, 17),
                     keyPressed: {
-                        TextAreaEvent.generateIncludeBlock(it)
                         TextAreaEvent.rename(it)
                     },
                     filePath: filePath,
-            )
+            ) {
+                addKeymap()
+            }
         }
 
         swingBuilder.scrollPane(id: scrollId(filePath),
@@ -42,6 +49,22 @@ class TextPaneBuilder implements SwingComponent {
             textPane()
         }
     }
+
+    /**
+     * 添加keymap
+     */
+    void addKeymap() {
+        def textPane = swingBuilder."${id(filePath)}" as NoteTextPane
+        def newKeymap = JTextComponent.addKeymap("textPane", textPane.keymap)
+        // 添加 回车 事件
+        newKeymap.addActionForKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), new TextAction('textPane') {
+            @Override
+            void actionPerformed(ActionEvent e) {
+                TextAreaEvent.generateIncludeBlock(e.source.name)
+            }
+        })
+        textPane.setKeymap(newKeymap)
+    };
 
     static String id(String filePath) {
         return "text_pane_${filePath}"

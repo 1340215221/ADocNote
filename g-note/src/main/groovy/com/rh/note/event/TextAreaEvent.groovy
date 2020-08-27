@@ -2,6 +2,7 @@ package com.rh.note.event
 
 import com.rh.note.action.IWorkAction
 import com.rh.note.config.ActionConfig
+import org.apache.commons.lang3.StringUtils
 
 import java.awt.event.KeyEvent
 
@@ -15,10 +16,12 @@ class TextAreaEvent {
     /**
      * include语法块生成
      */
-    static def generateIncludeBlock = {KeyEvent event ->
-        if (event.keyCode == 10 && event.modifiers == 0) {
-            workAction.generateIncludeBlock(event.source.name)
+    static def generateIncludeBlock = { String componentId ->
+        if (StringUtils.isNotBlank(componentId) || !workAction.isIncludeGrammarLine(componentId)) {
+            workAction.insertEnter(componentId)
+            return
         }
+        workAction.generateIncludeBlock(componentId)
     }
 
     /**

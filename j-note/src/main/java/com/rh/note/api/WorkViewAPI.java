@@ -31,8 +31,8 @@ public class WorkViewAPI {
         if (textPane == null) {
             return null;
         }
-        String lineContent = textPane.getLineContent();
-        IncludeGrammar include = new IncludeGrammar().initByGrammar(lineContent, textPane.getFilePath());
+        String selectContent = textPane.getSelectContent();
+        IncludeGrammar include = new IncludeGrammar().initByGrammar(selectContent, textPane.getFilePath());
         if (include == null) {
             return null;
         }
@@ -220,5 +220,29 @@ public class WorkViewAPI {
         }
         EditAreaView editArea = new EditAreaView().init();
         textPaneScroll.closeFrom(editArea);
+    }
+
+    /**
+     * 输入回车
+     */
+    public void insertEnter(String componentId) throws Exception {
+        TextPaneRunView textPane = new TextPaneRunView().init(componentId);
+        if (textPane == null) {
+            return;
+        }
+        textPane.insertEnter();
+    }
+
+    /**
+     * 判断当前行是否为include语法
+     */
+    public boolean isIncludeGrammarLine(String componentId) {
+        TextPaneRunView textPane = new TextPaneRunView().init(componentId);
+        if (textPane == null) {
+            return false;
+        }
+        String lineContent = textPane.getLineContent();
+        IncludeGrammar includeGrammar = new IncludeGrammar().initByGrammar(lineContent, textPane.getFilePath());
+        return includeGrammar != null;
     }
 }

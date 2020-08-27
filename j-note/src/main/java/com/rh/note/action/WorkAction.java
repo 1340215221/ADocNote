@@ -26,6 +26,14 @@ public class WorkAction implements IWorkAction {
     private WorkViewAPI workViewAPI = BeanConfig.workViewApi;
 
     /**
+     * 判断当前行是否为include语法
+     */
+    @DoActionLog("判断当前行是否为include语法")
+    public boolean isIncludeGrammarLine(String componentId) {
+        return workViewAPI.isIncludeGrammarLine(componentId);
+    }
+
+    /**
      * 打开work_frame
      */
     @DoActionLog("打开work_frame")
@@ -114,6 +122,11 @@ public class WorkAction implements IWorkAction {
         workViewAPI.saveAllEditContent().forEach(filePath ->
                 fileServiceAPI.openFileOutputStream(filePath));
         this.loadTitleList();
+    }
+
+    @DoActionLog("插入换行符")
+    public void insertEnter(String componentId) throws Exception {
+        workViewAPI.insertEnter(componentId);
     }
 
     /**

@@ -11,7 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.swing.text.AttributeSet;
 import javax.swing.text.Caret;
+import javax.swing.text.Document;
 import javax.swing.text.Element;
 import java.io.File;
 import java.io.FileInputStream;
@@ -35,6 +37,7 @@ public class TextPaneRunView extends Init<NoteTextPane> {
 
     public static void create(String filePath) {
         new TextPaneBuilder(filePath).init();
+        openedTextPaneComponentIds.add(TextPaneBuilder.id(filePath));
     }
 
     @Override
@@ -133,6 +136,9 @@ public class TextPaneRunView extends Init<NoteTextPane> {
             return;
         }
         textPane().replaceSelection(newContent);
+        // 光标向前移动一行
+        int dot = textPane().getCaret().getDot();
+        textPane().getCaret().setDot(dot - 2);
     }
 
     /**
@@ -149,7 +155,7 @@ public class TextPaneRunView extends Init<NoteTextPane> {
         if (element == null) {
             return false;
         }
-        textPane().select(element.getStartOffset(), element.getEndOffset() - 1);
+        textPane().select(element.getStartOffset(), element.getEndOffset());
         return true;
     }
 
@@ -173,6 +179,24 @@ public class TextPaneRunView extends Init<NoteTextPane> {
         textPane().select(element.getStartOffset() + includeGrammar.getStartOffset(),
                 element.getStartOffset() + includeGrammar.getEndOffset());
         return true;
+    }
+
+    /**
+     * 获得选中的内容
+     * 注意, 由于选中当前行后 光标移动到了下一行, 不能再获取当前行内容了
+     */
+    public String getSelectContent() {
+        return textPane().getSelectedText();
+    }
+
+    /**
+     * 输入回车
+     */
+    public void insertEnter() throws Exception {
+        int dot = textPane().getCaret().getDot();
+        AttributeSet attributeSet = textPane().getCharacterAttributes();
+        Document document = textPane().getDocument();
+        document.insertString(dot, "\n", attributeSet);
     }
 
     /**
