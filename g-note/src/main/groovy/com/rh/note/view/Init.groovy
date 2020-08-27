@@ -1,15 +1,16 @@
 package com.rh.note.view
 
 import com.rh.note.util.ISwingBuilder
-import groovy.util.logging.Slf4j
 import org.apache.commons.lang3.StringUtils
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 /**
  * 控件
  */
-@Slf4j
 abstract class Init<T> {
 
+    private static final Logger log = LoggerFactory.getLogger(Init)
     private T bean
 
     /**

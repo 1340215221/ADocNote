@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
  */
 @Getter
 @Setter
-public class TitleGrammar implements IGrammar {
+public class TitleGrammar implements IGrammar,ITitleGrammar {
 
     /**
      * 父标题

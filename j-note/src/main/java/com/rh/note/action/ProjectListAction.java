@@ -13,7 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 
 @Setter
 @GlobalExceptionHandler
-public class ProjectListAction {
+public class ProjectListAction implements IProjectListAction {
 
     private FileServiceAPI fileAPIService = BeanConfig.fileServiceApi;
     private ProjectListViewAPI projectListAPI = BeanConfig.projectListViewApi;

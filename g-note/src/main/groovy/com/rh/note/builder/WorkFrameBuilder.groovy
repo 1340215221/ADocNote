@@ -9,15 +9,6 @@ import javax.swing.*
  */
 class WorkFrameBuilder implements SwingComponent {
 
-    /**
-     * 屏幕宽
-     */
-    private static final int screenWidth = 1920
-    /**
-     * 屏幕高
-     */
-    private static final int screenHeight = 1080
-
     @Override
     void init(Closure children) {
         swingBuilder.frame(id: id,

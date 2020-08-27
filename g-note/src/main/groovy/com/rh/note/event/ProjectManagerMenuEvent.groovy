@@ -1,15 +1,14 @@
 package com.rh.note.event
 
-
-import com.rh.note.action.ProjectListAction
-import com.rh.note.config.BeanConfig
+import com.rh.note.action.IProjectListAction
+import com.rh.note.config.ActionConfig
 
 /**
  * 项目管理菜单
  */
 class ProjectManagerMenuEvent{
 
-    private static final ProjectListAction projectListAction = BeanConfig.projectListAction
+    private static final IProjectListAction projectListAction = ActionConfig.get.projectListAction()
 
     /**
      * 导入新项目

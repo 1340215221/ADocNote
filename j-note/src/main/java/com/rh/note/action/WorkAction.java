@@ -20,7 +20,7 @@ import java.io.File;
  */
 @Setter
 @GlobalExceptionHandler
-public class WorkAction {
+public class WorkAction implements IWorkAction {
 
     private FileServiceAPI fileServiceAPI = BeanConfig.fileServiceApi;
     private WorkViewAPI workViewAPI = BeanConfig.workViewApi;
@@ -96,7 +96,7 @@ public class WorkAction {
      */
     @DoActionLog("生成include语法块")
     public void generateIncludeBlock(String componentId) throws Exception {
-        if (workViewAPI.selectIncludeGrammar(componentId)) {
+        if (!workViewAPI.selectIncludeGrammar(componentId)) {
             return;
         }
         AdocFile adocFile = workViewAPI.generateIncludeBlock(componentId);

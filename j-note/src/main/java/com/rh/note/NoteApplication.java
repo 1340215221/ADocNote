@@ -2,6 +2,7 @@ package com.rh.note;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.rh.note.config.BeanConfig;
+import com.rh.note.util.aop.ProxyUtil;
 import lombok.extern.slf4j.Slf4j;
 
 /**

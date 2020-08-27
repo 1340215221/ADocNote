@@ -1,28 +1,31 @@
 package com.rh.note.component;
 
-import com.rh.note.file.AdocFile;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-
 import javax.swing.*;
 
 /**
  * 自定义编辑区
  */
-@RequiredArgsConstructor
 public class NoteTextPane extends JTextPane {
 
     /**
      * adoc对象
      */
-    @NonNull
-    private final AdocFile adocFile;
+    private String filePath;
+
+    public NoteTextPane(String filePath) {
+        this.filePath = filePath;
+    }
 
     /**
      * 获得编辑文件路径
      */
     public String getFilePath() {
-        return adocFile.getFilePath();
+        return filePath;
+    }
+
+    public NoteTextPane setFilePath(String filePath) {
+        this.filePath = filePath;
+        return this;
     }
 
 }

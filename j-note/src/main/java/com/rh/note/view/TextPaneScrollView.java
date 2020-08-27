@@ -4,6 +4,7 @@ import com.rh.note.builder.TextPaneBuilder;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
+import java.io.File;
 
 /**
  * 编辑区滚动面板
@@ -42,7 +43,9 @@ public class TextPaneScrollView extends Init<JScrollPane> {
             return;
         }
 
-        editArea.getBean().add(scrollPane(), scrollPane().getName());
+        String filePath = scrollPane().getName();
+        String showName = filePath.substring(filePath.lastIndexOf(File.separator) + 1);
+        editArea.getBean().add(scrollPane(), showName);
     }
 
     /**

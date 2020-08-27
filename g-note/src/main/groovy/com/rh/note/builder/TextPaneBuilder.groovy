@@ -1,11 +1,10 @@
 package com.rh.note.builder
 
 import com.rh.note.event.TextAreaEvent
-import com.rh.note.file.AdocFile
 import com.rh.note.util.SwingComponent
 
 import javax.swing.text.DefaultStyledDocument
-import java.awt.Font
+import java.awt.*
 
 /**
  * 编辑区
@@ -26,17 +25,20 @@ class TextPaneBuilder implements SwingComponent {
     void init(Closure children) {
         def textPane = {
             swingBuilder.textPane(id: id(filePath),
+                    name: id(filePath),
                     styledDocument: new DefaultStyledDocument(),
                     font: new Font(null, 0, 17),
                     keyPressed: {
                         TextAreaEvent.generateIncludeBlock(it)
                         TextAreaEvent.rename(it)
                     },
-                    adocFile: new AdocFile(filePath: filePath),
+                    filePath: filePath,
             )
         }
 
-        swingBuilder.scrollPane(id: scrollId(filePath)){
+        swingBuilder.scrollPane(id: scrollId(filePath),
+                name: scrollId(filePath),
+        ){
             textPane()
         }
     }

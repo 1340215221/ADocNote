@@ -86,7 +86,7 @@ public class WorkViewAPI {
             return title;
         }
         EditAreaView editArea = new EditAreaView().init();
-//        editArea.show(textPaneScroll.getId()); todo
+        editArea.show(textPaneScroll);
         return null;
     }
 

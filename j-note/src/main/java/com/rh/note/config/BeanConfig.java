@@ -10,17 +10,21 @@ import com.rh.note.util.aop.ProxyUtil;
 /**
  * 对象配置
  */
-public interface BeanConfig {
+public class BeanConfig {
 
-    ProxyUtil proxy = new ProxyUtil();
+    public static ProxyUtil proxy = new ProxyUtil();
     //------------------------------------------------api---------------------------------------------------------------
-    FileServiceAPI fileServiceApi = new FileServiceAPI();
-    ProjectListViewAPI projectListViewApi = new ProjectListViewAPI();
-    WorkViewAPI workViewApi = new WorkViewAPI();
+    public static FileServiceAPI fileServiceApi = new FileServiceAPI();
+    public static ProjectListViewAPI projectListViewApi = new ProjectListViewAPI();
+    public static WorkViewAPI workViewApi = new WorkViewAPI();
     //------------------------------------------------api---------------------------------------------------------------
     //------------------------------------------------action------------------------------------------------------------
-    WorkAction workAction = proxy.getBean(WorkAction.class);
-    ProjectListAction projectListAction = proxy.getBean(ProjectListAction.class);
+    public static WorkAction workAction = proxy.getBean(WorkAction.class);
+    public static ProjectListAction projectListAction = proxy.getBean(ProjectListAction.class);
     //------------------------------------------------action------------------------------------------------------------
+    static {
+        ActionConfig.get.setProjectListAction(projectListAction);
+        ActionConfig.get.setWorkAction(workAction);
+    }
 
 }

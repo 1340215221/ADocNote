@@ -2,8 +2,7 @@ package com.rh.note.builder
 
 import com.rh.note.util.SwingComponent
 
-import java.awt.BorderLayout
-import java.awt.Color
+import java.awt.*
 
 /**
  * 基础面板

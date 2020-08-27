@@ -1,6 +1,6 @@
 package com.rh.note.builder
 
-import com.rh.note.grammar.TitleGrammar
+import com.rh.note.grammar.ITitleGrammar
 import com.rh.note.util.SwingComponent
 import org.apache.commons.collections4.CollectionUtils
 
@@ -9,9 +9,9 @@ import org.apache.commons.collections4.CollectionUtils
  */
 class RootNodeBuilder implements SwingComponent {
 
-    private TitleGrammar title
+    private ITitleGrammar title
 
-    RootNodeBuilder(TitleGrammar title) {
+    RootNodeBuilder(ITitleGrammar title) {
         this.title = title
     }
 
@@ -31,7 +31,7 @@ class RootNodeBuilder implements SwingComponent {
     /**
      * 递归组装子节点
      */
-    private void setChildrenNode(TitleGrammar title) {
+    private void setChildrenNode(ITitleGrammar title) {
         if (title == null || CollectionUtils.isEmpty(title.getChildrenTitle())) {
             return
         }

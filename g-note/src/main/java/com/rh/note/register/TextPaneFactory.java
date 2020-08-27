@@ -1,9 +1,8 @@
 package com.rh.note.register;
 
 import com.rh.note.component.NoteTextPane;
-import com.rh.note.constant.ErrorMessage;
-import com.rh.note.exception.NoteException;
-import com.rh.note.file.AdocFile;
+import com.rh.note.exception.GErrorCodeEnum;
+import com.rh.note.exception.GNoteException;
 import groovy.util.AbstractFactory;
 import groovy.util.FactoryBuilderSupport;
 import org.apache.commons.collections4.MapUtils;
@@ -17,13 +16,13 @@ public class TextPaneFactory extends AbstractFactory {
     @Override
     public NoteTextPane newInstance(FactoryBuilderSupport builder, Object name, Object value, Map attributes) throws InstantiationException, IllegalAccessException {
         if (MapUtils.isEmpty(attributes)) {
-            throw new NoteException(ErrorMessage.PARAMETER_ERROR);
+            throw new GNoteException(GErrorCodeEnum.PARAMETER_ERROR);
         }
-        Object file = attributes.get("adocFile");
-        if (!(file instanceof AdocFile)) {
-            throw new NoteException(ErrorMessage.PARAMETER_ERROR);
+        Object filePath = attributes.get("filePath");
+        if (!(filePath instanceof String)) {
+            throw new GNoteException(GErrorCodeEnum.PARAMETER_ERROR);
         }
-        attributes.remove("adocFile");
-        return new NoteTextPane((AdocFile) file);
+        attributes.remove("filePath");
+        return new NoteTextPane((String) filePath);
     }
 }
