@@ -1,6 +1,8 @@
 package com.rh.note.api;
 
 import com.rh.note.common.IForEach;
+import com.rh.note.exception.ErrorCodeEnum;
+import com.rh.note.exception.NoteException;
 import com.rh.note.file.AdocFile;
 import com.rh.note.grammar.IncludeGrammar;
 import com.rh.note.grammar.TitleGrammar;
@@ -16,9 +18,15 @@ import com.rh.note.view.TreeView;
 import com.rh.note.view.WorkFrameRunView;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import sun.font.TextRecord;
 
+import javax.swing.*;
+import javax.swing.text.DefaultEditorKit;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.Writer;
+import java.util.Arrays;
 import java.util.regex.Pattern;
 
 @Slf4j
@@ -244,5 +252,41 @@ public class WorkViewAPI {
         String lineContent = textPane.getLineContent();
         IncludeGrammar includeGrammar = new IncludeGrammar().initByGrammar(lineContent, textPane.getFilePath());
         return includeGrammar != null;
+    }
+
+    /**
+     * 输入回车
+     */
+    public void insertEnter(ActionEvent e) {
+        new DefaultEditorKit.InsertBreakAction().actionPerformed(e);
+    }
+
+    /**
+     * ctrl + del 删除命令
+     */
+    public void ctrlDelete(ActionEvent e) {
+        DefaultEditorKit defaultEditorKit = new DefaultEditorKit();
+        Action action = Arrays.stream(defaultEditorKit.getActions())
+                .filter(a -> DefaultEditorKit.deleteNextWordAction.equals(a.getValue(Action.NAME)))
+                .findFirst()
+                .orElseThrow(() -> new NoteException(ErrorCodeEnum.FAILED_TO_DELETE_INCLUDE_LINE));
+        action.actionPerformed(e);
+    }
+
+    /**
+     * 安全删除include行
+     */
+    public String deleteInclude(String componentId) {
+        TextPaneRunView textPane = new TextPaneRunView().init(componentId);
+        if (textPane == null) {
+            return null;
+        }
+        final String lineContent = textPane.getLineContent();
+        final IncludeGrammar includeGrammar = new IncludeGrammar().init(lineContent);
+        if (includeGrammar == null || !textPane.selectCurrentLine()) {
+            return null;
+        }
+        textPane.replaceSelectContent("");
+        return includeGrammar.getTargetFileAbsolutePath();
     }
 }

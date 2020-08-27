@@ -1,5 +1,7 @@
 package com.rh.note.action;
 
+import java.awt.event.ActionEvent;
+
 public interface IWorkAction {
     /**
      * 判断当前行是否为include语法
@@ -34,4 +36,9 @@ public interface IWorkAction {
      * 输入回车
      */
     void insertEnter(String componentId) throws Exception;
+
+    /**
+     * 删除include行
+     */
+    void deleteInclude(ActionEvent e);
 }

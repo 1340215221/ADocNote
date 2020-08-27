@@ -12,6 +12,8 @@ import com.rh.note.grammar.TitleGrammar;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 
+import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.io.File;
 
 /**
@@ -127,6 +129,19 @@ public class WorkAction implements IWorkAction {
     @DoActionLog("插入换行符")
     public void insertEnter(String componentId) throws Exception {
         workViewAPI.insertEnter(componentId);
+    }
+
+    @DoActionLog("删除include行和文件")
+    public void deleteInclude(ActionEvent e) {
+        //todo 待添加弹窗
+        final String absolutePath = workViewAPI.deleteInclude(((Component) e.getSource()).getName());
+        if (StringUtils.isBlank(absolutePath)) {
+            workViewAPI.ctrlDelete(e);
+        }
+        fileServiceAPI.deleteByAbsolutePath(absolutePath);
+        // 关闭已打开的指向文件
+        workViewAPI.closeIncludeTargetTextPane(absolutePath);
+        this.saveAllEditContent();
     }
 
     /**

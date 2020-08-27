@@ -4,6 +4,7 @@ import com.rh.note.action.IWorkAction
 import com.rh.note.config.ActionConfig
 import org.apache.commons.lang3.StringUtils
 
+import java.awt.event.ActionEvent
 import java.awt.event.KeyEvent
 
 /**
@@ -17,7 +18,7 @@ class TextAreaEvent {
      * include语法块生成
      */
     static def generateIncludeBlock = { String componentId ->
-        if (StringUtils.isNotBlank(componentId) || !workAction.isIncludeGrammarLine(componentId)) {
+        if (StringUtils.isBlank(componentId) || !workAction.isIncludeGrammarLine(componentId)) {
             workAction.insertEnter(componentId)
             return
         }
@@ -33,4 +34,7 @@ class TextAreaEvent {
         }
     }
 
+    static def deleteInclude = { ActionEvent e ->
+        workAction.deleteInclude(e)
+    }
 }

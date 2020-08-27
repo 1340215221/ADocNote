@@ -132,13 +132,10 @@ public class TextPaneRunView extends Init<NoteTextPane> {
      * 替换选中内容
      */
     public void replaceSelectContent(String newContent) {
-        if (StringUtils.isBlank(newContent)) {
+        if (newContent == null) {
             return;
         }
         textPane().replaceSelection(newContent);
-        // 光标向前移动一行
-        int dot = textPane().getCaret().getDot();
-        textPane().getCaret().setDot(dot - 2);
     }
 
     /**

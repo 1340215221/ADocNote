@@ -52,6 +52,7 @@ class TextPaneBuilder implements SwingComponent {
 
     /**
      * 添加keymap
+     * 替换已有按键操作
      */
     void addKeymap() {
         def textPane = swingBuilder."${id(filePath)}" as NoteTextPane
@@ -61,6 +62,13 @@ class TextPaneBuilder implements SwingComponent {
             @Override
             void actionPerformed(ActionEvent e) {
                 TextAreaEvent.generateIncludeBlock(e.source.name)
+            }
+        })
+        // 添加 ctrl + del 事件
+        newKeymap.addActionForKeyStroke(KeyStroke.getKeyStroke(127, 2), new TextAction('textPane') {
+            @Override
+            void actionPerformed(ActionEvent e) {
+                TextAreaEvent.deleteInclude(e)
             }
         })
         textPane.setKeymap(newKeymap)

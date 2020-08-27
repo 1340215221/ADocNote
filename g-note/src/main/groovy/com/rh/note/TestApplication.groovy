@@ -3,13 +3,12 @@ package com.rh.note
 import groovy.swing.SwingBuilder
 
 import javax.swing.*
+import javax.swing.text.DefaultEditorKit
 import javax.swing.text.JTextComponent
-import javax.swing.text.Keymap
 import javax.swing.text.TextAction
 import java.awt.*
 import java.awt.event.ActionEvent
 import java.awt.event.KeyEvent
-import java.util.concurrent.ConcurrentHashMap
 
 class TestApplication {
 
@@ -28,18 +27,23 @@ class TestApplication {
             }
         }
 
+
         def pane = builder.textPane as JTextPane
         def stroke = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0)
 
         def parent = pane.getKeymap()
+
         def newKeymap = JTextComponent.addKeymap("newKeymap", parent)
+
         newKeymap.addActionForKeyStroke(stroke, new TextAction("my_action") {
             @Override
             void actionPerformed(ActionEvent e) {
-                println 'actionPerformed'
+                new DefaultEditorKit.InsertBreakAction().actionPerformed(e)
             }
         })
         pane.setKeymap(newKeymap)
+
+        def actions = pane.getActions()
 
         builder.frame.locationRelativeTo = null
         builder.frame.visible = true

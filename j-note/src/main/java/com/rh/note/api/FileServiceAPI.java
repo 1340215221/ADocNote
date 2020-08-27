@@ -7,7 +7,6 @@ import com.rh.note.file.AdocFile;
 import com.rh.note.file.ProjectDirectory;
 import com.rh.note.file.ReadMeFile;
 import com.rh.note.grammar.TitleGrammar;
-import com.rh.note.view.TextPaneRunView;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
 import lombok.Setter;
 import org.apache.commons.io.IOUtils;
@@ -229,5 +228,19 @@ public class FileServiceAPI {
         }
         File file = new File(absolutePath);
         return file.exists();
+    }
+
+    /**
+     *删除include行和文件
+     */
+    public void deleteByAbsolutePath(String absolutePath) {
+        if (StringUtils.isBlank(absolutePath)) {
+            return;
+        }
+        final File file = new File(absolutePath);
+        if (!file.exists() || !file.isFile()) {
+            return;
+        }
+        file.delete();
     }
 }
