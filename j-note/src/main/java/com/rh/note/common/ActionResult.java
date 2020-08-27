@@ -1,6 +1,5 @@
 package com.rh.note.common;
 
-import com.sun.jnlp.FileOpenServiceNSBImpl;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
