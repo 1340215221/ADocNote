@@ -6,6 +6,7 @@ import com.rh.note.exception.NoteException;
 import com.rh.note.file.AdocFile;
 import com.rh.note.grammar.IncludeGrammar;
 import com.rh.note.grammar.TitleGrammar;
+import com.rh.note.grammar.custom.TableCustomGrammar;
 import com.rh.note.view.BasePanelView;
 import com.rh.note.view.EditAreaView;
 import com.rh.note.view.InputWindowRunView;
@@ -18,23 +19,20 @@ import com.rh.note.view.TreeView;
 import com.rh.note.view.WorkFrameRunView;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import sun.font.TextRecord;
 
 import javax.swing.*;
 import javax.swing.text.DefaultEditorKit;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.Writer;
 import java.util.Arrays;
-import java.util.regex.Pattern;
 
 @Slf4j
 public class WorkViewAPI {
     /**
      * 生成include语法块
      */
-    public AdocFile generateIncludeBlock(String componentId) throws Exception {
+    public AdocFile replaceIncludeBlock(String componentId) throws Exception {
         TextPaneRunView textPane = new TextPaneRunView().init(componentId);
         if (textPane == null) {
             return null;
@@ -231,17 +229,6 @@ public class WorkViewAPI {
     }
 
     /**
-     * 输入回车
-     */
-    public void insertEnter(String componentId) throws Exception {
-        TextPaneRunView textPane = new TextPaneRunView().init(componentId);
-        if (textPane == null) {
-            return;
-        }
-        textPane.insertEnter();
-    }
-
-    /**
      * 判断当前行是否为include语法
      */
     public boolean isIncludeGrammarLine(String componentId) {
@@ -271,6 +258,38 @@ public class WorkViewAPI {
                 .findFirst()
                 .orElseThrow(() -> new NoteException(ErrorCodeEnum.FAILED_TO_DELETE_INCLUDE_LINE));
         action.actionPerformed(e);
+    }
+
+    /**
+     * 选择表格语法
+     */
+    public boolean selectTableGrammar(String componentId) {
+        TextPaneRunView textPane = new TextPaneRunView().init(componentId);
+        if (textPane == null) {
+            return false;
+        }
+        String lineContent = textPane.getLineContent();
+        TableCustomGrammar tableCustomGrammar = new TableCustomGrammar().init(lineContent);
+        if (tableCustomGrammar == null) {
+            return false;
+        }
+        return textPane.selectCurrentLine();
+    }
+
+    /**
+     * 替换table语法块
+     */
+    public void replaceTableBlock(String componentId) {
+        TextPaneRunView textPane = new TextPaneRunView().init(componentId);
+        if (textPane == null) {
+            return;
+        }
+        String selectContent = textPane.getSelectContent();
+        TableCustomGrammar tableCustomGrammar = new TableCustomGrammar().init(selectContent);
+        if (tableCustomGrammar == null) {
+            return;
+        }
+        textPane.replaceSelectContent(tableCustomGrammar.generateGrammar());
     }
 
     /**

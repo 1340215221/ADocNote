@@ -41,3 +41,11 @@ api 各模块业务聚合层 \
 
 约定
 - 所有的地址都必须以地址分隔符结尾
+
+
+项目结构
+- builder 用来直接创建swing控件, 订阅监听事件event
+- event 响应监听事件, 直接调用action, 分发事件
+- action 用来聚合一个完整的view和file的交互操作
+- api 聚合view或file单一模块的操作
+- view 用来直接查询和修改控件数据

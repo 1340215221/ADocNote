@@ -5,6 +5,7 @@ import com.rh.note.event.TextAreaEvent
 import com.rh.note.util.SwingComponent
 
 import javax.swing.*
+import javax.swing.text.DefaultEditorKit
 import javax.swing.text.DefaultStyledDocument
 import javax.swing.text.JTextComponent
 import javax.swing.text.TextAction
@@ -61,7 +62,7 @@ class TextPaneBuilder implements SwingComponent {
         newKeymap.addActionForKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), new TextAction('textPane') {
             @Override
             void actionPerformed(ActionEvent e) {
-                TextAreaEvent.generateIncludeBlock(e.source.name)
+                TextAreaEvent.enter(e)
             }
         })
         // 添加 ctrl + del 事件

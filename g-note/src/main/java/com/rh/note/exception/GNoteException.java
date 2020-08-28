@@ -10,4 +10,10 @@ public class GNoteException extends RuntimeException {
         this.code = errorCode.getCode();
     }
 
+    public GNoteException(GErrorCodeEnum errorCode, Object data) {
+        super(errorCode.getMsg());
+        this.code = errorCode.getCode();
+        this.data = data;
+    }
+
 }

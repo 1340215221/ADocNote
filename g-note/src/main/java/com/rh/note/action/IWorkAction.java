@@ -33,12 +33,17 @@ public interface IWorkAction {
     void saveAllEditContent();
 
     /**
-     * 输入回车
-     */
-    void insertEnter(String componentId) throws Exception;
-
-    /**
      * 删除include行
      */
     void deleteInclude(ActionEvent e);
+
+    /**
+     * 输入回车
+     */
+    void insertEnter(ActionEvent e);
+
+    /**
+     * 生成表格块
+     */
+    void generateTableBlock(String s);
 }

@@ -6,7 +6,9 @@ import com.rh.note.aspect.DoActionLog;
 import com.rh.note.aspect.GlobalExceptionHandler;
 import com.rh.note.config.BeanConfig;
 import com.rh.note.exception.ErrorCodeEnum;
+import com.rh.note.exception.GErrorCodeEnum;
 import com.rh.note.exception.NoteException;
+import com.rh.note.exception.ResultException;
 import com.rh.note.file.AdocFile;
 import com.rh.note.grammar.TitleGrammar;
 import lombok.Setter;
@@ -109,7 +111,7 @@ public class WorkAction implements IWorkAction {
         if (!workViewAPI.selectIncludeGrammar(componentId)) {
             return;
         }
-        AdocFile adocFile = workViewAPI.generateIncludeBlock(componentId);
+        AdocFile adocFile = workViewAPI.replaceIncludeBlock(componentId);
         if (adocFile != null) {
             fileServiceAPI.createFile(adocFile);
         }
@@ -126,11 +128,6 @@ public class WorkAction implements IWorkAction {
         this.loadTitleList();
     }
 
-    @DoActionLog("插入换行符")
-    public void insertEnter(String componentId) throws Exception {
-        workViewAPI.insertEnter(componentId);
-    }
-
     @DoActionLog("删除include行和文件")
     public void deleteInclude(ActionEvent e) {
         //todo 待添加弹窗
@@ -141,6 +138,20 @@ public class WorkAction implements IWorkAction {
         fileServiceAPI.deleteByAbsolutePath(absolutePath);
         // 关闭已打开的指向文件
         workViewAPI.closeIncludeTargetTextPane(absolutePath);
+        this.saveAllEditContent();
+    }
+
+    @DoActionLog("输入回车")
+    public void insertEnter(ActionEvent e) {
+        workViewAPI.insertEnter(e);
+    }
+
+    @DoActionLog("生成表格块")
+    public void generateTableBlock(String componentId) {
+        if (!workViewAPI.selectTableGrammar(componentId)) {
+            throw new ResultException(GErrorCodeEnum.ENTER_OPERATION_FAIL);
+        }
+        workViewAPI.replaceTableBlock(componentId);
         this.saveAllEditContent();
     }
 
