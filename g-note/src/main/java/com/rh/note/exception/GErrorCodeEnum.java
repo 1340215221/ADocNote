@@ -2,7 +2,8 @@ package com.rh.note.exception;
 
 public enum GErrorCodeEnum {
     PARAMETER_ERROR(1000, "参数错误"),
-    ENTER_OPERATION_FAIL(1001, "回车操作失败"),
+    TABLE_GRAMMAR_MATCH_FAILED(1001, "table语法匹配失败"),
+    INCLUDE_GRAMMAR_MATCH_FAILED(2000, "include语法匹配失败"),
     ;
     private Integer code;
     private String msg;

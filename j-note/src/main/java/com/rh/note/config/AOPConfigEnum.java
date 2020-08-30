@@ -4,6 +4,8 @@ import com.rh.note.aspect.DoActionLog;
 import com.rh.note.aspect.DoActionLogInterceptor;
 import com.rh.note.aspect.GlobalExceptionHandler;
 import com.rh.note.aspect.GlobalExceptionInterceptor;
+import com.rh.note.aspect.GlobalResultHandler;
+import com.rh.note.aspect.GlobalResultInterceptor;
 import com.rh.note.util.aop.INoteMethodInterceptor;
 
 import java.lang.annotation.Annotation;
@@ -40,6 +42,20 @@ public enum AOPConfigEnum {
         @Override
         public INoteMethodInterceptor getInterceptor() {
             return new DoActionLogInterceptor();
+        }
+    },
+    /**
+     * 全局结果处理
+     */
+    result_handle() {
+        @Override
+        public INoteMethodInterceptor getInterceptor() {
+            return new GlobalResultInterceptor();
+        }
+
+        @Override
+        public Class<GlobalResultHandler> getAnnotationClass() {
+            return GlobalResultHandler.class;
         }
     },
     ;

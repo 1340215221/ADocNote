@@ -2,6 +2,7 @@ package com.rh.note.aspect;
 
 import com.rh.note.exception.NoteException;
 import com.rh.note.exception.RequestParamsValidException;
+import com.rh.note.exception.ResultException;
 import com.rh.note.util.aop.INoteMethodInterceptor;
 import com.rh.note.util.aop.MethodInterceptorParam;
 import com.rh.note.view.ExceptionDialogRunView;
@@ -40,6 +41,10 @@ public class GlobalExceptionInterceptor implements INoteMethodInterceptor {
         if (e instanceof NoteException) {
             log.error("发生业务异常", e);
             ExceptionDialogRunView.create(e.getMessage());
+            return;
+        }
+        if (e instanceof ResultException) {
+            log.error(e.getMessage());
             return;
         }
         log.error("未处理错误异常", e);

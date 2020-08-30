@@ -4,6 +4,7 @@ import com.rh.note.api.FileServiceAPI;
 import com.rh.note.api.WorkViewAPI;
 import com.rh.note.aspect.DoActionLog;
 import com.rh.note.aspect.GlobalExceptionHandler;
+import com.rh.note.aspect.GlobalResultHandler;
 import com.rh.note.config.BeanConfig;
 import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.exception.GErrorCodeEnum;
@@ -24,6 +25,7 @@ import java.io.File;
  */
 @Setter
 @GlobalExceptionHandler
+@GlobalResultHandler
 public class WorkAction implements IWorkAction {
 
     private FileServiceAPI fileServiceAPI = BeanConfig.fileServiceApi;
@@ -109,7 +111,7 @@ public class WorkAction implements IWorkAction {
     @DoActionLog("生成include语法块")
     public void generateIncludeBlock(String componentId) throws Exception {
         if (!workViewAPI.selectIncludeGrammar(componentId)) {
-            return;
+            throw new ResultException(GErrorCodeEnum.INCLUDE_GRAMMAR_MATCH_FAILED);
         }
         AdocFile adocFile = workViewAPI.replaceIncludeBlock(componentId);
         if (adocFile != null) {
@@ -149,7 +151,7 @@ public class WorkAction implements IWorkAction {
     @DoActionLog("生成表格块")
     public void generateTableBlock(String componentId) {
         if (!workViewAPI.selectTableGrammar(componentId)) {
-            throw new ResultException(GErrorCodeEnum.ENTER_OPERATION_FAIL);
+            throw new ResultException(GErrorCodeEnum.TABLE_GRAMMAR_MATCH_FAILED);
         }
         workViewAPI.replaceTableBlock(componentId);
         this.saveAllEditContent();

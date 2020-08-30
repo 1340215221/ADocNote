@@ -4,6 +4,7 @@ import com.rh.note.api.FileServiceAPI;
 import com.rh.note.api.ProjectListViewAPI;
 import com.rh.note.aspect.DoActionLog;
 import com.rh.note.aspect.GlobalExceptionHandler;
+import com.rh.note.aspect.GlobalResultHandler;
 import com.rh.note.config.BeanConfig;
 import com.rh.note.view.ProjectListFrameRunView;
 import com.rh.note.view.ProjectListView;
@@ -13,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 
 @Setter
 @GlobalExceptionHandler
+@GlobalResultHandler
 public class ProjectListAction implements IProjectListAction {
 
     private FileServiceAPI fileAPIService = BeanConfig.fileServiceApi;
