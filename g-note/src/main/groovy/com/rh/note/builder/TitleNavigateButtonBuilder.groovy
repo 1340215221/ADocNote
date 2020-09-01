@@ -1,5 +1,6 @@
 package com.rh.note.builder
 
+import com.rh.note.event.TitleListEvent
 import com.rh.note.grammar.ITitleGrammar
 import com.rh.note.util.SwingComponent
 
@@ -14,14 +15,19 @@ class TitleNavigateButtonBuilder implements SwingComponent {
         this.titleGrammar = titleGrammar
     }
 
+    void init() {
+        this.init{}
+    }
+
     @Override
     void init(Closure children) {
-        swingBuilder.button(id: id,
-                text: titleGrammar.
+        swingBuilder.button(id: id(titleGrammar.getName()),
+                text: titleGrammar.getName(),
+//                mouseClicked: TitleListEvent.mouseClicked,
         )
     }
 
-    static String getId() {
-        'title_navigate_button'
+    static String id(String titleName) {
+        "title_navigate_button_${titleName}"
     }
 }

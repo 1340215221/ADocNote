@@ -7,6 +7,13 @@ import java.util.List;
  */
 public interface ITitleGrammar {
 
+    /**
+     * 获得标题名
+     */
+    String getName();
+    /**
+     * 获得子标题
+     */
     List<? extends ITitleGrammar> getChildrenTitle();
 
 }

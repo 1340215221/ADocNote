@@ -100,4 +100,21 @@ public class TitleGrammar implements IGrammar,ITitleGrammar {
     public String toString() {
         return name;
     }
+
+    /**
+     * 获得父标题
+     */
+    public List<TitleGrammar> getParentTitles() {
+        List<TitleGrammar> resultList = new ArrayList<>();
+        this.addParentTitle(this, resultList);
+        return resultList;
+    }
+
+    private void addParentTitle(TitleGrammar titleGrammar, List<TitleGrammar> resultList) {
+        TitleGrammar parentTitle = titleGrammar.getParentTitle();
+        if (parentTitle != null) {
+            this.addParentTitle(parentTitle, resultList);
+        }
+        resultList.add(titleGrammar);
+    }
 }

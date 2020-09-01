@@ -1,6 +1,5 @@
 package com.rh.note.api;
 
-import com.rh.note.builder.TitleNavigateButtonBuilder;
 import com.rh.note.common.IForEach;
 import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.exception.NoteException;
@@ -17,7 +16,7 @@ import com.rh.note.view.TextPaneRunView;
 import com.rh.note.view.TextPaneScrollView;
 import com.rh.note.view.TitleListView;
 import com.rh.note.view.TitleNavigateButtonRunView;
-import com.rh.note.view.TitleNavigateRunVIew;
+import com.rh.note.view.TitleNavigateRunView;
 import com.rh.note.view.TreeView;
 import com.rh.note.view.WorkFrameRunView;
 import lombok.extern.slf4j.Slf4j;
@@ -30,8 +29,8 @@ import java.io.File;
 import java.io.Writer;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 @Slf4j
 public class WorkViewAPI {
@@ -327,17 +326,16 @@ public class WorkViewAPI {
         if (title == null) {
             return;
         }
-        TitleNavigateRunVIew titleNavigate = new TitleNavigateRunVIew().init();
-        Stream.generate(title::getParentTitle)
+        TitleNavigateRunView titleNavigate = new TitleNavigateRunView().init();
+        titleNavigate.clearTitle();
+        List<TitleGrammar> titles = title.getParentTitles();
+        titles.stream()
                 .filter(Objects::nonNull)
                 .sorted(Comparator.comparing(TitleGrammar::getLevel))
                 .forEach(tg -> {
                     TitleNavigateButtonRunView.create(tg);
-                    TitleNavigateButtonRunView titleNavigateButton = new TitleNavigateButtonRunView().init();
+                    TitleNavigateButtonRunView titleNavigateButton = new TitleNavigateButtonRunView().initByTitleName(tg.getName());
                     titleNavigate.add(titleNavigateButton);
                 });
-        TitleNavigateButtonRunView.create(title);
-        TitleNavigateButtonRunView titleNavigateButton = new TitleNavigateButtonRunView().init();
-        titleNavigate.add(titleNavigateButton);
     }
 }

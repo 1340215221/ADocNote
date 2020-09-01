@@ -11,7 +11,11 @@ import javax.swing.*;
 public class TitleNavigateButtonRunView extends Init<JButton> {
 
     public static void create(TitleGrammar title) {
-        new TitleNavigateButtonBuilder(title);
+        new TitleNavigateButtonBuilder(title).init();
+    }
+
+    public TitleNavigateButtonRunView initByTitleName(String titleName) {
+        return super.init(TitleNavigateButtonBuilder.id(titleName));
     }
 
     @Override
