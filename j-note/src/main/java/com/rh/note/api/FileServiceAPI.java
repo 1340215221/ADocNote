@@ -38,7 +38,7 @@ public class FileServiceAPI {
         vo1.setProjectPath("/home/hang/Documents/Java-not");
         vo1.setProjectName("java笔记");
         RecentlyOpenedRecordVO vo2 = new RecentlyOpenedRecordVO();
-        vo2.setProjectPath("/home/hang/life-note");
+        vo2.setProjectPath("/InterviewNote");
         vo2.setProjectName("生活笔记");
         RecentlyOpenedRecordVO vo3 = new RecentlyOpenedRecordVO();
         vo3.setProjectPath("/home/hang/work-note");
