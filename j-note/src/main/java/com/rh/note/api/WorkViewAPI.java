@@ -4,6 +4,7 @@ import com.rh.note.common.IForEach;
 import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.exception.NoteException;
 import com.rh.note.file.AdocFile;
+import com.rh.note.grammar.ITitleGrammar;
 import com.rh.note.grammar.IncludeGrammar;
 import com.rh.note.grammar.TitleGrammar;
 import com.rh.note.grammar.custom.TableCustomGrammar;
@@ -95,6 +96,23 @@ public class WorkViewAPI {
         TextPaneScrollView textPaneScroll = new TextPaneScrollView().init(title.getFilePath());
         if (textPaneScroll == null) {
             return title;
+        }
+        EditAreaView editArea = new EditAreaView().init();
+        editArea.show(textPaneScroll);
+        return null;
+    }
+
+    /**
+     * 展示已打开的编辑区,通过被导航栏标题
+     */
+    public TitleGrammar showEditingAreaForExistingSelected(TitleGrammar titleGrammar) {
+        if (titleGrammar == null) {
+            return null;
+        }
+        log.info("TextAreaScrollView 将尝试获取已打开的编辑区");
+        TextPaneScrollView textPaneScroll = new TextPaneScrollView().init(titleGrammar.getFilePath());
+        if (textPaneScroll == null) {
+            return titleGrammar;
         }
         EditAreaView editArea = new EditAreaView().init();
         editArea.show(textPaneScroll);
@@ -314,7 +332,7 @@ public class WorkViewAPI {
         return includeGrammar.getTargetFileAbsolutePath();
     }
 
-    /**
+    /**5
      * 加载标题导航
      */
     public void loadTitleNavigate() {
@@ -329,6 +347,26 @@ public class WorkViewAPI {
         TitleNavigateRunView titleNavigate = new TitleNavigateRunView().init();
         titleNavigate.clearTitle();
         List<TitleGrammar> titles = title.getParentTitles();
+        titles.stream()
+                .filter(Objects::nonNull)
+                .sorted(Comparator.comparing(TitleGrammar::getLevel))
+                .forEach(tg -> {
+                    TitleNavigateButtonRunView.create(tg);
+                    TitleNavigateButtonRunView titleNavigateButton = new TitleNavigateButtonRunView().initByTitleName(tg.getName());
+                    titleNavigate.add(titleNavigateButton);
+                });
+    }
+
+    /**
+     * 加载导航标题, 通过导航按钮
+     */
+    public void loadTitleNavigate(ITitleGrammar titleGrammar) {
+        if (!(titleGrammar instanceof TitleGrammar)) {
+            return;
+        }
+        TitleNavigateRunView titleNavigate = new TitleNavigateRunView().init();
+        titleNavigate.clearTitle();
+        List<TitleGrammar> titles = ((TitleGrammar) titleGrammar).getParentTitles();
         titles.stream()
                 .filter(Objects::nonNull)
                 .sorted(Comparator.comparing(TitleGrammar::getLevel))

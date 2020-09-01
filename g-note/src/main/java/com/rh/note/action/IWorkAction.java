@@ -1,5 +1,7 @@
 package com.rh.note.action;
 
+import com.rh.note.grammar.ITitleGrammar;
+
 import java.awt.event.ActionEvent;
 
 public interface IWorkAction {
@@ -51,4 +53,9 @@ public interface IWorkAction {
      * 加载标题导航
      */
     void loadTitleNavigate();
+
+    /**
+     * 点击标题导航中的标题
+     */
+    <T extends ITitleGrammar> void openTitleByNavigate(T titleGrammar);
 }

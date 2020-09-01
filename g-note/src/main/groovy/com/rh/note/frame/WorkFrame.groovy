@@ -4,6 +4,7 @@ import com.rh.note.common.IFrame
 import com.rh.note.config.IWorkFrame
 import com.rh.note.event.WorkFrameEvent
 import com.rh.note.register.TextPaneFactory
+import com.rh.note.register.TitleNavigateButtonFactory
 import com.rh.note.register.TreeModelFactory
 import com.rh.note.register.TreeNodeFactory
 import com.rh.note.util.ISwingBuilder
@@ -50,6 +51,7 @@ class WorkFrame implements IWorkFrame, IFrame, ISwingBuilder {
         swingBuilder.registerFactory('model', new TreeModelFactory())
         swingBuilder.registerFactory('node', new TreeNodeFactory())
         swingBuilder.registerFactory('textPane', new TextPaneFactory())
+        swingBuilder.registerFactory('tnButton', new TitleNavigateButtonFactory())
     }
 
 }

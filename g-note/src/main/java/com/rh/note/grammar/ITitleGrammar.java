@@ -1,5 +1,6 @@
 package com.rh.note.grammar;
 
+import java.awt.*;
 import java.util.List;
 
 /**
@@ -15,5 +16,9 @@ public interface ITitleGrammar {
      * 获得子标题
      */
     List<? extends ITitleGrammar> getChildrenTitle();
+    /**
+     * 获得颜色, 通过所在目录
+     */
+    Color getColor();
 
 }

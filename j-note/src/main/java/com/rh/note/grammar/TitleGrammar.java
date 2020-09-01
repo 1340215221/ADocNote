@@ -7,6 +7,8 @@ import lombok.NonNull;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -82,6 +84,23 @@ public class TitleGrammar implements IGrammar,ITitleGrammar {
             return null;
         }
         return parentTitle.findParentOf(titleGrammar);
+    }
+
+    /**
+     * 获得导航栏按钮字体颜色, 通过文件所在位置
+     * read 默认颜色
+     * twoLevel 绿色
+     * content 粉色
+     */
+    @Override
+    public Color getColor() {
+        if (filePath.contains("twoLevel")) {
+            return Color.pink;
+        }
+        if (filePath.contains("content")) {
+            return Color.green;
+        }
+        return Color.lightGray;
     }
 
     @Override

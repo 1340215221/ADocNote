@@ -1,8 +1,11 @@
 package com.rh.note.builder
 
 import com.rh.note.event.TitleListEvent
+import com.rh.note.event.TitleNavigateEvent
 import com.rh.note.grammar.ITitleGrammar
 import com.rh.note.util.SwingComponent
+
+import javax.swing.JButton
 
 /**
  * 标题导航栏按钮
@@ -21,9 +24,11 @@ class TitleNavigateButtonBuilder implements SwingComponent {
 
     @Override
     void init(Closure children) {
-        swingBuilder.button(id: id(titleGrammar.getName()),
+        swingBuilder.tnButton(id: id(titleGrammar.getName()),
                 text: titleGrammar.getName(),
-//                mouseClicked: TitleListEvent.mouseClicked,
+                mouseClicked: TitleNavigateEvent.clicked_title_button,
+                titleGrammar: titleGrammar,
+                foreground: titleGrammar.getColor(),
         )
     }
 

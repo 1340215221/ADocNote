@@ -1,5 +1,6 @@
 package com.rh.note.action;
 
+import com.alibaba.fastjson.JSONObject;
 import com.rh.note.api.FileServiceAPI;
 import com.rh.note.api.WorkViewAPI;
 import com.rh.note.aspect.DoActionLog;
@@ -11,6 +12,7 @@ import com.rh.note.exception.GErrorCodeEnum;
 import com.rh.note.exception.NoteException;
 import com.rh.note.exception.ResultException;
 import com.rh.note.file.AdocFile;
+import com.rh.note.grammar.ITitleGrammar;
 import com.rh.note.grammar.TitleGrammar;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -160,6 +162,22 @@ public class WorkAction implements IWorkAction {
     @DoActionLog("加载标题导航")
     public void loadTitleNavigate() {
         workViewAPI.loadTitleNavigate();
+    }
+
+    @DoActionLog("点击标题导航中的标题")
+    public void openTitleByNavigate(ITitleGrammar titleGrammar) {
+        if (!(titleGrammar instanceof TitleGrammar)) {
+            return;
+        }
+        TitleGrammar tg = workViewAPI.showEditingAreaForExistingSelected((TitleGrammar) titleGrammar);
+        if (tg == null) {
+            workViewAPI.loadTitleNavigate(titleGrammar);
+            return;
+        }
+        //读取文件内容
+        File file = fileServiceAPI.readTitleFileContent(((TitleGrammar) titleGrammar).getAbsolutePath());
+        workViewAPI.openNewEditingAreaForSelected(((TitleGrammar) titleGrammar).getFilePath(), file);
+        workViewAPI.loadTitleNavigate(titleGrammar);
     }
 
     /**
