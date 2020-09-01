@@ -157,6 +157,11 @@ public class WorkAction implements IWorkAction {
         this.saveAllEditContent();
     }
 
+    @DoActionLog("加载标题导航")
+    public void loadTitleNavigate() {
+        workViewAPI.loadTitleNavigate();
+    }
+
     /**
      * 扫描初始化项目结构
      */

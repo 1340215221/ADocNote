@@ -1,5 +1,6 @@
 package com.rh.note.api;
 
+import com.rh.note.builder.TitleNavigateButtonBuilder;
 import com.rh.note.common.IForEach;
 import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.exception.NoteException;
@@ -15,6 +16,8 @@ import com.rh.note.view.RootNodeRunView;
 import com.rh.note.view.TextPaneRunView;
 import com.rh.note.view.TextPaneScrollView;
 import com.rh.note.view.TitleListView;
+import com.rh.note.view.TitleNavigateButtonRunView;
+import com.rh.note.view.TitleNavigateRunVIew;
 import com.rh.note.view.TreeView;
 import com.rh.note.view.WorkFrameRunView;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +29,9 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.Writer;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 @Slf4j
 public class WorkViewAPI {
@@ -307,5 +313,31 @@ public class WorkViewAPI {
         }
         textPane.replaceSelectContent("");
         return includeGrammar.getTargetFileAbsolutePath();
+    }
+
+    /**
+     * 加载标题导航
+     */
+    public void loadTitleNavigate() {
+        TreeView tree = new TreeView().init();
+        if (tree == null) {
+            return;
+        }
+        TitleGrammar title = tree.getSelectionUserObject();
+        if (title == null) {
+            return;
+        }
+        TitleNavigateRunVIew titleNavigate = new TitleNavigateRunVIew().init();
+        Stream.generate(title::getParentTitle)
+                .filter(Objects::nonNull)
+                .sorted(Comparator.comparing(TitleGrammar::getLevel))
+                .forEach(tg -> {
+                    TitleNavigateButtonRunView.create(tg);
+                    TitleNavigateButtonRunView titleNavigateButton = new TitleNavigateButtonRunView().init();
+                    titleNavigate.add(titleNavigateButton);
+                });
+        TitleNavigateButtonRunView.create(title);
+        TitleNavigateButtonRunView titleNavigateButton = new TitleNavigateButtonRunView().init();
+        titleNavigate.add(titleNavigateButton);
     }
 }

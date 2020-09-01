@@ -17,6 +17,7 @@ class TitleListEvent {
      */
     static def mouseClicked = { MouseEvent e ->
         workAction.openAdocFile()
+        workAction.loadTitleNavigate()
     }
 
     /**

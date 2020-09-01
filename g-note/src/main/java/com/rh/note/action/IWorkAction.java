@@ -46,4 +46,9 @@ public interface IWorkAction {
      * 生成表格块
      */
     void generateTableBlock(String s);
+
+    /**
+     * 加载标题导航
+     */
+    void loadTitleNavigate();
 }
