@@ -44,7 +44,8 @@ public class TextPaneScrollView extends Init<JScrollPane> {
         }
 
         String filePath = scrollPane().getName();
-        String showName = filePath.substring(filePath.lastIndexOf(File.separator) + 1);
+        String showName = filePath.substring(filePath.lastIndexOf("/") + 1);
+        showName = showName.replace("text_pane_scroll_", "");
         editArea.getBean().add(scrollPane(), showName);
     }
 

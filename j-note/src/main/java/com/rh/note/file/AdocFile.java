@@ -233,7 +233,9 @@ public class AdocFile implements IAdocFile {
         title().unknown();
         LineNumber lineNumber = new LineNumber();
         unknownGrammars.add(UnknownGrammar.emptyLine().setLineNumber(lineNumber.next()));
+        unknownGrammars.add(UnknownGrammar.emptyLine().setLineNumber(lineNumber.next()));
         titleGrammars.add(includeGrammar.copyTo().setLineNumber(lineNumber.next()));
+        unknownGrammars.add(UnknownGrammar.emptyLine().setLineNumber(lineNumber.next()));
         unknownGrammars.add(UnknownGrammar.emptyLine().setLineNumber(lineNumber.next()));
         filePath = includeGrammar.getTargetFilePath();
         return this;
