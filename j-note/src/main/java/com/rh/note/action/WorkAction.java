@@ -164,6 +164,15 @@ public class WorkAction implements IWorkAction {
         workViewAPI.loadTitleNavigate();
     }
 
+    @DoActionLog("加载导航栏, 通过选择tab")
+    public void loadTitleNavigateBySelectedTab() {
+        TitleGrammar titleGrammar = workViewAPI.getTitleGrammarBySelectedTab();
+        if (titleGrammar == null) {
+            return;
+        }
+        workViewAPI.loadTitleNavigate(titleGrammar);
+    }
+
     @DoActionLog("点击标题导航中的标题")
     public void openTitleByNavigate(ITitleGrammar titleGrammar) {
         if (!(titleGrammar instanceof TitleGrammar)) {

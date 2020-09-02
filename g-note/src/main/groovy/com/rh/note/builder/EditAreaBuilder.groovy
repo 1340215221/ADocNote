@@ -1,5 +1,6 @@
 package com.rh.note.builder
 
+import com.rh.note.event.EditAreaEvent
 import com.rh.note.util.SwingComponent
 
 import javax.swing.*
@@ -16,6 +17,9 @@ class EditAreaBuilder implements SwingComponent {
 //                background: Color.cyan,
                     constraints: BorderLayout.CENTER,
                     tabLayoutPolicy: JTabbedPane.SCROLL_TAB_LAYOUT,
+                    stateChanged: {
+                        EditAreaEvent.select_open_file_tab(it)
+                    }
             ){
                 children()
             }

@@ -55,6 +55,11 @@ public interface IWorkAction {
     void loadTitleNavigate();
 
     /**
+     * 加载导航栏, 通过选择tab
+     */
+    void loadTitleNavigateBySelectedTab();
+
+    /**
      * 点击标题导航中的标题
      */
     <T extends ITitleGrammar> void openTitleByNavigate(T titleGrammar);

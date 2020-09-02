@@ -332,7 +332,7 @@ public class WorkViewAPI {
         return includeGrammar.getTargetFileAbsolutePath();
     }
 
-    /**5
+    /**
      * 加载标题导航
      */
     public void loadTitleNavigate() {
@@ -375,5 +375,13 @@ public class WorkViewAPI {
                     TitleNavigateButtonRunView titleNavigateButton = new TitleNavigateButtonRunView().initByTitleName(tg.getName());
                     titleNavigate.add(titleNavigateButton);
                 });
+    }
+
+    /**
+     * 加载导航栏, 通过选择tab
+     */
+    public TitleGrammar getTitleGrammarBySelectedTab() {
+        //todo
+        return null;
     }
 }
