@@ -11,7 +11,7 @@ class ProjectMenuBuilder implements SwingComponent {
     void init(Closure children) {
         swingBuilder.panel(id: id,
                 constraints: BorderLayout.CENTER,
-                background: Color.green,
+//                background: Color.green,
         ){
             children()
         }

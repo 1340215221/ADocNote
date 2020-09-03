@@ -10,7 +10,7 @@ class ProjectListPanelBuilder implements SwingComponent {
     void init(Closure children) {
         swingBuilder.panel(id: id,
                 preferredSize: [800, 500],
-                background: Color.red,
+//                background: Color.red,
                 layout: new BorderLayout(),
         ){
             children()
