@@ -19,7 +19,7 @@ class TextAreaEvent {
      */
     static def sinkTitle = { KeyEvent event ->
         if (event.keyCode == 117 && event.modifiers == 0) {
-            workAction.sinkTitle(event.source.name)
+//            workAction.sinkTitle(event.source.name) // todo
         }
     }
 

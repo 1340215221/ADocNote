@@ -1,5 +1,6 @@
 package com.rh.note.constant;
 
+import com.rh.note.common.IAdocFile;
 import lombok.NonNull;
 
 import java.io.File;
@@ -30,6 +31,14 @@ public enum AdocFilePathEnum {
     ;
 
     AdocFilePathEnum() {
+    }
+
+    /**
+     * 通过文件地址获得空的adocFile对象
+     */
+    public static IAdocFile getAdocFile(String filePath) {
+        //todo
+        return null;
     }
 
     public String getAdocFilePath(@NonNull String projectPath) {
