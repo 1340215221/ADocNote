@@ -2,10 +2,10 @@ package com.rh.note.api;
 
 import com.rh.note.common.IAdocFile;
 import com.rh.note.common.IForEach;
+import com.rh.note.config.BeanConfig;
 import com.rh.note.constant.AdocFilePathEnum;
 import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.exception.NoteException;
-import com.rh.note.exception.RequestParamsValidException;
 import com.rh.note.file.AdocFile;
 import com.rh.note.grammar.ITitleGrammar;
 import com.rh.note.grammar.IncludeGrammar;
@@ -25,7 +25,6 @@ import com.rh.note.view.TreeView;
 import com.rh.note.view.WorkFrameRunView;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.codehaus.groovy.ast.expr.NotExpression;
 
 import javax.swing.*;
 import javax.swing.text.DefaultEditorKit;
@@ -417,6 +416,40 @@ public class WorkViewAPI {
         // 重新加载单行栏
         // 重新加载标题列表
         // 打开生成的新文件
+    }
+
+    private FileServiceAPI fileServiceAPI = BeanConfig.fileServiceApi;
+
+    /**
+     *进入include指向文件
+     */
+    public void enterInclude() {
+        EditAreaView editArea = new EditAreaView().init();
+        String filePath = editArea.getSelectTabFilePath();
+        TextPaneRunView textPane = new TextPaneRunView().initByFilePath(filePath);
+        if (textPane == null) {
+            return;
+        }
+        IncludeGrammar includeGrammar = new IncludeGrammar().init(textPane.getLineContent());
+        if (includeGrammar == null) {
+            return;
+        }
+        TitleGrammar rootTitle = textPane.getRootTitle();
+        TitleGrammar childrenTitle = rootTitle.getChildrenByFilePath(includeGrammar.getTargetFilePath2(), includeGrammar.getTargetTitleName());
+        if (childrenTitle == null) {
+            return;
+        }
+        TextPaneScrollView textPaneScroll = new TextPaneScrollView().init(childrenTitle.getFilePath());
+        if (textPaneScroll == null) {
+            TextPaneRunView.create(childrenTitle);
+            textPaneScroll = new TextPaneScrollView().init(childrenTitle.getFilePath());
+            File file = fileServiceAPI.readTitleFileContent(childrenTitle.getAbsolutePath());
+            TextPaneRunView tp = new TextPaneRunView().initByFilePath(childrenTitle.getFilePath());
+            tp.read(file);
+            textPaneScroll.addTo(editArea);
+        }
+        editArea.show(textPaneScroll);
+        loadTitleNavigate(childrenTitle);
     }
 
     /**

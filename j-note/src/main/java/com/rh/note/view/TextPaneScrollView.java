@@ -58,5 +58,4 @@ public class TextPaneScrollView extends Init<JScrollPane> {
         }
         editArea.getBean().remove(scrollPane());
     }
-
 }

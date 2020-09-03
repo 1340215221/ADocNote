@@ -6,6 +6,7 @@ import com.rh.note.config.ActionConfig
 
 import java.awt.event.ActionEvent
 import java.awt.event.KeyEvent
+import java.awt.event.MouseEvent
 
 /**
  * 编辑区事件
@@ -48,6 +49,15 @@ class TextAreaEvent {
             return
         }
         workAction.insertEnter(e)
+    }
+
+    /**
+     * 进入include指向文件
+     */
+    static def enterInclude = { MouseEvent event ->
+        if (event.modifiers == 18) {
+            workAction.enterInclude()
+        }
     }
 
     /**

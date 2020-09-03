@@ -27,6 +27,7 @@ public class IncludeGrammar implements IGrammar {
     private String filePath;
     /**
      * 引用文件路径
+     * todo 该路径有问题, 有时为项目相对路径, 有时为父标题相对路径
      */
     private String targetFilePath;
     /**
@@ -90,7 +91,7 @@ public class IncludeGrammar implements IGrammar {
     /**
      * 生成指向文件的完整路径
      */
-    private String generateTargetFilePath(String fileName, String filePath) {
+    public String generateTargetFilePath(String fileName, String filePath) {
         if (StringUtils.isBlank(fileName) || StringUtils.isBlank(filePath)) {
             return null;
         }
@@ -127,7 +128,7 @@ public class IncludeGrammar implements IGrammar {
     /**
      * 获得指向文件标题名, 通过指向文件路径
      */
-    private String getTargetTitleName() {
+    public String getTargetTitleName() {
         if (StringUtils.isBlank(targetFilePath)) {
             return null;
         }
@@ -159,5 +160,20 @@ public class IncludeGrammar implements IGrammar {
      */
     public String getTargetFileAbsolutePath() {
         return new ProjectDirectory().getAbsolutePath() + ProjectStructureEnum.generateIncludeTargetPath(this.targetFilePath);
+    }
+
+    /**
+     * 获得指向路径, 项目的相对路径
+     * todo
+     */
+    public String getTargetFilePath2() {
+        String targetFilePath = getTargetFilePath();
+        if (StringUtils.isBlank(targetFilePath)) {
+            return null;
+        }
+        if (!targetFilePath.contains("..")) {
+            return targetFilePath;
+        }
+        return targetFilePath.replace("..", "adoc");
     }
 }

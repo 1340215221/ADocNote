@@ -68,4 +68,9 @@ public interface IWorkAction {
      * 下沉标题
      */
     void sinkTitle(String componentId);
+
+    /**
+     * 进入include指向文件
+     */
+    void enterInclude();
 }

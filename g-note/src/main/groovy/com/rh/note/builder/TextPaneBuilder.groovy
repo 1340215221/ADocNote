@@ -39,6 +39,9 @@ class TextPaneBuilder implements SwingComponent {
                         TextAreaEvent.rename(it)
                         TextAreaEvent.sinkTitle(it)
                     },
+                    mouseClicked: {
+                        TextAreaEvent.enterInclude(it)
+                    },
                     titleGrammar: titleGrammar,
             ) {
                 addKeymap()

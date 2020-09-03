@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 /**
  * 标题
@@ -136,4 +137,28 @@ public class TitleGrammar implements IGrammar,ITitleGrammar {
         }
         resultList.add(titleGrammar);
     }
+
+    /**
+     * 查询子标题, 通过文件地址
+     */
+    public TitleGrammar getChildrenByFilePath(String childrenFilePath, String childrenTitleName) {
+        if (StringUtils.isBlank(childrenFilePath) || StringUtils.isBlank(childrenTitleName)) {
+            return null;
+        }
+        return childrenTitle.stream()
+                .flatMap(this::getChildrenTitleStream)
+                .filter(titleGrammar -> titleGrammar.getName().equals(childrenTitleName) && titleGrammar.getFilePath().equals(childrenFilePath))
+                .findFirst()
+                .orElse(null);
+    }
+
+    private Stream<TitleGrammar> getChildrenTitleStream(TitleGrammar titleGrammar) {
+        if (titleGrammar == null) {
+            return Stream.empty();
+        }
+        Stream<TitleGrammar> childrenTitleStream = titleGrammar.getChildrenTitle().stream()
+                .flatMap(this::getChildrenTitleStream);
+        return Stream.concat(Stream.of(titleGrammar), childrenTitleStream);
+    }
+
 }

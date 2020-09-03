@@ -177,6 +177,12 @@ public class WorkAction implements IWorkAction {
         workViewAPI.sinkTitle(componentId);
     }
 
+    @Override
+    @DoActionLog("进入include指向文件")
+    public void enterInclude() {
+        workViewAPI.enterInclude();
+    }
+
     @DoActionLog("点击标题导航中的标题")
     public void openTitleByNavigate(ITitleGrammar titleGrammar) {
         if (!(titleGrammar instanceof TitleGrammar)) {
