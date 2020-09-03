@@ -1,6 +1,5 @@
 package com.rh.note.action;
 
-import com.alibaba.fastjson.JSONObject;
 import com.rh.note.api.FileServiceAPI;
 import com.rh.note.api.WorkViewAPI;
 import com.rh.note.aspect.DoActionLog;
@@ -171,6 +170,11 @@ public class WorkAction implements IWorkAction {
             return;
         }
         workViewAPI.loadTitleNavigate(titleGrammar);
+    }
+
+    @DoActionLog("下沉标题")
+    public void sinkTitle(String componentId) {
+        workViewAPI.sinkTitle(componentId);
     }
 
     @DoActionLog("点击标题导航中的标题")

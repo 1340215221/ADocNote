@@ -15,6 +15,15 @@ class TextAreaEvent {
     private static final IWorkAction workAction = ActionConfig.get.workAction()
 
     /**
+     * 下沉标题
+     */
+    static def sinkTitle = { KeyEvent event ->
+        if (event.keyCode == 117 && event.modifiers == 0) {
+            workAction.sinkTitle(event.source.name)
+        }
+    }
+
+    /**
      * 重命名include
      */
     static def rename = { KeyEvent event ->

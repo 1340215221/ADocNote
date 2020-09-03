@@ -63,4 +63,9 @@ public interface IWorkAction {
      * 点击标题导航中的标题
      */
     <T extends ITitleGrammar> void openTitleByNavigate(T titleGrammar);
+
+    /**
+     * 下沉标题
+     */
+    void sinkTitle(String componentId);
 }

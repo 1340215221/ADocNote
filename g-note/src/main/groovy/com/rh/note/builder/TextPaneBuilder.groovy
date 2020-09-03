@@ -6,7 +6,6 @@ import com.rh.note.grammar.ITitleGrammar
 import com.rh.note.util.SwingComponent
 
 import javax.swing.*
-import javax.swing.text.DefaultEditorKit
 import javax.swing.text.DefaultStyledDocument
 import javax.swing.text.JTextComponent
 import javax.swing.text.TextAction
@@ -38,6 +37,7 @@ class TextPaneBuilder implements SwingComponent {
                     font: new Font(null, 0, 17),
                     keyPressed: {
                         TextAreaEvent.rename(it)
+                        TextAreaEvent.sinkTitle(it)
                     },
                     titleGrammar: titleGrammar,
             ) {

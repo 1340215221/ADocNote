@@ -1,8 +1,11 @@
 package com.rh.note.api;
 
+import com.rh.note.common.IAdocFile;
 import com.rh.note.common.IForEach;
+import com.rh.note.constant.AdocFilePathEnum;
 import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.exception.NoteException;
+import com.rh.note.exception.RequestParamsValidException;
 import com.rh.note.file.AdocFile;
 import com.rh.note.grammar.ITitleGrammar;
 import com.rh.note.grammar.IncludeGrammar;
@@ -22,6 +25,7 @@ import com.rh.note.view.TreeView;
 import com.rh.note.view.WorkFrameRunView;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.codehaus.groovy.ast.expr.NotExpression;
 
 import javax.swing.*;
 import javax.swing.text.DefaultEditorKit;
@@ -375,6 +379,44 @@ public class WorkViewAPI {
                     TitleNavigateButtonRunView titleNavigateButton = new TitleNavigateButtonRunView().initByTitleName(tg.getName());
                     titleNavigate.add(titleNavigateButton);
                 });
+    }
+
+    /**
+     * 下沉标题
+     */
+    public void sinkTitle(String componentId) {
+        // 判断当前行是否为标题
+        TextPaneRunView textPane = new TextPaneRunView().init(componentId);
+        if (textPane == null) {
+            return;
+        }
+        String lineContent = textPane.getLineContent();
+        TitleGrammar titleGrammar = new TitleGrammar().init(lineContent);
+        if (titleGrammar == null) {
+            return;
+        }
+        // 创建新的adocFile
+        IAdocFile adocFile = AdocFilePathEnum.getAdocFile(textPane.getFilePath());
+        new AdocFile()
+                .unknown().include().title()
+                .init(adocFile);
+        // 获得标题的所有内容, 添加到adocFile
+        // 将include引用替换为include指向文件的内容
+        IAdocFile newAdocFile = adocFile.generateAdocFileByTitle(titleGrammar);
+        if (newAdocFile == null) {
+            return;
+        }
+        // 在当前编辑区替换标题内容为include语句
+        List<IncludeGrammar> includeGrammars = adocFile.getIncludeOfTitle(titleGrammar);
+        adocFile.title2Include(titleGrammar, newAdocFile.getFilePath());
+        // 在下级目录中创建新的adocFile todo 这要放在外面做
+        // 删除旧的标题下include指向的文件 todo 这要放在外面做
+        // 保存编辑区内容
+        saveAllEditContent();
+        // 关闭删除的include指向的编辑区
+        // 重新加载单行栏
+        // 重新加载标题列表
+        // 打开生成的新文件
     }
 
     /**
