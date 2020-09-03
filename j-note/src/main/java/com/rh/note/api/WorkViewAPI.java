@@ -122,16 +122,16 @@ public class WorkViewAPI {
     /**
      * 打开新的编辑区,通过被选择的标题
      */
-    public void openNewEditingAreaForSelected(String filePath, File file) {
+    public void openNewEditingAreaForSelected(TitleGrammar titleGrammar, File file) {
         //创建添加编辑区控件
-        TextPaneRunView.create(filePath);
-        TextPaneScrollView tps = new TextPaneScrollView().init(filePath);
+        TextPaneRunView.create(titleGrammar);
+        TextPaneScrollView tps = new TextPaneScrollView().init(titleGrammar.getFilePath());
         EditAreaView editArea = new EditAreaView().init();
         tps.addTo(editArea);
         editArea.showLast();
 
         //将数据显示到编辑区
-        TextPaneRunView textPane = new TextPaneRunView().initByFilePath(filePath);
+        TextPaneRunView textPane = new TextPaneRunView().initByFilePath(titleGrammar.getFilePath());
         textPane.read(file);
     }
 
@@ -381,7 +381,12 @@ public class WorkViewAPI {
      * 加载导航栏, 通过选择tab
      */
     public TitleGrammar getTitleGrammarBySelectedTab() {
-        //todo
-        return null;
+        EditAreaView editArea = new EditAreaView().init();
+        String filePath = editArea.getSelectTabFilePath();
+        TextPaneRunView textPane = new TextPaneRunView().initByFilePath(filePath);
+        if (textPane == null) {
+            return null;
+        }
+        return textPane.getRootTitle();
     }
 }

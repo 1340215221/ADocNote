@@ -3,6 +3,7 @@ package com.rh.note.view;
 import com.rh.note.builder.EditAreaBuilder;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * 编辑面板
@@ -31,5 +32,13 @@ public class EditAreaView extends Init<JTabbedPane> {
     public void showLast() {
         int tabCount = editArea().getTabCount();
         editArea().setSelectedIndex(tabCount - 1);
+    }
+
+    /**
+     * 获得选中的tab地址
+     */
+    public String getSelectTabFilePath() {
+        Component component = editArea().getSelectedComponent();
+        return component.getName().replaceAll("text_pane_scroll_", "");
     }
 }

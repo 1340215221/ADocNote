@@ -1,5 +1,7 @@
 package com.rh.note.component;
 
+import com.rh.note.grammar.ITitleGrammar;
+
 import javax.swing.*;
 
 /**
@@ -8,24 +10,27 @@ import javax.swing.*;
 public class NoteTextPane extends JTextPane {
 
     /**
-     * adoc对象
+     * 根标题
      */
-    private String filePath;
+    private ITitleGrammar titleGrammar;
 
-    public NoteTextPane(String filePath) {
-        this.filePath = filePath;
+    public NoteTextPane(ITitleGrammar titleGrammar) {
+        this.titleGrammar = titleGrammar;
+    }
+
+    public ITitleGrammar getTitleGrammar() {
+        return titleGrammar;
+    }
+
+    public void setTitleGrammar(ITitleGrammar titleGrammar) {
+        this.titleGrammar = titleGrammar;
     }
 
     /**
      * 获得编辑文件路径
      */
     public String getFilePath() {
-        return filePath;
-    }
-
-    public NoteTextPane setFilePath(String filePath) {
-        this.filePath = filePath;
-        return this;
+        return titleGrammar.getFilePath();
     }
 
 }

@@ -2,6 +2,7 @@ package com.rh.note.builder
 
 import com.rh.note.component.NoteTextPane
 import com.rh.note.event.TextAreaEvent
+import com.rh.note.grammar.ITitleGrammar
 import com.rh.note.util.SwingComponent
 
 import javax.swing.*
@@ -18,10 +19,10 @@ import java.awt.event.KeyEvent
  */
 class TextPaneBuilder implements SwingComponent {
 
-    private String filePath
+    private ITitleGrammar titleGrammar
 
-    TextPaneBuilder(String filePath) {
-        this.filePath = filePath
+    TextPaneBuilder(ITitleGrammar titleGrammar) {
+        this.titleGrammar = titleGrammar
     }
 
     void init() {
@@ -31,21 +32,21 @@ class TextPaneBuilder implements SwingComponent {
     @Override
     void init(Closure children) {
         def textPane = {
-            swingBuilder.textPane(id: id(filePath),
-                    name: id(filePath),
+            swingBuilder.textPane(id: id(titleGrammar.getFilePath()),
+                    name: id(titleGrammar.getFilePath()),
                     styledDocument: new DefaultStyledDocument(),
                     font: new Font(null, 0, 17),
                     keyPressed: {
                         TextAreaEvent.rename(it)
                     },
-                    filePath: filePath,
+                    titleGrammar: titleGrammar,
             ) {
                 addKeymap()
             }
         }
 
-        swingBuilder.scrollPane(id: scrollId(filePath),
-                name: scrollId(filePath),
+        swingBuilder.scrollPane(id: scrollId(titleGrammar.getFilePath()),
+                name: scrollId(titleGrammar.getFilePath()),
         ){
             textPane()
         }
@@ -56,7 +57,7 @@ class TextPaneBuilder implements SwingComponent {
      * 替换已有按键操作
      */
     void addKeymap() {
-        def textPane = swingBuilder."${id(filePath)}" as NoteTextPane
+        def textPane = swingBuilder."${id(titleGrammar.getFilePath())}" as NoteTextPane
         def newKeymap = JTextComponent.addKeymap("textPane", textPane.keymap)
         // 添加 回车 事件
         newKeymap.addActionForKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), new TextAction('textPane') {

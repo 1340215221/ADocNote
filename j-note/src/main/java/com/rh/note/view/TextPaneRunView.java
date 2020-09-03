@@ -6,6 +6,7 @@ import com.rh.note.constant.ErrorMessage;
 import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.exception.NoteException;
 import com.rh.note.grammar.IncludeGrammar;
+import com.rh.note.grammar.TitleGrammar;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -35,9 +36,9 @@ public class TextPaneRunView extends Init<NoteTextPane> {
      */
     private static final List<String> openedTextPaneComponentIds = new ArrayList<>();
 
-    public static void create(String filePath) {
-        new TextPaneBuilder(filePath).init();
-        openedTextPaneComponentIds.add(TextPaneBuilder.id(filePath));
+    public static void create(TitleGrammar titleGrammar) {
+        new TextPaneBuilder(titleGrammar).init();
+        openedTextPaneComponentIds.add(TextPaneBuilder.id(titleGrammar.getFilePath()));
     }
 
     @Override
@@ -53,6 +54,13 @@ public class TextPaneRunView extends Init<NoteTextPane> {
             return null;
         }
         return super.init(TextPaneBuilder.id(filePath));
+    }
+
+    /**
+     * 获得标题
+     */
+    public TitleGrammar getRootTitle() {
+        return (TitleGrammar) textPane().getTitleGrammar();
     }
 
     public void read(File file) {

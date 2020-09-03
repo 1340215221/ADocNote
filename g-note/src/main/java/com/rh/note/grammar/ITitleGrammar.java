@@ -21,4 +21,6 @@ public interface ITitleGrammar {
      */
     Color getColor();
 
+    String getFilePath();
+
 }

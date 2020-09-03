@@ -72,7 +72,7 @@ public class WorkAction implements IWorkAction {
         }
         //读取文件内容
         File file = fileServiceAPI.readTitleFileContent(titleGrammar.getAbsolutePath());
-        workViewAPI.openNewEditingAreaForSelected(titleGrammar.getFilePath(), file);
+        workViewAPI.openNewEditingAreaForSelected(titleGrammar, file);
     }
 
     /**
@@ -185,7 +185,7 @@ public class WorkAction implements IWorkAction {
         }
         //读取文件内容
         File file = fileServiceAPI.readTitleFileContent(((TitleGrammar) titleGrammar).getAbsolutePath());
-        workViewAPI.openNewEditingAreaForSelected(((TitleGrammar) titleGrammar).getFilePath(), file);
+        workViewAPI.openNewEditingAreaForSelected((TitleGrammar) titleGrammar, file);
         workViewAPI.loadTitleNavigate(titleGrammar);
     }
 
