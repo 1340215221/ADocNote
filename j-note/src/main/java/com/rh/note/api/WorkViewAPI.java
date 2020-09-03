@@ -127,7 +127,8 @@ public class WorkViewAPI {
      */
     public void openNewEditingAreaForSelected(TitleGrammar titleGrammar, File file) {
         //创建添加编辑区控件
-        TextPaneRunView.create(titleGrammar);
+        TitleGrammar rootTitle = titleGrammar.getRootTitleOnFile();
+        TextPaneRunView.create(rootTitle);
         TextPaneScrollView tps = new TextPaneScrollView().init(titleGrammar.getFilePath());
         EditAreaView editArea = new EditAreaView().init();
         tps.addTo(editArea);

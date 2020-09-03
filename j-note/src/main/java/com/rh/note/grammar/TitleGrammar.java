@@ -161,4 +161,21 @@ public class TitleGrammar implements IGrammar,ITitleGrammar {
         return Stream.concat(Stream.of(titleGrammar), childrenTitleStream);
     }
 
+    /**
+     * 获得根标题
+     */
+    public TitleGrammar getRootTitleOnFile() {
+        return getRootTitleOnFile(this);
+    }
+
+    private TitleGrammar getRootTitleOnFile(TitleGrammar tg) {
+        if (tg == null) {
+            return null;
+        }
+        if (tg.getParentTitle() == null || !tg.getParentTitle().getFilePath().equals(tg.getFilePath())) {
+            return tg;
+        }
+        TitleGrammar parentTitle = getRootTitleOnFile(tg.getParentTitle());
+        return parentTitle != null ? parentTitle : tg;
+    }
 }
