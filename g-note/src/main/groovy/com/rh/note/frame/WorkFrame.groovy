@@ -10,6 +10,7 @@ import com.rh.note.register.TreeNodeFactory
 import com.rh.note.util.ISwingBuilder
 
 import java.awt.*
+import java.awt.event.AWTEventListener
 
 /**
  * 工作窗口工厂
@@ -19,7 +20,16 @@ class WorkFrame implements IWorkFrame, IFrame, ISwingBuilder {
     @Override
     void globalSettings() {
         Toolkit toolkit = Toolkit.getDefaultToolkit()
-        toolkit.addAWTEventListener(WorkFrameEvent.saveOperation, AWTEvent.KEY_EVENT_MASK)
+        toolkit.addAWTEventListener(new AWTEventListener() {
+            @Override
+            void eventDispatched(AWTEvent event) {
+                WorkFrameEvent.saveOperation(event)
+                WorkFrameEvent.closeRightTab(event)
+                WorkFrameEvent.closeLeftTab(event)
+                WorkFrameEvent.closeCurrentTab(event)
+                WorkFrameEvent.closeAllTab(event)
+            }
+        }, AWTEvent.KEY_EVENT_MASK)
     }
 
     /**
