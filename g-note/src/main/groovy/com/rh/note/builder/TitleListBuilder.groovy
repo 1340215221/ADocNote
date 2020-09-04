@@ -1,5 +1,6 @@
 package com.rh.note.builder
 
+import com.rh.note.component.NoteTreeCellRenderer
 import com.rh.note.event.TitleListEvent
 import com.rh.note.util.SwingComponent
 
@@ -20,6 +21,7 @@ class TitleListBuilder implements SwingComponent {
                     constraints: BorderLayout.EAST,
                     model: model(),
                     mouseClicked: TitleListEvent.mouseClicked,
+                    cellRenderer: new NoteTreeCellRenderer(),
             ) {
                 children()
             }

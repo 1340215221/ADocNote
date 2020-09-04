@@ -104,6 +104,54 @@ public class TitleGrammar implements IGrammar,ITitleGrammar {
         return Color.lightGray;
     }
 
+    /**
+     * 设置图片大小
+     */
+    private Icon setIconSize(ImageIcon icon) {
+        if (icon == null) {
+            return null;
+        }
+
+        Image image = icon.getImage().getScaledInstance(16, 18, Image.SCALE_DEFAULT);
+        icon.setImage(image);
+        return icon;
+    }
+
+    private Icon readmeRoot = setIconSize(new ImageIcon("icon/file/readme_root.png"));
+    private Icon readmeChildren = setIconSize(new ImageIcon("icon/file/readme_children.png"));
+    private Icon twoLevelRoot = setIconSize(new ImageIcon("icon/file/twoLevel_root.png"));
+    private Icon twoLevelChildren = setIconSize(new ImageIcon("icon/file/twoLevel_children.png"));
+    private Icon content = setIconSize(new ImageIcon("icon/file/content_dark.png"));
+    private Icon unknown = twoLevelChildren;
+
+    /**
+     * 根据所在目录和是否为根标题, 判断图标
+     */
+    @Override
+    public Icon getIcon() {
+        if (StringUtils.isBlank(getFilePath())) {
+            return unknown;
+        }
+        // 判断是否为根标题
+        boolean isRoot = parentTitle == null || !getFilePath().equals(parentTitle.getFilePath());
+        if (getFilePath().contains("README") && isRoot) {
+            return readmeRoot;
+        }
+        if (getFilePath().contains("README")) {
+            return readmeChildren;
+        }
+        if (getFilePath().contains("twoLevel") && isRoot) {
+            return twoLevelRoot;
+        }
+        if (getFilePath().contains("twoLevel")) {
+            return twoLevelChildren;
+        }
+        if (getFilePath().contains("content")) {
+            return content;
+        }
+        return unknown;
+    }
+
     @Override
     public String toLineContent() {
         StringBuilder sb = new StringBuilder();

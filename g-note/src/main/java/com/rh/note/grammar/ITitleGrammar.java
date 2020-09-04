@@ -1,5 +1,6 @@
 package com.rh.note.grammar;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
@@ -23,4 +24,8 @@ public interface ITitleGrammar {
 
     String getFilePath();
 
+    /**
+     * 设置图标
+     */
+    Icon getIcon();
 }
