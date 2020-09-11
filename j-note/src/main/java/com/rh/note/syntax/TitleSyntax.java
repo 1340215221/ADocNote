@@ -1,8 +1,11 @@
 package com.rh.note.syntax;
 
+import lombok.Data;
+
 /**
  * 标题语法
  */
+@Data
 public class TitleSyntax {
 
     /**

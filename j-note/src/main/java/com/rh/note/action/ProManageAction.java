@@ -1,0 +1,40 @@
+package com.rh.note.action;
+
+import com.rh.note.api.FileAPIService;
+import com.rh.note.api.ProManageViewAPI;
+import com.rh.note.vo.RecentlyOpenedRecordVO;
+import lombok.Setter;
+
+/**
+ * 项目管理入口
+ */
+@Setter
+public class ProManageAction implements IProjectManagementAction {
+
+    private FileAPIService fileAPIService;
+    private ProManageViewAPI proManageViewAPI;
+
+    /**
+     * 启动窗口
+     */
+    public void startFrame() {
+        RecentlyOpenedRecordVO[] voArr = fileAPIService.readHistoryProject();
+        proManageViewAPI.startFrame();
+        proManageViewAPI.loadHistoryProData(voArr);
+    }
+
+    @Override
+    public void openSelectedHistoryProject() {
+
+    }
+
+    @Override
+    public void openDialogForSelectProject() {
+
+    }
+
+    @Override
+    public void openProjectByDirectoryPath(String filePath) {
+
+    }
+}

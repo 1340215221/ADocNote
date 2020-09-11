@@ -1,5 +1,7 @@
 package com.rh.note.syntax;
 
+import com.rh.note.constants.AdocFileTypeEnum;
+import com.rh.note.line.IncludeLine;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
@@ -51,13 +53,14 @@ public class IncludeSyntaxSugar {
     /**
      * 生成includeLine
      */
-    public IncludeLine copyTo() {
-        IncludeLine includeLine = new IncludeLine();
-        includeLine.setIndented(indented);
-//        includeLine.setTargetRelativePath();
-        includeLine.setTargetFileName(titleName);
-        includeLine.setTargetFileSuf("adoc");
-        return includeLine;
+    public IncludeSyntax copyToByFilePath(String filePath) {
+        IncludeSyntax includeSyntax = new IncludeSyntax();
+        includeSyntax.setIndented(indented);
+        includeSyntax.setTargetFileName(titleName);
+        includeSyntax.setTargetFileSuf("adoc");
+        String targetRelativePath = AdocFileTypeEnum.matchByFilePath(filePath).getRelativePathOfNextDirectory() + titleName + ".adoc";
+        includeSyntax.setTargetRelativePath(targetRelativePath);
+        return includeSyntax;
     }
 
 }
