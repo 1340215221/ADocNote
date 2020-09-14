@@ -37,8 +37,8 @@ public class TextPaneView extends Init<JTextPane> {
     /**
      * 编辑区内容是否为空
      */
-    public boolean isNotBlank() {
-        return textPane().getDocument().getLength() > 0;
+    public boolean isBlank() {
+        return textPane().getDocument().getLength() < 1;
     }
 
     /**

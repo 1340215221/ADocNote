@@ -13,8 +13,7 @@ import java.util.Map;
 public class TitleNavigateButtonFactory extends AbstractFactory {
     @Override
     public Object newInstance(FactoryBuilderSupport builder, Object name, Object value, Map attributes) throws InstantiationException, IllegalAccessException {
-        TitleNavigateButton button = new TitleNavigateButton();
-        return builder;
+        return new TitleNavigateButton();
     }
 
     /**

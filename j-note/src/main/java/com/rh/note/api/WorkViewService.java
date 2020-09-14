@@ -6,11 +6,16 @@ import com.rh.note.view.RootTitleNodeView;
 import com.rh.note.view.TabbedPaneView;
 import com.rh.note.view.TextPaneView;
 import com.rh.note.view.TextScrollPaneView;
+import com.rh.note.view.TitleNavigateButtonView;
+import com.rh.note.view.TitleNavigatePanelView;
 import com.rh.note.view.TitleTreeModelView;
 import com.rh.note.view.TitleTreeView;
 import com.rh.note.view.WorkFrameView;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -76,13 +81,14 @@ public class WorkViewService {
     /**
      * 显示指定编辑区
      */
-    public void showTextPane(TextPaneView textPane) {
-        if (textPane == null) {
+    public void showTextPane(String filePath) {
+        if (StringUtils.isBlank(filePath)) {
             return;
         }
 
+        TextScrollPaneView textScrollPane = new TextScrollPaneView().initByFilePath(filePath);
         TabbedPaneView tabbedPane = new TabbedPaneView().init();
-        tabbedPane.show(textPane);
+        tabbedPane.show(textScrollPane);
     }
 
     /**
@@ -103,8 +109,16 @@ public class WorkViewService {
         if (titleLine == null) {
             return;
         }
-
-//        List<TitleLine> parentTitles = titleLine.getParentTitles();
-//        new N
+        List<TitleLine> parentTitles = titleLine.getParentTitles();
+        if (CollectionUtils.isEmpty(parentTitles)) {
+            return;
+        }
+        TitleNavigatePanelView titleNavigatePanel = new TitleNavigatePanelView().init();
+        titleNavigatePanel.clearTitle();
+        parentTitles.stream().sorted(Comparator.comparing(title -> title.getTitleSyntax().getLevel())).forEach(title -> {
+            TitleNavigateButtonView.create(title);
+            TitleNavigateButtonView titleNavigateButton = new TitleNavigateButtonView().initByTitleName(title.getTitleName());
+            titleNavigatePanel.add(titleNavigateButton);
+        });
     }
 }

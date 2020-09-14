@@ -32,11 +32,11 @@ public class TabbedPaneView extends Init<JTabbedPane> {
     /**
      * 显示指定编辑区
      */
-    public void show(TextPaneView textPane) {
-        if (textPane == null) {
+    public void show(TextScrollPaneView textScrollPane) {
+        if (textScrollPane == null) {
             return;
         }
 
-        tabbedPane().setSelectedComponent(textPane.getBean());
+        tabbedPane().setSelectedComponent(textScrollPane.getBean());
     }
 }

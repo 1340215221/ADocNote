@@ -13,8 +13,7 @@ import java.util.Map;
 public class AdocTextPaneFactory extends AbstractFactory {
     @Override
     public Object newInstance(FactoryBuilderSupport builder, Object name, Object value, Map attributes) throws InstantiationException, IllegalAccessException {
-        AdocTextPane textPane = new AdocTextPane();
-        return textPane;
+        return new AdocTextPane();
     }
 
     /**

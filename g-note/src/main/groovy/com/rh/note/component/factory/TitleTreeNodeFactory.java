@@ -12,8 +12,7 @@ import java.util.Map;
 public class TitleTreeNodeFactory extends AbstractFactory {
     @Override
     public Object newInstance(FactoryBuilderSupport builder, Object name, Object value, Map attributes) throws InstantiationException, IllegalAccessException {
-        TitleTreeNode node = new TitleTreeNode();
-        return node;
+        return new TitleTreeNode();
     }
 
     @Override

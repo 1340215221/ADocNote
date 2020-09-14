@@ -79,6 +79,26 @@ public class TitleLine extends BaseLine implements ITitleLine {
     }
 
     /**
+     * 获得所有父标题
+     */
+    public List<TitleLine> getParentTitles() {
+        List<TitleLine> list = new ArrayList<>();
+        addParentTitles(list);
+        return list;
+    }
+
+    /**
+     * 获得所有父标题--递归
+     */
+    private void addParentTitles(List<TitleLine> resultList) {
+        TitleLine parentTitle = getParentTitle();
+        if (parentTitle != null) {
+            parentTitle.addParentTitles(resultList);
+        }
+        resultList.add(this);
+    }
+
+    /**
      * 查找目标的父标题
      */
     public TitleLine findParentOf(TitleLine titleLine) {

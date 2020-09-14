@@ -84,10 +84,10 @@ public class WorkAction implements WorkActionBeanClassConfig {
         if (textPane == null) {
             return;
         }
-        if (textPane.isNotBlank()) {
+        if (textPane.isBlank()) {
             File file = fileService.getFileByPath(adocFile.getAbsolutePath());
             workViewService.loadTextPaneData(textPane, file);
         }
-        workViewService.showTextPane(textPane);
+        workViewService.showTextPane(adocFile.getFilePath());
     }
 }
