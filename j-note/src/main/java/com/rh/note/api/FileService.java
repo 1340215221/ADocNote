@@ -1,11 +1,14 @@
 package com.rh.note.api;
 
+import com.rh.note.file.ProjectDirectory;
+import com.rh.note.file.ReadMe;
+import com.rh.note.line.TitleLine;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
 
 /**
  * 文件服务
  */
-public class FileAPIService {
+public class FileService {
     /**
      * 获取历史项目
      */
@@ -21,5 +24,23 @@ public class FileAPIService {
         vo3.setProjectPath("/home/hang/work-note");
         vo3.setProjectName("工作笔记");
         return new RecentlyOpenedRecordVO[]{vo1, vo2, vo3};
+    }
+
+    /**
+     * 读取所有标题, 返回根标题
+     */
+    public TitleLine readAllTitle() {
+        ReadMe readMe = new ReadMe().init();
+        if (readMe == null) {
+            return null;
+        }
+        return readMe.getRootTitle();
+    }
+
+    /**
+     * 选择项目,通过项目地址
+     */
+    public void selectProject(String projectPath) {
+        new ProjectDirectory().setProjectPath(projectPath);
     }
 }

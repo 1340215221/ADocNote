@@ -15,8 +15,8 @@ class WorkFrameBuilder implements ISwingBuilder {
                 defaultCloseOperation: WindowConstants.EXIT_ON_CLOSE,
         ){
             children()
+            windowCentered()
         }
-        windowCentered()
     }
 
     /**

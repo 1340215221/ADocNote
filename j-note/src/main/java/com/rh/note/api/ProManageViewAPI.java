@@ -1,7 +1,5 @@
 package com.rh.note.api;
 
-import com.rh.note.builder.HistoryProjectListBuilder;
-import com.rh.note.util.Init;
 import com.rh.note.view.HistoryProListView;
 import com.rh.note.view.ProManageFrameView;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
@@ -27,5 +25,20 @@ public class ProManageViewAPI {
         }
         new HistoryProListView().init().loadData(voArr);
         new ProManageFrameView().init().show();
+    }
+
+    /**
+     * 选择的项目操作
+     */
+    public String selectedProjectOperation() {
+        HistoryProListView historyProList = new HistoryProListView().init();
+        return historyProList.getSelectedProjectPath();
+    }
+
+    /**
+     * 关闭窗口
+     */
+    public void closeFrame() {
+        new ProManageFrameView().init().close();
     }
 }

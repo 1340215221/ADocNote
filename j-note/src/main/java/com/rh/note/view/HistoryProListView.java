@@ -4,6 +4,7 @@ import com.rh.note.builder.HistoryProjectListBuilder;
 import com.rh.note.util.Init;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.JList;
 
@@ -27,5 +28,16 @@ public class HistoryProListView extends Init<JList<RecentlyOpenedRecordVO>> {
 
     private JList<RecentlyOpenedRecordVO> historyProList() {
         return getBean();
+    }
+
+    /**
+     * 获得选择的项目
+     */
+    public String getSelectedProjectPath() {
+        RecentlyOpenedRecordVO vo = historyProList().getSelectedValue();
+        if (vo == null || StringUtils.isBlank(vo.getProjectPath())) {
+            return null;
+        }
+        return vo.getProjectPath();
     }
 }

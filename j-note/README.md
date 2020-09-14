@@ -63,12 +63,12 @@ component 自定义控件类 \
 view 控件业务类 \
 file 文件业务逻辑类 \
 grammar 语法逻辑类 \
-action swing和service的聚合层 \
+action swing和service的聚合层. 分三部分, 解析用户操作, 请求文件数据, 显示视图 \
 frame 主窗口启动类 \
 event 事件触发类 \
 config 构建对象，管理对象依赖 \
 register 注册groovy控件 \
-api 各模块业务聚合层 \
+api 各模块业务聚合层. file 对文件类的操作聚合, view 对视图对象的操作 \
 
 
 `todo` 拓展标签

@@ -29,4 +29,11 @@ public class ProManageFrameView extends Init<JFrame> {
     protected JFrame proManageFrame() {
         return getBean();
     }
+
+    /**
+     * 关闭窗口
+     */
+    public void close() {
+        proManageFrame().dispose();
+    }
 }

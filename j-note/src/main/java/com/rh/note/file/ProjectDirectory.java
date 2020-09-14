@@ -17,8 +17,6 @@ public class ProjectDirectory {
     }
 
     public void setProjectPath(String projectPath) {
-        if (StringUtils.isBlank(ProjectDirectory.projectPath)) {
-            ProjectDirectory.projectPath = projectPath;
-        }
+        ProjectDirectory.projectPath = projectPath;
     }
 }

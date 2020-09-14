@@ -1,6 +1,6 @@
 package com.rh.note.action;
 
-import com.rh.note.api.FileAPIService;
+import com.rh.note.api.FileService;
 import com.rh.note.api.ProManageViewAPI;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
 import lombok.Setter;
@@ -11,21 +11,25 @@ import lombok.Setter;
 @Setter
 public class ProManageAction implements IProjectManagementAction {
 
-    private FileAPIService fileAPIService;
+    private FileService fileService;
     private ProManageViewAPI proManageViewAPI;
+    private WorkAction workAction;
 
     /**
      * 启动窗口
      */
     public void startFrame() {
-        RecentlyOpenedRecordVO[] voArr = fileAPIService.readHistoryProject();
+        RecentlyOpenedRecordVO[] voArr = fileService.readHistoryProject();
         proManageViewAPI.startFrame();
         proManageViewAPI.loadHistoryProData(voArr);
     }
 
     @Override
     public void openSelectedHistoryProject() {
-
+        String projectPath = proManageViewAPI.selectedProjectOperation();
+        fileService.selectProject(projectPath);
+        proManageViewAPI.closeFrame();
+        workAction.startFrame();
     }
 
     @Override

@@ -13,10 +13,11 @@ class ProjectManagementFrameBuilder implements ISwingBuilder {
                 pack: true,
                 resizable: false,
                 defaultCloseOperation: WindowConstants.EXIT_ON_CLOSE,
+                title: '打开项目',
         ){
             children()
+            windowCentered()
         }
-        windowCentered()
     }
 
     /**
