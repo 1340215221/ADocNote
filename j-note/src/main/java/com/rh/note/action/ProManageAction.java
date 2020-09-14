@@ -37,12 +37,7 @@ public class ProManageAction implements IProjectManagementAction {
     }
 
     @Override
-    public void openDialogForSelectProject() {
-
-    }
-
-    @Override
-    public void openProjectByDirectoryPath(String filePath) {
-
+    public String openDialogForSelectProject() {
+        return proManageViewAPI.openDialogForSelectProject();
     }
 }

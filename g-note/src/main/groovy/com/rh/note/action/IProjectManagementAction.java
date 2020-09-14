@@ -12,10 +12,5 @@ public interface IProjectManagementAction {
     /**
      * 打开选择项目弹窗
      */
-    void openDialogForSelectProject();
-
-    /**
-     * 打开项目,通过目录路径
-     */
-    void openProjectByDirectoryPath(String filePath);
+    String openDialogForSelectProject();
 }

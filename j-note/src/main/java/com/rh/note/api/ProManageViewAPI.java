@@ -1,6 +1,7 @@
 package com.rh.note.api;
 
 import com.rh.note.view.HistoryProListView;
+import com.rh.note.view.ImportProjectDialogView;
 import com.rh.note.view.ProManageFrameView;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
 import org.apache.commons.lang3.ArrayUtils;
@@ -40,5 +41,13 @@ public class ProManageViewAPI {
      */
     public void closeFrame() {
         new ProManageFrameView().init().close();
+    }
+
+    /**
+     * 打开选择项目弹窗
+     */
+    public String openDialogForSelectProject() {
+        ProManageFrameView proManageFrame = new ProManageFrameView().init();
+        return ImportProjectDialogView.create(proManageFrame);
     }
 }
