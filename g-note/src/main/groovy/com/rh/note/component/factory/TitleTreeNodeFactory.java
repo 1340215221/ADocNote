@@ -1,6 +1,5 @@
 package com.rh.note.component.factory;
 
-import com.rh.note.bean.ITitleLine;
 import com.rh.note.component.TitleTreeNode;
 import groovy.util.AbstractFactory;
 import groovy.util.FactoryBuilderSupport;
@@ -14,10 +13,15 @@ public class TitleTreeNodeFactory extends AbstractFactory {
     @Override
     public Object newInstance(FactoryBuilderSupport builder, Object name, Object value, Map attributes) throws InstantiationException, IllegalAccessException {
         TitleTreeNode node = new TitleTreeNode();
-        if (attributes.get("titleGrammar") instanceof ITitleLine) {
-            node.setTitleLine((ITitleLine) attributes.get("titleGrammar"));
-        }
         return node;
+    }
+
+    @Override
+    public void setChild(FactoryBuilderSupport builder, Object parent, Object child) {
+        if (!(parent instanceof TitleTreeNode && child instanceof TitleTreeNode)) {
+            return;
+        }
+        ((TitleTreeNode) parent).add((TitleTreeNode) child);
     }
 
     /**

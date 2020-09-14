@@ -1,6 +1,7 @@
 package com.rh.note.file;
 
 import com.rh.note.base.BaseLine;
+import com.rh.note.base.IFrame;
 import com.rh.note.bean.IAdocFile;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCode;
@@ -61,7 +62,7 @@ public class AdocFile implements IAdocFile {
         }
 
         this.filePath = filePath;
-        this.parsingFileContent(filePath);
+        this.parsingFileContent();
         return this;
     }
 
@@ -89,17 +90,45 @@ public class AdocFile implements IAdocFile {
     /**
      * 解析文件内容
      */
-    private void parsingFileContent(String filePath) {
+    private void parsingFileContent() {
         if (StringUtils.isBlank(filePath)) {
             return;
         }
         File file = new File(this.getAbsolutePath());
         this.read(file).forEach((lineNumber, lineContent) -> {
-            this.matchTitle(lineNumber, lineContent);
-            this.matchInclude(lineNumber, lineContent);
+            boolean isMatch = this.matchTitle(lineNumber, lineContent)
+                    || this.matchInclude(lineNumber, lineContent)
+                    || this.matchBlank(lineNumber, lineContent);
+            if (!isMatch) {
+                this.matchText(lineNumber, lineContent);
+            }
         });
         this.scanChildrenFile();
         this.titleBuildRelationships();
+    }
+
+    /**
+     * 匹配普通文本
+     */
+    private void matchText(Integer lineNumber, String lineContent) {
+        new TextLine()
+                .init(lineContent)
+                .setLineNumber(lineNumber)
+                .setAdocFile(this);
+    }
+
+    /**
+     * 匹配空白行
+     */
+    private boolean matchBlank(Integer lineNumber, String lineContent) {
+        BlankLine blankLine = new BlankLine().init(lineContent);
+        if (blankLine == null) {
+            return false;
+        }
+        blankLine.setLineNumber(lineNumber)
+                .setAdocFile(this);
+        blankLines.add(blankLine);
+        return true;
     }
 
     /**
@@ -108,14 +137,11 @@ public class AdocFile implements IAdocFile {
     private void titleBuildRelationships() {
         List<BaseLine> grammars;
         // 处理titleList的关系
-        if (CollectionUtils.isEmpty(includeLines)) {
-            grammars = (List) titleLines;
-        } else {
-            // 处理include中的title的关系
-            grammars = new ArrayList<>(titleLines.size() + includeLines.size());
-            grammars.addAll(titleLines);
-            grammars.addAll(includeLines);
-        }
+        grammars = new ArrayList<>(titleLines.size() + includeLines.size() + blankLines.size() + textLines.size());
+        grammars.addAll(titleLines);
+        grammars.addAll(includeLines);
+        grammars.addAll(blankLines);
+        grammars.addAll(textLines);
         grammars.stream()
                 .filter(grammar -> !(grammar instanceof IncludeLine && ((IncludeLine) grammar).getTargetTitle() == null))
                 .sorted(Comparator.comparing(BaseLine::getLineNumber))
@@ -149,7 +175,31 @@ public class AdocFile implements IAdocFile {
                         ((IncludeLine) a).getTargetTitle().findParentOf((TitleLine) b).addChildrenTitle((TitleLine) b);
                         return b;
                     }
-                    throw new IllegalArgumentException();
+                    // 标题 非标题
+                    if (a instanceof TitleLine) {
+                        b.setParentTitle((TitleLine) a);
+                        return a;
+                    }
+                    // 非标题 标题
+                    if (b instanceof TitleLine) {
+                        TitleLine tempParentTitle = a.getParentTitle();
+                        if (tempParentTitle == null) {
+                            return b;
+                        }
+                        TitleLine parent = tempParentTitle.findParentOf((TitleLine) b);
+                        if (parent == null) {
+                            return tempParentTitle;
+                        }
+                        parent.addChildrenTitle((TitleLine) b);
+                        return b;
+                    }
+                    // 非标题 非标题
+                    TitleLine parentTitle = a.getParentTitle();
+                    if (parentTitle == null) {
+                        return b;
+                    }
+                    b.setParentTitle(parentTitle);
+                    return parentTitle;
                 });
     }
 
@@ -162,7 +212,7 @@ public class AdocFile implements IAdocFile {
         }
         includeLines.forEach(includeLine -> {
             AdocFile adocFile = new AdocFile();
-            adocFile.init(includeLine.getTargetFile().getFilePath());
+            adocFile.init(includeLine.getIncludeSyntax().getTargetFilePath());
             includeLine.setTargetFile(adocFile);
         });
     }
@@ -170,41 +220,39 @@ public class AdocFile implements IAdocFile {
     /**
      * 匹配处理include
      */
-    private void matchInclude(Integer lineNumber, String lineContent) {
+    private boolean matchInclude(Integer lineNumber, String lineContent) {
         if (StringUtils.isBlank(lineContent)) {
-            return;
+            return false;
         }
         IncludeSyntax includeSyntax = new IncludeSyntax().init(lineContent);
         if (includeSyntax == null) {
-            return;
+            return false;
         }
-        IncludeLine includeLine = new IncludeLine()
+        IncludeLine includeLine = (IncludeLine) new IncludeLine()
                 .setIncludeSyntax(includeSyntax)
-                .setTargetFile()
-                .setAdocFile()
-                .setLineNumber(lineNumber)
-                .setParentTitle();
+                .setAdocFile(this)
+                .setLineNumber(lineNumber);
         includeLines.add(includeLine);
+        return true;
     }
 
     /**
      * 匹配处理标题
      */
-    private void matchTitle(Integer lineNumber, String lineContent) {
+    private boolean matchTitle(Integer lineNumber, String lineContent) {
         if (StringUtils.isBlank(lineContent)) {
-            return;
+            return false;
         }
         TitleSyntax titleSyntax = new TitleSyntax().init(lineContent);
         if (titleSyntax == null) {
-            return;
+            return false;
         }
-        TitleLine titleLine = new TitleLine()
-                .setTitleSyntax()
-                .setChildrenTitles()
+        TitleLine titleLine = (TitleLine) new TitleLine()
+                .setTitleSyntax(titleSyntax)
                 .setLineNumber(lineNumber)
-                .setParentTitle()
-                .setAdocFile();
+                .setAdocFile(this);
         titleLines.add(titleLine);
+        return true;
     }
 
     /**

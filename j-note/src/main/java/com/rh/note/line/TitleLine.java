@@ -2,12 +2,15 @@ package com.rh.note.line;
 
 import com.rh.note.base.BaseLine;
 import com.rh.note.bean.ITitleLine;
+import com.rh.note.constants.AdocFileTypeEnum;
 import com.rh.note.syntax.TitleSyntax;
+import com.rh.note.util.TreeNodeIconUtil;
 import lombok.Data;
-import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.Icon;
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +21,7 @@ public class TitleLine extends BaseLine implements ITitleLine {
     /**
      * 子标题
      */
-    private List<TitleLine> childrenTitles;
+    private final List<TitleLine> childrenTitles = new ArrayList<>();
     /**
      * 语法对象
      */
@@ -36,7 +39,27 @@ public class TitleLine extends BaseLine implements ITitleLine {
 
     @Override
     public Icon getIcon() {
-        return null;
+        if (StringUtils.isBlank(getFilePath())) {
+            return TreeNodeIconUtil.unknown;
+        }
+        // 判断是否为根标题
+        boolean isRoot = parentTitle == null || !getFilePath().equals(parentTitle.getFilePath());
+        if (AdocFileTypeEnum.readme.matchByFPath(getFilePath()) && isRoot) {
+            return TreeNodeIconUtil.readmeRoot;
+        }
+        if (AdocFileTypeEnum.readme.matchByFPath(getFilePath())) {
+            return TreeNodeIconUtil.readmeChildren;
+        }
+        if (AdocFileTypeEnum.towLevel.matchByFPath(getFilePath()) && isRoot) {
+            return TreeNodeIconUtil.twoLevelRoot;
+        }
+        if (AdocFileTypeEnum.towLevel.matchByFPath(getFilePath())) {
+            return TreeNodeIconUtil.twoLevelChildren;
+        }
+        if (AdocFileTypeEnum.content.matchByFPath(getFilePath())) {
+            return TreeNodeIconUtil.content;
+        }
+        return TreeNodeIconUtil.unknown;
     }
 
     @Override

@@ -16,8 +16,8 @@ class ProjectManagementFrameBuilder implements ISwingBuilder {
                 title: '打开项目',
         ){
             children()
-            windowCentered()
         }
+        windowCentered()
     }
 
     /**

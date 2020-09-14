@@ -24,6 +24,19 @@ public enum AdocFileTypeEnum {
         public String getRelativePathOfNextDirectory() {
             return "adoc/twoLevel/";
         }
+
+        /**
+         * readme不能被引用,所以没有相对路径
+         */
+        @Override
+        public boolean matchByRDirectory(String relativeDirectory) {
+            return false;
+        }
+
+        @Override
+        public String getFileDirectory() {
+            return "";
+        }
     },
     /**
      * towLevel
@@ -41,6 +54,16 @@ public enum AdocFileTypeEnum {
         @Override
         public String getRelativePathOfNextDirectory() {
             return "../content/";
+        }
+
+        @Override
+        public boolean matchByRDirectory(String relativeDirectory) {
+            return StringUtils.isNotBlank(relativeDirectory) && relativeDirectory.matches(getRegex());
+        }
+
+        @Override
+        public String getFileDirectory() {
+            return "adoc/twoLevel/";
         }
     },
     /**
@@ -63,6 +86,16 @@ public enum AdocFileTypeEnum {
         public String getRelativePathOfNextDirectory() {
             return "";
         }
+
+        @Override
+        public boolean matchByRDirectory(String relativeDirectory) {
+            return StringUtils.isNotBlank(relativeDirectory) && relativeDirectory.matches("^\\.\\./content/" + BaseConstants.file_name_regex + "\\.adoc$");
+        }
+
+        @Override
+        public String getFileDirectory() {
+            return "adoc/content/";
+        }
     },
     ;
 
@@ -77,9 +110,19 @@ public enum AdocFileTypeEnum {
     public abstract String getRelativePathOfNextDirectory();
 
     /**
+     * 通过相对路径匹配
+     */
+    public abstract boolean matchByRDirectory(String relativeDirectory);
+
+    /**
+     * 获得项目目录
+     */
+    public abstract String getFileDirectory();
+
+    /**
      * 通过项目相对路径匹配
      */
-    protected boolean matchByRegex(String filePath) {
+    public boolean matchByFPath(String filePath) {
         return StringUtils.isNotBlank(filePath) && filePath.matches(getRegex());
     }
 
@@ -88,7 +131,7 @@ public enum AdocFileTypeEnum {
      */
     public static AdocFileTypeEnum matchByFilePath(String filePath) {
         return Arrays.stream(values())
-                .filter(e -> e.matchByRegex(filePath))
+                .filter(e -> e.matchByFPath(filePath))
                 .findFirst()
                 .orElse(null);
     }
@@ -100,7 +143,17 @@ public enum AdocFileTypeEnum {
         return Arrays.stream(values())
                 .filter(e -> e.name().equals(name))
                 .findFirst()
-                .get();
+                .orElse(null);
+    }
+
+    /**
+     * 通过相对路径匹配
+     */
+    public static AdocFileTypeEnum matchByRelativePath(String relativePath) {
+        return Arrays.stream(values())
+                .filter(e -> e.matchByRDirectory(relativePath))
+                .findFirst()
+                .orElse(null);
     }
 
 }

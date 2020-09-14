@@ -1,7 +1,5 @@
 package com.rh.note.file;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * readme文件
  */

@@ -12,4 +12,9 @@ public class TextLine extends BaseLine {
      * 内容
      */
     private String text;
+
+    public TextLine init(String lineContent) {
+        text = lineContent;
+        return this;
+    }
 }

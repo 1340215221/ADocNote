@@ -1,5 +1,9 @@
 package com.rh.note.api;
 
+import com.rh.note.line.TitleLine;
+import com.rh.note.view.RootTitleNodeView;
+import com.rh.note.view.TitleTreeModelView;
+import com.rh.note.view.TitleTreeView;
 import com.rh.note.view.WorkFrameView;
 
 /**
@@ -16,7 +20,13 @@ public class WorkViewService {
     /**
      * 加载标题树的数据
      */
-    public void loadTitleTreeData() {
+    public void loadTitleTreeData(TitleLine rootTitle) {
+        RootTitleNodeView.create(rootTitle);
+        RootTitleNodeView rootTitleNode = new RootTitleNodeView().init();
+        TitleTreeModelView titleTreeModel = new TitleTreeModelView().init();
+        titleTreeModel.setRoot(rootTitleNode);
+        TitleTreeView titleTree = new TitleTreeView().init();
+        titleTree.expandAllRow();
     }
 
     /**

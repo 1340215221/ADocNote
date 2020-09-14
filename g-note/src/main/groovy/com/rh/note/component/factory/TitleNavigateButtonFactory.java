@@ -14,9 +14,6 @@ public class TitleNavigateButtonFactory extends AbstractFactory {
     @Override
     public Object newInstance(FactoryBuilderSupport builder, Object name, Object value, Map attributes) throws InstantiationException, IllegalAccessException {
         TitleNavigateButton button = new TitleNavigateButton();
-        if (attributes.get("titleGrammar") instanceof ITitleLine) {
-            button.setTitleLine((ITitleLine) attributes.get("titleGrammar"));
-        }
         return builder;
     }
 

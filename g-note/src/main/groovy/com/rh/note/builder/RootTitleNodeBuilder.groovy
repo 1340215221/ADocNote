@@ -16,7 +16,7 @@ class RootTitleNodeBuilder implements ISwingBuilder {
     }
 
     void init() {
-        swingBuilder.node(id: id(),
+        swingBuilder.ttNode(id: id(),
                 userObject: titleLine.getTitleName(),
                 titleLine: titleLine,
         ) {
@@ -33,7 +33,7 @@ class RootTitleNodeBuilder implements ISwingBuilder {
         }
 
         title.getChildrenTitles().each { children ->
-            swingBuilder.node(userObject: children.getTitleName(),
+            swingBuilder.ttNode(userObject: children.getTitleName(),
                     titleLine: children,
             ) {
                 this.setChildrenNode(children)
