@@ -1,7 +1,7 @@
 package com.rh.note.config;
 
 import com.rh.note.action.IDefaultEventAction;
-import com.rh.note.action.IMatchAction;
+import com.rh.note.action.IOperationAction;
 import com.rh.note.action.IProjectManagementAction;
 import com.rh.note.action.IWorkAction;
 
@@ -20,7 +20,7 @@ public class BridgingBeanConfig {
     /**
      * 匹配操作入口
      */
-    private static IMatchAction matchAction;
+    private static IOperationAction operationAction;
     /**
      * 默认事件操作入口
      */
@@ -52,17 +52,17 @@ public class BridgingBeanConfig {
         return proManageAction;
     }
 
-    public static void setMatchAction(IMatchAction matchAction) {
-        if (BridgingBeanConfig.matchAction == null) {
-            BridgingBeanConfig.matchAction = matchAction;
+    public static void setOperationAction(IOperationAction operationAction) {
+        if (BridgingBeanConfig.operationAction == null) {
+            BridgingBeanConfig.operationAction = operationAction;
         }
     }
 
     /**
      * 匹配操作入口
      */
-    public static IMatchAction matchAction() {
-        return matchAction;
+    public static IOperationAction operationAction() {
+        return operationAction;
     }
 
     public static void setDefaultEventAction(IDefaultEventAction defaultEventAction) {

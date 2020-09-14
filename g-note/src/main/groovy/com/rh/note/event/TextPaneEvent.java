@@ -7,7 +7,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import static com.rh.note.config.BridgingBeanConfig.defaultEventAction;
-import static com.rh.note.config.BridgingBeanConfig.matchAction;
+import static com.rh.note.config.BridgingBeanConfig.operationAction;
 import static com.rh.note.config.BridgingBeanConfig.workAction;
 
 /**
@@ -32,11 +32,11 @@ public class TextPaneEvent {
         if (!(source instanceof AdocTextPane)) {
             return;
         }
-        if (matchAction().matchGenerateIncludeBlock(((AdocTextPane) source).getAdocFile())) {
+        if (operationAction().matchGenerateIncludeBlock(((AdocTextPane) source).getAdocFile())) {
             workAction().generateIncludeBlock(((AdocTextPane) source).getAdocFile());
             return;
         }
-        if (matchAction().matchGenerateTableBlock(((AdocTextPane) source).getAdocFile())) {
+        if (operationAction().matchGenerateTableBlock(((AdocTextPane) source).getAdocFile())) {
             workAction().generateTableBlock(((AdocTextPane) source).getAdocFile());
             return;
         }
@@ -51,7 +51,7 @@ public class TextPaneEvent {
             return;
         }
         Object source = event.getSource();
-        if (!(source instanceof AdocTextPane) || !matchAction().matchRename()) {
+        if (!(source instanceof AdocTextPane) || !operationAction().matchRename()) {
             return;
         }
         workAction().rename(((AdocTextPane) source).getAdocFile());
@@ -65,7 +65,7 @@ public class TextPaneEvent {
             return;
         }
         Object source = event.getSource();
-        if (!(source instanceof AdocTextPane) || !matchAction().matchSinkTitle()) {
+        if (!(source instanceof AdocTextPane) || !operationAction().matchSinkTitle()) {
             return;
         }
         workAction().sinkTitle(((AdocTextPane) source).getAdocFile());
@@ -76,7 +76,7 @@ public class TextPaneEvent {
      */
     public static void delete_include(ActionEvent event) {
         Object source = event.getSource();
-        if (!matchAction().matchDeleteInclude() || !(source instanceof AdocTextPane)) {
+        if (!operationAction().matchDeleteInclude() || !(source instanceof AdocTextPane)) {
             defaultEventAction().ctrlDelete(event);
             return;
         }

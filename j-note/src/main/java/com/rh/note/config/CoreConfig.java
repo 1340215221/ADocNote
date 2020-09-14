@@ -1,7 +1,7 @@
 package com.rh.note.config;
 
 import com.rh.note.action.DefaultEventAction;
-import com.rh.note.action.MatchAction;
+import com.rh.note.action.OperationAction;
 import com.rh.note.action.ProManageAction;
 import com.rh.note.action.WorkAction;
 import com.rh.note.api.FileService;
@@ -24,13 +24,13 @@ public class CoreConfig {
             .setFileService(file_api_service)
             .setProManageViewAPI(pro_manage_view_api_service)
             .setWorkAction(work_action);
-    public static final MatchAction match_action = new MatchAction();
+    public static final OperationAction match_action = new OperationAction();
     public static final DefaultEventAction default_event_action = new DefaultEventAction();
     // 配置桥接项目对象
     static {
         BridgingBeanConfig.setProManageAction(pro_manage_action);
         BridgingBeanConfig.setWorkAction(work_action);
-        BridgingBeanConfig.setMatchAction(match_action);
+        BridgingBeanConfig.setOperationAction(match_action);
         BridgingBeanConfig.setDefaultEventAction(default_event_action);
     }
 

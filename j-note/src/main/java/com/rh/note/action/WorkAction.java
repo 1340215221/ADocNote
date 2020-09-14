@@ -5,7 +5,6 @@ import com.rh.note.api.WorkViewService;
 import com.rh.note.config.WorkActionBeanClassConfig;
 import com.rh.note.file.AdocFile;
 import com.rh.note.line.TitleLine;
-import com.rh.note.view.RootTitleNodeView;
 import lombok.Setter;
 
 /**

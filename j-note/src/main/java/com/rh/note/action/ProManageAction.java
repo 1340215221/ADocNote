@@ -4,6 +4,7 @@ import com.rh.note.api.FileService;
 import com.rh.note.api.ProManageViewAPI;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 项目管理入口
@@ -25,8 +26,11 @@ public class ProManageAction implements IProjectManagementAction {
     }
 
     @Override
-    public void openSelectedHistoryProject() {
-        String projectPath = proManageViewAPI.selectedProjectOperation();
+    public void openSelectedHistoryProject(String projectPath) {
+        if (StringUtils.isBlank(projectPath)) {
+            return;
+        }
+
         fileService.selectProject(projectPath);
         proManageViewAPI.closeFrame();
         workAction.startFrame();

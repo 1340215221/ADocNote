@@ -3,9 +3,9 @@ package com.rh.note.action;
 import com.rh.note.bean.IAdocFile;
 
 /**
- * 检查匹配入口
+ * 解析用户操作入口
  */
-public interface IMatchAction {
+public interface IOperationAction {
     /**
      * 匹配 include重命名操作
      */
@@ -28,4 +28,9 @@ public interface IMatchAction {
      * 匹配 生成table块操作
      */
     boolean matchGenerateTableBlock(IAdocFile adocFile);
+
+    /**
+     * 点击历史项目列表
+     */
+    String clickedHistoryProjectList();
 }

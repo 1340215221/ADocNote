@@ -30,7 +30,7 @@ public class ProManageViewAPI {
     /**
      * 选择的项目操作
      */
-    public String selectedProjectOperation() {
+    public String getSelectedHistoryProjectPath() {
         HistoryProListView historyProList = new HistoryProListView().init();
         return historyProList.getSelectedProjectPath();
     }

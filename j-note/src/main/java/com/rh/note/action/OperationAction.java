@@ -1,11 +1,17 @@
 package com.rh.note.action;
 
+import com.rh.note.api.ProManageViewAPI;
 import com.rh.note.bean.IAdocFile;
+import lombok.Setter;
 
 /**
- * 匹配操作入口
+ * 解析用户操作入口
  */
-public class MatchAction implements IMatchAction {
+@Setter
+public class OperationAction implements IOperationAction {
+
+    private ProManageViewAPI proManageViewAPI;
+
     @Override
     public boolean matchRename() {
         return false;
@@ -29,5 +35,10 @@ public class MatchAction implements IMatchAction {
     @Override
     public boolean matchGenerateTableBlock(IAdocFile adocFile) {
         return false;
+    }
+
+    @Override
+    public String clickedHistoryProjectList() {
+        return proManageViewAPI.getSelectedHistoryProjectPath();
     }
 }
