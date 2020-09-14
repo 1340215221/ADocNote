@@ -32,7 +32,7 @@ public interface IWorkAction<A extends IAdocFile, T extends ITitleLine> {
     /**
      * 加载标题导航, 在选择文件标签时
      */
-    void loadTitleNavigateOnSelectedTab();
+    void loadTitleNavigateOnSelectedTab(T titleLine);
 
     /**
      * 生成include块
@@ -60,7 +60,7 @@ public interface IWorkAction<A extends IAdocFile, T extends ITitleLine> {
     void openIncludeFile();
 
     /**
-     * 加载导航栏,通过标题
+     * 获得被选择的adoc文件对象
      */
-    void loadTitleNavigateByTitle(T titleLine);
+    T getRootTitleOfSelectedTab();
 }

@@ -3,6 +3,7 @@ package com.rh.note.frame
 import com.rh.note.base.IFrame
 import com.rh.note.component.factory.AdocTextPaneFactory
 import com.rh.note.component.factory.TitleNavigateButtonFactory
+import com.rh.note.component.factory.TitleScrollPaneFactory
 import com.rh.note.component.factory.TitleTreeModelFactory
 import com.rh.note.component.factory.TitleTreeNodeFactory
 import com.rh.note.config.IWorkFrame
@@ -59,6 +60,7 @@ class WorkFrame implements IWorkFrame, IFrame, ISwingBuilder {
         swingBuilder.registerFactory(TitleTreeNodeFactory.name(), new TitleTreeNodeFactory())
         swingBuilder.registerFactory(AdocTextPaneFactory.name(), new AdocTextPaneFactory())
         swingBuilder.registerFactory(TitleNavigateButtonFactory.name(), new TitleNavigateButtonFactory())
+        swingBuilder.registerFactory(TitleScrollPaneFactory.name(), new TitleScrollPaneFactory())
     }
 
 }

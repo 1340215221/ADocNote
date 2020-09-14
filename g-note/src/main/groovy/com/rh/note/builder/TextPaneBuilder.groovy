@@ -43,8 +43,8 @@ class TextPaneBuilder implements ISwingBuilder {
             }
         }
 
-        swingBuilder.scrollPane(id: scrollId(adocFile.getFilePath()),
-                name: scrollId(adocFile.getFilePath()),
+        swingBuilder.tScrollPane(id: scrollId(adocFile.getFilePath()),
+                adocFile: adocFile,
         ){
             textPane()
         }

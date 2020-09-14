@@ -15,7 +15,7 @@ class HistoryProjectListBuilder implements ISwingBuilder {
                 fixedCellWidth: 300,
                 constraints: BorderLayout.WEST,
                 mouseClicked: {
-                    HistoryProjectListEvent.clicked_history_project_list()
+                    HistoryProjectListEvent.clicked_history_project_list(it)
                 },
         ){
             children()

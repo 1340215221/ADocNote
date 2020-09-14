@@ -121,4 +121,9 @@ public class WorkViewService {
             titleNavigatePanel.add(titleNavigateButton);
         });
     }
+
+    public TitleLine getRootTitleOfSelectedTab() {
+        TabbedPaneView tabbedPane = new TabbedPaneView().init();
+        return tabbedPane.getRootTitleOfSelectedTab();
+    }
 }

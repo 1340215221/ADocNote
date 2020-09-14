@@ -37,7 +37,8 @@ public class WorkAction implements WorkActionBeanClassConfig {
     }
 
     @Override
-    public void loadTitleNavigateOnSelectedTab() {
+    public void loadTitleNavigateOnSelectedTab(TitleLine titleLine) {
+        workViewService.loadTitleNavigateByTitle(titleLine);
     }
 
     @Override
@@ -49,12 +50,8 @@ public class WorkAction implements WorkActionBeanClassConfig {
     }
 
     @Override
-    public void loadTitleNavigateByTitle(TitleLine titleLine) {
-        if (titleLine == null) {
-            return;
-        }
-
-        workViewService.loadTitleNavigateByTitle(titleLine);
+    public TitleLine getRootTitleOfSelectedTab() {
+        return workViewService.getRootTitleOfSelectedTab();
     }
 
     /**

@@ -1,7 +1,7 @@
 package com.rh.note.bean;
 
-import javax.swing.Icon;
-import java.awt.Color;
+import javax.swing.*;
+import java.awt.*;
 import java.util.List;
 
 /**

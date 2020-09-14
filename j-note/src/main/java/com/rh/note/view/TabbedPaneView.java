@@ -1,9 +1,12 @@
 package com.rh.note.view;
 
 import com.rh.note.builder.TabbedPaneBuilder;
+import com.rh.note.component.TitleScrollPane;
+import com.rh.note.line.TitleLine;
 import com.rh.note.util.Init;
 
-import javax.swing.JTabbedPane;
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * 编辑区标签面板视图
@@ -38,5 +41,16 @@ public class TabbedPaneView extends Init<JTabbedPane> {
         }
 
         tabbedPane().setSelectedComponent(textScrollPane.getBean());
+    }
+
+    /**
+     * 获得被选择的标签
+     */
+    public TitleLine getRootTitleOfSelectedTab() {
+        Component component = tabbedPane().getSelectedComponent();
+        if (!(component instanceof TitleScrollPane)) {
+            return null;
+        }
+        return (TitleLine) ((TitleScrollPane) component).getAdocFile().getRootTitle();
     }
 }
