@@ -45,9 +45,9 @@ public interface IWorkAction<A extends IAdocFile, T extends ITitleLine> {
     void generateTableBlock(A adocFile);
 
     /**
-     * 打开文件,通过选择的标题节点
+     * 在编辑区打开adoc文件
      */
-    void openAdocFileBySelectedNode();
+    void openTextPaneByAdocFile(A adocFile);
 
     /**
      * 保存所有打开编辑区的内容
@@ -58,4 +58,9 @@ public interface IWorkAction<A extends IAdocFile, T extends ITitleLine> {
      * 打开光标所在include指向的文件
      */
     void openIncludeFile();
+
+    /**
+     * 加载导航栏,通过标题
+     */
+    void loadTitleNavigateByTitle(T titleLine);
 }

@@ -1,16 +1,20 @@
 package com.rh.note.action;
 
-import com.rh.note.api.ProManageViewAPI;
+import com.rh.note.api.ProManageViewService;
+import com.rh.note.api.WorkViewService;
 import com.rh.note.bean.IAdocFile;
+import com.rh.note.config.OperationActionBeanClassConfig;
+import com.rh.note.file.AdocFile;
 import lombok.Setter;
 
 /**
  * 解析用户操作入口
  */
 @Setter
-public class OperationAction implements IOperationAction {
+public class OperationAction implements OperationActionBeanClassConfig {
 
-    private ProManageViewAPI proManageViewAPI;
+    private ProManageViewService proManageViewService;
+    private WorkViewService workViewService;
 
     @Override
     public boolean matchRename() {
@@ -39,6 +43,11 @@ public class OperationAction implements IOperationAction {
 
     @Override
     public String clickedHistoryProjectList() {
-        return proManageViewAPI.getSelectedHistoryProjectPath();
+        return proManageViewService.getSelectedHistoryProjectPath();
+    }
+
+    @Override
+    public AdocFile clickedTitleTreeNode() {
+        return workViewService.getAdocFileOfSelectTitleTreeNode();
     }
 }

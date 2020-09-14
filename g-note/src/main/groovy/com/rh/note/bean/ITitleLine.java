@@ -27,7 +27,7 @@ public interface ITitleLine {
     /**
      * 获得节点图标
      */
-    Icon getIcon();
+    Icon getTreeNodeIcon();
 
     /**
      * 获得导航按钮颜色

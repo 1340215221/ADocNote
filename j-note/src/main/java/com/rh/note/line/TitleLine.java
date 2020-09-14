@@ -38,7 +38,7 @@ public class TitleLine extends BaseLine implements ITitleLine {
     }
 
     @Override
-    public Icon getIcon() {
+    public Icon getTreeNodeIcon() {
         if (StringUtils.isBlank(getFilePath())) {
             return TreeNodeIconUtil.unknown;
         }

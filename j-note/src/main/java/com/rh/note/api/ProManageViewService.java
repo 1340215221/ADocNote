@@ -9,7 +9,7 @@ import org.apache.commons.lang3.ArrayUtils;
 /**
  * 项目管理窗口服务
  */
-public class ProManageViewAPI {
+public class ProManageViewService {
     /**
      * 启动窗口
      */

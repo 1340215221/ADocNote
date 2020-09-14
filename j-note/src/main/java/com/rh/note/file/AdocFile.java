@@ -69,6 +69,7 @@ public class AdocFile implements IAdocFile {
     /**
      * 得到根标题
      */
+    @Override
     public TitleLine getRootTitle() {
         if (CollectionUtils.isEmpty(titleLines)) {
             return null;
@@ -274,6 +275,13 @@ public class AdocFile implements IAdocFile {
                 throw new ApplicationException(ErrorCode.file_read_failed, e);
             }
         };
+    }
+
+    /**
+     * 获得文件名
+     */
+    public String getFileName() {
+        return getRootTitle().getTitleName() + ".adoc";
     }
 
     /**

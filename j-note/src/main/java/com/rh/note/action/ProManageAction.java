@@ -1,10 +1,10 @@
 package com.rh.note.action;
 
 import com.rh.note.api.FileService;
-import com.rh.note.api.ProManageViewAPI;
+import com.rh.note.api.ProManageViewService;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
+import lombok.NonNull;
 import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * 项目管理入口
@@ -13,7 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 public class ProManageAction implements IProjectManagementAction {
 
     private FileService fileService;
-    private ProManageViewAPI proManageViewAPI;
+    private ProManageViewService proManageViewService;
     private WorkAction workAction;
 
     /**
@@ -21,23 +21,19 @@ public class ProManageAction implements IProjectManagementAction {
      */
     public void startFrame() {
         RecentlyOpenedRecordVO[] voArr = fileService.readHistoryProject();
-        proManageViewAPI.startFrame();
-        proManageViewAPI.loadHistoryProData(voArr);
+        proManageViewService.startFrame();
+        proManageViewService.loadHistoryProData(voArr);
     }
 
     @Override
-    public void openSelectedHistoryProject(String projectPath) {
-        if (StringUtils.isBlank(projectPath)) {
-            return;
-        }
-
+    public void openSelectedHistoryProject(@NonNull String projectPath) {
         fileService.selectProject(projectPath);
-        proManageViewAPI.closeFrame();
+        proManageViewService.closeFrame();
         workAction.startFrame();
     }
 
     @Override
     public String openDialogForSelectProject() {
-        return proManageViewAPI.openDialogForSelectProject();
+        return proManageViewService.openDialogForSelectProject();
     }
 }

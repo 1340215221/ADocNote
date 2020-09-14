@@ -5,7 +5,7 @@ import com.rh.note.bean.IAdocFile;
 /**
  * 解析用户操作入口
  */
-public interface IOperationAction {
+public interface IOperationAction<A extends IAdocFile> {
     /**
      * 匹配 include重命名操作
      */
@@ -33,4 +33,6 @@ public interface IOperationAction {
      * 点击历史项目列表
      */
     String clickedHistoryProjectList();
+
+    A clickedTitleTreeNode();
 }

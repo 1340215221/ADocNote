@@ -5,7 +5,11 @@ import com.rh.note.api.WorkViewService;
 import com.rh.note.config.WorkActionBeanClassConfig;
 import com.rh.note.file.AdocFile;
 import com.rh.note.line.TitleLine;
+import com.rh.note.view.TextPaneView;
+import lombok.NonNull;
 import lombok.Setter;
+
+import java.io.File;
 
 /**
  * 工作窗口操作入口
@@ -44,6 +48,15 @@ public class WorkAction implements WorkActionBeanClassConfig {
     public void openIncludeFile() {
     }
 
+    @Override
+    public void loadTitleNavigateByTitle(TitleLine titleLine) {
+        if (titleLine == null) {
+            return;
+        }
+
+        workViewService.loadTitleNavigateByTitle(titleLine);
+    }
+
     /**
      * 打开窗口
      */
@@ -66,6 +79,15 @@ public class WorkAction implements WorkActionBeanClassConfig {
     }
 
     @Override
-    public void openAdocFileBySelectedNode() {
+    public void openTextPaneByAdocFile(@NonNull AdocFile adocFile) {
+        TextPaneView textPane = workViewService.createNonExistentTextPane(adocFile);
+        if (textPane == null) {
+            return;
+        }
+        if (textPane.isNotBlank()) {
+            File file = fileService.getFileByPath(adocFile.getAbsolutePath());
+            workViewService.loadTextPaneData(textPane, file);
+        }
+        workViewService.showTextPane(textPane);
     }
 }

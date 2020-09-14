@@ -4,6 +4,8 @@ import com.rh.note.action.IDefaultEventAction;
 import com.rh.note.action.IOperationAction;
 import com.rh.note.action.IProjectManagementAction;
 import com.rh.note.action.IWorkAction;
+import com.rh.note.bean.IAdocFile;
+import com.rh.note.bean.ITitleLine;
 
 /**
  * 桥接对象实例配置
@@ -35,7 +37,7 @@ public class BridgingBeanConfig {
     /**
      * 工作窗口入口
      */
-    public static IWorkAction workAction() {
+    public static <A extends IAdocFile, T extends ITitleLine> IWorkAction<A, T> workAction() {
         return workAction;
     }
 
@@ -61,7 +63,7 @@ public class BridgingBeanConfig {
     /**
      * 匹配操作入口
      */
-    public static IOperationAction operationAction() {
+    public static <A extends IAdocFile> IOperationAction<A> operationAction() {
         return operationAction;
     }
 

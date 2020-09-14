@@ -4,6 +4,9 @@ import com.rh.note.file.ProjectDirectory;
 import com.rh.note.file.ReadMe;
 import com.rh.note.line.TitleLine;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.File;
 
 /**
  * 文件服务
@@ -42,5 +45,15 @@ public class FileService {
      */
     public void selectProject(String projectPath) {
         new ProjectDirectory().setProjectPath(projectPath);
+    }
+
+    /**
+     * 获得文件对象
+     */
+    public File getFileByPath(String absolutePath) {
+        if (StringUtils.isBlank(absolutePath)) {
+            return null;
+        }
+        return new File(absolutePath);
     }
 }

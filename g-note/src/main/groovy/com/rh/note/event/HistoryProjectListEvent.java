@@ -1,5 +1,7 @@
 package com.rh.note.event;
 
+import org.apache.commons.lang3.StringUtils;
+
 import static com.rh.note.config.BridgingBeanConfig.proManageAction;
 import static com.rh.note.config.BridgingBeanConfig.operationAction;
 
@@ -13,6 +15,9 @@ public class HistoryProjectListEvent {
      */
     public static void clicked_history_project_list() {
         String selectedProjectPath = operationAction().clickedHistoryProjectList();
+        if (StringUtils.isBlank(selectedProjectPath)) {
+            return;
+        }
         proManageAction().openSelectedHistoryProject(selectedProjectPath);
     }
 

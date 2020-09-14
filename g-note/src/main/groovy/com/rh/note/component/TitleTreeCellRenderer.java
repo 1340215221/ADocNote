@@ -18,7 +18,7 @@ public class TitleTreeCellRenderer extends DefaultTreeCellRenderer {
             return this;
         }
         ITitleLine titleLine = ((TitleTreeNode) value).getTitleLine();
-        setIcon(titleLine.getIcon());
+        setIcon(titleLine.getTreeNodeIcon());
         return this;
     }
 }

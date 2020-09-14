@@ -1,5 +1,6 @@
 package com.rh.note.builder
 
+import com.rh.note.bean.IAdocFile
 import com.rh.note.bean.ITitleLine
 import com.rh.note.component.AdocTextPane
 import com.rh.note.event.TextPaneEvent
@@ -18,15 +19,15 @@ import java.awt.event.KeyEvent
  */
 class TextPaneBuilder implements ISwingBuilder {
 
-    private ITitleLine titleLine
+    private IAdocFile adocFile
 
-    TextPaneBuilder(ITitleLine titleLine) {
-        this.titleLine = titleLine
+    TextPaneBuilder(IAdocFile adocFile) {
+        this.adocFile = adocFile
     }
 
     void init() {
         def textPane = {
-            swingBuilder.textPane(id: id(titleLine.getFilePath()),
+            swingBuilder.textPane(id: id(adocFile.getFilePath()),
                     styledDocument: new DefaultStyledDocument(),
                     font: new Font(null, 0, 17),
                     keyPressed: {
@@ -36,14 +37,14 @@ class TextPaneBuilder implements ISwingBuilder {
                     mouseClicked: {
                         TextPaneEvent.enter_include_file(it)
                     },
-                    titleLine: titleLine,
+                    adocFile: adocFile,
             ) {
                 addKeymap()
             }
         }
 
-        swingBuilder.scrollPane(id: scrollId(titleLine.getFilePath()),
-                name: scrollId(titleLine.getFilePath()),
+        swingBuilder.scrollPane(id: scrollId(adocFile.getFilePath()),
+                name: scrollId(adocFile.getFilePath()),
         ){
             textPane()
         }
@@ -54,7 +55,7 @@ class TextPaneBuilder implements ISwingBuilder {
      * 替换已有按键操作
      */
     void addKeymap() {
-        def textPane = swingBuilder."${id(titleLine.getFilePath())}" as AdocTextPane
+        def textPane = swingBuilder."${id(adocFile.getFilePath())}" as AdocTextPane
         def newKeymap = JTextComponent.addKeymap("textPane", textPane.keymap)
         // 添加 回车 事件
         newKeymap.addActionForKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), new TextAction('textPane') {
