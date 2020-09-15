@@ -2,13 +2,16 @@ package com.rh.note.action;
 
 import com.rh.note.api.FileService;
 import com.rh.note.api.WorkViewService;
+import com.rh.note.component.TitleScrollPane;
 import com.rh.note.config.WorkActionBeanClassConfig;
 import com.rh.note.file.AdocFile;
 import com.rh.note.line.TitleLine;
+import com.rh.note.view.TabbedPaneView;
 import com.rh.note.view.TextPaneView;
 import lombok.NonNull;
 import lombok.Setter;
 
+import javax.swing.JScrollBar;
 import java.io.File;
 
 /**
@@ -43,6 +46,13 @@ public class WorkAction implements WorkActionBeanClassConfig {
 
     @Override
     public void openIncludeFile() {
+        TitleScrollPane scrollPane = (TitleScrollPane) new TabbedPaneView().init().getBean().getSelectedComponent();
+        TextPaneView textPane = new TextPaneView().initByFilePath(scrollPane.getAdocFile().getFilePath());
+
+        JScrollBar bar = scrollPane.getVerticalScrollBar();
+        System.out.println(bar.getMaximum());
+        System.out.println(bar.getHeight());
+        //todo
     }
 
     @Override

@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 
 import javax.swing.JScrollBar;
+import javax.swing.text.Caret;
+import javax.swing.text.Element;
 
 /**
  * 编辑区滚动定位工具
@@ -30,18 +32,46 @@ public class ScrollPositionUtil {
      * 定位到指定行
      */
     public void positioningToTitleRow() {
+        this.moveCursorToTitleRow();
+        this.scrollToTitleRow();
+    }
+
+    /**
+     * 光标移动到指定行
+     */
+    private void moveCursorToTitleRow() {
         if (lineNumber == null || adocTextPane == null || titleScrollPane == null) {
             return;
         }
 
-        double rowCount = adocTextPane.getDocument().getLength();
+        Element rootElement = adocTextPane.getDocument().getDefaultRootElement();
+        Element element = null;
+        if (rootElement.getElementCount() < lineNumber) {
+            element = rootElement.getElement(rootElement.getElementCount() - 1);
+        } else {
+            element = rootElement.getElement(lineNumber - 1);
+        }
+
+        Caret caret = adocTextPane.getCaret();
+        caret.setDot(element.getStartOffset());
+        caret.setVisible(true);
+    }
+
+    /**
+     * 滚动到指定行
+     */
+    private void scrollToTitleRow() {
+        if (lineNumber == null || adocTextPane == null || titleScrollPane == null) {
+            return;
+        }
+
+        double rowCount = adocTextPane.getDocument().getDefaultRootElement().getElementCount();
 
         JScrollBar bar = titleScrollPane.getVerticalScrollBar();
         double maximum = bar.getMaximum();
         double height = bar.getHeight();
 
-        int value = (int) (Double.valueOf(lineNumber) * maximum / rowCount - height * 4 / 10);
-        System.out.println(String.format("lineNumber=[%s], max=[%s], height=[%s], value=[%s]", lineNumber, maximum, height, value));
+        int value = (int) (Double.valueOf(lineNumber) * maximum / rowCount - height * 2 / 5);
         bar.setValue(value);
     }
 

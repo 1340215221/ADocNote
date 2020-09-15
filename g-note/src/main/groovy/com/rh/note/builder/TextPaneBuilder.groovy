@@ -1,7 +1,6 @@
 package com.rh.note.builder
 
 import com.rh.note.bean.IAdocFile
-import com.rh.note.bean.ITitleLine
 import com.rh.note.component.AdocTextPane
 import com.rh.note.event.TextPaneEvent
 import com.rh.note.util.ISwingBuilder

@@ -1,5 +1,6 @@
 package com.rh.note.action;
 
+import javax.swing.text.DefaultEditorKit;
 import java.awt.event.ActionEvent;
 
 /**
@@ -13,6 +14,6 @@ public class DefaultEventAction implements IDefaultEventAction {
 
     @Override
     public void enter(ActionEvent event) {
-
+        new DefaultEditorKit.InsertBreakAction().actionPerformed(event);
     }
 }
