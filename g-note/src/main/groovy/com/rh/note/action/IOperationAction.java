@@ -1,11 +1,12 @@
 package com.rh.note.action;
 
 import com.rh.note.bean.IAdocFile;
+import com.rh.note.bean.ITitleLine;
 
 /**
  * 解析用户操作入口
  */
-public interface IOperationAction<A extends IAdocFile> {
+public interface IOperationAction<A extends IAdocFile, T extends ITitleLine> {
     /**
      * 匹配 include重命名操作
      */
@@ -34,5 +35,13 @@ public interface IOperationAction<A extends IAdocFile> {
      */
     String clickedHistoryProjectList();
 
+    /**
+     * 点击标题树节点
+     */
     A clickedTitleTreeNode();
+
+    /**
+     * 获得adoc文件通过标题
+     */
+    A getAdocFileByTitle(T titleLine);
 }

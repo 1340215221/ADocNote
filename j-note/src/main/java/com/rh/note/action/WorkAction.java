@@ -33,11 +33,7 @@ public class WorkAction implements WorkActionBeanClassConfig {
     }
 
     @Override
-    public void clickedNavigateButton(TitleLine titleLine) {
-    }
-
-    @Override
-    public void loadTitleNavigateOnSelectedTab(TitleLine titleLine) {
+    public void loadTitleNavigateByTitle(TitleLine titleLine) {
         workViewService.loadTitleNavigateByTitle(titleLine);
     }
 
@@ -52,6 +48,24 @@ public class WorkAction implements WorkActionBeanClassConfig {
     @Override
     public TitleLine getRootTitleOfSelectedTab() {
         return workViewService.getRootTitleOfSelectedTab();
+    }
+
+    @Override
+    public void openTextPaneByTitle(TitleLine titleLine) {
+        if (titleLine == null) {
+            return;
+        }
+        AdocFile adocFile = titleLine.getAdocFile();
+        TextPaneView textPane = workViewService.createNonExistentTextPane(adocFile);
+        if (textPane == null) {
+            return;
+        }
+        if (textPane.isBlank()) {
+            File file = fileService.getFileByPath(adocFile.getAbsolutePath());
+            workViewService.loadTextPaneData(textPane, file);
+        }
+        workViewService.showTextPane(adocFile.getFilePath());
+        workViewService.positioningToTitleRow(titleLine);
     }
 
     /**

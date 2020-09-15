@@ -25,14 +25,9 @@ public interface IWorkAction<A extends IAdocFile, T extends ITitleLine> {
     void deleteInclude(A adocFile);
 
     /**
-     * 点击标题导航按钮
-     */
-    void clickedNavigateButton(T titleLine);
-
-    /**
      * 加载标题导航, 在选择文件标签时
      */
-    void loadTitleNavigateOnSelectedTab(T titleLine);
+    void loadTitleNavigateByTitle(T titleLine);
 
     /**
      * 生成include块
@@ -63,4 +58,9 @@ public interface IWorkAction<A extends IAdocFile, T extends ITitleLine> {
      * 获得被选择的adoc文件对象
      */
     T getRootTitleOfSelectedTab();
+
+    /**
+     * 打开编辑区,并定位标题
+     */
+    void openTextPaneByTitle(T titleLine);
 }

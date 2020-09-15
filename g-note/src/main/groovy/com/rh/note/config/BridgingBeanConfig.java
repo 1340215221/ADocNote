@@ -63,7 +63,7 @@ public class BridgingBeanConfig {
     /**
      * 匹配操作入口
      */
-    public static <A extends IAdocFile> IOperationAction<A> operationAction() {
+    public static <A extends IAdocFile, T extends ITitleLine> IOperationAction<A, T> operationAction() {
         return operationAction;
     }
 

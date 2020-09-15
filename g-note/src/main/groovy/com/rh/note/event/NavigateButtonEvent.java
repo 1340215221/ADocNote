@@ -1,9 +1,11 @@
 package com.rh.note.event;
 
+import com.rh.note.bean.IAdocFile;
 import com.rh.note.component.TitleNavigateButton;
 
 import java.awt.event.MouseEvent;
 
+import static com.rh.note.config.BridgingBeanConfig.operationAction;
 import static com.rh.note.config.BridgingBeanConfig.workAction;
 
 /**
@@ -19,7 +21,12 @@ public class NavigateButtonEvent {
         if (!(source instanceof TitleNavigateButton)) {
             return;
         }
-        workAction().clickedNavigateButton(((TitleNavigateButton) source).getTitleLine());
+        IAdocFile adocFile = operationAction().getAdocFileByTitle(((TitleNavigateButton) source).getTitleLine());
+        if (adocFile == null) {
+            return;
+        }
+        workAction().openTextPaneByAdocFile(adocFile);
+        workAction().openTextPaneByTitle(((TitleNavigateButton) source).getTitleLine());
     }
 
 }

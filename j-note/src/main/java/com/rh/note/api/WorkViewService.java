@@ -1,7 +1,10 @@
 package com.rh.note.api;
 
+import com.rh.note.component.AdocTextPane;
+import com.rh.note.component.TitleScrollPane;
 import com.rh.note.file.AdocFile;
 import com.rh.note.line.TitleLine;
+import com.rh.note.util.ScrollPositionUtil;
 import com.rh.note.view.RootTitleNodeView;
 import com.rh.note.view.TabbedPaneView;
 import com.rh.note.view.TextPaneView;
@@ -125,5 +128,45 @@ public class WorkViewService {
     public TitleLine getRootTitleOfSelectedTab() {
         TabbedPaneView tabbedPane = new TabbedPaneView().init();
         return tabbedPane.getRootTitleOfSelectedTab();
+    }
+
+    /**
+     * 从title中获得adocfile
+     */
+    public AdocFile getAdocFileOfTitle(TitleLine titleLine) {
+        if (titleLine == null) {
+            return null;
+        }
+        return titleLine.getAdocFile();
+    }
+
+    /**
+     * 获得adoc文件通过标题
+     */
+    public AdocFile getAdocFileByTitle(TitleLine titleLine) {
+        if (titleLine == null) {
+            return null;
+        }
+        return titleLine.getAdocFile();
+    }
+
+    /**
+     * 定位到标题行
+     */
+    public void positioningToTitleRow(TitleLine titleLine) {
+        if (titleLine == null) {
+            return;
+        }
+        TextPaneView textPane = new TextPaneView().initByFilePath(titleLine.getFilePath());
+        if (textPane == null) {
+            return;
+        }
+        TextScrollPaneView textScrollPane = new TextScrollPaneView().initByFilePath(titleLine.getFilePath());
+        ScrollPositionUtil.builder()
+                .adocTextPane((AdocTextPane) textPane.getBean())
+                .titleScrollPane((TitleScrollPane) textScrollPane.getBean())
+                .lineNumber(titleLine.getLineNumber())
+                .build()
+                .positioningToTitleRow();
     }
 }
