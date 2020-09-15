@@ -64,7 +64,13 @@ public class TitleLine extends BaseLine implements ITitleLine {
 
     @Override
     public Color getColor() {
-        return null;
+        if (AdocFileTypeEnum.content.matchByFPath(getFilePath())) {
+            return Color.green;
+        }
+        if (AdocFileTypeEnum.towLevel.matchByFPath(getFilePath())) {
+            return Color.pink;
+        }
+        return Color.lightGray;
     }
 
     /**
