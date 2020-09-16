@@ -38,10 +38,5 @@ public interface IOperationAction<A extends IAdocFile, T extends ITitleLine> {
     /**
      * 点击标题树节点
      */
-    A clickedTitleTreeNode();
-
-    /**
-     * 获得adoc文件通过标题
-     */
-    A getAdocFileByTitle(T titleLine);
+    T clickedTitleTreeNode();
 }

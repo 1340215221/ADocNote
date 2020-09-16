@@ -40,11 +40,6 @@ public interface IWorkAction<A extends IAdocFile, T extends ITitleLine> {
     void generateTableBlock(A adocFile);
 
     /**
-     * 在编辑区打开adoc文件
-     */
-    void openTextPaneByAdocFile(A adocFile);
-
-    /**
      * 保存所有打开编辑区的内容
      */
     void saveAllEdited();
@@ -55,9 +50,9 @@ public interface IWorkAction<A extends IAdocFile, T extends ITitleLine> {
     void openIncludeFile();
 
     /**
-     * 获得被选择的adoc文件对象
+     * 获得被选择的adoc文件光标所在标题
      */
-    T getRootTitleOfSelectedTab();
+    T getCursorTitleOfSelectedTab();
 
     /**
      * 打开编辑区,并定位标题

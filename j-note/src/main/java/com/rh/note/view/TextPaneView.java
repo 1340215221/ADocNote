@@ -1,12 +1,13 @@
 package com.rh.note.view;
 
 import com.rh.note.builder.TextPaneBuilder;
+import com.rh.note.component.AdocTextPane;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCode;
 import com.rh.note.file.AdocFile;
+import com.rh.note.line.TitleLine;
 import com.rh.note.util.Init;
 
-import javax.swing.JTextPane;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -17,7 +18,7 @@ import java.io.Reader;
  * 编辑区视图
  * {@link com.rh.note.builder.TextPaneBuilder#id}
  */
-public class TextPaneView extends Init<JTextPane> {
+public class TextPaneView extends Init<AdocTextPane> {
 
     public static void create(AdocFile adocFile) {
         if (adocFile == null) {
@@ -30,7 +31,7 @@ public class TextPaneView extends Init<JTextPane> {
         return super.init(TextPaneBuilder.id(filePath));
     }
 
-    private JTextPane textPane() {
+    private AdocTextPane textPane() {
         return getBean();
     }
 
@@ -39,6 +40,20 @@ public class TextPaneView extends Init<JTextPane> {
      */
     public boolean isBlank() {
         return textPane().getDocument().getLength() < 1;
+    }
+
+    /**
+     * 获得光标所在行所属标题
+     */
+    public TitleLine getCursorTitle() {
+        int dot = textPane().getCaret().getDot();
+        int elementIndex = textPane().getDocument().getDefaultRootElement().getElementIndex(dot);
+        if (elementIndex < 0) {
+            return null;
+        }
+
+        AdocFile adocFile = (AdocFile) textPane().getAdocFile();
+        return adocFile.getBelongingTitleByLineNumber(elementIndex + 1);
     }
 
     /**

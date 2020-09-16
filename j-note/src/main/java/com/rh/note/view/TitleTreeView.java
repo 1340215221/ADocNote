@@ -35,7 +35,7 @@ public class TitleTreeView extends Init<JTree> {
     /**
      * 获得被选择节点指向的文件
      */
-    public AdocFile getAdocFileOfSelectedNode() {
+    public TitleLine getTitleOfSelectedNode() {
         TreePath path = tree().getSelectionPath();
         if (path == null) {
             return null;
@@ -44,10 +44,6 @@ public class TitleTreeView extends Init<JTree> {
         if (!(node instanceof TitleTreeNode)) {
             return null;
         }
-        ITitleLine titleLine = ((TitleTreeNode) node).getTitleLine();
-        if (!(titleLine instanceof TitleLine)) {
-            return null;
-        }
-        return ((TitleLine) titleLine).getAdocFile();
+        return (TitleLine) ((TitleTreeNode) node).getTitleLine();
     }
 }

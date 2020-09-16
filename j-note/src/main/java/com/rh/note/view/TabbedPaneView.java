@@ -1,5 +1,6 @@
 package com.rh.note.view;
 
+import com.rh.note.bean.IAdocFile;
 import com.rh.note.builder.TabbedPaneBuilder;
 import com.rh.note.component.TitleScrollPane;
 import com.rh.note.line.TitleLine;
@@ -44,13 +45,18 @@ public class TabbedPaneView extends Init<JTabbedPane> {
     }
 
     /**
-     * 获得被选择的标签
+     * 获得被选择的文件光标所在的标题
      */
-    public TitleLine getRootTitleOfSelectedTab() {
+    public TitleLine getCursorTitleOfSelectedTab() {
         Component component = tabbedPane().getSelectedComponent();
         if (!(component instanceof TitleScrollPane)) {
             return null;
         }
-        return (TitleLine) ((TitleScrollPane) component).getAdocFile().getRootTitle();
+        IAdocFile adocFile = ((TitleScrollPane) component).getAdocFile();
+        TextPaneView textPane = new TextPaneView().initByFilePath(adocFile.getFilePath());
+        if (textPane == null) {
+            return null;
+        }
+        return textPane.getCursorTitle();
     }
 }

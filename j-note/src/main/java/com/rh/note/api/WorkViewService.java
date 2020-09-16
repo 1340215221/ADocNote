@@ -54,9 +54,9 @@ public class WorkViewService {
     /**
      * 获得标题节点指向的文件
      */
-    public AdocFile getAdocFileOfSelectTitleTreeNode() {
+    public TitleLine getAdocFileOfSelectTitleTreeNode() {
         TitleTreeView titleTree = new TitleTreeView().init();
-        return titleTree.getAdocFileOfSelectedNode();
+        return titleTree.getTitleOfSelectedNode();
     }
 
     /**
@@ -125,25 +125,15 @@ public class WorkViewService {
         });
     }
 
-    public TitleLine getRootTitleOfSelectedTab() {
+    public TitleLine getCursorTitleOfSelectedTab() {
         TabbedPaneView tabbedPane = new TabbedPaneView().init();
-        return tabbedPane.getRootTitleOfSelectedTab();
+        return tabbedPane.getCursorTitleOfSelectedTab();
     }
 
     /**
      * 从title中获得adocfile
      */
     public AdocFile getAdocFileOfTitle(TitleLine titleLine) {
-        if (titleLine == null) {
-            return null;
-        }
-        return titleLine.getAdocFile();
-    }
-
-    /**
-     * 获得adoc文件通过标题
-     */
-    public AdocFile getAdocFileByTitle(TitleLine titleLine) {
         if (titleLine == null) {
             return null;
         }
@@ -163,7 +153,7 @@ public class WorkViewService {
         }
         TextScrollPaneView textScrollPane = new TextScrollPaneView().initByFilePath(titleLine.getFilePath());
         ScrollPositionUtil.builder()
-                .adocTextPane((AdocTextPane) textPane.getBean())
+                .adocTextPane(textPane.getBean())
                 .titleScrollPane((TitleScrollPane) textScrollPane.getBean())
                 .lineNumber(titleLine.getLineNumber())
                 .build()

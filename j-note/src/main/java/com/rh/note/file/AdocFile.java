@@ -1,11 +1,9 @@
 package com.rh.note.file;
 
 import com.rh.note.base.BaseLine;
-import com.rh.note.base.IFrame;
 import com.rh.note.bean.IAdocFile;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCode;
-import com.rh.note.exception.IllegalArgumentException;
 import com.rh.note.line.BlankLine;
 import com.rh.note.line.IncludeLine;
 import com.rh.note.line.TextLine;
@@ -24,6 +22,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * adoc文件对象
@@ -112,10 +111,11 @@ public class AdocFile implements IAdocFile {
      * 匹配普通文本
      */
     private void matchText(Integer lineNumber, String lineContent) {
-        new TextLine()
-                .init(lineContent)
+        TextLine textLine = new TextLine();
+        textLine.init(lineContent)
                 .setLineNumber(lineNumber)
                 .setAdocFile(this);
+        textLines.add(textLine);
     }
 
     /**
@@ -282,6 +282,22 @@ public class AdocFile implements IAdocFile {
      */
     public String getFileName() {
         return getRootTitle().getTitleName() + ".adoc";
+    }
+
+    /**
+     * 获得所在行所属标题
+     */
+    public TitleLine getBelongingTitleByLineNumber(int lineNumber) {
+        if (lineNumber < 1) {
+            return null;
+        }
+
+        return Stream.of(titleLines, includeLines, blankLines, textLines)
+                .flatMap(List::stream)
+                .filter(line -> line.getLineNumber().equals(lineNumber))
+                .findFirst()
+                .map(line -> line instanceof TitleLine ? (TitleLine) line : line.getParentTitle())
+                .orElse(null);
     }
 
     /**

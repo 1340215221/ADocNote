@@ -4,7 +4,6 @@ import com.rh.note.api.ProManageViewService;
 import com.rh.note.api.WorkViewService;
 import com.rh.note.bean.IAdocFile;
 import com.rh.note.config.OperationActionBeanClassConfig;
-import com.rh.note.file.AdocFile;
 import com.rh.note.line.TitleLine;
 import lombok.Setter;
 
@@ -48,12 +47,7 @@ public class OperationAction implements OperationActionBeanClassConfig {
     }
 
     @Override
-    public AdocFile clickedTitleTreeNode() {
+    public TitleLine clickedTitleTreeNode() {
         return workViewService.getAdocFileOfSelectTitleTreeNode();
-    }
-
-    @Override
-    public AdocFile getAdocFileByTitle(TitleLine titleLine) {
-        return workViewService.getAdocFileByTitle(titleLine);
     }
 }

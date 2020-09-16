@@ -14,8 +14,7 @@ public class TabbedPaneEvent {
      * 加载标题导航, 在选择文件标签时
      */
     public static void load_title_navigate_on_selected_tab() {
-        // todo 应该是获得光标所在位置的标题
-        ITitleLine titleLine = workAction().getRootTitleOfSelectedTab();
+        ITitleLine titleLine = workAction().getCursorTitleOfSelectedTab();
         if (titleLine == null) {
             return;
         }

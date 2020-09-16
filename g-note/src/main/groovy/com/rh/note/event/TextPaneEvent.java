@@ -1,5 +1,6 @@
 package com.rh.note.event;
 
+import com.rh.note.bean.ITitleLine;
 import com.rh.note.component.AdocTextPane;
 
 import java.awt.event.ActionEvent;
@@ -81,5 +82,16 @@ public class TextPaneEvent {
             return;
         }
         workAction().deleteInclude(((AdocTextPane) source).getAdocFile());
+    }
+
+    /**
+     * 移动光标时间
+     */
+    public static void move_caret() {
+        ITitleLine titleLine = workAction().getCursorTitleOfSelectedTab();
+        if (titleLine == null) {
+            return;
+        }
+        workAction().loadTitleNavigateByTitle(titleLine);
     }
 }
