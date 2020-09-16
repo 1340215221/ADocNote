@@ -52,9 +52,10 @@ public class TextPaneEvent {
             return;
         }
         Object source = event.getSource();
-        if (!(source instanceof AdocTextPane) || !operationAction().matchRename()) {
+        if (!(source instanceof AdocTextPane)) {
             return;
         }
+        operationAction().matchRename();
         workAction().rename(((AdocTextPane) source).getAdocFile());
     }
 
