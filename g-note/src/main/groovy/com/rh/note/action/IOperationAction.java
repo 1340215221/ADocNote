@@ -1,12 +1,16 @@
 package com.rh.note.action;
 
+import com.rh.note.ao.ISyntaxAnalysisAO;
 import com.rh.note.bean.IAdocFile;
+import com.rh.note.bean.IBaseLine;
+import com.rh.note.bean.IIncludeLine;
 import com.rh.note.bean.ITitleLine;
 
 /**
  * 解析用户操作入口
  */
-public interface IOperationAction<A extends IAdocFile, T extends ITitleLine> {
+public interface IOperationAction<A extends IAdocFile, T extends ITitleLine, I extends IIncludeLine, B extends IBaseLine,
+        S extends ISyntaxAnalysisAO> {
     /**
      * 匹配 include重命名操作
      */
@@ -21,16 +25,6 @@ public interface IOperationAction<A extends IAdocFile, T extends ITitleLine> {
     boolean matchDeleteInclude();
 
     /**
-     * 匹配 生成include块操作
-     */
-    boolean matchGenerateIncludeBlock(IAdocFile adocFile);
-
-    /**
-     * 匹配 生成table块操作
-     */
-    boolean matchGenerateTableBlock(IAdocFile adocFile);
-
-    /**
      * 点击历史项目列表
      */
     String clickedHistoryProjectList();
@@ -39,4 +33,14 @@ public interface IOperationAction<A extends IAdocFile, T extends ITitleLine> {
      * 点击标题树节点
      */
     T clickedTitleTreeNode();
+
+    /**
+     * 点击include行
+     */
+    I clickedIncludeLine();
+
+    /**
+     * 回车操作
+     */
+    S enterOperation();
 }

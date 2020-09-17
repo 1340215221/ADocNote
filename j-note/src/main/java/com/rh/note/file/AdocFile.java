@@ -285,9 +285,9 @@ public class AdocFile implements IAdocFile {
     }
 
     /**
-     * 获得所在行所属标题
+     * 获得行对象, 通过行号
      */
-    public TitleLine getBelongingTitleByLineNumber(int lineNumber) {
+    public BaseLine getLineBeanByLineNumber(int lineNumber) {
         if (lineNumber < 1) {
             return null;
         }
@@ -296,7 +296,6 @@ public class AdocFile implements IAdocFile {
                 .flatMap(List::stream)
                 .filter(line -> line.getLineNumber().equals(lineNumber))
                 .findFirst()
-                .map(line -> line instanceof TitleLine ? (TitleLine) line : line.getParentTitle())
                 .orElse(null);
     }
 

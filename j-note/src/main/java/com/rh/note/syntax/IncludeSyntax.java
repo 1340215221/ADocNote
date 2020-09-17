@@ -90,4 +90,17 @@ public class IncludeSyntax {
     public String getTargetFilePath() {
         return AdocFileTypeEnum.matchByRelativePath(targetRelativePath).getFileDirectory() + targetFileName + "." + targetFileSuf;
     }
+
+    /**
+     * 复制
+     */
+    public void copy(IncludeSyntaxSugar sugar) {
+        if (sugar == null) {
+            return;
+        }
+
+        indented = sugar.getIndented();
+        sugar.getLevel();
+        sugar.getTitleName();
+    }
 }

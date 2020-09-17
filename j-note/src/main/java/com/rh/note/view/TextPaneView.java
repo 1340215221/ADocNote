@@ -1,5 +1,6 @@
 package com.rh.note.view;
 
+import com.rh.note.base.BaseLine;
 import com.rh.note.builder.TextPaneBuilder;
 import com.rh.note.component.AdocTextPane;
 import com.rh.note.exception.ApplicationException;
@@ -46,14 +47,11 @@ public class TextPaneView extends Init<AdocTextPane> {
      * 获得光标所在行所属标题
      */
     public TitleLine getCursorTitle() {
-        int dot = textPane().getCaret().getDot();
-        int elementIndex = textPane().getDocument().getDefaultRootElement().getElementIndex(dot);
-        if (elementIndex < 0) {
+        BaseLine baseLine = this.getCursorLine();
+        if (baseLine == null) {
             return null;
         }
-
-        AdocFile adocFile = (AdocFile) textPane().getAdocFile();
-        return adocFile.getBelongingTitleByLineNumber(elementIndex + 1);
+        return baseLine instanceof TitleLine ? ((TitleLine) baseLine) : baseLine.getParentTitle();
     }
 
     /**
@@ -68,5 +66,19 @@ public class TextPaneView extends Init<AdocTextPane> {
         } catch (Exception e) {
             throw new ApplicationException(ErrorCode.file_read_failed, e);
         }
+    }
+
+    /**
+     * 获得光标行对象
+     */
+    public BaseLine getCursorLine() {
+        int dot = textPane().getCaret().getDot();
+        int elementIndex = textPane().getDocument().getDefaultRootElement().getElementIndex(dot);
+        if (elementIndex < 0) {
+            return null;
+        }
+
+        AdocFile adocFile = (AdocFile) textPane().getAdocFile();
+        return adocFile.getLineBeanByLineNumber(elementIndex + 1);
     }
 }

@@ -1,8 +1,12 @@
 package com.rh.note.api;
 
+import com.rh.note.ao.SyntaxAnalysisAO;
+import com.rh.note.base.BaseLine;
 import com.rh.note.component.AdocTextPane;
 import com.rh.note.component.TitleScrollPane;
 import com.rh.note.file.AdocFile;
+import com.rh.note.line.IncludeLine;
+import com.rh.note.line.TextLine;
 import com.rh.note.line.TitleLine;
 import com.rh.note.util.ScrollPositionUtil;
 import com.rh.note.view.RootTitleNodeView;
@@ -127,7 +131,12 @@ public class WorkViewService {
 
     public TitleLine getCursorTitleOfSelectedTab() {
         TabbedPaneView tabbedPane = new TabbedPaneView().init();
-        return tabbedPane.getCursorTitleOfSelectedTab();
+        String filePath = tabbedPane.getFilePath();
+        TextPaneView textPane = new TextPaneView().initByFilePath(filePath);
+        if (textPane == null) {
+            return null;
+        }
+        return textPane.getCursorTitle();
     }
 
     /**
@@ -138,6 +147,19 @@ public class WorkViewService {
             return null;
         }
         return titleLine.getAdocFile();
+    }
+
+    /**
+     * 获得include对象, 通过选择面板的光标所在行
+     */
+    public IncludeLine getIncludeOfCursorLineOfSelectedPanel() {
+        String filePath = new TabbedPaneView().init().getFilePath();
+        TextPaneView textPane = new TextPaneView().initByFilePath(filePath);
+        if (textPane == null) {
+            return null;
+        }
+        BaseLine baseLine = textPane.getCursorLine();
+        return baseLine instanceof IncludeLine ? ((IncludeLine) baseLine) : null;
     }
 
     /**
@@ -158,5 +180,29 @@ public class WorkViewService {
                 .lineNumber(titleLine.getLineNumber())
                 .build()
                 .positioningToTitleRow();
+    }
+
+    /**
+     * 获得行对象, 通过选中编辑区光标所在行
+     */
+    public SyntaxAnalysisAO getLineBeanOfCursorLineOfSelectedPanel() {
+        String filePath = new TabbedPaneView().init().getFilePath();
+        BaseLine baseLine = new TextPaneView().initByFilePath(filePath).getCursorLine();
+        return SyntaxAnalysisAO.create(baseLine instanceof TextLine ? ((TextLine) baseLine) : null);
+    }
+
+    /**
+     * 生成引用块
+     */
+    public void generateIncludeBlock(SyntaxAnalysisAO ao) {
+        if (ao == null || ao.getTextLine() == null) {
+            return;
+        }
+        IncludeLine includeLine = ao.generateIncludeLine();
+        TextPaneView textPane = new TextPaneView().initByFilePath(ao.getTextLine().getAdocFile().getFilePath());
+        if (textPane == null) {
+            return;
+        }
+        //todo
     }
 }

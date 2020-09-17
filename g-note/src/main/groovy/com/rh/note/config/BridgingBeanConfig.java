@@ -4,7 +4,10 @@ import com.rh.note.action.IDefaultEventAction;
 import com.rh.note.action.IOperationAction;
 import com.rh.note.action.IProjectManagementAction;
 import com.rh.note.action.IWorkAction;
+import com.rh.note.ao.ISyntaxAnalysisAO;
 import com.rh.note.bean.IAdocFile;
+import com.rh.note.bean.IBaseLine;
+import com.rh.note.bean.IIncludeLine;
 import com.rh.note.bean.ITitleLine;
 
 /**
@@ -37,7 +40,8 @@ public class BridgingBeanConfig {
     /**
      * 工作窗口入口
      */
-    public static <A extends IAdocFile, T extends ITitleLine> IWorkAction<A, T> workAction() {
+    public static <A extends IAdocFile, T extends ITitleLine, I extends IIncludeLine, B extends IBaseLine, S extends ISyntaxAnalysisAO>
+    IWorkAction<A, T, I, B, S> workAction() {
         return workAction;
     }
 
@@ -63,7 +67,8 @@ public class BridgingBeanConfig {
     /**
      * 匹配操作入口
      */
-    public static <A extends IAdocFile, T extends ITitleLine> IOperationAction<A, T> operationAction() {
+    public static <A extends IAdocFile, T extends ITitleLine, I extends IIncludeLine, B extends IBaseLine, S extends ISyntaxAnalysisAO>
+    IOperationAction<A, T, I, B, S> operationAction() {
         return operationAction;
     }
 

@@ -1,6 +1,7 @@
 package com.rh.note.line;
 
 import com.rh.note.base.BaseLine;
+import com.rh.note.bean.IIncludeLine;
 import com.rh.note.file.AdocFile;
 import com.rh.note.syntax.IncludeSyntax;
 import lombok.Data;
@@ -9,7 +10,7 @@ import lombok.Data;
  * 引用行
  */
 @Data
-public class IncludeLine extends BaseLine {
+public class IncludeLine extends BaseLine implements IIncludeLine {
     /**
      * 指向文件
      */

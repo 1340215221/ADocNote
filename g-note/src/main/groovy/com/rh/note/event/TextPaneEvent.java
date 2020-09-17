@@ -1,5 +1,7 @@
 package com.rh.note.event;
 
+import com.rh.note.ao.ISyntaxAnalysisAO;
+import com.rh.note.bean.IIncludeLine;
 import com.rh.note.bean.ITitleLine;
 import com.rh.note.component.AdocTextPane;
 
@@ -20,9 +22,14 @@ public class TextPaneEvent {
      * 进入include指向文件
      */
     public static void enter_include_file(MouseEvent event) {
-        if (event.getModifiers() == 18) {
-            workAction().openIncludeFile();
+        if (event.getModifiers() != 18) {
+            return;
         }
+        IIncludeLine includeLine = operationAction().clickedIncludeLine();
+        if (includeLine == null) {
+            return;
+        }
+        workAction().openTextPaneByInclude(includeLine);
     }
 
     /**
@@ -33,13 +40,9 @@ public class TextPaneEvent {
         if (!(source instanceof AdocTextPane)) {
             return;
         }
-        if (operationAction().matchGenerateIncludeBlock(((AdocTextPane) source).getAdocFile())) {
-            workAction().generateIncludeBlock(((AdocTextPane) source).getAdocFile());
-            return;
-        }
-        if (operationAction().matchGenerateTableBlock(((AdocTextPane) source).getAdocFile())) {
-            workAction().generateTableBlock(((AdocTextPane) source).getAdocFile());
-            return;
+        ISyntaxAnalysisAO ao = operationAction().enterOperation();
+        if (ao.matchInclude()) {
+            workAction().generateIncludeBlock(ao);
         }
         defaultEventAction().enter(event);
     }

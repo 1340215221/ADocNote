@@ -1,9 +1,11 @@
 package com.rh.note.action;
 
+import com.rh.note.ao.SyntaxAnalysisAO;
 import com.rh.note.api.FileService;
 import com.rh.note.api.WorkViewService;
 import com.rh.note.config.WorkActionBeanClassConfig;
 import com.rh.note.file.AdocFile;
+import com.rh.note.line.IncludeLine;
 import com.rh.note.line.TitleLine;
 import com.rh.note.view.TextPaneView;
 import lombok.Setter;
@@ -41,10 +43,6 @@ public class WorkAction implements WorkActionBeanClassConfig {
     }
 
     @Override
-    public void openIncludeFile() {
-    }
-
-    @Override
     public TitleLine getCursorTitleOfSelectedTab() {
         return workViewService.getCursorTitleOfSelectedTab();
     }
@@ -67,6 +65,19 @@ public class WorkAction implements WorkActionBeanClassConfig {
         workViewService.positioningToTitleRow(titleLine);
     }
 
+    @Override
+    public void openTextPaneByInclude(IncludeLine includeLine) {
+        if (includeLine == null) {
+            return;
+        }
+        this.openTextPaneByTitle(includeLine.getTargetTitle());
+    }
+
+    @Override
+    public void generateIncludeBlock(SyntaxAnalysisAO ao) {
+        workViewService.generateIncludeBlock(ao);
+    }
+
     /**
      * 打开窗口
      */
@@ -78,13 +89,5 @@ public class WorkAction implements WorkActionBeanClassConfig {
         workViewService.initFrame();
         workViewService.loadTitleTreeData(rootTitle);
         workViewService.showFrame();
-    }
-
-    @Override
-    public void generateIncludeBlock(AdocFile adocFile) {
-    }
-
-    @Override
-    public void generateTableBlock(AdocFile adocFile) {
     }
 }

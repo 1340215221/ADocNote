@@ -1,9 +1,11 @@
 package com.rh.note.action;
 
+import com.rh.note.ao.SyntaxAnalysisAO;
 import com.rh.note.api.ProManageViewService;
 import com.rh.note.api.WorkViewService;
-import com.rh.note.bean.IAdocFile;
+import com.rh.note.base.BaseLine;
 import com.rh.note.config.OperationActionBeanClassConfig;
+import com.rh.note.line.IncludeLine;
 import com.rh.note.line.TitleLine;
 import lombok.Setter;
 
@@ -32,16 +34,6 @@ public class OperationAction implements OperationActionBeanClassConfig {
     }
 
     @Override
-    public boolean matchGenerateIncludeBlock(IAdocFile adocFile) {
-        return false;
-    }
-
-    @Override
-    public boolean matchGenerateTableBlock(IAdocFile adocFile) {
-        return false;
-    }
-
-    @Override
     public String clickedHistoryProjectList() {
         return proManageViewService.getSelectedHistoryProjectPath();
     }
@@ -49,5 +41,15 @@ public class OperationAction implements OperationActionBeanClassConfig {
     @Override
     public TitleLine clickedTitleTreeNode() {
         return workViewService.getAdocFileOfSelectTitleTreeNode();
+    }
+
+    @Override
+    public IncludeLine clickedIncludeLine() {
+        return workViewService.getIncludeOfCursorLineOfSelectedPanel();
+    }
+
+    @Override
+    public SyntaxAnalysisAO enterOperation() {
+        return workViewService.getLineBeanOfCursorLineOfSelectedPanel();
     }
 }
