@@ -12,6 +12,7 @@ import javax.swing.Icon;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * 标题行
@@ -118,5 +119,10 @@ public class TitleLine extends BaseLine implements ITitleLine {
             return null;
         }
         return parentTitle.findParentOf(titleLine);
+    }
+
+    @Override
+    public String toContent() {
+        return Stream.generate(() -> "=").limit(titleSyntax.getLevel()) + " " + titleSyntax.getTitleName();
     }
 }

@@ -22,4 +22,9 @@ public abstract class BaseLine implements IBaseLine {
      * 父标题
      */
     protected TitleLine parentTitle;
+
+    /**
+     * 生成内容
+     */
+    public abstract String toContent();
 }

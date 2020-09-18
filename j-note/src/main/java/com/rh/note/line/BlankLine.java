@@ -10,4 +10,9 @@ public class BlankLine extends BaseLine {
     public BlankLine init(String lineContent) {
         return StringUtils.isBlank(lineContent) ? this : null;
     }
+
+    @Override
+    public String toContent() {
+        return "";
+    }
 }

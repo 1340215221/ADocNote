@@ -16,12 +16,16 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -297,6 +301,64 @@ public class AdocFile implements IAdocFile {
                 .filter(line -> line.getLineNumber().equals(lineNumber))
                 .findFirst()
                 .orElse(null);
+    }
+
+    /**
+     * 通过根标题初始化
+     */
+    public AdocFile init(TitleLine rootTitleLine) {
+        if (rootTitleLine == null) {
+            return null;
+        }
+
+        titleLines.add(rootTitleLine);
+        BlankLine bl1 = (BlankLine) new BlankLine().setAdocFile(this).setLineNumber(1).setParentTitle(rootTitleLine.getParentTitle());
+        BlankLine bl2 = (BlankLine) new BlankLine().setAdocFile(this).setLineNumber(2).setParentTitle(rootTitleLine.getParentTitle());
+        BlankLine bl3 = (BlankLine) new BlankLine().setAdocFile(this).setLineNumber(4).setParentTitle(rootTitleLine);
+        BlankLine bl4 = (BlankLine) new BlankLine().setAdocFile(this).setLineNumber(5).setParentTitle(rootTitleLine);
+        blankLines.add(bl1);
+        blankLines.add(bl2);
+        blankLines.add(bl3);
+        blankLines.add(bl4);
+
+        String content = this.toContent();
+        this.writeToFile(content);
+        return this;
+    }
+
+    /**
+     * 将当前adoc_file对象内容写入到文件
+     */
+    private void writeToFile(String content) {
+        String absolutePath = getAbsolutePath();
+        if (StringUtils.isBlank(absolutePath)) {
+            return;
+        }
+        File file = new File(absolutePath);
+        if (file.exists()) {
+            return;
+        }
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            throw new ApplicationException(ErrorCode.file_create_fail);
+        }
+        try (FileWriter fw = new FileWriter(file); BufferedWriter bw = new BufferedWriter(fw)) {
+            bw.write(content);
+        } catch (Exception e) {
+            throw new ApplicationException(ErrorCode.file_write_fail);
+        }
+    }
+
+    /**
+     * 生成内容
+     */
+    private String toContent() {
+        return Stream.of(titleLines, includeLines, textLines, blankLines)
+                .flatMap(List::stream)
+                .sorted(Comparator.comparing(BaseLine::getLineNumber))
+                .map(BaseLine::toContent)
+                .collect(Collectors.joining("\n"));
     }
 
     /**

@@ -203,6 +203,6 @@ public class WorkViewService {
         if (textPane == null) {
             return;
         }
-        //todo
+        textPane.replaceLine(includeLine);
     }
 }

@@ -26,7 +26,7 @@ abstract class Init<T> {
             this.bean = bean
             return this
         } catch (Exception e) {
-            log.error("Init.init error, 获取控件失败, componentId=[{}]", componentId)
+            log.warn("Init.init error, 获取控件失败, componentId=[{}]", componentId)
             return
         }
     }

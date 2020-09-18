@@ -29,4 +29,10 @@ public class IncludeLine extends BaseLine implements IIncludeLine {
         }
         return targetFile.getRootTitle();
     }
+
+    @Override
+    public String toContent() {
+        return includeSyntax.getIndented() + "include::" + includeSyntax.getTargetRelativePath() + "["
+                + includeSyntax.getLineStart() + ".." + includeSyntax.getLineEnd() + "]";
+    }
 }

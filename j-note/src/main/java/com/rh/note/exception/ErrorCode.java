@@ -12,6 +12,8 @@ public enum ErrorCode {
     request_parameter_error(1000, "非法参数异常"),
     // 2000 文件异常
     file_read_failed(2000, "文件读取失败"),
+    file_create_fail(2001, "文件创建失败"),
+    file_write_fail(2002, "文件写入失败"),
     ;
     private Integer code;
     private String msg;

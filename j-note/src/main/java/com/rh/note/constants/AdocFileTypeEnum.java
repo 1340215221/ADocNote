@@ -37,6 +37,11 @@ public enum AdocFileTypeEnum {
         public String getFileDirectory() {
             return "";
         }
+
+        @Override
+        public String getFilePathOfNextDirectory() {
+            return towLevel.getFileDirectory();
+        }
     },
     /**
      * towLevel
@@ -64,6 +69,11 @@ public enum AdocFileTypeEnum {
         @Override
         public String getFileDirectory() {
             return "adoc/twoLevel/";
+        }
+
+        @Override
+        public String getFilePathOfNextDirectory() {
+            return content.getFileDirectory();
         }
     },
     /**
@@ -96,6 +106,14 @@ public enum AdocFileTypeEnum {
         public String getFileDirectory() {
             return "adoc/content/";
         }
+
+        /**
+         * todo content没有下级目录了
+         */
+        @Override
+        public String getFilePathOfNextDirectory() {
+            return "";
+        }
     },
     ;
 
@@ -118,6 +136,11 @@ public enum AdocFileTypeEnum {
      * 获得项目目录
      */
     public abstract String getFileDirectory();
+
+    /**
+     * 获得下一个目录的项目路径
+     */
+    public abstract String getFilePathOfNextDirectory();
 
     /**
      * 通过项目相对路径匹配
@@ -155,5 +178,4 @@ public enum AdocFileTypeEnum {
                 .findFirst()
                 .orElse(null);
     }
-
 }

@@ -1,10 +1,14 @@
 package com.rh.note.ao;
 
 import com.rh.note.base.BaseLine;
+import com.rh.note.constants.AdocFileTypeEnum;
+import com.rh.note.file.AdocFile;
 import com.rh.note.line.IncludeLine;
 import com.rh.note.line.TextLine;
+import com.rh.note.line.TitleLine;
 import com.rh.note.syntax.IncludeSyntax;
 import com.rh.note.syntax.IncludeSyntaxSugar;
+import com.rh.note.syntax.TitleSyntax;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,17 +28,16 @@ public class SyntaxAnalysisAO implements ISyntaxAnalysisAO {
      * 创建
      */
     public static SyntaxAnalysisAO create(TextLine textLine) {
-        if (textLine == null) {
-            return null;
-        }
         SyntaxAnalysisAO ao = new SyntaxAnalysisAO();
-        ao.textLine = textLine;
+        if (textLine != null) {
+            ao.textLine = textLine;
+        }
         return ao;
     }
 
     @Override
     public boolean matchInclude() {
-        return new IncludeSyntaxSugar().init(textLine.getText()) != null;
+        return textLine != null && new IncludeSyntaxSugar().init(textLine.getText()) != null;
     }
 
     /**
@@ -46,11 +49,36 @@ public class SyntaxAnalysisAO implements ISyntaxAnalysisAO {
             return null;
         }
 
-        IncludeSyntax includeSyntax = new IncludeSyntax();
-        includeSyntax.copy(sugar);
+        // 指向文件
+        TitleSyntax targetTitleSyntax = new TitleSyntax();
+        targetTitleSyntax.setLevel(sugar.getLevel()); // todo 引用文件级别应该是父标题级别减一
+        targetTitleSyntax.setTitleName(sugar.getTitleName());
 
-        new IncludeLine()
-                .setIncludeSyntax(sugar)
-                .setTargetFile()
+        TitleLine targetTitleLine = new TitleLine();
+        targetTitleLine.setTitleSyntax(targetTitleSyntax);
+        targetTitleLine.setLineNumber(3);
+        targetTitleLine.setParentTitle(textLine.getParentTitle());
+
+        AdocFile targetAdocFile = new AdocFile().init(targetTitleLine);
+        targetTitleLine.setAdocFile(targetAdocFile);
+        targetAdocFile.setFilePath(AdocFileTypeEnum.matchByFilePath(textLine.getAdocFile().getFilePath()).getFilePathOfNextDirectory()
+                + sugar.getTitleName() + ".adoc");
+
+        // 当前文件
+        IncludeSyntax includeSyntax = new IncludeSyntax();
+        includeSyntax.setIndented(sugar.getIndented());
+        includeSyntax.setTargetFileName(sugar.getTitleName());
+        includeSyntax.setTargetFileSuf("adoc");
+        includeSyntax.setTargetRelativePath(AdocFileTypeEnum.matchByFilePath(textLine.getAdocFile().getFilePath()).getRelativePathOfNextDirectory()
+                + sugar.getTitleName() + ".adoc");
+
+
+        IncludeLine includeLine = new IncludeLine();
+        includeLine.setIncludeSyntax(includeSyntax);
+        includeLine.setTargetFile(targetAdocFile);
+        includeLine.setAdocFile(textLine.getAdocFile());
+        includeLine.setLineNumber(textLine.getLineNumber());
+        includeLine.setParentTitle(textLine.getParentTitle());
+        return includeLine;
     }
 }

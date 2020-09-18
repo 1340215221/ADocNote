@@ -6,9 +6,11 @@ import com.rh.note.component.AdocTextPane;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCode;
 import com.rh.note.file.AdocFile;
+import com.rh.note.line.IncludeLine;
 import com.rh.note.line.TitleLine;
 import com.rh.note.util.Init;
 
+import javax.swing.text.Element;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -80,5 +82,21 @@ public class TextPaneView extends Init<AdocTextPane> {
 
         AdocFile adocFile = (AdocFile) textPane().getAdocFile();
         return adocFile.getLineBeanByLineNumber(elementIndex + 1);
+    }
+
+    /**
+     * 替换行内容为include块
+     */
+    public void replaceLine(IncludeLine includeLine) {
+        if (includeLine == null) {
+            return;
+        }
+        Element element = textPane().getDocument().getDefaultRootElement().getElement(includeLine.getLineNumber() - 1);
+        if (element == null) {
+            return;
+        }
+        textPane().select(element.getStartOffset(), element.getEndOffset());
+        System.out.println("_" + textPane().getSelectedText() + "_");
+        textPane().replaceSelection(includeLine.toContent() + "\n");
     }
 }

@@ -17,4 +17,9 @@ public class TextLine extends BaseLine {
         text = lineContent;
         return this;
     }
+
+    @Override
+    public String toContent() {
+        return text;
+    }
 }
