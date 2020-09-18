@@ -6,6 +6,8 @@ import com.rh.note.bean.IBaseLine;
 import com.rh.note.bean.IIncludeLine;
 import com.rh.note.bean.ITitleLine;
 
+import java.awt.event.ActionEvent;
+
 /**
  * 工作窗口入口
  * A adocFile实现类型
@@ -58,4 +60,9 @@ public interface IWorkAction<A extends IAdocFile, T extends ITitleLine, I extend
      * @param ao
      */
     void generateIncludeBlock(S ao);
+
+    /**
+     * 插入回车
+     */
+    void insertEnter(ActionEvent event, IBaseLine operationLine);
 }

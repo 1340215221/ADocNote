@@ -21,6 +21,8 @@ import com.rh.note.view.WorkFrameView;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.swing.text.DefaultEditorKit;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.Comparator;
 import java.util.List;
@@ -185,9 +187,8 @@ public class WorkViewService {
     /**
      * 获得行对象, 通过选中编辑区光标所在行
      */
-    public SyntaxAnalysisAO getLineBeanOfCursorLineOfSelectedPanel() {
-        String filePath = new TabbedPaneView().init().getFilePath();
-        BaseLine baseLine = new TextPaneView().initByFilePath(filePath).getCursorLine();
+    public SyntaxAnalysisAO getTextLineOfCursorLineOfSelectedPanel() {
+        BaseLine baseLine = this.getBaseLineOfCursorLineOfSelectedPanel();
         return SyntaxAnalysisAO.create(baseLine instanceof TextLine ? ((TextLine) baseLine) : null);
     }
 
@@ -204,5 +205,20 @@ public class WorkViewService {
             return;
         }
         textPane.replaceLine(includeLine);
+    }
+
+    /**
+     * 默认回车操作
+     */
+    public void defaultInsertBreak(ActionEvent event) {
+        new DefaultEditorKit.InsertBreakAction().actionPerformed(event);
+    }
+
+    /**
+     * 获得操作行对象
+     */
+    public BaseLine getBaseLineOfCursorLineOfSelectedPanel() {
+        String filePath = new TabbedPaneView().init().getFilePath();
+        return new TextPaneView().initByFilePath(filePath).getCursorLine();
     }
 }

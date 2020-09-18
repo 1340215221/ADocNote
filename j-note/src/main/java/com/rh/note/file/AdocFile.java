@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -42,19 +43,19 @@ public class AdocFile implements IAdocFile {
     /**
      * 标题内容
      */
-    protected final List<TitleLine> titleLines = new ArrayList<>();
+    protected final List<TitleLine> titleLines = new LinkedList<>();
     /**
      * include内容
      */
-    protected final List<IncludeLine> includeLines = new ArrayList<>();
+    protected final List<IncludeLine> includeLines = new LinkedList<>();
     /**
      * 空白内容
      */
-    protected final List<BlankLine> blankLines = new ArrayList<>();
+    protected final List<BlankLine> blankLines = new LinkedList<>();
     /**
      * 普通文本
      */
-    protected final List<TextLine> textLines = new ArrayList<>();
+    protected final List<TextLine> textLines = new LinkedList<>();
 
     /**
      * 初始化,通过项目相对路径

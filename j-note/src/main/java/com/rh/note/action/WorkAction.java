@@ -3,6 +3,7 @@ package com.rh.note.action;
 import com.rh.note.ao.SyntaxAnalysisAO;
 import com.rh.note.api.FileService;
 import com.rh.note.api.WorkViewService;
+import com.rh.note.bean.IBaseLine;
 import com.rh.note.config.WorkActionBeanClassConfig;
 import com.rh.note.file.AdocFile;
 import com.rh.note.line.IncludeLine;
@@ -10,6 +11,7 @@ import com.rh.note.line.TitleLine;
 import com.rh.note.view.TextPaneView;
 import lombok.Setter;
 
+import java.awt.event.ActionEvent;
 import java.io.File;
 
 /**
@@ -76,6 +78,12 @@ public class WorkAction implements WorkActionBeanClassConfig {
     @Override
     public void generateIncludeBlock(SyntaxAnalysisAO ao) {
         workViewService.generateIncludeBlock(ao);
+    }
+
+    @Override
+    public void insertEnter(ActionEvent event, IBaseLine operationLine) {
+        workViewService.addBlankLine();
+        workViewService.defaultInsertBreak(event);
     }
 
     /**

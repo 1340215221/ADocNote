@@ -43,4 +43,9 @@ public interface IOperationAction<A extends IAdocFile, T extends ITitleLine, I e
      * 回车操作
      */
     S enterOperation();
+
+    /**
+     * 插入回车
+     */
+    B insertEnter();
 }

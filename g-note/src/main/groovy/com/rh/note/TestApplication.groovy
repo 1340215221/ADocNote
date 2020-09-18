@@ -1,18 +1,25 @@
 package com.rh.note
 
-
-import javax.swing.JTextPane
-import javax.swing.event.CaretEvent
-import javax.swing.event.CaretListener
-
 class TestApplication {
-    public static void main(String[] args) {
-        def pane = new JTextPane()
-        pane.addCaretListener(new CaretListener() {
-            @Override
-            void caretUpdate(CaretEvent e) {
+    static main(args) {
+        println test1() && test2() || test3() && test4()
+        println (test1() && test2()) || (test3() && test4())
+        println test1() && (test2() || test3()) && test4()
+    }
 
-            }
-        })
+    static boolean test1() {
+        true
+    }
+
+    static boolean test2() {
+        true
+    }
+
+    static boolean test3() {
+        false
+    }
+
+    static boolean test4() {
+        false
     }
 }

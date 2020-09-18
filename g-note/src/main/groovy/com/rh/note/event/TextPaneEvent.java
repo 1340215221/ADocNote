@@ -1,6 +1,7 @@
 package com.rh.note.event;
 
 import com.rh.note.ao.ISyntaxAnalysisAO;
+import com.rh.note.bean.IBaseLine;
 import com.rh.note.bean.IIncludeLine;
 import com.rh.note.bean.ITitleLine;
 import com.rh.note.component.AdocTextPane;
@@ -45,6 +46,8 @@ public class TextPaneEvent {
             workAction().generateIncludeBlock(ao);
         }
         defaultEventAction().enter(event);
+        IBaseLine operationLine = operationAction().insertEnter();
+        workAction().insertEnter(event, operationLine);
     }
 
     /**

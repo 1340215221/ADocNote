@@ -50,6 +50,11 @@ public class OperationAction implements OperationActionBeanClassConfig {
 
     @Override
     public SyntaxAnalysisAO enterOperation() {
-        return workViewService.getLineBeanOfCursorLineOfSelectedPanel();
+        return workViewService.getTextLineOfCursorLineOfSelectedPanel();
+    }
+
+    @Override
+    public BaseLine insertEnter() {
+        return workViewService.getBaseLineOfCursorLineOfSelectedPanel();
     }
 }
