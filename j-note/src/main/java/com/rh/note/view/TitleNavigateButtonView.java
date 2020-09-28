@@ -1,28 +1,30 @@
 package com.rh.note.view;
 
+import com.rh.note.base.Init;
 import com.rh.note.builder.TitleNavigateButtonBuilder;
-import com.rh.note.component.TitleNavigateButton;
-import com.rh.note.line.TitleLine;
-import com.rh.note.util.Init;
+import com.rh.note.component.TitleButton;
+import com.rh.note.path.TitleBeanPath;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * {@link TitleNavigateButtonBuilder#id}
  */
-public class TitleNavigateButtonView extends Init<TitleNavigateButton> {
+public class TitleNavigateButtonView extends Init<TitleButton> {
 
-    public static void create(TitleLine titleLine) {
-        if (titleLine == null) {
+    public static void create(TitleBeanPath beanPath) {
+        if (beanPath == null) {
             return;
         }
 
-        new TitleNavigateButtonBuilder(titleLine).init();
+        new TitleNavigateButtonBuilder(beanPath).init();
     }
 
-    public TitleNavigateButtonView initByTitleName(String titleName) {
+    public @Nullable TitleNavigateButtonView initByTitleName(String titleName) {
         return super.init(TitleNavigateButtonBuilder.id(titleName));
     }
 
-    private TitleNavigateButton navigateButton() {
+    private @NotNull TitleButton navigateButton() {
         return getBean();
     }
 }

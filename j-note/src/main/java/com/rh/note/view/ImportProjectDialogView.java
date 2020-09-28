@@ -1,5 +1,7 @@
 package com.rh.note.view;
 
+import org.jetbrains.annotations.Nullable;
+
 import javax.swing.JFileChooser;
 import java.awt.Component;
 import java.io.File;
@@ -9,7 +11,7 @@ import java.io.File;
  */
 public class ImportProjectDialogView {
 
-    private static String showOpenDialog(Component component) {
+    private static @Nullable String showOpenDialog(Component component) {
         if (component == null) {
             return null;
         }
@@ -24,7 +26,7 @@ public class ImportProjectDialogView {
         return null;
     }
 
-    public static String create(ProManageFrameView proManageFrame) {
+    public static @Nullable String create(ProManageFrameView proManageFrame) {
         return showOpenDialog(proManageFrame.getBean());
     }
 }

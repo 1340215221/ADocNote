@@ -1,12 +1,10 @@
 package com.rh.note.view;
 
-import com.rh.note.bean.IAdocFile;
+import com.rh.note.base.Init;
 import com.rh.note.builder.TabbedPaneBuilder;
-import com.rh.note.component.TitleScrollPane;
-import com.rh.note.util.Init;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JTabbedPane;
-import java.awt.Component;
 
 /**
  * 编辑区标签面板视图
@@ -14,7 +12,7 @@ import java.awt.Component;
  */
 public class TabbedPaneView extends Init<JTabbedPane> {
 
-    public TabbedPaneView init() {
+    public @NotNull TabbedPaneView init() {
         return super.init(TabbedPaneBuilder.id());
     }
 
@@ -28,7 +26,7 @@ public class TabbedPaneView extends Init<JTabbedPane> {
         tabbedPane().add(textScrollPane.getBean(), fileName);
     }
 
-    private JTabbedPane tabbedPane() {
+    private @NotNull JTabbedPane tabbedPane() {
         return getBean();
     }
 
@@ -41,17 +39,5 @@ public class TabbedPaneView extends Init<JTabbedPane> {
         }
 
         tabbedPane().setSelectedComponent(textScrollPane.getBean());
-    }
-
-    /**
-     * 获得文件地址
-     */
-    public String getFilePath() {
-        Component component = tabbedPane().getSelectedComponent();
-        if (!(component instanceof TitleScrollPane)) {
-            return null;
-        }
-        IAdocFile adocFile = ((TitleScrollPane) component).getAdocFile();
-        return adocFile.getFilePath();
     }
 }

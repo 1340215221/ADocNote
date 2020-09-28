@@ -1,20 +1,21 @@
 package com.rh.note.view;
 
+import com.rh.note.base.Init;
 import com.rh.note.builder.RootTitleNodeBuilder;
 import com.rh.note.component.TitleTreeNode;
-import com.rh.note.line.TitleLine;
-import com.rh.note.util.Init;
+import com.rh.note.vo.TitleLineVO;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * 根节点视图
  */
 public class RootTitleNodeView extends Init<TitleTreeNode> {
 
-    public static void create(TitleLine rootTitle) {
-        new RootTitleNodeBuilder(rootTitle).init();
+    public static void create(TitleLineVO vo) {
+        new RootTitleNodeBuilder(vo).init();
     }
 
-    public RootTitleNodeView init() {
+    public @NotNull RootTitleNodeView init() {
         return super.init(RootTitleNodeBuilder.id());
     }
 

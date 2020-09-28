@@ -1,8 +1,9 @@
 package com.rh.note.view;
 
-import com.rh.note.builder.ProjectManagementFrameBuilder;
+import com.rh.note.base.Init;
+import com.rh.note.builder.ProManageFrameBuilder;
 import com.rh.note.frame.ProjectManageFrame;
-import com.rh.note.util.Init;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JFrame;
 
@@ -15,8 +16,8 @@ public class ProManageFrameView extends Init<JFrame> {
         new ProjectManageFrame().start();
     }
 
-    public ProManageFrameView init() {
-        return super.init(ProjectManagementFrameBuilder.id());
+    public @NotNull ProManageFrameView init() {
+        return super.init(ProManageFrameBuilder.id());
     }
 
     /**
@@ -26,7 +27,7 @@ public class ProManageFrameView extends Init<JFrame> {
         proManageFrame().setVisible(true);
     }
 
-    protected JFrame proManageFrame() {
+    private @NotNull JFrame proManageFrame() {
         return getBean();
     }
 

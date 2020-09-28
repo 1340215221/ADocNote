@@ -1,8 +1,9 @@
 package com.rh.note.view;
 
+import com.rh.note.base.Init;
 import com.rh.note.builder.WorkFrameBuilder;
 import com.rh.note.frame.WorkFrame;
-import com.rh.note.util.Init;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JFrame;
 
@@ -15,7 +16,7 @@ public class WorkFrameView extends Init<JFrame> {
         new WorkFrame().start();
     }
 
-    public WorkFrameView init() {
+    public @NotNull WorkFrameView init() {
         return super.init(WorkFrameBuilder.id());
     }
 
@@ -26,7 +27,7 @@ public class WorkFrameView extends Init<JFrame> {
         workFrame().setVisible(true);
     }
 
-    private JFrame workFrame() {
+    private @NotNull JFrame workFrame() {
         return getBean();
     }
 }

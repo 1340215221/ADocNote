@@ -1,7 +1,8 @@
 package com.rh.note.view;
 
+import com.rh.note.base.Init;
 import com.rh.note.builder.TitleTreeBuilder;
-import com.rh.note.util.Init;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.tree.DefaultTreeModel;
 
@@ -10,7 +11,7 @@ import javax.swing.tree.DefaultTreeModel;
  */
 public class TitleTreeModelView extends Init<DefaultTreeModel> {
 
-    public TitleTreeModelView init() {
+    public @NotNull TitleTreeModelView init() {
         return super.init(TitleTreeBuilder.modelId());
     }
 
@@ -25,7 +26,7 @@ public class TitleTreeModelView extends Init<DefaultTreeModel> {
         model().setRoot(rootTitleNode.getBean());
     }
 
-    private DefaultTreeModel model() {
+    private @NotNull DefaultTreeModel model() {
         return getBean();
     }
 }
