@@ -1,55 +1,52 @@
 package com.rh.note.builder
 
-import com.rh.note.component.NoteTextPane
-import com.rh.note.event.TextAreaEvent
-import com.rh.note.grammar.ITitleGrammar
-import com.rh.note.util.SwingComponent
+import com.rh.note.base.BeanPath
+import com.rh.note.base.ISwingBuilder
+import com.rh.note.component.AdocTextPane
+import com.rh.note.event.TextPaneEvent
 
-import javax.swing.*
+import javax.swing.KeyStroke
 import javax.swing.text.DefaultStyledDocument
 import javax.swing.text.JTextComponent
 import javax.swing.text.TextAction
-import java.awt.*
+import java.awt.Font
 import java.awt.event.ActionEvent
 import java.awt.event.KeyEvent
 
 /**
- * 编辑区
+ * 工作窗口-编辑区
  */
-class TextPaneBuilder implements SwingComponent {
+class TextPaneBuilder implements ISwingBuilder {
 
-    private ITitleGrammar titleGrammar
+    private BeanPath beanPath
 
-    TextPaneBuilder(ITitleGrammar titleGrammar) {
-        this.titleGrammar = titleGrammar
+    TextPaneBuilder(BeanPath beanPath) {
+        this.beanPath = beanPath
     }
 
     void init() {
-        init{}
-    }
-
-    @Override
-    void init(Closure children) {
         def textPane = {
-            swingBuilder.textPane(id: id(titleGrammar.getFilePath()),
-                    name: id(titleGrammar.getFilePath()),
+            swingBuilder.textPane(id: id(beanPath.getBeanPath()),
                     styledDocument: new DefaultStyledDocument(),
                     font: new Font(null, 0, 17),
                     keyPressed: {
-                        TextAreaEvent.rename(it)
-                        TextAreaEvent.sinkTitle(it)
+                        TextPaneEvent.rename(it)
+                        TextPaneEvent.sink_title(it)
                     },
                     mouseClicked: {
-                        TextAreaEvent.enterInclude(it)
+                        TextPaneEvent.enter_include_file(it)
                     },
-                    titleGrammar: titleGrammar,
+                    caretUpdate: {
+                        TextPaneEvent.move_caret()
+                    },
+                    beanPath: beanPath,
             ) {
                 addKeymap()
             }
         }
 
-        swingBuilder.scrollPane(id: scrollId(titleGrammar.getFilePath()),
-                name: scrollId(titleGrammar.getFilePath()),
+        swingBuilder.tScrollPane(id: scrollId(beanPath.getBeanPath()),
+                beanPath: beanPath,
         ){
             textPane()
         }
@@ -60,20 +57,20 @@ class TextPaneBuilder implements SwingComponent {
      * 替换已有按键操作
      */
     void addKeymap() {
-        def textPane = swingBuilder."${id(titleGrammar.getFilePath())}" as NoteTextPane
+        def textPane = swingBuilder."${id(beanPath.getBeanPath())}" as AdocTextPane
         def newKeymap = JTextComponent.addKeymap("textPane", textPane.keymap)
         // 添加 回车 事件
         newKeymap.addActionForKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), new TextAction('textPane') {
             @Override
             void actionPerformed(ActionEvent e) {
-                TextAreaEvent.enter(e)
+                TextPaneEvent.enter_operation(e)
             }
         })
         // 添加 ctrl + del 事件
         newKeymap.addActionForKeyStroke(KeyStroke.getKeyStroke(127, 2), new TextAction('textPane') {
             @Override
             void actionPerformed(ActionEvent e) {
-                TextAreaEvent.deleteInclude(e)
+                TextPaneEvent.delete_include(e)
             }
         })
         textPane.setKeymap(newKeymap)

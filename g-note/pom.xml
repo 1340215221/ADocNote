@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.rh.note</groupId>
     <artifactId>g-note</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.2.0</version>
     <name>g-note</name>
     <packaging>jar</packaging>
 

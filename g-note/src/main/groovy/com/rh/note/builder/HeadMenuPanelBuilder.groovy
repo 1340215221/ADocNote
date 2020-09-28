@@ -5,18 +5,18 @@ import com.rh.note.base.ISwingBuilder
 import java.awt.BorderLayout
 
 /**
- * 工作窗口-基础面板
+ * 工作窗口-头部菜单栏
  */
-class BasePanelBuilder implements ISwingBuilder {
+class HeadMenuPanelBuilder implements ISwingBuilder {
     void init(Closure children) {
         swingBuilder.panel(id: id(),
-                layout: new BorderLayout(),
-                preferredSize: [900, 600],
+                constraints: BorderLayout.NORTH,
         ){
             children()
         }
     }
+
     static String id() {
-        return 'base_panel'
+        'head_menu'
     }
 }

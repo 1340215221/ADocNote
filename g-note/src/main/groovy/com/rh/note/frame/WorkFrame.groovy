@@ -1,21 +1,23 @@
 package com.rh.note.frame
 
-import com.rh.note.common.IFrame
-import com.rh.note.config.IWorkFrame
+import com.rh.note.base.IFrame
+import com.rh.note.base.ISwingBuilder
+import com.rh.note.component.factory.AdocScrollPaneFactory
+import com.rh.note.component.factory.AdocTextPaneFactory
+import com.rh.note.component.factory.DefaultTreeModelFactory
+import com.rh.note.component.factory.TitleButtonFactory
+import com.rh.note.component.factory.TitleTreeNodeFactory
+import com.rh.note.config.IWorkConfig
 import com.rh.note.event.WorkFrameEvent
-import com.rh.note.register.TextPaneFactory
-import com.rh.note.register.TitleNavigateButtonFactory
-import com.rh.note.register.TreeModelFactory
-import com.rh.note.register.TreeNodeFactory
-import com.rh.note.util.ISwingBuilder
 
-import java.awt.*
+import java.awt.AWTEvent
+import java.awt.Toolkit
 import java.awt.event.AWTEventListener
 
 /**
  * 工作窗口工厂
  */
-class WorkFrame implements IWorkFrame, IFrame, ISwingBuilder {
+class WorkFrame implements IWorkConfig, IFrame, ISwingBuilder {
 
     @Override
     void globalSettings() {
@@ -23,11 +25,7 @@ class WorkFrame implements IWorkFrame, IFrame, ISwingBuilder {
         toolkit.addAWTEventListener(new AWTEventListener() {
             @Override
             void eventDispatched(AWTEvent event) {
-                WorkFrameEvent.saveOperation(event)
-                WorkFrameEvent.closeRightTab(event)
-                WorkFrameEvent.closeLeftTab(event)
-                WorkFrameEvent.closeCurrentTab(event)
-                WorkFrameEvent.closeAllTab(event)
+                WorkFrameEvent.saveAllEdited(event)
             }
         }, AWTEvent.KEY_EVENT_MASK)
     }
@@ -37,17 +35,17 @@ class WorkFrame implements IWorkFrame, IFrame, ISwingBuilder {
      */
     @Override
     void init() {
-        workFrame {
-            basePanel {
-                headMenu {}
-                bottomSidebar {}
-                leftSidebar {
-                    leftTitlePanel {
-                        fileListTitleButton {}
+        work_frame {
+            base_panel {
+                head_menu_panel {}
+                bottom_sidebar_panel {}
+                left_sidebar_panel {
+                    left_sidebar_tab_panel {
+                        title_tree_tab_button {}
                     }
-                    titleList {}
+                    title_tree {}
                 }
-                editArea {
+                tabbed_pane {
                 }
             }
         }
@@ -58,10 +56,11 @@ class WorkFrame implements IWorkFrame, IFrame, ISwingBuilder {
      */
     @Override
     void registerComponent() {
-        swingBuilder.registerFactory('model', new TreeModelFactory())
-        swingBuilder.registerFactory('node', new TreeNodeFactory())
-        swingBuilder.registerFactory('textPane', new TextPaneFactory())
-        swingBuilder.registerFactory('tnButton', new TitleNavigateButtonFactory())
+        swingBuilder.registerFactory(DefaultTreeModelFactory.name(), new DefaultTreeModelFactory())
+        swingBuilder.registerFactory(TitleTreeNodeFactory.name(), new TitleTreeNodeFactory())
+        swingBuilder.registerFactory(AdocTextPaneFactory.name(), new AdocTextPaneFactory())
+        swingBuilder.registerFactory(TitleButtonFactory.name(), new TitleButtonFactory())
+        swingBuilder.registerFactory(AdocScrollPaneFactory.name(), new AdocScrollPaneFactory())
     }
 
 }

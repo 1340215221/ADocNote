@@ -5,14 +5,15 @@ import com.rh.note.base.ISwingBuilder
 import javax.swing.WindowConstants
 
 /**
- * 工作窗口
+ * 项目管理窗口
  */
-class WorkFrameBuilder implements ISwingBuilder {
+class ProManageFrameBuilder implements ISwingBuilder {
     void init(Closure children) {
         swingBuilder.frame(id: id(),
-                title: 'adoc笔记',
                 pack: true,
+                resizable: false,
                 defaultCloseOperation: WindowConstants.EXIT_ON_CLOSE,
+                title: '打开项目',
         ){
             children()
         }
@@ -28,6 +29,6 @@ class WorkFrameBuilder implements ISwingBuilder {
     }
 
     static String id() {
-        return 'work_frame'
+        'project_list_frame'
     }
 }

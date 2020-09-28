@@ -4,19 +4,21 @@ import com.rh.note.base.ISwingBuilder
 
 import java.awt.BorderLayout
 
+
 /**
- * 工作窗口-基础面板
+ * 工作窗口-左边栏-按钮面板
  */
-class BasePanelBuilder implements ISwingBuilder {
+class LeftSidebarTabPanelBuilder implements ISwingBuilder {
     void init(Closure children) {
         swingBuilder.panel(id: id(),
+                constraints: BorderLayout.CENTER,
                 layout: new BorderLayout(),
-                preferredSize: [900, 600],
         ){
             children()
         }
     }
+
     static String id() {
-        return 'base_panel'
+        'left_title_panel'
     }
 }

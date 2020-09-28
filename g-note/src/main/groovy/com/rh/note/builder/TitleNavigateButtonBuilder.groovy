@@ -1,34 +1,29 @@
 package com.rh.note.builder
 
-import com.rh.note.event.TitleListEvent
-import com.rh.note.event.TitleNavigateEvent
-import com.rh.note.grammar.ITitleGrammar
-import com.rh.note.util.SwingComponent
 
-import javax.swing.JButton
+import com.rh.note.base.ISwingBuilder
+import com.rh.note.base.ITitleBeanPath
+import com.rh.note.event.NavigateButtonEvent
 
 /**
  * 标题导航栏按钮
  */
-class TitleNavigateButtonBuilder implements SwingComponent {
+class TitleNavigateButtonBuilder implements ISwingBuilder {
 
-    private ITitleGrammar titleGrammar
+    private ITitleBeanPath beanPath
 
-    TitleNavigateButtonBuilder(ITitleGrammar titleGrammar) {
-        this.titleGrammar = titleGrammar
+    TitleNavigateButtonBuilder(ITitleBeanPath beanPath) {
+        this.beanPath = beanPath
     }
 
     void init() {
-        this.init{}
-    }
-
-    @Override
-    void init(Closure children) {
-        swingBuilder.tnButton(id: id(titleGrammar.getName()),
-                text: titleGrammar.getName(),
-                mouseClicked: TitleNavigateEvent.clicked_title_button,
-                titleGrammar: titleGrammar,
-                foreground: titleGrammar.getColor(),
+        swingBuilder.tnButton(id: id(beanPath.getBeanPath()),
+                text: beanPath.getTitleName(),
+                mouseClicked: {
+                    NavigateButtonEvent.clicked_navigate_button(it)
+                },
+                beanPath: beanPath,
+                foreground: beanPath.getColor(),
         )
     }
 
