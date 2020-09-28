@@ -3,6 +3,7 @@ package com.rh.note.action;
 import com.rh.note.ao.ClickedHistoryProjectListAO;
 import com.rh.note.api.FileServiceApi;
 import com.rh.note.api.ProManageViewApi;
+import com.rh.note.vo.RecentlyOpenedRecordVO;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,5 +24,13 @@ public class ProManageAction implements IProManageAction {
         workAction.initFrame(ao);
         proManageViewApi.closeFrame();
         workAction.showFrame();
+    }
+
+    /**
+     * 启动窗口
+     */
+    public void startFrame() {
+        RecentlyOpenedRecordVO[] voArr = fileServiceApi.getHistoryOpenRecords();
+        proManageViewApi.startFrame(voArr);
     }
 }

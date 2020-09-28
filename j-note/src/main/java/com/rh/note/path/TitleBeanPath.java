@@ -27,8 +27,7 @@ public class TitleBeanPath implements ITitleBeanPath {
 
     @Override
     public String getTitleName() {
-        if (StringUtils.isBlank()) {
-        }
+        return null;
     }
 
     @Override

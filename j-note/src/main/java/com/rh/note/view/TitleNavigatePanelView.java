@@ -1,9 +1,9 @@
 package com.rh.note.view;
 
+import com.rh.note.base.Init;
 import com.rh.note.builder.TabbedPaneBuilder;
-import com.rh.note.util.Init;
 
-import javax.swing.*;
+import javax.swing.JPanel;
 
 /**
  * 标题导航栏

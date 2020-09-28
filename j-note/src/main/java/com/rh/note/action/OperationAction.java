@@ -2,6 +2,7 @@ package com.rh.note.action;
 
 import com.rh.note.ao.ClickedHistoryProjectListAO;
 import com.rh.note.api.ProManageViewApi;
+import com.rh.note.api.WorkViewApi;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
@@ -13,6 +14,7 @@ import java.awt.event.MouseEvent;
 public class OperationAction implements IOperationAction {
 
     private ProManageViewApi proManageViewApi;
+    private WorkViewApi workViewApi;
 
     @Override
     public ClickedHistoryProjectListAO clickedHistoryProjectList(@NotNull MouseEvent mouseEvent) {
