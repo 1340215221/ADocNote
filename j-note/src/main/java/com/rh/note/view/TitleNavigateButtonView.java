@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * {@link TitleNavigateButtonBuilder#id}
+ * 标题导航栏按钮
  */
 public class TitleNavigateButtonView extends Init<TitleButton> {
 

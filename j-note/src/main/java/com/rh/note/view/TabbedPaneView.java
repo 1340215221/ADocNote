@@ -8,7 +8,6 @@ import javax.swing.JTabbedPane;
 
 /**
  * 编辑区标签面板视图
- * {@link TabbedPaneBuilder#id}
  */
 public class TabbedPaneView extends Init<JTabbedPane> {
 

@@ -9,7 +9,6 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * 编辑区视图
- * {@link TextPaneBuilder#id}
  */
 public class TextPaneView extends Init<AdocTextPane> {
 

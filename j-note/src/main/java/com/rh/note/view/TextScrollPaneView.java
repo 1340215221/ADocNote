@@ -8,7 +8,6 @@ import javax.swing.JScrollPane;
 
 /**
  * 编辑区滚动面板视图
- * {@link TextPaneBuilder#scrollId}
  */
 public class TextScrollPaneView extends Init<JScrollPane> {
 

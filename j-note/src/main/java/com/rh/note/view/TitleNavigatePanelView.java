@@ -7,7 +7,6 @@ import javax.swing.JPanel;
 
 /**
  * 标题导航栏
- * {@link TabbedPaneBuilder#navigateId}
  */
 public class TitleNavigatePanelView extends Init<JPanel> {
 
