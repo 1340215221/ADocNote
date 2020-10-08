@@ -1,6 +1,7 @@
 package com.rh.note.event;
 
 
+import static com.rh.note.config.BridgingBeanConfig.operationAction;
 import static com.rh.note.config.BridgingBeanConfig.workAction;
 
 /**
