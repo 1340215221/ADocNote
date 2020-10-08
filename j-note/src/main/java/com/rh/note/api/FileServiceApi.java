@@ -3,15 +3,12 @@ package com.rh.note.api;
 import com.rh.note.ao.ClickedHistoryProjectListAO;
 import com.rh.note.file.AdocFile;
 import com.rh.note.line.TitleLine;
+import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.path.ProBeanPath;
 import com.rh.note.path.ReadMeBeanPath;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
-import com.rh.note.vo.TitleLineVO;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * 文件服务 操作
@@ -40,5 +37,15 @@ public class FileServiceApi {
                 new RecentlyOpenedRecordVO().setProjectName("java笔记").setProjectPath("/home/hang/Documents/Java-not/"),
                 new RecentlyOpenedRecordVO().setProjectName("生活笔记").setProjectPath("/InterviewNote/")
         };
+    }
+
+    /**
+     * 获得文件, 通过项目路径
+     */
+    public @Nullable AdocFileBeanPath getFileByProPath(String filePath) {
+        if (StringUtils.isBlank(filePath)) {
+            return null;
+        }
+        return AdocFileBeanPath.create(filePath);
     }
 }

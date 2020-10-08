@@ -3,6 +3,7 @@ package com.rh.note.line;
 import com.rh.note.base.BaseLine;
 import com.rh.note.constants.AdocFileTypeEnum;
 import com.rh.note.exception.RequestParamsValidException;
+import com.rh.note.path.TitleBeanPath;
 import com.rh.note.syntax.TitleSyntax;
 import com.rh.note.util.TreeNodeIconUtil;
 import com.rh.note.vo.ITitleLineVO;
@@ -10,6 +11,7 @@ import lombok.Data;
 import lombok.NonNull;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.Icon;
@@ -91,8 +93,17 @@ public class TitleLine extends BaseLine implements ITitleLineVO {
         return titleSyntax.getTitleName();
     }
 
+    public @NotNull TitleBeanPath getBeanPath() {
+        String filePath = getAdocFile().getFilePath();
+        String titlePath = getTitlePath();
+        if (StringUtils.isBlank(titlePath)) {
+            throw new RequestParamsValidException();
+        }
+        return TitleBeanPath.getInstance(filePath, titlePath);
+    }
+
     @Override
-    public String getBeanPath() {
+    public String getBeanPathStr() {
         String filePath = getAdocFile().getFilePath();
         String titlePath = getTitlePath();
         if (StringUtils.isBlank(titlePath)) {

@@ -27,7 +27,7 @@ class TitleNavigateButtonBuilder implements ISwingBuilder {
         )
     }
 
-    static String id(String titleName) {
-        "title_navigate_button_${titleName}"
+    static String id(String beanPath) {
+        "title_navigate_button_${beanPath}"
     }
 }

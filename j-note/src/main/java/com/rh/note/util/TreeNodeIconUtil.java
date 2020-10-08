@@ -10,9 +10,11 @@ import java.awt.Image;
 public class TreeNodeIconUtil {
 
     public static final Icon readmeRoot = setIconSize(new ImageIcon("icon/file/readme_root.png"));
-    public static final Icon readmeChildren = setIconSize(new ImageIcon("icon/file/twoLevel_children.png"));
+    public static final Icon readmeChildren = setIconSize(new ImageIcon("icon/file/readme_children.png"));
+//    public static final Icon readmeChildren = setIconSize(new ImageIcon("icon/file/twoLevel_children.png"));
     public static final Icon twoLevelRoot = setIconSize(new ImageIcon("icon/file/twoLevel_root.png"));
-    public static final Icon twoLevelChildren = setIconSize(new ImageIcon("icon/file/readme_children.png"));
+    public static final Icon twoLevelChildren = setIconSize(new ImageIcon("icon/file/twoLevel_children.png"));
+//    public static final Icon twoLevelChildren = setIconSize(new ImageIcon("icon/file/readme_children.png"));
     public static final Icon content = setIconSize(new ImageIcon("icon/file/content_dark.png"));
     public static final Icon unknown = twoLevelChildren;
 

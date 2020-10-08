@@ -18,11 +18,12 @@ public class TabbedPaneView extends Init<JTabbedPane> {
     /**
      * 添加编辑文件
      */
-    public void add(TextScrollPaneView textScrollPane, String fileName) {
+    public void add(TextScrollPaneView textScrollPane) {
         if (textScrollPane == null) {
             return;
         }
-        tabbedPane().add(textScrollPane.getBean(), fileName);
+        String titleName = textScrollPane.getBean().getBeanPath().getTitleName();
+        tabbedPane().add(textScrollPane.getBean(), titleName);
     }
 
     private @NotNull JTabbedPane tabbedPane() {

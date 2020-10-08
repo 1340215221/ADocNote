@@ -20,8 +20,8 @@ public class TitleNavigateButtonView extends Init<TitleButton> {
         new TitleNavigateButtonBuilder(beanPath).init();
     }
 
-    public @Nullable TitleNavigateButtonView initByTitleName(String titleName) {
-        return super.init(TitleNavigateButtonBuilder.id(titleName));
+    public @Nullable TitleNavigateButtonView initByBeanPath(String beanPath) {
+        return super.init(TitleNavigateButtonBuilder.id(beanPath));
     }
 
     private @NotNull TitleButton navigateButton() {

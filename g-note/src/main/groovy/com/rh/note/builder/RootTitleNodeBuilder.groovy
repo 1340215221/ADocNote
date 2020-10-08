@@ -33,7 +33,7 @@ class RootTitleNodeBuilder implements ISwingBuilder {
         }
 
         vo.getChildrenTitles().each { children ->
-            swingBuilder.ttNode(id: nodeId(children.getBeanPath()),
+            swingBuilder.ttNode(id: nodeId(children.getBeanPathStr()),
                     userObject: children.getTitleName(),
                     vo: children,
             ) {

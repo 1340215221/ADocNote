@@ -20,7 +20,7 @@ public interface ITitleLineVO {
     /**
      * 得到对象地址
      */
-    String getBeanPath();
+    String getBeanPathStr();
 
     /**
      * 获得节点图标

@@ -19,7 +19,7 @@ public class TitleLineVO implements ITitleLineVO {
     }
 
     @Override
-    public String getBeanPath() {
+    public String getBeanPathStr() {
         return null;
     }
 
