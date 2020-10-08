@@ -18,7 +18,7 @@ class RootTitleNodeBuilder implements ISwingBuilder {
     void init() {
         swingBuilder.ttNode(id: id(),
                 userObject: vo.getTitleName(),
-                titleLine: vo,
+                vo: vo,
         ) {
             this.setChildrenNode(vo)
         }
@@ -35,7 +35,7 @@ class RootTitleNodeBuilder implements ISwingBuilder {
         vo.getChildrenTitles().each { children ->
             swingBuilder.ttNode(id: nodeId(children.getBeanPath()),
                     userObject: children.getTitleName(),
-                    titleLine: children,
+                    vo: children,
             ) {
                 this.setChildrenNode(children)
             }

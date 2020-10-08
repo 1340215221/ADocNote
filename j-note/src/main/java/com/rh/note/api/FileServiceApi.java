@@ -1,7 +1,10 @@
 package com.rh.note.api;
 
 import com.rh.note.ao.ClickedHistoryProjectListAO;
+import com.rh.note.file.AdocFile;
+import com.rh.note.line.TitleLine;
 import com.rh.note.path.ProBeanPath;
+import com.rh.note.path.ReadMeBeanPath;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
 import com.rh.note.vo.TitleLineVO;
 import org.apache.commons.lang3.StringUtils;
@@ -24,13 +27,9 @@ public class FileServiceApi {
         new ProBeanPath().setProjectPath(ao.getProjectPath());
     }
 
-    public @Nullable TitleLineVO readAllTitleByProjectPath(ClickedHistoryProjectListAO ao) {
-        if (ao == null || StringUtils.isBlank(ao.getProjectPath())) {
-            return null;
-        }
-
-        //todo
-        return new TitleLineVO();
+    public @Nullable TitleLine readAllTitleByProjectPath() {
+        AdocFile adocFile = AdocFile.getInstance(new ReadMeBeanPath().getFilePath());
+        return adocFile != null ? adocFile.getRootTitle() : null;
     }
 
     /**

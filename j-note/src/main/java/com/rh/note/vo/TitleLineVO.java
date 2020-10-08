@@ -9,8 +9,8 @@ import java.util.List;
  */
 public class TitleLineVO implements ITitleLineVO {
     @Override
-    public void getTitleName() {
-
+    public String getTitleName() {
+        return null;
     }
 
     @Override

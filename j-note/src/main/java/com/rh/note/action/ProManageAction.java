@@ -21,7 +21,7 @@ public class ProManageAction implements IProManageAction {
     public void openProjectByPath(@NotNull ClickedHistoryProjectListAO ao) {
         ao.checkRequiredItems();
         fileServiceApi.setProjectPath(ao);
-        workAction.initFrame(ao);
+        workAction.initFrame();
         proManageViewApi.closeFrame();
         workAction.showFrame();
     }

@@ -10,12 +10,12 @@ public interface ITitleLineVO {
     /**
      * 获得标题名
      */
-    void getTitleName();
+    String getTitleName();
 
     /**
      * 获得子标题
      */
-    List<ITitleLineVO> getChildrenTitles();
+    <T extends ITitleLineVO> List<T> getChildrenTitles();
 
     /**
      * 得到对象地址

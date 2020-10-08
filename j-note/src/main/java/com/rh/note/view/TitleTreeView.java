@@ -18,4 +18,13 @@ public class TitleTreeView extends Init<JTree> {
     private @NotNull JTree tree() {
         return getBean();
     }
+
+    /**
+     * 展开所有节点
+     */
+    public void expandRowAllNode() {
+        for (int i = 0; i < tree().getRowCount(); i++) {
+            tree().expandRow(i);
+        }
+    }
 }

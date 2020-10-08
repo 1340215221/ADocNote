@@ -3,6 +3,7 @@ package com.rh.note.view;
 import com.rh.note.base.Init;
 import com.rh.note.builder.RootTitleNodeBuilder;
 import com.rh.note.component.TitleTreeNode;
+import com.rh.note.vo.ITitleLineVO;
 import com.rh.note.vo.TitleLineVO;
 import org.jetbrains.annotations.NotNull;
 
@@ -11,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class RootTitleNodeView extends Init<TitleTreeNode> {
 
-    public static void create(TitleLineVO vo) {
+    public static void create(ITitleLineVO vo) {
         new RootTitleNodeBuilder(vo).init();
     }
 

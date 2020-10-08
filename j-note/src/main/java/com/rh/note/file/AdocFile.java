@@ -1,10 +1,19 @@
 package com.rh.note.file;
 
+import com.rh.note.base.BaseLine;
+import com.rh.note.exception.RequestParamsValidException;
+import com.rh.note.line.IncludeLine;
+import com.rh.note.line.TitleLine;
+import com.rh.note.path.ProBeanPath;
+import com.rh.note.syntax.IncludeSyntax;
+import com.rh.note.syntax.TitleSyntax;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.NotNull;
@@ -13,6 +22,11 @@ import org.jetbrains.annotations.Nullable;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * adoc文件
@@ -22,7 +36,16 @@ import java.io.FileReader;
 public class AdocFile {
 
     @NonNull
+    @Getter
     private String filePath;
+    /**
+     * 标题内容
+     */
+    private final List<TitleLine> titleLines = new ArrayList<>();
+    /**
+     * include内容
+     */
+    private final List<IncludeLine> includeLines = new ArrayList<>();
 
     public static @Nullable AdocFile getInstance(String filePath) {
         if (StringUtils.isBlank(filePath)) {
@@ -36,21 +59,86 @@ public class AdocFile {
      * 解析文件
      */
     private @Nullable AdocFile init() {
-        return newFile(filePath).each(new MatchLine());
+        AdocFile adocFile = newFile().each(new MatchLine(this));
+        if (adocFile != null) {
+            this.scanChildrenFile();
+            this.titleBuildRelationships();
+        }
+        return adocFile;
+    }
+
+    /**
+     * 扫描子文件
+     */
+    private void scanChildrenFile() {
+        if (CollectionUtils.isEmpty(includeLines)) {
+            return;
+        }
+        includeLines.forEach(includeLine -> {
+            String targetFilePath = includeLine.getIncludeSyntax().getTargetFilePath();
+            AdocFile adocFile = AdocFile.getInstance(targetFilePath);
+            includeLine.setTargetFile(adocFile);
+        });
+    }
+
+    /**
+     * 标题建立关系
+     */
+    private void titleBuildRelationships() {
+        List<BaseLine> grammars = Stream.of(includeLines, titleLines).flatMap(List::stream).collect(Collectors.toList());
+        // 处理titleList的关系
+        grammars.stream()
+                .filter(grammar -> !(grammar instanceof IncludeLine && ((IncludeLine) grammar).getTargetTitle() == null))
+                .sorted(Comparator.comparing(BaseLine::getLineNumber))
+                .reduce((a, b) -> {
+                    //标题 标题
+                    if (a instanceof TitleLine && b instanceof TitleLine) {
+                        TitleLine parent = ((TitleLine) a).findParentOf((TitleLine) b);
+                        if (parent == null) {
+                            return a;
+                        }
+                        parent.addChildrenTitle((TitleLine) b);
+                        return b;
+                    }
+                    //标题 include
+                    if (a instanceof TitleLine && b instanceof IncludeLine) {
+                        TitleLine targetTitle = ((IncludeLine) b).getTargetTitle();
+                        TitleLine parent = ((TitleLine) a).findParentOf(targetTitle);
+                        if (parent == null) {
+                            return a;
+                        }
+                        parent.addChildrenTitle(targetTitle);
+                        return a;
+                    }
+                    //include include
+                    if (a instanceof IncludeLine && b instanceof IncludeLine) {
+                        ((IncludeLine) a).getTargetTitle().findParentOf(((IncludeLine) b).getTargetTitle());
+                        return ((IncludeLine) a).getTargetTitle().getParentTitle();
+                    }
+                    //include 标题
+                    if (a instanceof IncludeLine && b instanceof TitleLine) {
+                        ((IncludeLine) a).getTargetTitle().findParentOf((TitleLine) b).addChildrenTitle((TitleLine) b);
+                        return b;
+                    }
+                    throw new RequestParamsValidException();
+                });
     }
 
     /**
      * 遍历文件内容
      */
-    private @NotNull IForEach newFile(String filePath) {
-        if (StringUtils.isBlank(filePath)) {
-            return empty_each;
+    private @NotNull IForEach newFile() {
+        String absolutePath = this.getAbsolutePath();
+        if (StringUtils.isBlank(absolutePath)) {
+            return IForEach.empty_each;
         }
-        File file = new File(filePath);
+        File file = new File(absolutePath);
         if (!file.exists() || !file.isFile()) {
-            return empty_each;
+            return IForEach.empty_each;
         }
-        try (FileReader fr = new FileReader(file); BufferedReader br = new BufferedReader(fr)) {
+        try {
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
             return matchLine -> {
                 if (matchLine == null) {
                     return null;
@@ -62,17 +150,47 @@ public class AdocFile {
                             .setNumber(lineNumber.getValue())
                             .setText(lineContent));
                 });
+                try {
+                    fr.close();
+                    br.close();
+                } catch (Exception e) {
+                    log.error("[文件流关闭失败], filePath={}", filePath, e);
+                }
                 return this;
             };
         } catch (Exception e) {
             log.error("[文件读取失败], filePath={}", filePath, e);
-            return empty_each;
+            return IForEach.empty_each;
         }
     }
 
-    private static final IForEach empty_each = forEach -> null;
+    /**
+     * 获得绝对路径
+     */
+    private @Nullable String getAbsolutePath() {
+        if (StringUtils.isBlank(filePath)) {
+            return null;
+        }
+        String projectPath = new ProBeanPath().getProjectPath();
+        if (StringUtils.isBlank(projectPath)) {
+            return null;
+        }
+        return projectPath + filePath;
+    }
+
+    /**
+     * 获得根标题
+     */
+    public @Nullable TitleLine getRootTitle() {
+        if (CollectionUtils.isEmpty(titleLines)) {
+            return null;
+        }
+        return titleLines.get(0);
+    }
 
     interface IForEach {
+        IForEach empty_each = forEach -> null;
+
         @Nullable AdocFile each(IMatchLine forEach);
     }
 
@@ -80,13 +198,52 @@ public class AdocFile {
         void match(LineContent lineContent);
     }
 
+    @RequiredArgsConstructor
     class MatchLine implements IMatchLine {
+
+        @NonNull
+        private AdocFile adocFile;
+
         @Override
         public void match(LineContent lineContent) {
-            if (lineContent == null) {
+            if (matchTitle(lineContent) != null) {
                 return;
             }
-            //todo
+            if (matchInclude(lineContent) != null) {
+                return;
+            }
+        }
+
+        public @Nullable TitleLine matchTitle(LineContent lineContent) {
+            if (lineContent == null) {
+                return null;
+            }
+            TitleSyntax syntax = new TitleSyntax().init(lineContent.text);
+            if (syntax == null) {
+                return null;
+            }
+            TitleLine titleLine = new TitleLine();
+            titleLine.setTitleSyntax(syntax)
+                    .setAdocFile(adocFile)
+                    .setLineNumber(lineContent.number);
+            titleLines.add(titleLine);
+            return titleLine;
+        }
+
+        public @Nullable IncludeLine matchInclude(LineContent lineContent) {
+            if (lineContent == null) {
+                return null;
+            }
+            IncludeSyntax syntax = new IncludeSyntax().init(lineContent.text);
+            if (syntax == null) {
+                return null;
+            }
+            IncludeLine includeLine = new IncludeLine();
+            includeLine.setIncludeSyntax(syntax)
+                    .setAdocFile(adocFile)
+                    .setLineNumber(lineContent.number);
+            includeLines.add(includeLine);
+            return includeLine;
         }
     }
 
