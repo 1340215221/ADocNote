@@ -3,6 +3,7 @@ package com.rh.note.action;
 import com.rh.note.vo.ITitleLineVO;
 
 import java.awt.AWTEvent;
+import java.awt.event.ActionEvent;
 
 /**
  * 工作窗口--入口
@@ -27,4 +28,14 @@ public interface IWorkAction {
      * 保存所有编辑区内容
      */
     void saveAllEdited();
+
+    /**
+     * 默认回车操作
+     */
+    void defaultEnterOperation(ActionEvent event);
+
+    /**
+     * 生成include块
+     */
+    void generateIncludeSyntax();
 }

@@ -9,8 +9,11 @@ import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.view.TextPaneView;
 import com.rh.note.vo.ITitleLineVO;
 import com.rh.note.vo.WriterVO;
+import lombok.NonNull;
 import lombok.Setter;
 
+import javax.swing.text.DefaultEditorKit;
+import java.awt.event.ActionEvent;
 import java.util.function.Function;
 
 /**
@@ -77,5 +80,14 @@ public class WorkAction implements IWorkAction {
     public void saveAllEdited() {
         Function<String, WriterVO> getFileWriterFunction = filePath -> fileServiceApi.openFileOutputStream(filePath);
         workViewApi.writeAllEdited(getFileWriterFunction);
+    }
+
+    @Override
+    public void defaultEnterOperation(@NonNull ActionEvent event) {
+        new DefaultEditorKit.InsertBreakAction().actionPerformed(event);
+    }
+
+    @Override
+    public void generateIncludeSyntax() {
     }
 }

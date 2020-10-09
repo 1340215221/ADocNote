@@ -1,5 +1,6 @@
 package com.rh.note.view;
 
+import com.rh.note.base.ITitleBeanPath;
 import com.rh.note.base.Init;
 import com.rh.note.builder.TextPaneBuilder;
 import com.rh.note.component.AdocTextPane;
@@ -12,6 +13,7 @@ import com.rh.note.path.ProBeanPath;
 import com.rh.note.path.TitleBeanPath;
 import com.rh.note.vo.WriterVO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,6 +35,21 @@ public class TextPaneView extends Init<AdocTextPane> {
             return;
         }
         new TextPaneBuilder(beanPath).init();
+    }
+
+    /**
+     * 转换
+     */
+    public static @Nullable TextPaneView cast(AdocTextPane textPane) {
+        if (textPane == null) {
+            return null;
+        }
+        AdocFileBeanPath beanPath = (AdocFileBeanPath) textPane.getBeanPath();
+        String filePath = beanPath.getFilePath();
+        if (StringUtils.isBlank(filePath)) {
+            return null;
+        }
+        return new TextPaneView().initByFilePath(filePath);
     }
 
     public @Nullable TextPaneView initByFilePath(String filePath) {
@@ -107,6 +124,40 @@ public class TextPaneView extends Init<AdocTextPane> {
         } catch (Exception e) {
             log.error("[将编辑区内容写入到文件 失败], filePath={}", filePath, e);
         }
+    }
+
+    /**
+     * 获得光标所在行内容
+     * 不包含换行符
+     */
+    public @Nullable String getCaretLineContent() {
+        int dot = textPane().getCaret().getDot();
+        Element rootElement = textPane().getDocument().getDefaultRootElement();
+        int index = rootElement.getElementIndex(dot);
+        if (index < 0) {
+            return null;
+        }
+        Element element = rootElement.getElement(index);
+        try {
+            return textPane().getText(element.getStartOffset(), element.getEndOffset() - element.getStartOffset());
+        } catch (Exception e) {
+            log.error("[获取行内容 失败], filePath={}, lineNumber={}", ((AdocFileBeanPath) textPane().getBeanPath()).getFilePath(), index + 1);
+            return null;
+        }
+    }
+
+    /**
+     * 选择光标所在行
+     */
+    public void selectCaretLine() {
+        int dot = textPane().getCaret().getDot();
+        Element rootElement = textPane().getDocument().getDefaultRootElement();
+        int index = rootElement.getElementIndex(dot);
+        if (index < 0) {
+            return;
+        }
+        Element element = rootElement.getElement(index);
+        textPane().select(element.getStartOffset(), element.getEndOffset() - 1);
     }
 
     private class ParsingCareLineApi {

@@ -3,6 +3,7 @@ package com.rh.note.action;
 import com.rh.note.ao.ClickedHistoryProjectListAO;
 import com.rh.note.api.ProManageViewApi;
 import com.rh.note.api.WorkViewApi;
+import com.rh.note.component.AdocTextPane;
 import com.rh.note.component.TitleButton;
 import com.rh.note.path.TitleBeanPath;
 import com.rh.note.vo.ITitleLineVO;
@@ -13,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JList;
 import java.awt.AWTEvent;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
@@ -52,6 +54,20 @@ public class OperationAction implements IOperationAction {
         }
         KeyEvent keyEvent = (KeyEvent) event;
         return keyEvent.getKeyCode() == 83 && keyEvent.getModifiers() == 2;
+    }
+
+    @Override
+    public boolean selectCaretLineOfIncludeSyntaxSugar(ActionEvent event) {
+        Object source = event.getSource();
+        if (!(source instanceof AdocTextPane)) {
+            return false;
+        }
+        AdocTextPane textPane = (AdocTextPane) source;
+        boolean isInclude = workViewApi.checkIsIncludeSyntaxSugarOnCaretLine(textPane);
+        if (isInclude) {
+            workViewApi.selectCaretLine(textPane);
+        }
+        return isInclude;
     }
 
     @Override

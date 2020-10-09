@@ -25,6 +25,15 @@ public class TextPaneEvent {
      * 回车操作
      */
     public static void enter_operation(ActionEvent event) {
+        if (operationAction().selectCaretLineOfIncludeSyntaxSugar(event)) {
+            workAction().generateIncludeSyntax();
+            return;
+        }
+//        if (operationAction().selectCaretLineOfTitleSyntaxSugar()) {
+//            workAction().generateIncludeSyntax();
+//            return;
+//        }
+        workAction().defaultEnterOperation(event);
     }
 
     /**

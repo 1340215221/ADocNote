@@ -4,6 +4,7 @@ import com.rh.note.constants.AdocFileTypeEnum;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,7 +18,7 @@ public class IncludeSyntaxSugar {
      * 匹配正则
      * todo
      */
-    private final static String regex = "";
+    private final static String regex = "^(\\s*)=>([1-9])\\s([\\u4e00-\\u9fa5a-zA-Z0-9_\\-]+)\\s*$";
     /**
      * 级别
      */
@@ -44,7 +45,10 @@ public class IncludeSyntaxSugar {
         }
 
         indented = matcher.group(1);
-        level = matcher.group(2).length();
+        level = Optional.ofNullable(matcher.group(2))
+                .filter(str -> str.matches("[0-9]+"))
+                .map(Integer::valueOf)
+                .orElse(null);
         titleName = matcher.group(3);
         return this;
     }

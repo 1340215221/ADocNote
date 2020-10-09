@@ -1,10 +1,12 @@
 package com.rh.note.api;
 
+import com.rh.note.component.AdocTextPane;
 import com.rh.note.component.TitleButton;
 import com.rh.note.frame.WorkFrame;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.path.TitleBeanPath;
+import com.rh.note.syntax.IncludeSyntaxSugar;
 import com.rh.note.util.ScrollPositionUtil;
 import com.rh.note.view.RootTitleNodeView;
 import com.rh.note.view.TabbedPaneView;
@@ -204,5 +206,38 @@ public class WorkViewApi {
                 .map(filePath -> new TextPaneView().initByFilePath(filePath))
                 .filter(Objects::nonNull)
                 .forEach(textPane -> textPane.write(getFileWriterFunction));
+    }
+
+    /**
+     * 是否为include, 在光标所在行
+     */
+    public boolean checkIsIncludeSyntaxSugarOnCaretLine(AdocTextPane bean) {
+        if (bean == null) {
+            return false;
+        }
+        TextPaneView textPane = TextPaneView.cast(bean);
+        if (textPane == null) {
+            return false;
+        }
+        String lineContent = textPane.getCaretLineContent();
+        if (StringUtils.isBlank(lineContent)) {
+            return false;
+        }
+        IncludeSyntaxSugar includeSyntaxSugar = new IncludeSyntaxSugar().init(lineContent);
+        return includeSyntaxSugar != null;
+    }
+
+    /**
+     * 选择光标所在行
+     */
+    public void selectCaretLine(AdocTextPane bean) {
+        if (bean == null) {
+            return;
+        }
+        TextPaneView textPane = TextPaneView.cast(bean);
+        if (textPane == null) {
+            return;
+        }
+        textPane.selectCaretLine();
     }
 }

@@ -5,6 +5,7 @@ import com.rh.note.vo.ITitleLineVO;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.AWTEvent;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 
 /**
@@ -35,4 +36,9 @@ public interface IOperationAction {
      * 是否为保存快捷键
      */
     boolean checkIsSaveHotKey(AWTEvent event);
+
+    /**
+     * 选择光标行, 如果是include语法糖
+     */
+    boolean selectCaretLineOfIncludeSyntaxSugar(ActionEvent event);
 }
