@@ -218,7 +218,7 @@ public class AdocFile {
         if (lineNumber <= titleLine.getLineNumber()) {
             return titleLine;
         }
-        for (int i = 1; i < titleLines.size(); i++) {
+        for (int i = 0; i < titleLines.size(); i++) {
             TitleLine first = titleLines.get(i);
             TitleLine second = Optional.of(i + 1)
                     .filter(next -> next < titleLines.size())
