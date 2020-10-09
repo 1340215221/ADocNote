@@ -3,8 +3,10 @@ package com.rh.note.action;
 import com.rh.note.ao.ClickedHistoryProjectListAO;
 import com.rh.note.api.ProManageViewApi;
 import com.rh.note.api.WorkViewApi;
+import com.rh.note.component.TitleButton;
 import com.rh.note.vo.ITitleLineVO;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
+import lombok.NonNull;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
@@ -25,6 +27,15 @@ public class OperationAction implements IOperationAction {
     @Override
     public ITitleLineVO getSelectedTextPane() {
         return workViewApi.getSelectedTextPane();
+    }
+
+    @Override
+    public ITitleLineVO clickedNavigateButton(@NonNull MouseEvent event) {
+        Object source = event.getSource();
+        if (!(source instanceof TitleButton)) {
+            return null;
+        }
+        return workViewApi.getFileRootTitleByButton(((TitleButton) source));
     }
 
     @Override

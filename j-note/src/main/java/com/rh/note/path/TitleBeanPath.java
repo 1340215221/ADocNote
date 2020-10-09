@@ -4,6 +4,7 @@ import com.rh.note.base.ITitleBeanPath;
 import com.rh.note.constants.AdocFileTypeEnum;
 import com.rh.note.exception.RequestParamsValidException;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
@@ -23,6 +24,7 @@ public class TitleBeanPath implements ITitleBeanPath {
      * 文件地址
      */
     @NonNull
+    @Getter
     private String filePath;
     /**
      * 文件内标题路径

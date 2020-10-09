@@ -24,4 +24,9 @@ public interface IOperationAction {
      * 获得选择的编辑区
      */
     ITitleLineVO getSelectedTextPane();
+
+    /**
+     * 点击导航按钮
+     */
+    ITitleLineVO clickedNavigateButton(MouseEvent event);
 }
