@@ -29,4 +29,9 @@ public interface IOperationAction {
      * 点击导航按钮
      */
     ITitleLineVO clickedNavigateButton(MouseEvent event);
+
+    /**
+     * 判断是否为文件根标题
+     */
+    boolean checkIsFileRootTitle(ITitleLineVO vo);
 }

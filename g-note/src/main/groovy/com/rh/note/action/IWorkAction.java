@@ -15,4 +15,9 @@ public interface IWorkAction {
      * 加载标题导航
      */
     void loadTitleNavigate(ITitleLineVO vo);
+
+    /**
+     * 定位行, 通过标题
+     */
+    void positioningLineByTitle(ITitleLineVO vo);
 }

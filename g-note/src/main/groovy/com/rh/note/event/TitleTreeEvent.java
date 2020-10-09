@@ -21,6 +21,9 @@ public class TitleTreeEvent {
         }
         workAction().openTextPaneByTitleNode(vo);
         workAction().loadTitleNavigate(vo);
+        if(!operationAction().checkIsFileRootTitle(vo)) {
+            workAction().positioningLineByTitle(vo);
+        }
     }
 
 }

@@ -63,4 +63,12 @@ public class WorkAction implements IWorkAction {
         }
         workViewApi.loadTitleNavigate(((TitleLine) vo));
     }
+
+    @Override
+    public void positioningLineByTitle(ITitleLineVO vo) {
+        if (!(vo instanceof TitleLine)) {
+            return;
+        }
+        workViewApi.positioningLineByTitle(((TitleLine) vo));
+    }
 }

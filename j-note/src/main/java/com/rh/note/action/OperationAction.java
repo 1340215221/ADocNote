@@ -4,6 +4,7 @@ import com.rh.note.ao.ClickedHistoryProjectListAO;
 import com.rh.note.api.ProManageViewApi;
 import com.rh.note.api.WorkViewApi;
 import com.rh.note.component.TitleButton;
+import com.rh.note.line.TitleLine;
 import com.rh.note.vo.ITitleLineVO;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
 import lombok.NonNull;
@@ -36,6 +37,14 @@ public class OperationAction implements IOperationAction {
             return null;
         }
         return workViewApi.getFileRootTitleByButton(((TitleButton) source));
+    }
+
+    @Override
+    public boolean checkIsFileRootTitle(ITitleLineVO vo) {
+        if (!(vo instanceof TitleLine)) {
+            return false;
+        }
+        return workViewApi.checkIsFileRootTitle(((TitleLine) vo));
     }
 
     @Override

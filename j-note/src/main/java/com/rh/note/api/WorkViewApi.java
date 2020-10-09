@@ -4,6 +4,7 @@ import com.rh.note.component.TitleButton;
 import com.rh.note.frame.WorkFrame;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
+import com.rh.note.util.ScrollPositionUtil;
 import com.rh.note.view.RootTitleNodeView;
 import com.rh.note.view.TabbedPaneView;
 import com.rh.note.view.TextPaneView;
@@ -150,5 +151,35 @@ public class WorkViewApi {
         String filePath = titleNavigateButton.getFilePath();
         RootTitleNodeView rootTitleNode = new RootTitleNodeView().init();
         return rootTitleNode.getTitleByFilePath(filePath);
+    }
+
+    /**
+     * 判断是否为根标题
+     */
+    public boolean checkIsFileRootTitle(TitleLine titleLine) {
+        if (titleLine == null) {
+            return false;
+        }
+        return titleLine.checkIsFileRootTitle();
+    }
+
+    /**
+     * 定位到行, 通过标题
+     */
+    public void positioningLineByTitle(TitleLine titleLine) {
+        if (titleLine == null) {
+            return;
+        }
+        TextPaneView textPane = new TextPaneView().initByFilePath(titleLine.getFilePath());
+        if (textPane == null) {
+            return;
+        }
+        TextScrollPaneView textScrollPane = new TextScrollPaneView().initByFilePath(titleLine.getFilePath());
+        ScrollPositionUtil.builder()
+                .adocTextPane(textPane.getBean())
+                .adocScrollPane(textScrollPane.getBean())
+                .lineNumber(titleLine.getLineNumber())
+                .build()
+                .positioningToTitleRow();
     }
 }

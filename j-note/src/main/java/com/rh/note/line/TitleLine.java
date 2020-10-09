@@ -19,6 +19,7 @@ import javax.swing.JTextPane;
 import javax.swing.text.Element;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -172,5 +173,17 @@ public class TitleLine extends BaseLine implements ITitleLineVO {
             parentTitle.addParentTitles(resultList);
         }
         resultList.add(this);
+    }
+
+    /**
+     * 判断是否为根标题
+     */
+    public boolean checkIsFileRootTitle() {
+        TitleLine parentTitle = getParentTitle();
+        if (parentTitle == null) {
+            return true;
+        }
+        String filePath = parentTitle.getFilePath();
+        return !Objects.equals(filePath, getFilePath());
     }
 }
