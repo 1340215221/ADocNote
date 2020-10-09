@@ -19,10 +19,16 @@ public class TitleTreeEvent {
         if (vo == null) {
             return;
         }
+        // 打开标题节点对应的文件
         workAction().openTextPaneByTitleNode(vo);
-        workAction().loadTitleNavigate(vo);
+        // 光标定位到标题所在行, 文件根节点情况除外
         if(!operationAction().checkIsFileRootTitle(vo)) {
             workAction().positioningLineByTitle(vo);
+        }
+        // 加载标题导航
+        ITitleLineVO vo2 = operationAction().getTitleByCaretLineContent();
+        if (vo2 != null) {
+            workAction().loadTitleNavigate(vo2);
         }
     }
 

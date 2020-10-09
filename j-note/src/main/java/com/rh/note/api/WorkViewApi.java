@@ -1,7 +1,6 @@
 package com.rh.note.api;
 
 import com.rh.note.component.TitleButton;
-import com.rh.note.file.AdocFile;
 import com.rh.note.frame.WorkFrame;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
@@ -123,20 +122,6 @@ public class WorkViewApi {
             TitleNavigateButtonView titleNavigateButton = new TitleNavigateButtonView().initByBeanPath(title.getBeanPathStr());
             titleNavigatePanel.add(titleNavigateButton);
         });
-    }
-
-    /**
-     * 获得被选择的编辑区
-     */
-    public ITitleLineVO getSelectedTextPane() {
-        TabbedPaneView tabbedPane = new TabbedPaneView().init();
-        TextScrollPaneView textScrollPane = tabbedPane.getSelectedTextPane();
-        if (textScrollPane == null) {
-            return null;
-        }
-        String filePath = textScrollPane.getFilePath();
-        RootTitleNodeView rootTitleNode = new RootTitleNodeView().init();
-        return rootTitleNode.getTitleByFilePath(filePath);
     }
 
     /**

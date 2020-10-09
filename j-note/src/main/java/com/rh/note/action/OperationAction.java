@@ -27,11 +27,6 @@ public class OperationAction implements IOperationAction {
     }
 
     @Override
-    public ITitleLineVO getSelectedTextPane() {
-        return workViewApi.getSelectedTextPane();
-    }
-
-    @Override
     public ITitleLineVO clickedNavigateButton(@NonNull MouseEvent event) {
         Object source = event.getSource();
         if (!(source instanceof TitleButton)) {

@@ -7,7 +7,6 @@ import com.rh.note.line.TitleLine;
 import com.rh.note.path.TitleBeanPath;
 import com.rh.note.vo.ITitleLineVO;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,32 +29,6 @@ public class RootTitleNodeView extends Init<TitleTreeNode> {
 
     private TitleTreeNode treeNode() {
         return getBean();
-    }
-
-    /**
-     * 获得文件根节点, 通过文件路径
-     */
-    public ITitleLineVO getTitleByFilePath(String filePath) {
-        if (StringUtils.isBlank(filePath)) {
-            return null;
-        }
-        TitleLine rootTitle = (TitleLine) treeNode().getVo();
-        Deque<TitleLine> deque =  new LinkedList<>();
-        deque.push(rootTitle);
-        while (true) {
-            TitleLine titleLine = deque.pop();
-            if (titleLine == null) {
-                return null;
-            }
-            if (titleLine.getFilePath().equals(filePath) && titleLine.checkIsFileRootTitle()) {
-                return titleLine;
-            }
-            List<TitleLine> childrenTitles = titleLine.getChildrenTitles();
-            if (CollectionUtils.isEmpty(childrenTitles)) {
-                continue;
-            }
-            childrenTitles.forEach(deque::push);
-        }
     }
 
     /**

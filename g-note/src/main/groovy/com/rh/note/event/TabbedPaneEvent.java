@@ -16,7 +16,7 @@ public class TabbedPaneEvent {
      * 加载标题导航, 在选择文件标签时
      */
     public static void load_title_navigate_on_selected_tab() {
-        ITitleLineVO vo = operationAction().getSelectedTextPane();
+        ITitleLineVO vo = operationAction().getTitleByCaretLineContent();
         if (vo == null) {
             return;
         }
