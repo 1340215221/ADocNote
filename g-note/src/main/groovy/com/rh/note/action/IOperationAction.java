@@ -19,4 +19,9 @@ public interface IOperationAction {
      * 获得选择的标题节点
      */
     ITitleLineVO getSelectedTitleNode();
+
+    /**
+     * 获得选择的编辑区
+     */
+    ITitleLineVO getSelectedTextPane();
 }

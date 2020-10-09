@@ -5,6 +5,7 @@ import com.rh.note.builder.TabbedPaneBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JTabbedPane;
+import java.awt.Component;
 
 /**
  * 编辑区标签面板视图
@@ -39,5 +40,13 @@ public class TabbedPaneView extends Init<JTabbedPane> {
         }
 
         tabbedPane().setSelectedComponent(textScrollPane.getBean());
+    }
+
+    /**
+     * 获得被选择的面板
+     */
+    public TextScrollPaneView getSelectedTextPane() {
+        Component component = tabbedPane().getSelectedComponent();
+        return TextScrollPaneView.cast(component);
     }
 }

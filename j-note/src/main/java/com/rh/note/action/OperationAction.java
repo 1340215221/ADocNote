@@ -23,6 +23,11 @@ public class OperationAction implements IOperationAction {
     }
 
     @Override
+    public ITitleLineVO getSelectedTextPane() {
+        return workViewApi.getSelectedTextPane();
+    }
+
+    @Override
     public ClickedHistoryProjectListAO clickedHistoryProjectList(@NotNull MouseEvent mouseEvent) {
         if (mouseEvent.getClickCount() < 2) {
             return null;

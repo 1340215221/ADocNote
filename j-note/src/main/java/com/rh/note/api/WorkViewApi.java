@@ -120,4 +120,18 @@ public class WorkViewApi {
             titleNavigatePanel.add(titleNavigateButton);
         });
     }
+
+    /**
+     * 获得被选择的编辑区
+     */
+    public ITitleLineVO getSelectedTextPane() {
+        TabbedPaneView tabbedPane = new TabbedPaneView().init();
+        TextScrollPaneView textScrollPane = tabbedPane.getSelectedTextPane();
+        if (textScrollPane == null) {
+            return null;
+        }
+        String filePath = textScrollPane.getFilePath();
+        TextPaneView textPane = new TextPaneView().initByFilePath(filePath);
+        return textPane.getRootTitle();
+    }
 }
