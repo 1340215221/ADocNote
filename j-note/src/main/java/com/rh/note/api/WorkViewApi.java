@@ -1,6 +1,7 @@
 package com.rh.note.api;
 
 import com.rh.note.component.TitleButton;
+import com.rh.note.file.AdocFile;
 import com.rh.note.frame.WorkFrame;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
@@ -182,5 +183,30 @@ public class WorkViewApi {
                 .lineNumber(titleLine.getLineNumber())
                 .build()
                 .positioningToTitleRow();
+    }
+
+    /**
+     * 获得标题, 通过光标所在行内容
+     */
+    public @Nullable TitleBeanPath getSimpleTitleByCaretLineContent() {
+        TabbedPaneView tabbedPane = new TabbedPaneView().init();
+        TextScrollPaneView textScrollPane = tabbedPane.getSelectedTextPane();
+        if (textScrollPane == null) {
+            return null;
+        }
+        String filePath = textScrollPane.getFilePath();
+        TextPaneView textPane = new TextPaneView().initByFilePath(filePath);
+        return textPane.getTitleByCaretLineContent();
+    }
+
+    /**
+     * 获得标题, 通过简单标题
+     */
+    public @Nullable TitleLine getTitleByBeanPath(TitleBeanPath beanPath) {
+        if (beanPath == null) {
+            return null;
+        }
+        RootTitleNodeView rootTitleNode = new RootTitleNodeView().init();
+        return rootTitleNode.getTitleByBeanPath(beanPath);
     }
 }

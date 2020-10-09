@@ -1,6 +1,8 @@
 package com.rh.note.event;
 
 
+import com.rh.note.vo.ITitleLineVO;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -44,8 +46,13 @@ public class TextPaneEvent {
     }
 
     /**
-     * 移动光标时间
+     * 移动光标事件
      */
     public static void move_caret() {
+        ITitleLineVO vo = operationAction().getTitleByCaretLineContent();
+        if (vo == null) {
+            return;
+        }
+        workAction().loadTitleNavigate(vo);
     }
 }

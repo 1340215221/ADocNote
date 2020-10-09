@@ -3,6 +3,7 @@ package com.rh.note.view;
 import com.rh.note.base.Init;
 import com.rh.note.builder.TabbedPaneBuilder;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.JTabbedPane;
 import java.awt.Component;
@@ -45,7 +46,7 @@ public class TabbedPaneView extends Init<JTabbedPane> {
     /**
      * 获得被选择的面板
      */
-    public TextScrollPaneView getSelectedTextPane() {
+    public @Nullable TextScrollPaneView getSelectedTextPane() {
         Component component = tabbedPane().getSelectedComponent();
         return TextScrollPaneView.cast(component);
     }

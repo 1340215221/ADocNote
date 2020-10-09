@@ -24,7 +24,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -38,6 +41,10 @@ public class AdocFile {
     @NonNull
     @Getter
     private String filePath;
+    /**
+     * 是否解析子文件
+     */
+    private boolean parsingChildrenFile = true;
     /**
      * 标题内容
      */
@@ -55,13 +62,25 @@ public class AdocFile {
         return new AdocFile(filePath).init();
     }
 
+    public static @Nullable AdocFile getInstanceAndNotChildren(String filePath) {
+        if (StringUtils.isBlank(filePath)) {
+            return null;
+        }
+
+        AdocFile adocFile = new AdocFile(filePath);
+        adocFile.parsingChildrenFile = false;
+        return adocFile.init();
+    }
+
     /**
      * 解析文件
      */
     private @Nullable AdocFile init() {
         AdocFile adocFile = newFile().each(new MatchLine(this));
         if (adocFile != null) {
-            this.scanChildrenFile();
+            if (parsingChildrenFile) {
+                this.scanChildrenFile();
+            }
             this.titleBuildRelationships();
         }
         return adocFile;
@@ -186,6 +205,30 @@ public class AdocFile {
             return null;
         }
         return titleLines.get(0);
+    }
+
+    /**
+     * 获得当前标题或所属标题, 通过行号
+     */
+    public @Nullable TitleLine getTitleByLineNumber(int lineNumber) {
+        if (lineNumber < 0 || CollectionUtils.isEmpty(titleLines)) {
+            return null;
+        }
+        TitleLine titleLine = titleLines.get(0);
+        if (lineNumber <= titleLine.getLineNumber()) {
+            return titleLine;
+        }
+        for (int i = 1; i < titleLines.size(); i++) {
+            TitleLine first = titleLines.get(i);
+            TitleLine second = Optional.of(i + 1)
+                    .filter(next -> next < titleLines.size())
+                    .map(titleLines::get)
+                    .orElse(null);
+            if (first.getLineNumber() <= lineNumber && (second == null || second.getLineNumber() > lineNumber)) {
+                return first;
+            }
+        }
+        return null;
     }
 
     interface IForEach {
