@@ -50,4 +50,11 @@ public class TitleNavigateButtonView extends Init<TitleButton> {
         TitleBeanPath beanPath = (TitleBeanPath) navigateButton().getBeanPath();
         return beanPath.getFilePath();
     }
+
+    /**
+     * 获得对象路径
+     */
+    public @NotNull TitleBeanPath getBeanPath() {
+        return (TitleBeanPath) navigateButton().getBeanPath();
+    }
 }

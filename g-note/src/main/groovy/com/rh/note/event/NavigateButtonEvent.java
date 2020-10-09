@@ -22,6 +22,8 @@ public class NavigateButtonEvent {
             return;
         }
         workAction().openTextPaneByTitleNode(vo);
+        workAction().positioningLineByTitle(vo);
+        workAction().loadTitleNavigate(vo);
     }
 
 }

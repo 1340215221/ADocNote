@@ -4,6 +4,7 @@ import com.rh.note.component.TitleButton;
 import com.rh.note.frame.WorkFrame;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
+import com.rh.note.path.TitleBeanPath;
 import com.rh.note.util.ScrollPositionUtil;
 import com.rh.note.view.RootTitleNodeView;
 import com.rh.note.view.TabbedPaneView;
@@ -140,7 +141,7 @@ public class WorkViewApi {
     /**
      * 获得按钮对应的标题
      */
-    public @Nullable ITitleLineVO getFileRootTitleByButton(TitleButton source) {
+    public @Nullable TitleLine getFileRootTitleByButton(TitleButton source) {
         if (source == null) {
             return null;
         }
@@ -148,9 +149,9 @@ public class WorkViewApi {
         if (titleNavigateButton == null) {
             return null;
         }
-        String filePath = titleNavigateButton.getFilePath();
+        TitleBeanPath beanPath = titleNavigateButton.getBeanPath();
         RootTitleNodeView rootTitleNode = new RootTitleNodeView().init();
-        return rootTitleNode.getTitleByFilePath(filePath);
+        return rootTitleNode.getTitleByBeanPath(beanPath);
     }
 
     /**
