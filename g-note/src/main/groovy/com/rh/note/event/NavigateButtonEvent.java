@@ -3,6 +3,7 @@ package com.rh.note.event;
 
 import java.awt.event.MouseEvent;
 
+import static com.rh.note.config.BridgingBeanConfig.operationAction;
 import static com.rh.note.config.BridgingBeanConfig.workAction;
 
 /**

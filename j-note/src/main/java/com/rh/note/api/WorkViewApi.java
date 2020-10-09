@@ -131,7 +131,7 @@ public class WorkViewApi {
             return null;
         }
         String filePath = textScrollPane.getFilePath();
-        TextPaneView textPane = new TextPaneView().initByFilePath(filePath);
-        return textPane.getRootTitle();
+        RootTitleNodeView rootTitleNode = new RootTitleNodeView().init();
+        return rootTitleNode.getTitleByFilePath(filePath);
     }
 }

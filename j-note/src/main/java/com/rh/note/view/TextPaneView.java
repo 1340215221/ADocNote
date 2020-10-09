@@ -1,14 +1,10 @@
 package com.rh.note.view;
 
-import com.rh.note.base.ITitleBeanPath;
 import com.rh.note.base.Init;
 import com.rh.note.builder.TextPaneBuilder;
 import com.rh.note.component.AdocTextPane;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
-import com.rh.note.file.AdocFile;
-import com.rh.note.file.ReadMe;
-import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -57,14 +53,5 @@ public class TextPaneView extends Init<AdocTextPane> {
         } catch (Exception e) {
             throw new ApplicationException(ErrorCodeEnum.READ_FILE_ERROR, e);
         }
-    }
-
-    /**
-     * 获得文件根标题
-     */
-    public @Nullable TitleLine getRootTitle() {
-        AdocFileBeanPath beanPath = (AdocFileBeanPath) textPane().getBeanPath();
-        ReadMe readMe = ReadMe.getInstance();
-        return readMe.getTitleByFilePath(beanPath.getFilePath());
     }
 }
