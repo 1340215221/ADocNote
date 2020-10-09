@@ -8,9 +8,10 @@ import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.view.TextPaneView;
 import com.rh.note.vo.ITitleLineVO;
+import com.rh.note.vo.WriterVO;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.function.Function;
 
 /**
  * 工作窗口 入口
@@ -70,5 +71,11 @@ public class WorkAction implements IWorkAction {
             return;
         }
         workViewApi.positioningLineByTitle(((TitleLine) vo));
+    }
+
+    @Override
+    public void saveAllEdited() {
+        Function<String, WriterVO> getFileWriterFunction = filePath -> fileServiceApi.openFileOutputStream(filePath);
+        workViewApi.writeAllEdited(getFileWriterFunction);
     }
 }

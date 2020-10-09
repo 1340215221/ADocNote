@@ -1,5 +1,6 @@
 package com.rh.note.view;
 
+import com.rh.note.base.ITitleBeanPath;
 import com.rh.note.base.Init;
 import com.rh.note.builder.TextPaneBuilder;
 import com.rh.note.component.AdocTextPane;
@@ -9,6 +10,9 @@ import com.rh.note.file.AdocFile;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.path.TitleBeanPath;
+import com.rh.note.vo.WriterVO;
+import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,10 +21,12 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.function.Function;
 
 /**
  * 编辑区视图
  */
+@Slf4j
 public class TextPaneView extends Init<AdocTextPane> {
 
     public static void create(AdocFileBeanPath beanPath) {
@@ -81,6 +87,26 @@ public class TextPaneView extends Init<AdocTextPane> {
         int dot = textPane().getCaret().getDot();
         Element rootElement = textPane().getDocument().getDefaultRootElement();
         return rootElement.getElementIndex(dot);
+    }
+
+    /**
+     * 编辑区内容写入到文件
+     */
+    public void write(Function<String, WriterVO> getFileWriterFunction) {
+        if (getFileWriterFunction == null) {
+            return;
+        }
+        String filePath = ((AdocFileBeanPath) textPane().getBeanPath()).getFilePath();
+        WriterVO vo = getFileWriterFunction.apply(filePath);
+        if (vo == null) {
+            return;
+        }
+        try {
+            textPane().write(vo.getWriter());
+            vo.close();
+        } catch (Exception e) {
+            log.error("[将编辑区内容写入到文件 失败], filePath={}", filePath, e);
+        }
     }
 
     private class ParsingCareLineApi {

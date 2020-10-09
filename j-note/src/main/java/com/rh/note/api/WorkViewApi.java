@@ -16,12 +16,15 @@ import com.rh.note.view.TitleTreeModelView;
 import com.rh.note.view.TitleTreeView;
 import com.rh.note.view.WorkFrameView;
 import com.rh.note.vo.ITitleLineVO;
+import com.rh.note.vo.WriterVO;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * 工作窗口 操作
@@ -193,5 +196,23 @@ public class WorkViewApi {
         }
         RootTitleNodeView rootTitleNode = new RootTitleNodeView().init();
         return rootTitleNode.getTitleByBeanPath(beanPath);
+    }
+
+    /**
+     * 全部编辑区内容写入到文件
+     */
+    public void writeAllEdited(Function<String, WriterVO> getFileWriterFunction) {
+        if (getFileWriterFunction == null) {
+            return;
+        }
+        TabbedPaneView tabbedPane = new TabbedPaneView().init();
+        List<String> filePaths = tabbedPane.getAllFilePathOfExistFile();
+        if (CollectionUtils.isEmpty(filePaths)) {
+            return;
+        }
+        filePaths.stream()
+                .map(filePath -> new TextPaneView().initByFilePath(filePath))
+                .filter(Objects::nonNull)
+                .forEach(textPane -> textPane.write(getFileWriterFunction));
     }
 }

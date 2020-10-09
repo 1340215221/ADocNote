@@ -25,7 +25,7 @@ class WorkFrame implements IWorkConfig, IFrame, ISwingBuilder {
         toolkit.addAWTEventListener(new AWTEventListener() {
             @Override
             void eventDispatched(AWTEvent event) {
-                WorkFrameEvent.saveAllEdited(event)
+                WorkFrameEvent.save_all_edited(event)
             }
         }, AWTEvent.KEY_EVENT_MASK)
     }

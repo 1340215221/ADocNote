@@ -4,6 +4,7 @@ import com.rh.note.ao.ClickedHistoryProjectListAO;
 import com.rh.note.vo.ITitleLineVO;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.AWTEvent;
 import java.awt.event.MouseEvent;
 
 /**
@@ -34,4 +35,9 @@ public interface IOperationAction {
      * 获得标题, 通过光标所在行内容
      */
     ITitleLineVO getTitleByCaretLineContent();
+
+    /**
+     * 是否为保存快捷键
+     */
+    boolean checkIsSaveHotKey(AWTEvent event);
 }

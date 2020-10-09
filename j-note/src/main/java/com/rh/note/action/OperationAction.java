@@ -13,6 +13,8 @@ import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JList;
+import java.awt.AWTEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 @Setter
@@ -50,6 +52,15 @@ public class OperationAction implements IOperationAction {
             return null;
         }
         return workViewApi.getTitleByBeanPath(beanPath);
+    }
+
+    @Override
+    public boolean checkIsSaveHotKey(@NonNull AWTEvent event) {
+        if (!(event instanceof KeyEvent) || event.getID() != KeyEvent.KEY_PRESSED) {
+            return false;
+        }
+        KeyEvent keyEvent = (KeyEvent) event;
+        return keyEvent.getKeyCode() == 83 && keyEvent.getModifiers() == 2;
     }
 
     @Override
