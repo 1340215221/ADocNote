@@ -144,16 +144,6 @@ public class WorkViewApi {
     }
 
     /**
-     * 判断是否为根标题
-     */
-    public boolean checkIsFileRootTitle(TitleLine titleLine) {
-        if (titleLine == null) {
-            return false;
-        }
-        return titleLine.checkIsFileRootTitle();
-    }
-
-    /**
      * 定位到行, 通过标题
      */
     public void positioningLineByTitle(TitleLine titleLine) {

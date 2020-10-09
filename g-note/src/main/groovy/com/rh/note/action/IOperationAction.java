@@ -27,11 +27,6 @@ public interface IOperationAction {
     ITitleLineVO clickedNavigateButton(MouseEvent event);
 
     /**
-     * 判断是否为文件根标题
-     */
-    boolean checkIsFileRootTitle(ITitleLineVO vo);
-
-    /**
      * 获得标题, 通过光标所在行内容
      */
     ITitleLineVO getTitleByCaretLineContent();

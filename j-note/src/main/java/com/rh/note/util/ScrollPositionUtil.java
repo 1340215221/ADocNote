@@ -53,7 +53,7 @@ public class ScrollPositionUtil {
         }
 
         Caret caret = adocTextPane.getCaret();
-        caret.setDot(element.getStartOffset());
+        caret.setDot(element.getEndOffset() - 1);
         caret.setVisible(true);
     }
 

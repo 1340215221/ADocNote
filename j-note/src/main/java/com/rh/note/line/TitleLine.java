@@ -8,7 +8,6 @@ import com.rh.note.syntax.TitleSyntax;
 import com.rh.note.util.TreeNodeIconUtil;
 import com.rh.note.vo.ITitleLineVO;
 import lombok.Data;
-import lombok.NonNull;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +18,6 @@ import javax.swing.JTextPane;
 import javax.swing.text.Element;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -173,17 +171,5 @@ public class TitleLine extends BaseLine implements ITitleLineVO {
             parentTitle.addParentTitles(resultList);
         }
         resultList.add(this);
-    }
-
-    /**
-     * 判断是否为根标题
-     */
-    public boolean checkIsFileRootTitle() {
-        TitleLine parentTitle = getParentTitle();
-        if (parentTitle == null) {
-            return true;
-        }
-        String filePath = parentTitle.getFilePath();
-        return !Objects.equals(filePath, getFilePath());
     }
 }

@@ -1,6 +1,5 @@
 package com.rh.note.view;
 
-import com.rh.note.base.ITitleBeanPath;
 import com.rh.note.base.Init;
 import com.rh.note.builder.TextPaneBuilder;
 import com.rh.note.component.AdocTextPane;
@@ -12,7 +11,6 @@ import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.path.ProBeanPath;
 import com.rh.note.path.TitleBeanPath;
 import com.rh.note.vo.WriterVO;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
