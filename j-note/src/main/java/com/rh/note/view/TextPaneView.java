@@ -9,6 +9,7 @@ import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.file.AdocFile;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
+import com.rh.note.path.ProBeanPath;
 import com.rh.note.path.TitleBeanPath;
 import com.rh.note.vo.WriterVO;
 import lombok.NonNull;
@@ -96,8 +97,9 @@ public class TextPaneView extends Init<AdocTextPane> {
         if (getFileWriterFunction == null) {
             return;
         }
+        String projectPath = new ProBeanPath().getProjectPath();
         String filePath = ((AdocFileBeanPath) textPane().getBeanPath()).getFilePath();
-        WriterVO vo = getFileWriterFunction.apply(filePath);
+        WriterVO vo = getFileWriterFunction.apply(projectPath + filePath);
         if (vo == null) {
             return;
         }
