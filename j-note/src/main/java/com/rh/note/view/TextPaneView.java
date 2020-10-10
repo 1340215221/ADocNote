@@ -11,6 +11,7 @@ import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.path.ProBeanPath;
 import com.rh.note.path.TitleBeanPath;
+import com.rh.note.syntax.IncludeSyntaxSugar;
 import com.rh.note.vo.WriterVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -158,6 +159,23 @@ public class TextPaneView extends Init<AdocTextPane> {
         }
         Element element = rootElement.getElement(index);
         textPane().select(element.getStartOffset(), element.getEndOffset() - 1);
+    }
+
+    /**
+     * 获得被选择文本内容
+     */
+    public @Nullable String getSelectedText() {
+        return textPane().getSelectedText();
+    }
+
+    /**
+     * 替换被选择内容
+     */
+    public void replaceSelectedText(String includeSyntaxText) {
+        if (StringUtils.isBlank(includeSyntaxText)) {
+            return;
+        }
+        textPane().replaceSelection(includeSyntaxText);
     }
 
     private class ParsingCareLineApi {

@@ -3,6 +3,7 @@ package com.rh.note.syntax;
 import com.rh.note.constants.AdocFileTypeEnum;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -56,7 +57,7 @@ public class IncludeSyntaxSugar {
     /**
      * 生成includeLine
      */
-    public IncludeSyntax copyToByFilePath(String filePath) {
+    public @NotNull IncludeSyntax copyToByFilePath(String filePath) {
         IncludeSyntax includeSyntax = new IncludeSyntax();
         includeSyntax.setIndented(indented);
         includeSyntax.setTargetFileName(titleName);

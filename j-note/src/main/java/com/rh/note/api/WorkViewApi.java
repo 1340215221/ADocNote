@@ -1,11 +1,13 @@
 package com.rh.note.api;
 
+import com.rh.note.ao.MatchIncludeInfoBySelectedTextAO;
 import com.rh.note.component.AdocTextPane;
 import com.rh.note.component.TitleButton;
 import com.rh.note.frame.WorkFrame;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.path.TitleBeanPath;
+import com.rh.note.syntax.IncludeSyntax;
 import com.rh.note.syntax.IncludeSyntaxSugar;
 import com.rh.note.util.ScrollPositionUtil;
 import com.rh.note.view.RootTitleNodeView;
@@ -239,5 +241,47 @@ public class WorkViewApi {
             return;
         }
         textPane.selectCaretLine();
+    }
+
+    /**
+     * 用生成的include语句替换选择的内容
+     */
+    public @Nullable MatchIncludeInfoBySelectedTextAO getIncludeInfoBySelectedText(String filePath) {
+        if (StringUtils.isBlank(filePath)) {
+            return null;
+        }
+        // 获得选择内容
+        TextPaneView textPane = new TextPaneView().initByFilePath(filePath);
+        if (textPane == null) {
+            return null;
+        }
+        String selectedText = textPane.getSelectedText();
+        // include快捷语法转化为include语法块
+        IncludeSyntaxSugar includeSyntaxSugar = new IncludeSyntaxSugar().init(selectedText);
+        if (includeSyntaxSugar == null) {
+            return null;
+        }
+        IncludeSyntax includeSyntax = includeSyntaxSugar.copyToByFilePath(filePath);
+        String includeSyntaxText = includeSyntax.toString();
+        // 返回值
+        return new MatchIncludeInfoBySelectedTextAO()
+                .setFilePath(includeSyntax.getTargetFilePath())
+                .setIncludeSyntaxSugar(includeSyntaxSugar)
+                .setIncludeText(includeSyntaxText);
+    }
+
+    /**
+     * 用生成的include语句替换选择的内容
+     */
+    public void replaceSelectedText(String filePath, String text) {
+        if (StringUtils.isBlank(filePath) || StringUtils.isBlank(text)) {
+            return;
+        }
+        // 获得选择内容
+        TextPaneView textPane = new TextPaneView().initByFilePath(filePath);
+        if (textPane == null) {
+            return;
+        }
+        textPane.replaceSelectedText(text);
     }
 }

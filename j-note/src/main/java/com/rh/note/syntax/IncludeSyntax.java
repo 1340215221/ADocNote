@@ -92,6 +92,28 @@ public class IncludeSyntax {
     }
 
     /**
+     * 生成语法语句
+     */
+    public String toString() {
+        StringBuilder str = new StringBuilder()
+                .append(indented)
+                .append("include::")
+                .append(targetRelativePath)
+                .append("[");
+        if (lineStart != null && lineEnd != null) {
+            str.append(lineStart)
+                    .append("..")
+                    .append(lineEnd);
+        } else if (lineStart != null) {
+            str.append(lineStart);
+        } else if (lineEnd != null){
+            str.append(lineEnd);
+        }
+        str.append("]");
+        return str.toString();
+    }
+
+    /**
      * 复制
      */
     public void copy(IncludeSyntaxSugar sugar) {

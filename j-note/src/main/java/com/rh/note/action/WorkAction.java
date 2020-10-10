@@ -1,5 +1,7 @@
 package com.rh.note.action;
 
+import com.rh.note.ao.GenerateIncludeSyntaxAO;
+import com.rh.note.ao.MatchIncludeInfoBySelectedTextAO;
 import com.rh.note.api.FileServiceApi;
 import com.rh.note.api.WorkViewApi;
 import com.rh.note.exception.ApplicationException;
@@ -34,6 +36,11 @@ public class WorkAction implements IWorkAction {
             throw new ApplicationException(ErrorCodeEnum.CANNOT_OPEN_A_PROJECT_WITHOUT_A_TITLE);
         }
         workViewApi.initFrame();
+        workViewApi.loadTitleTree(rootTitle);
+    }
+
+    public void loadTitleTree() {
+        TitleLine rootTitle = fileServiceApi.readAllTitleByProjectPath();
         workViewApi.loadTitleTree(rootTitle);
     }
 
@@ -88,6 +95,15 @@ public class WorkAction implements IWorkAction {
     }
 
     @Override
-    public void generateIncludeSyntax() {
+    public void generateIncludeSyntaxBySelectedText(GenerateIncludeSyntaxAO ao) {
+        if (ao == null) {
+            return;
+        }
+        MatchIncludeInfoBySelectedTextAO includeInfoAO = workViewApi.getIncludeInfoBySelectedText(ao.getFilePath());
+        if (includeInfoAO == null) {
+            return;
+        }
+        fileServiceApi.createFileAndInitContent(includeInfoAO);
+        workViewApi.replaceSelectedText(ao.getFilePath(), includeInfoAO.getIncludeText());
     }
 }

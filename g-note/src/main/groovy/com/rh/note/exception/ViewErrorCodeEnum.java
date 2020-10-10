@@ -5,6 +5,7 @@ package com.rh.note.exception;
  */
 public enum ViewErrorCodeEnum implements IErrorCode {
     PARAMETER_ERROR(1000, "参数错误"),
+    UNKNOWN_LOGIC_EXCEPTION(1001, "未知逻辑错误"),
     ;
     private Integer code;
     private String msg;

@@ -1,6 +1,7 @@
 package com.rh.note.api;
 
 import com.rh.note.ao.ClickedHistoryProjectListAO;
+import com.rh.note.base.ICreateFileAndInitContentAO;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.file.AdocFile;
@@ -16,8 +17,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.Writer;
 
 /**
  * 文件服务 操作
@@ -86,6 +88,38 @@ public class FileServiceApi {
         } catch (Exception e) {
             log.error("[获取文件写入流失败], filePath={}", filePath, e);
             return null;
+        }
+    }
+
+    /**
+     * 创建文件,并初始化文件内容
+     */
+    public void createFileAndInitContent(ICreateFileAndInitContentAO ao) {
+        if (ao == null || StringUtils.isBlank(ao.getAbsolutePath())) {
+            return;
+        }
+        // 生成文件
+        File file = new File(ao.getAbsolutePath());
+        if (file.exists()) {
+            throw new ApplicationException(ErrorCodeEnum.CANNOT_CREATE_A_FILE_WITH_THE_SAME_NAME);
+        }
+        File parentFile = file.getParentFile();
+        if (!parentFile.exists()) {
+            parentFile.mkdirs();
+        }
+        try {
+            file.createNewFile();
+        } catch (Exception e) {
+            throw new ApplicationException(ErrorCodeEnum.FILE_CREATION_FAILED, e);
+        }
+        // 写入文件内容
+        if (StringUtils.isBlank(ao.getText())) {
+            return;
+        }
+        try (FileWriter fw = new FileWriter(file)) {
+            fw.write(ao.getText());
+        } catch (Exception e) {
+            throw new ApplicationException(ErrorCodeEnum.FAILED_TO_WRITE_FILE);
         }
     }
 }

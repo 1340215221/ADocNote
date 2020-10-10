@@ -1,5 +1,6 @@
 package com.rh.note.action;
 
+import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.vo.ITitleLineVO;
 
 import java.awt.AWTEvent;
@@ -13,6 +14,11 @@ public interface IWorkAction {
      * 打开编辑区, 通过标题节点
      */
     void openTextPaneByTitleNode(ITitleLineVO vo);
+
+    /**
+     * 加载标题树
+     */
+    void loadTitleTree();
 
     /**
      * 加载标题导航
@@ -37,5 +43,5 @@ public interface IWorkAction {
     /**
      * 生成include块
      */
-    void generateIncludeSyntax();
+    void generateIncludeSyntaxBySelectedText(GenerateIncludeSyntaxAO ao);
 }

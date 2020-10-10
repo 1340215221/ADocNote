@@ -1,6 +1,7 @@
 package com.rh.note.action;
 
 import com.rh.note.ao.ClickedHistoryProjectListAO;
+import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.vo.ITitleLineVO;
 import org.jetbrains.annotations.NotNull;
 
@@ -40,5 +41,5 @@ public interface IOperationAction {
     /**
      * 选择光标行, 如果是include语法糖
      */
-    boolean selectCaretLineOfIncludeSyntaxSugar(ActionEvent event);
+    GenerateIncludeSyntaxAO selectCaretLineOfIncludeSyntaxSugar(ActionEvent event);
 }

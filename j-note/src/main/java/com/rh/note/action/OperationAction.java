@@ -1,6 +1,7 @@
 package com.rh.note.action;
 
 import com.rh.note.ao.ClickedHistoryProjectListAO;
+import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.api.ProManageViewApi;
 import com.rh.note.api.WorkViewApi;
 import com.rh.note.component.AdocTextPane;
@@ -57,17 +58,18 @@ public class OperationAction implements IOperationAction {
     }
 
     @Override
-    public boolean selectCaretLineOfIncludeSyntaxSugar(ActionEvent event) {
+    public GenerateIncludeSyntaxAO selectCaretLineOfIncludeSyntaxSugar(ActionEvent event) {
         Object source = event.getSource();
         if (!(source instanceof AdocTextPane)) {
-            return false;
+            return null;
         }
         AdocTextPane textPane = (AdocTextPane) source;
         boolean isInclude = workViewApi.checkIsIncludeSyntaxSugarOnCaretLine(textPane);
-        if (isInclude) {
-            workViewApi.selectCaretLine(textPane);
+        if (!isInclude) {
+            return null;
         }
-        return isInclude;
+        workViewApi.selectCaretLine(textPane);
+        return new GenerateIncludeSyntaxAO().setFilePath(textPane);
     }
 
     @Override

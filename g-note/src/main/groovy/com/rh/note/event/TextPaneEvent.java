@@ -1,6 +1,7 @@
 package com.rh.note.event;
 
 
+import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.vo.ITitleLineVO;
 
 import java.awt.event.ActionEvent;
@@ -25,14 +26,21 @@ public class TextPaneEvent {
      * 回车操作
      */
     public static void enter_operation(ActionEvent event) {
-        if (operationAction().selectCaretLineOfIncludeSyntaxSugar(event)) {
-            workAction().generateIncludeSyntax();
+        // include快捷语法
+        GenerateIncludeSyntaxAO includeAO = operationAction().selectCaretLineOfIncludeSyntaxSugar(event);
+        if (includeAO != null) {
+            workAction().generateIncludeSyntaxBySelectedText(includeAO);
+        }
+        // 修改成功保存编辑区内容
+        if (includeAO != null) {
+            workAction().saveAllEdited();
+        }
+        // 重新加载标题树
+        if (includeAO != null) {
+            workAction().loadTitleTree();
             return;
         }
-//        if (operationAction().selectCaretLineOfTitleSyntaxSugar()) {
-//            workAction().generateIncludeSyntax();
-//            return;
-//        }
+        // 默认回车操作
         workAction().defaultEnterOperation(event);
     }
 
