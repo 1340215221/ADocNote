@@ -1,17 +1,20 @@
 package com.rh.note.view;
 
-import com.rh.note.base.ITitleBeanPath;
+import com.rh.note.ao.SelectCaretLineAO;
 import com.rh.note.base.Init;
 import com.rh.note.builder.TextPaneBuilder;
 import com.rh.note.component.AdocTextPane;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
+import com.rh.note.exception.UnknownLogicException;
 import com.rh.note.file.AdocFile;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.path.ProBeanPath;
 import com.rh.note.path.TitleBeanPath;
+import com.rh.note.syntax.TitleSyntax;
 import com.rh.note.vo.WriterVO;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -148,6 +151,22 @@ public class TextPaneView extends Init<AdocTextPane> {
 
     /**
      * 选择光标所在行
+     * 通过光标行起始位置, 定位选择的范围
+     */
+    public void selectCaretLine(@NonNull SelectCaretLineAO ao) {
+        int dot = textPane().getCaret().getDot();
+        Element rootElement = textPane().getDocument().getDefaultRootElement();
+        int index = rootElement.getElementIndex(dot);
+        if (index < 0) {
+            return;
+        }
+        Element element = rootElement.getElement(index);
+        int startOffset = element.getStartOffset() + ao.getStartOffset();
+        textPane().select(startOffset, startOffset + ao.getLength());
+    }
+
+    /**
+     * 选择光标所在行
      */
     public void selectCaretLine() {
         int dot = textPane().getCaret().getDot();
@@ -183,6 +202,26 @@ public class TextPaneView extends Init<AdocTextPane> {
     public @NotNull String getFilePath() {
         AdocFileBeanPath beanPath = (AdocFileBeanPath) textPane().getBeanPath();
         return beanPath.getFilePath();
+    }
+
+    /**
+     * 选择根标题名
+     * 如果没有找到需要抛异常
+     */
+    public void selectRootTitleName() throws UnknownLogicException {
+        TitleLine rootTitle = getSimpleAdocFile().getRootTitle();
+        if (rootTitle == null) {
+            throw new UnknownLogicException();
+        }
+        Element element = textPane().getDocument().getDefaultRootElement().getElement(rootTitle.getLineNumber() - 1);
+        if (element == null) {
+            throw new UnknownLogicException();
+        }
+        TitleSyntax syntax = rootTitle.getTitleSyntax();
+        int startOffsetOfLine = syntax.getStartOffsetOfTitleName();
+        int length = syntax.getLengthOfTitleName();
+        int startOffset = element.getStartOffset() + startOffsetOfLine;
+        textPane().select(startOffset, startOffset + length);
     }
 
     private class ParsingCareLineApi {

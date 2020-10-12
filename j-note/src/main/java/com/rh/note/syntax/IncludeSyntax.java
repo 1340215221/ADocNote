@@ -134,4 +134,22 @@ public class IncludeSyntax {
     public @NotNull TitleBeanPath getBeanPathOfTargetFileRootTitle() {
         return TitleBeanPath.getInstance(getTargetFilePath(), getTargetFileName());
     }
+
+    /**
+     * 获得文件名起始偏移量
+     */
+    public int getStartOffsetOfTargetFileName() {
+        return new StringBuilder()
+                .append(indented)
+                .append("include::")
+                .append(targetRelativePath)
+                .lastIndexOf(targetFileName);
+    }
+
+    /**
+     * 获得文件名长度
+     */
+    public int getLengthOfOfTargetFileName() {
+        return targetFileName.length();
+    }
 }

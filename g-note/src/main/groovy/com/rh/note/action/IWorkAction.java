@@ -3,6 +3,7 @@ package com.rh.note.action;
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
+import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.vo.ITitleLineVO;
 
 import java.awt.AWTEvent;
@@ -56,4 +57,9 @@ public interface IWorkAction {
      * 删除include语法行和指向文件
      */
     void deleteIncludeOnCaretLine(IncludeFilePathInfoAO ao);
+
+    /**
+     * 重命名include块
+     */
+    void renameInclude(RenameIncludeAO ao);
 }

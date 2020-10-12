@@ -3,8 +3,12 @@ package com.rh.note.api;
 import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.MatchIncludeInfoBySelectedTextAO;
 import com.rh.note.ao.MatchTitleInfoBySelectedTextAO;
+import com.rh.note.ao.RenameIncludeAO;
+import com.rh.note.ao.SelectCaretLineAO;
 import com.rh.note.component.AdocTextPane;
 import com.rh.note.component.TitleButton;
+import com.rh.note.constants.PromptMessageEnum;
+import com.rh.note.exception.UnknownLogicException;
 import com.rh.note.frame.WorkFrame;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
@@ -14,6 +18,7 @@ import com.rh.note.syntax.IncludeSyntaxSugar;
 import com.rh.note.syntax.TitleSyntax;
 import com.rh.note.syntax.TitleSyntaxSugar;
 import com.rh.note.util.ScrollPositionUtil;
+import com.rh.note.view.InputDialogView;
 import com.rh.note.view.RootTitleNodeView;
 import com.rh.note.view.TabbedPaneView;
 import com.rh.note.view.TextPaneView;
@@ -373,5 +378,78 @@ public class WorkViewApi {
         return new IncludeFilePathInfoAO()
                 .setFilePath(textPane.getFilePath())
                 .setTargetFilePath(syntax.getTargetFilePath());
+    }
+
+    /**
+     * 获得include文件名, 在光标行
+     */
+    public String getIncludeFileNameOnCaretLine(AdocTextPane bean) {
+        TextPaneView textPane = TextPaneView.cast(bean);
+        if (textPane == null) {
+            return null;
+        }
+        String lineContent = textPane.getCaretLineContent();
+        IncludeSyntax syntax = new IncludeSyntax().init(lineContent);
+        if (syntax == null) {
+            return null;
+        }
+        return syntax.getTargetFileName();
+    }
+
+    /**
+     * 请求新名字
+     */
+    public @Nullable RenameIncludeAO requestNewName(AdocTextPane bean, String oldName) {
+        TextPaneView textPane = TextPaneView.cast(bean);
+        if (textPane == null) {
+            return null;
+        }
+        String lineContent = textPane.getCaretLineContent();
+        IncludeSyntax syntax = new IncludeSyntax().init(lineContent);
+        if (syntax == null) {
+            return null;
+        }
+        // 请求新名字
+        String newName = new InputDialogView().init(oldName, PromptMessageEnum.rename_include_message).getInputText();
+        // 组装返回值
+        return new RenameIncludeAO()
+                .setFilePath(textPane.getFilePath())
+                .setTargetFilePath(syntax.getTargetFilePath())
+                .setNewName(newName);
+    }
+
+    /**
+     * 选择include块文件名, 通过光标行
+     */
+    public String selectedIncludeFileNameOnCaretLine(AdocTextPane bean) {
+        TextPaneView textPane = TextPaneView.cast(bean);
+        if (textPane == null) {
+            return null;
+        }
+        String lineContent = textPane.getCaretLineContent();
+        IncludeSyntax syntax = new IncludeSyntax().init(lineContent);
+        if (syntax == null) {
+            return null;
+        }
+        SelectCaretLineAO ao = new SelectCaretLineAO()
+                .setStartOffset(syntax.getStartOffsetOfTargetFileName())
+                .setLength(syntax.getLengthOfOfTargetFileName());
+        textPane.selectCaretLine(ao);
+        return syntax.getTargetFilePath();
+    }
+
+    /**
+     * 选择根标题名
+     * 和 {@link this#selectedIncludeFileNameOnCaretLine} 有关联, 没有选择成功时, 需要终止执行
+     */
+    public void selectRootTitleName(String filePath) throws UnknownLogicException {
+        if (StringUtils.isBlank(filePath)) {
+            return;
+        }
+        TextPaneView textPane = new TextPaneView().initByFilePath(filePath);
+        if (textPane == null) {
+            throw new UnknownLogicException();
+        }
+        textPane.selectRootTitleName();
     }
 }

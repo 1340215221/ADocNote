@@ -144,4 +144,33 @@ public class FileServiceApi {
         }
         file.delete();
     }
+
+    /**
+     * 文件重命名
+     */
+    public void renameFile(String filePath, String newName) {
+        if (StringUtils.isBlank(filePath) || StringUtils.isBlank(newName)) {
+            return;
+        }
+        // 校验原文件
+        File file = new File(filePath);
+        if (!file.exists() || !file.isFile()) {
+            throw new ApplicationException(ErrorCodeEnum.FILE_RENAMING_FAILED);
+        }
+        // 检验新文件路径
+        int startIndex = filePath.lastIndexOf("/");
+        int endIndex = filePath.lastIndexOf(".");
+        StringBuilder newFilePath = new StringBuilder()
+                .append(filePath, 0, startIndex + 1)
+                .append(newName);
+        if (endIndex > -1 && endIndex != filePath.length() - 1) {
+            newFilePath.append(filePath, endIndex, filePath.length());
+        }
+        File newFile = new File(newFilePath.toString());
+        if (newFile.exists()) {
+            throw new ApplicationException(ErrorCodeEnum.FILE_RENAMING_FAILED);
+        }
+        // 重命名
+        file.renameTo(newFile);
+    }
 }

@@ -4,6 +4,7 @@ package com.rh.note.event;
 import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
+import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.vo.ITitleLineVO;
 
 import java.awt.event.ActionEvent;
@@ -59,7 +60,15 @@ public class TextPaneEvent {
     /**
      * include重命名
      */
-    public static void rename(KeyEvent event) {
+    public static void renameInclude(KeyEvent event) {
+        RenameIncludeAO ao = operationAction().renameIncludeOperation(event);
+        if (ao == null) {
+            return;
+        }
+        // 修改include名
+        workAction().renameInclude(ao);
+        // 重新加载标题
+        workAction().loadTitleTree();
     }
 
     /**

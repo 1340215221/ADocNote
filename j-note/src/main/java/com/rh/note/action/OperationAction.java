@@ -4,15 +4,18 @@ import com.rh.note.ao.ClickedHistoryProjectListAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
+import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.api.ProManageViewApi;
 import com.rh.note.api.WorkViewApi;
 import com.rh.note.component.AdocTextPane;
 import com.rh.note.component.TitleButton;
+import com.rh.note.constants.Keymap;
 import com.rh.note.path.TitleBeanPath;
 import com.rh.note.vo.ITitleLineVO;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
 import lombok.NonNull;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -53,11 +56,7 @@ public class OperationAction implements IOperationAction {
 
     @Override
     public boolean checkIsSaveHotKey(@NonNull AWTEvent event) {
-        if (!(event instanceof KeyEvent) || event.getID() != KeyEvent.KEY_PRESSED) {
-            return false;
-        }
-        KeyEvent keyEvent = (KeyEvent) event;
-        return keyEvent.getKeyCode() == 83 && keyEvent.getModifiers() == 2;
+        return Keymap.isSaveOperation(event);
     }
 
     @Override
@@ -92,7 +91,7 @@ public class OperationAction implements IOperationAction {
 
     @Override
     public ITitleLineVO getRootTitleOfCaretLineIncludeTargetFile(@NonNull MouseEvent event) {
-        if (event.getModifiers() != 18) {
+        if (!Keymap.isEnterInclude(event)) {
             return null;
         }
         Object source = event.getSource();
@@ -116,11 +115,33 @@ public class OperationAction implements IOperationAction {
     }
 
     @Override
-    public ClickedHistoryProjectListAO clickedHistoryProjectList(@NotNull MouseEvent mouseEvent) {
-        if (mouseEvent.getClickCount() < 2) {
+    public RenameIncludeAO renameIncludeOperation(@NonNull KeyEvent event) {
+        if (!Keymap.isRename(event)) {
             return null;
         }
-        Object source = mouseEvent.getSource();
+        Object source = event.getSource();
+        if (!(source instanceof AdocTextPane)) {
+            return null;
+        }
+        AdocTextPane textPane = (AdocTextPane) event.getSource();
+        String oldName = workViewApi.getIncludeFileNameOnCaretLine(textPane);
+        if (StringUtils.isBlank(oldName)) {
+            return null;
+        }
+        RenameIncludeAO ao = workViewApi.requestNewName(textPane, oldName);
+        if (ao != null) {
+            String targetFilePath = workViewApi.selectedIncludeFileNameOnCaretLine(textPane);
+            workViewApi.selectRootTitleName(targetFilePath);
+        }
+        return ao;
+    }
+
+    @Override
+    public ClickedHistoryProjectListAO clickedHistoryProjectList(@NotNull MouseEvent event) {
+        if (!Keymap.isDoubleClick(event)) {
+            return null;
+        }
+        Object source = event.getSource();
         if (!(source instanceof JList)) {
             return null;
         }

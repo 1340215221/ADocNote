@@ -30,7 +30,7 @@ class TextPaneBuilder implements ISwingBuilder {
                     styledDocument: new DefaultStyledDocument(),
                     font: new Font(null, 0, 17),
                     keyPressed: {
-                        TextPaneEvent.rename(it)
+                        TextPaneEvent.renameInclude(it)
                         TextPaneEvent.sink_title(it)
                     },
                     mouseClicked: {

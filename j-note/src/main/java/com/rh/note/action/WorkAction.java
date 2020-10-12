@@ -5,6 +5,7 @@ import com.rh.note.ao.GenerateTitleSyntaxAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.MatchIncludeInfoBySelectedTextAO;
 import com.rh.note.ao.MatchTitleInfoBySelectedTextAO;
+import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.api.FileServiceApi;
 import com.rh.note.api.WorkViewApi;
 import com.rh.note.exception.ApplicationException;
@@ -126,5 +127,21 @@ public class WorkAction implements IWorkAction {
     public void deleteIncludeOnCaretLine(IncludeFilePathInfoAO ao) {
         workViewApi.replaceSelectedText(ao.getFilePath(), ao.getBlankText());
         fileServiceApi.deleteFileByFilePath(ao.getTargetFilePath());
+    }
+
+    /**
+     * todo
+     */
+    @Override
+    public void renameInclude(RenameIncludeAO ao) {
+        ao.checkRequiredItems();
+        // 修改include指向文件的根标题
+        workViewApi.replaceSelectedText(ao.getTargetFilePath(), ao.getNewName());
+        // 修改include块中的文件名
+        workViewApi.replaceSelectedText(ao.getFilePath(), ao.getNewName());
+        // 修改文件名前, 先保存一次编辑区内容
+        saveAllEdited();
+        // 修改include指向文件的文件名
+        fileServiceApi.renameFile(ao.getTargetFilePath(), ao.getNewName());
     }
 }

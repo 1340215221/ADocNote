@@ -53,4 +53,17 @@ public class TitleSyntax {
         return str.toString();
     }
 
+    /**
+     * 获得标题名起始偏移量
+     */
+    public int getStartOffsetOfTitleName() {
+        return toString().lastIndexOf(titleName);
+    }
+
+    /**
+     * 获得长度
+     */
+    public int getLengthOfTitleName() {
+        return titleName.length();
+    }
 }
