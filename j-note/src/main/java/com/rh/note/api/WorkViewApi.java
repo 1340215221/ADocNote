@@ -1,5 +1,6 @@
 package com.rh.note.api;
 
+import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.MatchIncludeInfoBySelectedTextAO;
 import com.rh.note.ao.MatchTitleInfoBySelectedTextAO;
 import com.rh.note.component.AdocTextPane;
@@ -320,7 +321,7 @@ public class WorkViewApi {
      * 用生成的include语句替换选择的内容
      */
     public void replaceSelectedText(String filePath, String text) {
-        if (StringUtils.isBlank(filePath) || StringUtils.isBlank(text)) {
+        if (StringUtils.isBlank(filePath) || text == null) {
             return;
         }
         // 获得选择内容
@@ -349,5 +350,28 @@ public class WorkViewApi {
         TitleBeanPath beanPath = includeSyntax.getBeanPathOfTargetFileRootTitle();
         RootTitleNodeView rootTitleNode = new RootTitleNodeView().init();
         return rootTitleNode.getTitleByBeanPath(beanPath);
+    }
+
+    /**
+     * 获得include文件信息, 通过光标所在行
+     */
+    public @Nullable IncludeFilePathInfoAO getIncludeFilePathInfoOnCaretLine(AdocTextPane bean) {
+        if (bean == null) {
+            return null;
+        }
+        // 获得光标所在行的include对象
+        TextPaneView textPane = TextPaneView.cast(bean);
+        if (textPane == null) {
+            return null;
+        }
+        String lineContent = textPane.getCaretLineContent();
+        IncludeSyntax syntax = new IncludeSyntax().init(lineContent);
+        if (syntax == null) {
+            return null;
+        }
+        // 组装返回值
+        return new IncludeFilePathInfoAO()
+                .setFilePath(textPane.getFilePath())
+                .setTargetFilePath(syntax.getTargetFilePath());
     }
 }

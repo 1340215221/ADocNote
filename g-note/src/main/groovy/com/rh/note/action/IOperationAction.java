@@ -1,6 +1,7 @@
 package com.rh.note.action;
 
 import com.rh.note.ao.ClickedHistoryProjectListAO;
+import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
 import com.rh.note.vo.ITitleLineVO;
@@ -53,4 +54,9 @@ public interface IOperationAction {
      * 获得根标题, 通过光标所在行的include行指向的文件
      */
     ITitleLineVO getRootTitleOfCaretLineIncludeTargetFile(MouseEvent event);
+
+    /**
+     * 删除include操作, 在编辑区光标所在行
+     */
+    IncludeFilePathInfoAO deleteIncludeOperation(ActionEvent event);
 }

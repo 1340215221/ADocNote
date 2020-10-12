@@ -122,4 +122,26 @@ public class FileServiceApi {
             throw new ApplicationException(ErrorCodeEnum.FAILED_TO_WRITE_FILE);
         }
     }
+
+    /**
+     * 删除文件, 通过文件的项目路径
+     */
+    public void deleteFileByFilePath(String filePath) {
+        if (StringUtils.isBlank(filePath)) {
+            return;
+        }
+        String projectPath = new ProBeanPath().getProjectPath();
+        if (StringUtils.isBlank(projectPath)) {
+            return;
+        }
+        String absolutePath = projectPath + filePath;
+        File file = new File(absolutePath);
+        if (!file.exists()) {
+            return;
+        }
+        if (!file.isFile()) {
+            throw new ApplicationException(ErrorCodeEnum.FAILED_TO_DELETE_FILE);
+        }
+        file.delete();
+    }
 }

@@ -1,6 +1,7 @@
 package com.rh.note.action;
 
 import com.rh.note.ao.ClickedHistoryProjectListAO;
+import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
 import com.rh.note.api.ProManageViewApi;
@@ -91,11 +92,27 @@ public class OperationAction implements IOperationAction {
 
     @Override
     public ITitleLineVO getRootTitleOfCaretLineIncludeTargetFile(@NonNull MouseEvent event) {
+        if (event.getModifiers() != 18) {
+            return null;
+        }
         Object source = event.getSource();
         if (!(source instanceof AdocTextPane)) {
             return null;
         }
         return workViewApi.getRootTitleOfCaretLineIncludeTargetFile(((AdocTextPane) source));
+    }
+
+    @Override
+    public IncludeFilePathInfoAO deleteIncludeOperation(@NonNull ActionEvent event) {
+        Object source = event.getSource();
+        if (!(source instanceof AdocTextPane)) {
+            return null;
+        }
+        IncludeFilePathInfoAO ao = workViewApi.getIncludeFilePathInfoOnCaretLine(((AdocTextPane) source));
+        if (ao != null) {
+            workViewApi.selectCaretLine(((AdocTextPane) source));
+        }
+        return ao;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.rh.note.event;
 
 
+import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
 import com.rh.note.vo.ITitleLineVO;
@@ -71,6 +72,13 @@ public class TextPaneEvent {
      * 安全删除include行
      */
     public static void delete_include(ActionEvent event) {
+        IncludeFilePathInfoAO ao = operationAction().deleteIncludeOperation(event);
+        if (ao == null) {
+            return;
+        }
+        workAction().deleteIncludeOnCaretLine(ao);
+        workAction().saveAllEdited();
+        workAction().loadTitleTree();
     }
 
     /**

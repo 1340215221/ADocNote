@@ -2,6 +2,7 @@ package com.rh.note.action;
 
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
+import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.MatchIncludeInfoBySelectedTextAO;
 import com.rh.note.ao.MatchTitleInfoBySelectedTextAO;
 import com.rh.note.api.FileServiceApi;
@@ -119,5 +120,11 @@ public class WorkAction implements IWorkAction {
             return;
         }
         workViewApi.replaceSelectedText(ao.getFilePath(), titleInfoAO.getTitleText());
+    }
+
+    @Override
+    public void deleteIncludeOnCaretLine(IncludeFilePathInfoAO ao) {
+        workViewApi.replaceSelectedText(ao.getFilePath(), ao.getBlankText());
+        fileServiceApi.deleteFileByFilePath(ao.getTargetFilePath());
     }
 }

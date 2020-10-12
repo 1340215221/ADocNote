@@ -1,5 +1,6 @@
 package com.rh.note.view;
 
+import com.rh.note.base.ITitleBeanPath;
 import com.rh.note.base.Init;
 import com.rh.note.builder.TextPaneBuilder;
 import com.rh.note.component.AdocTextPane;
@@ -169,11 +170,19 @@ public class TextPaneView extends Init<AdocTextPane> {
     /**
      * 替换被选择内容
      */
-    public void replaceSelectedText(String includeSyntaxText) {
-        if (StringUtils.isBlank(includeSyntaxText)) {
+    public void replaceSelectedText(String text) {
+        if (text == null) {
             return;
         }
-        textPane().replaceSelection(includeSyntaxText);
+        textPane().replaceSelection(text);
+    }
+
+    /**
+     * 获得文件路径
+     */
+    public @NotNull String getFilePath() {
+        AdocFileBeanPath beanPath = (AdocFileBeanPath) textPane().getBeanPath();
+        return beanPath.getFilePath();
     }
 
     private class ParsingCareLineApi {

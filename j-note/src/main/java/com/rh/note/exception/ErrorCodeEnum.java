@@ -9,6 +9,7 @@ public enum ErrorCodeEnum implements IErrorCode {
     CANNOT_CREATE_A_FILE_WITH_THE_SAME_NAME(3001, "不能创建同名文件"),
     FILE_CREATION_FAILED(3002, "文件创建失败"),
     FAILED_TO_WRITE_FILE(3003, "写入文件失败"),
+    FAILED_TO_DELETE_FILE(3004, "删除文件失败"),
     ;
     private Integer code;
     private String msg;
