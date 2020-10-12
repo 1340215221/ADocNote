@@ -1,6 +1,7 @@
 package com.rh.note.api;
 
 import com.rh.note.ao.MatchIncludeInfoBySelectedTextAO;
+import com.rh.note.ao.MatchTitleInfoBySelectedTextAO;
 import com.rh.note.component.AdocTextPane;
 import com.rh.note.component.TitleButton;
 import com.rh.note.frame.WorkFrame;
@@ -9,6 +10,8 @@ import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.path.TitleBeanPath;
 import com.rh.note.syntax.IncludeSyntax;
 import com.rh.note.syntax.IncludeSyntaxSugar;
+import com.rh.note.syntax.TitleSyntax;
+import com.rh.note.syntax.TitleSyntaxSugar;
 import com.rh.note.util.ScrollPositionUtil;
 import com.rh.note.view.RootTitleNodeView;
 import com.rh.note.view.TabbedPaneView;
@@ -230,6 +233,25 @@ public class WorkViewApi {
     }
 
     /**
+     * 是否为include, 在光标所在行
+     */
+    public boolean checkIsTitleSyntaxSugarOnCaretLine(AdocTextPane bean) {
+        if (bean == null) {
+            return false;
+        }
+        TextPaneView textPane = TextPaneView.cast(bean);
+        if (textPane == null) {
+            return false;
+        }
+        String lineContent = textPane.getCaretLineContent();
+        if (StringUtils.isBlank(lineContent)) {
+            return false;
+        }
+        TitleSyntaxSugar syntaxSugar = new TitleSyntaxSugar().init(lineContent);
+        return syntaxSugar != null;
+    }
+
+    /**
      * 选择光标所在行
      */
     public void selectCaretLine(AdocTextPane bean) {
@@ -268,6 +290,30 @@ public class WorkViewApi {
                 .setFilePath(includeSyntax.getTargetFilePath())
                 .setIncludeSyntaxSugar(includeSyntaxSugar)
                 .setIncludeText(includeSyntaxText);
+    }
+
+    /**
+     *用生成的include语句替换选择的内容
+     */
+    public MatchTitleInfoBySelectedTextAO getTitleInfoBySelectedText(String filePath) {
+        if (StringUtils.isBlank(filePath)) {
+            return null;
+        }
+        // 获得选择内容
+        TextPaneView textPane = new TextPaneView().initByFilePath(filePath);
+        if (textPane == null) {
+            return null;
+        }
+        String selectedText = textPane.getSelectedText();
+        // include快捷语法转化为include语法块
+        TitleSyntaxSugar syntaxSugar = new TitleSyntaxSugar().init(selectedText);
+        if (syntaxSugar == null) {
+            return null;
+        }
+        TitleSyntax titleSyntax = syntaxSugar.copyTo();
+        String titleSyntaxText = titleSyntax.toString();
+        // 返回值
+        return new MatchTitleInfoBySelectedTextAO().setTitleText(titleSyntaxText);
     }
 
     /**

@@ -4,9 +4,9 @@ import com.rh.note.component.AdocTextPane;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * 生成include块, 通过被选择文本--参数
+ * 生成title块, 通过被选择的文本
  */
-public class GenerateIncludeSyntaxAO {
+public class GenerateTitleSyntaxAO {
 
     /**
      * 文件路径
@@ -17,7 +17,7 @@ public class GenerateIncludeSyntaxAO {
         return filePath;
     }
 
-    public GenerateIncludeSyntaxAO setTextPane(@NotNull AdocTextPane textPane) {
+    public @NotNull GenerateTitleSyntaxAO setTextPane(@NotNull AdocTextPane textPane) {
         filePath = textPane.getBeanPath().getBeanPath();
         return this;
     }

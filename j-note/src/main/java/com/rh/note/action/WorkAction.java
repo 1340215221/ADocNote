@@ -1,7 +1,9 @@
 package com.rh.note.action;
 
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
+import com.rh.note.ao.GenerateTitleSyntaxAO;
 import com.rh.note.ao.MatchIncludeInfoBySelectedTextAO;
+import com.rh.note.ao.MatchTitleInfoBySelectedTextAO;
 import com.rh.note.api.FileServiceApi;
 import com.rh.note.api.WorkViewApi;
 import com.rh.note.exception.ApplicationException;
@@ -105,5 +107,17 @@ public class WorkAction implements IWorkAction {
         }
         fileServiceApi.createFileAndInitContent(includeInfoAO);
         workViewApi.replaceSelectedText(ao.getFilePath(), includeInfoAO.getIncludeText());
+    }
+
+    @Override
+    public void generateTitleSyntaxBySelectedText(GenerateTitleSyntaxAO ao) {
+        if (ao == null) {
+            return;
+        }
+        MatchTitleInfoBySelectedTextAO titleInfoAO = workViewApi.getTitleInfoBySelectedText(ao.getFilePath());
+        if (titleInfoAO == null) {
+            return;
+        }
+        workViewApi.replaceSelectedText(ao.getFilePath(), titleInfoAO.getTitleText());
     }
 }

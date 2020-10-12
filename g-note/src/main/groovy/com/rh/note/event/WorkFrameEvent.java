@@ -16,6 +16,7 @@ public class WorkFrameEvent {
     public static void save_all_edited(AWTEvent event) {
         if(operationAction().checkIsSaveHotKey(event)) {
             workAction().saveAllEdited();
+            workAction().loadTitleTree();
         }
     }
 

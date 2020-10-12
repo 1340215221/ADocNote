@@ -2,6 +2,7 @@ package com.rh.note.action;
 
 import com.rh.note.ao.ClickedHistoryProjectListAO;
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
+import com.rh.note.ao.GenerateTitleSyntaxAO;
 import com.rh.note.api.ProManageViewApi;
 import com.rh.note.api.WorkViewApi;
 import com.rh.note.component.AdocTextPane;
@@ -12,6 +13,7 @@ import com.rh.note.vo.RecentlyOpenedRecordVO;
 import lombok.NonNull;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.JList;
 import java.awt.AWTEvent;
@@ -69,7 +71,22 @@ public class OperationAction implements IOperationAction {
             return null;
         }
         workViewApi.selectCaretLine(textPane);
-        return new GenerateIncludeSyntaxAO().setFilePath(textPane);
+        return new GenerateIncludeSyntaxAO().setTextPane(textPane);
+    }
+
+    @Override
+    public @Nullable GenerateTitleSyntaxAO selectCaretLineOfTitleSyntaxSugar(@NotNull ActionEvent event) {
+        Object source = event.getSource();
+        if (!(source instanceof AdocTextPane)) {
+            return null;
+        }
+        AdocTextPane textPane = (AdocTextPane) source;
+        boolean isTitle = workViewApi.checkIsTitleSyntaxSugarOnCaretLine(textPane);
+        if (!isTitle) {
+            return null;
+        }
+        workViewApi.selectCaretLine(textPane);
+        return new GenerateTitleSyntaxAO().setTextPane(textPane);
     }
 
     @Override

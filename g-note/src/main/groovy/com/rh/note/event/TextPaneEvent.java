@@ -2,6 +2,7 @@ package com.rh.note.event;
 
 
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
+import com.rh.note.ao.GenerateTitleSyntaxAO;
 import com.rh.note.vo.ITitleLineVO;
 
 import java.awt.event.ActionEvent;
@@ -31,12 +32,17 @@ public class TextPaneEvent {
         if (includeAO != null) {
             workAction().generateIncludeSyntaxBySelectedText(includeAO);
         }
+        // title快捷语法
+        GenerateTitleSyntaxAO titleAO = operationAction().selectCaretLineOfTitleSyntaxSugar(event);
+        if (titleAO != null) {
+            workAction().generateTitleSyntaxBySelectedText(titleAO);
+        }
         // 修改成功保存编辑区内容
-        if (includeAO != null) {
+        if (includeAO != null || titleAO != null) {
             workAction().saveAllEdited();
         }
         // 重新加载标题树
-        if (includeAO != null) {
+        if (includeAO != null || titleAO != null) {
             workAction().loadTitleTree();
             return;
         }

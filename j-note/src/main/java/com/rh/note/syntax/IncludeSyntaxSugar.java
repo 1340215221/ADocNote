@@ -1,6 +1,7 @@
 package com.rh.note.syntax;
 
 import com.rh.note.constants.AdocFileTypeEnum;
+import com.rh.note.constants.BaseConstants;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +20,7 @@ public class IncludeSyntaxSugar {
      * 匹配正则
      * todo
      */
-    private final static String regex = "^(\\s*)=>([1-9])\\s([\\u4e00-\\u9fa5a-zA-Z0-9_\\-]+)\\s*$";
+    private final static String regex = "^(\\s*)=>([1-9]) ([" + BaseConstants.file_name_regex + "]+?)\\s*$";
     /**
      * 级别
      */
@@ -55,7 +56,7 @@ public class IncludeSyntaxSugar {
     }
 
     /**
-     * 生成includeLine
+     * 生成include语法对象
      */
     public @NotNull IncludeSyntax copyToByFilePath(String filePath) {
         IncludeSyntax includeSyntax = new IncludeSyntax();

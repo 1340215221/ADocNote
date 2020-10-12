@@ -1,6 +1,7 @@
 package com.rh.note.action;
 
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
+import com.rh.note.ao.GenerateTitleSyntaxAO;
 import com.rh.note.vo.ITitleLineVO;
 
 import java.awt.AWTEvent;
@@ -44,4 +45,9 @@ public interface IWorkAction {
      * 生成include块
      */
     void generateIncludeSyntaxBySelectedText(GenerateIncludeSyntaxAO ao);
+
+    /**
+     * 生成title块
+     */
+    void generateTitleSyntaxBySelectedText(GenerateTitleSyntaxAO ao);
 }
