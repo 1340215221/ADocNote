@@ -90,6 +90,15 @@ public class OperationAction implements IOperationAction {
     }
 
     @Override
+    public ITitleLineVO getRootTitleOfCaretLineIncludeTargetFile(@NonNull MouseEvent event) {
+        Object source = event.getSource();
+        if (!(source instanceof AdocTextPane)) {
+            return null;
+        }
+        return workViewApi.getRootTitleOfCaretLineIncludeTargetFile(((AdocTextPane) source));
+    }
+
+    @Override
     public ClickedHistoryProjectListAO clickedHistoryProjectList(@NotNull MouseEvent mouseEvent) {
         if (mouseEvent.getClickCount() < 2) {
             return null;

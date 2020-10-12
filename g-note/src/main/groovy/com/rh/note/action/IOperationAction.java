@@ -48,4 +48,9 @@ public interface IOperationAction {
      * 选择光标行, 如果是title语法糖
      */
     GenerateTitleSyntaxAO selectCaretLineOfTitleSyntaxSugar(ActionEvent event);
+
+    /**
+     * 获得根标题, 通过光标所在行的include行指向的文件
+     */
+    ITitleLineVO getRootTitleOfCaretLineIncludeTargetFile(MouseEvent event);
 }

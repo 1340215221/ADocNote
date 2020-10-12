@@ -1,6 +1,5 @@
 package com.rh.note.view;
 
-import com.rh.note.base.ITitleBeanPath;
 import com.rh.note.base.Init;
 import com.rh.note.builder.TextPaneBuilder;
 import com.rh.note.component.AdocTextPane;
@@ -11,7 +10,6 @@ import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.path.ProBeanPath;
 import com.rh.note.path.TitleBeanPath;
-import com.rh.note.syntax.IncludeSyntaxSugar;
 import com.rh.note.vo.WriterVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -179,6 +177,7 @@ public class TextPaneView extends Init<AdocTextPane> {
     }
 
     private class ParsingCareLineApi {
+
         /**
          * 获得标题, 通过光标所在行内容
          */
@@ -194,6 +193,5 @@ public class TextPaneView extends Init<AdocTextPane> {
             }
             return titleLine.getBeanPath();
         }
-
     }
 }

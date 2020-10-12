@@ -2,8 +2,10 @@ package com.rh.note.syntax;
 
 import com.rh.note.constants.AdocFileTypeEnum;
 import com.rh.note.constants.BaseConstants;
+import com.rh.note.path.TitleBeanPath;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -87,7 +89,7 @@ public class IncludeSyntax {
     /**
      * 获得指向文件路径
      */
-    public String getTargetFilePath() {
+    public @NotNull String getTargetFilePath() {
         return AdocFileTypeEnum.matchByRelativePath(targetRelativePath).getFileDirectory() + targetFileName + "." + targetFileSuf;
     }
 
@@ -124,5 +126,12 @@ public class IncludeSyntax {
         indented = sugar.getIndented();
         sugar.getLevel();
         sugar.getTitleName();
+    }
+
+    /**
+     * 获得指向文件根标题的对象路径
+     */
+    public @NotNull TitleBeanPath getBeanPathOfTargetFileRootTitle() {
+        return TitleBeanPath.getInstance(getTargetFilePath(), getTargetFileName());
     }
 }

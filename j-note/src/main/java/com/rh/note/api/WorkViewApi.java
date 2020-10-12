@@ -330,4 +330,24 @@ public class WorkViewApi {
         }
         textPane.replaceSelectedText(text);
     }
+
+    /**
+     * 获得根标题, 通过光标所在行的include行指向的文件
+     */
+    public @Nullable TitleLine getRootTitleOfCaretLineIncludeTargetFile(AdocTextPane source) {
+        TextPaneView textPane = TextPaneView.cast(source);
+        if (textPane == null) {
+            return null;
+        }
+        // 获得光标所在行的include对象
+        String lineContent = textPane.getCaretLineContent();
+        IncludeSyntax includeSyntax = new IncludeSyntax().init(lineContent);
+        if (includeSyntax == null) {
+            return null;
+        }
+        // 获得指向文件的根标题
+        TitleBeanPath beanPath = includeSyntax.getBeanPathOfTargetFileRootTitle();
+        RootTitleNodeView rootTitleNode = new RootTitleNodeView().init();
+        return rootTitleNode.getTitleByBeanPath(beanPath);
+    }
 }

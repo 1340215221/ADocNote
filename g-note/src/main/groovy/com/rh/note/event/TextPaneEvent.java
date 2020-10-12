@@ -21,6 +21,11 @@ public class TextPaneEvent {
      * 进入include指向文件
      */
     public static void enter_include_file(MouseEvent event) {
+        ITitleLineVO vo = operationAction().getRootTitleOfCaretLineIncludeTargetFile(event);
+        if (vo == null) {
+            return;
+        }
+        workAction().openTextPaneByTitleNode(vo);
     }
 
     /**
