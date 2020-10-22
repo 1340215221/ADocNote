@@ -18,6 +18,7 @@ import com.rh.note.syntax.IncludeSyntaxSugar;
 import com.rh.note.syntax.TitleSyntax;
 import com.rh.note.syntax.TitleSyntaxSugar;
 import com.rh.note.util.ScrollPositionUtil;
+import com.rh.note.view.ConfirmDialogView;
 import com.rh.note.view.InputDialogView;
 import com.rh.note.view.RootTitleNodeView;
 import com.rh.note.view.TabbedPaneView;
@@ -500,5 +501,14 @@ public class WorkViewApi {
         // 从swingBuilder中删除
         TextPaneView.deleteByFilePath(filePath);
         TextScrollPaneView.deleteByFilePath(filePath);
+    }
+
+    /**
+     * 请求确认
+     * @return
+     */
+    public boolean requestConfirm(PromptMessageEnum message) {
+        PromptMessageEnum msg = message != null ? message : PromptMessageEnum.are_you_sure_you_want_to_delete_safely;
+        return new ConfirmDialogView().init(msg).isConfirm();
     }
 }

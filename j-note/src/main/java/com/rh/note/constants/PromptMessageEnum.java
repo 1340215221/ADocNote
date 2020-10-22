@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 public enum PromptMessageEnum {
 
     rename_include_message("请输入新的标签名"),
+    are_you_sure_you_want_to_delete_safely("您确定要安全删除"),
+    are_you_sure_you_want_to_delete_safely_include("您确定要安全删除 Include 相关内容"),
     ;
     @NonNull
     private String value;

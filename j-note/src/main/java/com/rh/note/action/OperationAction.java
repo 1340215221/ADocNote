@@ -11,6 +11,7 @@ import com.rh.note.api.WorkViewApi;
 import com.rh.note.component.AdocTextPane;
 import com.rh.note.component.TitleButton;
 import com.rh.note.constants.Keymap;
+import com.rh.note.constants.PromptMessageEnum;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.path.AdocFileBeanPath;
@@ -116,6 +117,11 @@ public class OperationAction implements IOperationAction {
         if (!(source instanceof AdocTextPane)) {
             return null;
         }
+        // 请求确认
+        if (!workViewApi.requestConfirm(PromptMessageEnum.are_you_sure_you_want_to_delete_safely_include)) {
+            return null;
+        }
+        // 选择include行内容
         IncludeFilePathInfoAO ao = workViewApi.getIncludeFilePathInfoOnCaretLine(((AdocTextPane) source));
         if (ao != null) {
             workViewApi.selectCaretLine(((AdocTextPane) source));
