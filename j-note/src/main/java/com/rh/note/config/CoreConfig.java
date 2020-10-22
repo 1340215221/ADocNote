@@ -25,7 +25,8 @@ public class CoreConfig {
             .setWorkAction(work_action);
     public static final OperationAction match_action = new OperationAction()
             .setWorkViewApi(work_view_api_service)
-            .setProManageViewApi(pro_manage_view_api_service);
+            .setProManageViewApi(pro_manage_view_api_service)
+            .setFileServiceApi(file_api_service);
     // 配置桥接项目对象
     static {
         BridgingBeanConfig.setProManageAction(pro_manage_action);

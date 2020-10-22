@@ -168,8 +168,7 @@ public class WorkViewApi {
         if (getFileWriterFunction == null) {
             return;
         }
-        TabbedPaneView tabbedPane = new TabbedPaneView().init();
-        List<String> filePaths = tabbedPane.getAllFilePathOfExistFile();
+        List<String> filePaths = TextPaneView.getAllEditedFilePath();
         if (CollectionUtils.isEmpty(filePaths)) {
             return;
         }
@@ -371,6 +370,9 @@ public class WorkViewApi {
         }
         // 请求新名字
         String newName = new InputDialogView().init(oldName, PromptMessageEnum.rename_include_message).getInputText();
+        if (StringUtils.isBlank(newName)) {
+            return null;
+        }
         // 组装返回值
         return new RenameIncludeAO()
                 .setFilePath(textPane.getFilePath())
@@ -481,6 +483,22 @@ public class WorkViewApi {
             return;
         }
 
-        textPane.initText(beanPath);
+        textPane.writeFileText(beanPath);
+    }
+
+    /**
+     * 关闭旧的指向文件
+     */
+    public void closeTextPaneByFilePath(String filePath) {
+        if (StringUtils.isBlank(filePath)) {
+            return;
+        }
+        TextScrollPaneView scrollPane = new TextScrollPaneView().initByFilePath(filePath);
+        // 从选项卡中删除
+        TabbedPaneView tabbedPane = new TabbedPaneView().init();
+        tabbedPane.remove(scrollPane);
+        // 从swingBuilder中删除
+        TextPaneView.deleteByFilePath(filePath);
+        TextScrollPaneView.deleteByFilePath(filePath);
     }
 }

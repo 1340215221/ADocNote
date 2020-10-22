@@ -5,6 +5,8 @@ import com.rh.note.base.Init;
 import com.rh.note.builder.TextPaneBuilder;
 import com.rh.note.component.AdocScrollPane;
 import com.rh.note.path.AdocFileBeanPath;
+import com.rh.note.util.ViewUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,6 +23,17 @@ public class TextScrollPaneView extends Init<AdocScrollPane> {
 
     private @NotNull AdocScrollPane scrollPane() {
         return getBean();
+    }
+
+    /**
+     * 删除, 通过文件路径
+     */
+    public static void deleteByFilePath(String filePath) {
+        if (StringUtils.isBlank(filePath)) {
+            return;
+        }
+
+        ViewUtil.removeByComponentId(TextPaneBuilder.scrollId(filePath));
     }
 
     /**

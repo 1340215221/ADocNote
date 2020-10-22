@@ -148,6 +148,11 @@ public class WorkAction implements IWorkAction {
     public void renameInclude(RenameIncludeAO ao) {
         ao.checkRequiredItems();
         // 修改include指向文件的根标题
+        AdocFileBeanPath beanPath = fileServiceApi.getFileByProPath(ao.getTargetFilePath());
+        TextPaneView textPane = workViewApi.safeCreateAndGetTextPane(beanPath);
+        if (textPane == null) {
+            throw new ApplicationException(ErrorCodeEnum.INCLUDE_TARGET_TO_THE_FILE_CANNOT_BE_OPENED);
+        }
         workViewApi.replaceSelectedText(ao.getTargetFilePath(), ao.getNewName());
         // 修改include块中的文件名
         workViewApi.replaceSelectedText(ao.getFilePath(), ao.getNewName());
@@ -155,5 +160,7 @@ public class WorkAction implements IWorkAction {
         saveAllEdited();
         // 修改include指向文件的文件名
         fileServiceApi.renameFile(ao.getTargetFilePath(), ao.getNewName());
+        // 关闭旧的指向文件
+        workViewApi.closeTextPaneByFilePath(ao.getTargetFilePath());
     }
 }

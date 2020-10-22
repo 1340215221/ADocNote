@@ -13,6 +13,7 @@ import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.path.ProBeanPath;
 import com.rh.note.path.TitleBeanPath;
 import com.rh.note.syntax.TitleSyntax;
+import com.rh.note.util.ViewUtil;
 import com.rh.note.vo.WriterVO;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,9 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * 编辑区视图
@@ -55,6 +58,26 @@ public class TextPaneView extends Init<AdocTextPane> {
         return new TextPaneView().initByFilePath(filePath);
     }
 
+    /**
+     * 获得所有被编辑过的文件路径
+     */
+    public static @NotNull List<String> getAllEditedFilePath() {
+        return ViewUtil.getComponentsByClass(AdocTextPane.class)
+                .map(textPane -> textPane.getBeanPath().getBeanPath())
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 关闭, 通过文件路径
+     */
+    public static void deleteByFilePath(String filePath) {
+        if (StringUtils.isBlank(filePath)) {
+            return;
+        }
+
+        ViewUtil.removeByComponentId(TextPaneBuilder.id(filePath));
+    }
+
     public @Nullable TextPaneView initByFilePath(String filePath) {
         return super.init(TextPaneBuilder.id(filePath));
     }
@@ -73,7 +96,7 @@ public class TextPaneView extends Init<AdocTextPane> {
     /**
      * 设置显示内容
      */
-    public void initText(AdocFileBeanPath beanPath) {
+    public void writeFileText(AdocFileBeanPath beanPath) {
         if (beanPath == null) {
             return;
         }
@@ -94,7 +117,7 @@ public class TextPaneView extends Init<AdocTextPane> {
     /**
      * 解析文件为简单adoc对象
      */
-    private @NotNull  AdocFile getSimpleAdocFile() {
+    private @NotNull AdocFile getSimpleAdocFile() {
         AdocFileBeanPath beanPath = (AdocFileBeanPath) textPane().getBeanPath();
         return AdocFile.getInstanceAndNotChildren(beanPath.getFilePath());
     }

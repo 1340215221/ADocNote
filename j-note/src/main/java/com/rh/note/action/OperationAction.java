@@ -5,12 +5,17 @@ import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
 import com.rh.note.ao.RenameIncludeAO;
+import com.rh.note.api.FileServiceApi;
 import com.rh.note.api.ProManageViewApi;
 import com.rh.note.api.WorkViewApi;
 import com.rh.note.component.AdocTextPane;
 import com.rh.note.component.TitleButton;
 import com.rh.note.constants.Keymap;
+import com.rh.note.exception.ApplicationException;
+import com.rh.note.exception.ErrorCodeEnum;
+import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.path.TitleBeanPath;
+import com.rh.note.view.TextPaneView;
 import com.rh.note.vo.ITitleLineVO;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
 import lombok.NonNull;
@@ -30,6 +35,7 @@ public class OperationAction implements IOperationAction {
 
     private ProManageViewApi proManageViewApi;
     private WorkViewApi workViewApi;
+    private FileServiceApi fileServiceApi;
 
     @Override
     public ITitleLineVO getSelectedTitleNode() {
@@ -123,16 +129,29 @@ public class OperationAction implements IOperationAction {
         if (!(source instanceof AdocTextPane)) {
             return null;
         }
+        // 获得旧标题名
         AdocTextPane textPane = (AdocTextPane) event.getSource();
         String oldName = workViewApi.getIncludeFileNameOnCaretLine(textPane);
         if (StringUtils.isBlank(oldName)) {
             return null;
         }
+        // 请求新标题名
         RenameIncludeAO ao = workViewApi.requestNewName(textPane, oldName);
-        if (ao != null) {
-            String targetFilePath = workViewApi.selectedIncludeFileNameOnCaretLine(textPane);
-            workViewApi.selectRootTitleName(targetFilePath);
+        if (ao == null) {
+            return null;
         }
+        // 选择include行中的文件名
+        String targetFilePath = workViewApi.selectedIncludeFileNameOnCaretLine(textPane);
+        // 选择include指向文件的根标题
+        AdocFileBeanPath targetBeanPath = fileServiceApi.getFileByProPath(targetFilePath);
+        TextPaneView targetTextPane = workViewApi.safeCreateAndGetTextPane(targetBeanPath);
+        if (targetTextPane == null) {
+            throw new ApplicationException(ErrorCodeEnum.INCLUDE_TARGET_TO_THE_FILE_CANNOT_BE_OPENED);
+        }
+        if (workViewApi.isBlankTextPane(targetFilePath)) {
+            workViewApi.writeTextPaneByFile(targetBeanPath);
+        }
+        workViewApi.selectRootTitleName(targetFilePath);
         return ao;
     }
 

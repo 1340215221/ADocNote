@@ -88,4 +88,15 @@ public class TabbedPaneView extends Init<JTabbedPane> {
         int index = tabbedPane().indexOfComponent(textScrollPane.getBean());
         return index > -1;
     }
+
+    /**
+     * 删除控件
+     */
+    public void remove(TextScrollPaneView textScrollPane) {
+        if (textScrollPane == null) {
+            return;
+        }
+
+        tabbedPane().remove(textScrollPane.getBean());
+    }
 }
