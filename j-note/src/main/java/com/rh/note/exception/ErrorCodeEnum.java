@@ -11,6 +11,7 @@ public enum ErrorCodeEnum implements IErrorCode {
     FAILED_TO_WRITE_FILE(3003, "写入文件失败"),
     FAILED_TO_DELETE_FILE(3004, "删除文件失败"),
     FILE_RENAMING_FAILED(3005, "文件重命名失败"),
+    FAILED_TO_CREATE_AND_OPEN_EDITING_AREA(3006, "编辑区创建并打开失败"),
     ;
     private Integer code;
     private String msg;

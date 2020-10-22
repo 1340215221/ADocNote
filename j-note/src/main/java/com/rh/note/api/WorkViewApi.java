@@ -81,46 +81,6 @@ public class WorkViewApi {
     }
 
     /**
-     * 展示已打开的编辑区
-     */
-    public @Nullable TextPaneView showExistTextPane(String filePath) {
-        if (StringUtils.isBlank(filePath)) {
-            return null;
-        }
-        TextPaneView textPane = new TextPaneView().initByFilePath(filePath);
-        if (textPane == null) {
-            return null;
-        }
-        TextScrollPaneView textScrollPane = new TextScrollPaneView().initByFilePath(filePath);
-        if (textScrollPane == null) {
-            return null;
-        }
-        TabbedPaneView tabbedPane = new TabbedPaneView().init();
-        tabbedPane.show(textScrollPane);
-        return textPane;
-    }
-
-    /**
-     * 创建编辑区, 通过文件对象
-     */
-    public void createTextPaneByFile(AdocFileBeanPath beanPath) {
-        if (beanPath == null) {
-            return;
-        }
-        // 创建编辑区
-        TextPaneView.create(beanPath);
-        // 添加编辑区
-        TabbedPaneView tabbedPane = new TabbedPaneView().init();
-        TextScrollPaneView textScrollPane = new TextScrollPaneView().initByFilePath(beanPath.getFilePath());
-        tabbedPane.add(textScrollPane);
-        // 设置文件内容
-        TextPaneView textPane = new TextPaneView().initByFilePath(beanPath.getFilePath());
-        textPane.setText(beanPath);
-        // 显示添加的编辑区
-        tabbedPane.show(textScrollPane);
-    }
-
-    /**
      * 加载标题导航
      */
     public void loadTitleNavigate(TitleLine titleLine) {
@@ -451,5 +411,76 @@ public class WorkViewApi {
             throw new UnknownLogicException();
         }
         textPane.selectRootTitleName();
+    }
+
+    /**
+     * 安全创建打开编辑区
+     */
+    public @Nullable TextPaneView safeCreateAndGetTextPane(AdocFileBeanPath beanPath) {
+        if (beanPath == null) {
+            return null;
+        }
+
+        String filePath = beanPath.getFilePath();
+        TextPaneView textPaneOfExist = new TextPaneView().initByFilePath(filePath);
+        if (textPaneOfExist != null) {
+            return textPaneOfExist;
+        }
+
+        TextPaneView.create(beanPath);
+        return new TextPaneView().initByFilePath(filePath);
+    }
+
+    /**
+     * 添加并展示编辑区
+     */
+    public void addAndShowTextPane(String filePath) {
+        if (StringUtils.isBlank(filePath)) {
+            return;
+        }
+        TextScrollPaneView textScrollPane = new TextScrollPaneView().initByFilePath(filePath);
+        if (textScrollPane == null) {
+            return;
+        }
+
+        // 添加编辑区
+        TabbedPaneView tabbedPane = new TabbedPaneView().init();
+        if (!tabbedPane.contains(textScrollPane)) {
+            tabbedPane.add(textScrollPane);
+        }
+        // 展示编辑区
+        tabbedPane.show(textScrollPane);
+    }
+
+    /**
+     * 编辑区内容是否为空
+     */
+    public boolean isBlankTextPane(String filePath) {
+        if (StringUtils.isBlank(filePath)) {
+            return false;
+        }
+
+        TextPaneView textPane = new TextPaneView().initByFilePath(filePath);
+        if (textPane == null) {
+            return false;
+        }
+
+        return textPane.isBlank();
+    }
+
+    /**
+     * 向编辑区写入内容
+     */
+    public void writeTextPaneByFile(AdocFileBeanPath beanPath) {
+        if (beanPath == null) {
+            return;
+        }
+
+        TextPaneView textPane = new TextPaneView().initByFilePath(beanPath.getFilePath());
+        if (textPane == null) {
+            return;
+        }
+
+        textPane.initText(beanPath);
     }
 }

@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.JTabbedPane;
 import java.awt.Component;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -74,5 +75,17 @@ public class TabbedPaneView extends Init<JTabbedPane> {
                 .map(c -> ((AdocScrollPane) c))
                 .map(scrollPane -> ((AdocFileBeanPath) scrollPane.getBeanPath()).getFilePath())
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * 判断是否包含编辑区
+     */
+    public boolean contains(TextScrollPaneView textScrollPane) {
+        if (textScrollPane == null) {
+            return false;
+        }
+
+        int index = tabbedPane().indexOfComponent(textScrollPane.getBean());
+        return index > -1;
     }
 }

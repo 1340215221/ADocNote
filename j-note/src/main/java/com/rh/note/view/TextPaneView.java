@@ -73,7 +73,7 @@ public class TextPaneView extends Init<AdocTextPane> {
     /**
      * 设置显示内容
      */
-    public void setText(AdocFileBeanPath beanPath) {
+    public void initText(AdocFileBeanPath beanPath) {
         if (beanPath == null) {
             return;
         }

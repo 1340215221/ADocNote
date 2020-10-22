@@ -61,14 +61,23 @@ public class WorkAction implements IWorkAction {
             return;
         }
         TitleLine titleLine = ((TitleLine) vo);
-        // 显示已打开的编辑区
-        TextPaneView textPaneOfExist = workViewApi.showExistTextPane(titleLine.getFilePath());
-        if (textPaneOfExist != null) {
+
+        // 检查文件
+        AdocFileBeanPath beanPath = fileServiceApi.getFileByProPath(titleLine.getFilePath());
+        if (beanPath == null) {
             return;
         }
-        // 打开并显示编辑区
-        AdocFileBeanPath beanPath = fileServiceApi.getFileByProPath(titleLine.getFilePath());
-        workViewApi.createTextPaneByFile(beanPath);
+        // 打开或创建编辑区
+        TextPaneView textPaneOfExist = workViewApi.safeCreateAndGetTextPane(beanPath);
+        if (textPaneOfExist == null) {
+            throw new ApplicationException(ErrorCodeEnum.FAILED_TO_CREATE_AND_OPEN_EDITING_AREA);
+        }
+        // 如果为空, 加载文件内容
+        if (workViewApi.isBlankTextPane(titleLine.getFilePath())) {
+            workViewApi.writeTextPaneByFile(beanPath);
+        }
+        // 添加, 或显示编辑区
+        workViewApi.addAndShowTextPane(titleLine.getFilePath());
     }
 
     @Override
