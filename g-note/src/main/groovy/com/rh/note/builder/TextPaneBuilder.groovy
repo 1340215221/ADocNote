@@ -32,6 +32,7 @@ class TextPaneBuilder implements ISwingBuilder {
                     keyPressed: {
                         TextPaneEvent.renameInclude(it)
                         TextPaneEvent.sink_title(it)
+                        TextPaneEvent.delete_include(it)
                     },
                     mouseClicked: {
                         TextPaneEvent.enter_include_file(it)
@@ -64,13 +65,6 @@ class TextPaneBuilder implements ISwingBuilder {
             @Override
             void actionPerformed(ActionEvent e) {
                 TextPaneEvent.enter_operation(e)
-            }
-        })
-        // 添加 ctrl + del 事件
-        newKeymap.addActionForKeyStroke(KeyStroke.getKeyStroke(127, 2), new TextAction('textPane') {
-            @Override
-            void actionPerformed(ActionEvent e) {
-                TextPaneEvent.delete_include(e)
             }
         })
         textPane.setKeymap(newKeymap)

@@ -139,11 +139,9 @@ public class WorkAction implements IWorkAction {
     public void deleteIncludeOnCaretLine(IncludeFilePathInfoAO ao) {
         workViewApi.replaceSelectedText(ao.getFilePath(), ao.getBlankText());
         fileServiceApi.deleteFileByFilePath(ao.getTargetFilePath());
+        workViewApi.closeTextPaneByFilePath(ao.getTargetFilePath());
     }
 
-    /**
-     * todo
-     */
     @Override
     public void renameInclude(RenameIncludeAO ao) {
         ao.checkRequiredItems();

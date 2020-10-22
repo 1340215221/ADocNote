@@ -1,9 +1,9 @@
 package com.rh.note.action;
 
 import com.rh.note.ao.ClickedHistoryProjectListAO;
-import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
+import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.api.FileServiceApi;
 import com.rh.note.api.ProManageViewApi;
@@ -108,7 +108,10 @@ public class OperationAction implements IOperationAction {
     }
 
     @Override
-    public IncludeFilePathInfoAO deleteIncludeOperation(@NonNull ActionEvent event) {
+    public IncludeFilePathInfoAO deleteIncludeOperation(@NonNull KeyEvent event) {
+        if (!Keymap.isSafeDelete(event)) {
+            return null;
+        }
         Object source = event.getSource();
         if (!(source instanceof AdocTextPane)) {
             return null;

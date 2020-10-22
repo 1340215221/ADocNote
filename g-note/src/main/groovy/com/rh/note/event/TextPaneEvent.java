@@ -80,7 +80,7 @@ public class TextPaneEvent {
     /**
      * 安全删除include行
      */
-    public static void delete_include(ActionEvent event) {
+    public static void delete_include(KeyEvent event) {
         IncludeFilePathInfoAO ao = operationAction().deleteIncludeOperation(event);
         if (ao == null) {
             return;

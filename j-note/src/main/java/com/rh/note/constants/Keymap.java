@@ -1,6 +1,7 @@
 package com.rh.note.constants;
 
 import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.AWTEvent;
 import java.awt.event.KeyEvent;
@@ -46,4 +47,11 @@ public interface Keymap {
         return event.getKeyCode() == 117 && event.getModifiers() == 1;
     }
 
+    /**
+     * alt + del
+     * 安全删除
+     */
+    static boolean isSafeDelete(@NotNull KeyEvent event) {
+        return event.getKeyCode() == 127 && event.getModifiers() == 8;
+    }
 }

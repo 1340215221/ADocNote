@@ -1,9 +1,9 @@
 package com.rh.note.action;
 
 import com.rh.note.ao.ClickedHistoryProjectListAO;
-import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
+import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.vo.ITitleLineVO;
 import org.jetbrains.annotations.NotNull;
@@ -60,7 +60,7 @@ public interface IOperationAction {
     /**
      * 删除include操作, 在编辑区光标所在行
      */
-    IncludeFilePathInfoAO deleteIncludeOperation(ActionEvent event);
+    IncludeFilePathInfoAO deleteIncludeOperation(KeyEvent event);
 
     /**
      * include重命名
