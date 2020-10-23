@@ -3,6 +3,7 @@ package com.rh.note.action;
 import com.rh.note.ao.ClickedHistoryProjectListAO;
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
+import com.rh.note.ao.ITitleContentAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.vo.ITitleLineVO;
@@ -66,4 +67,9 @@ public interface IOperationAction {
      * include重命名
      */
     RenameIncludeAO renameIncludeOperation(KeyEvent event);
+
+    /**
+     * 下沉标题
+     */
+    ITitleContentAO sinkTitleOperation(KeyEvent event);
 }

@@ -2,12 +2,15 @@ package com.rh.note.action;
 
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
+import com.rh.note.ao.ITitleContentAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.MatchIncludeInfoBySelectedTextAO;
 import com.rh.note.ao.MatchTitleInfoBySelectedTextAO;
 import com.rh.note.ao.RenameIncludeAO;
+import com.rh.note.ao.TitleContentAO;
 import com.rh.note.api.FileServiceApi;
 import com.rh.note.api.WorkViewApi;
+import com.rh.note.ao.ICreateFileAndInitContentAO;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.line.TitleLine;
@@ -17,6 +20,7 @@ import com.rh.note.vo.ITitleLineVO;
 import com.rh.note.vo.WriterVO;
 import lombok.NonNull;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.text.DefaultEditorKit;
 import java.awt.event.ActionEvent;
@@ -160,5 +164,29 @@ public class WorkAction implements IWorkAction {
         fileServiceApi.renameFile(ao.getTargetFilePath(), ao.getNewName());
         // 关闭旧的指向文件
         workViewApi.closeTextPaneByFilePath(ao.getTargetFilePath());
+    }
+
+    @Override
+    public void sinkTitle(ITitleContentAO iao) {
+        if (!(iao instanceof TitleContentAO)) {
+            return;
+        }
+        TitleContentAO ao = ((TitleContentAO) iao);
+        // 获取选择内容
+        String selectedContent = workViewApi.getSelectContentByFilePath(ao.getFilePath());
+        if (StringUtils.isBlank(selectedContent)) {
+            return;
+        }
+        // 获得指向文件路径
+        // 创建include指向文件
+        // 向include指向文件中写入, 两个空白行, 选择内容
+        ICreateFileAndInitContentAO createAO = ao.getCreateFileAO()
+                .addTwoBlankLine()
+                .addText(selectedContent);
+        fileServiceApi.createFileAndInitContent(createAO);
+        // 生成include语句内容
+        String includeLineText = ao.getIncludeLineText();
+            // 替换到选中区域
+        workViewApi.replaceSelectedText(ao.getFilePath(), includeLineText);
     }
 }

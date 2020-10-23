@@ -1,10 +1,14 @@
 package com.rh.note.file;
 
+import com.rh.note.ao.LineRangeAO;
 import com.rh.note.base.BaseLine;
+import com.rh.note.constants.AdocFileTypeEnum;
 import com.rh.note.exception.RequestParamsValidException;
+import com.rh.note.exception.UnknownLogicException;
 import com.rh.note.line.IncludeLine;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.ProBeanPath;
+import com.rh.note.path.TitleBeanPath;
 import com.rh.note.syntax.IncludeSyntax;
 import com.rh.note.syntax.TitleSyntax;
 import lombok.AccessLevel;
@@ -24,8 +28,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -229,6 +231,64 @@ public class AdocFile {
             }
         }
         return null;
+    }
+
+    /**
+     * 获得include指向文件的相对路径
+     */
+    public @NotNull String getIncludeFileRelativeDirectory() {
+        AdocFileTypeEnum fileType = AdocFileTypeEnum.matchByFilePath(getFilePath());
+        if (fileType == null) {
+            throw new UnknownLogicException();
+        }
+
+        return fileType.getRelativePathOfNextDirectory();
+    }
+
+    /**
+     * 获得include指向文件的项目路径
+     */
+    public @NotNull String getIncludeFileProjectPath() {
+        AdocFileTypeEnum fileType = AdocFileTypeEnum.matchByFilePath(getFilePath());
+        if (fileType == null) {
+            throw new UnknownLogicException();
+        }
+
+        return fileType.getFilePathOfNextDirectory();
+    }
+
+    /**
+     * 获得标题内容范围, 行号范围
+     */
+    public @Nullable LineRangeAO getTitleContentRange(TitleBeanPath beanPath) {
+        if (beanPath == null || CollectionUtils.isEmpty(titleLines)) {
+            return null;
+        }
+
+        TitleLine titleLine = titleLines.stream()
+                .filter(title -> title.getBeanPath().getBeanPath().equals(beanPath.getBeanPath()))
+                .findFirst()
+                .orElse(null);
+        if (titleLine == null) {
+            return null;
+        }
+
+        LineRangeAO ao = new LineRangeAO();
+        // 起始行号
+        ao.setStartLineNumber(titleLine.getLineNumber());
+
+        // 查找同级别, 下一个标题
+        TitleLine nextTitle = titleLines.stream()
+                .sorted(Comparator.comparing(TitleLine::getLineNumber))
+                .filter(title -> title.getTitleSyntax().getLevel()
+                        .equals(titleLine.getTitleSyntax().getLevel())
+                        && title.getLineNumber() > titleLine.getLineNumber())
+                .findFirst()
+                .orElse(null);
+
+        ao.setNextTitle(nextTitle);
+        ao.setFilePath(titleLine.getFilePath());
+        return ao;
     }
 
     interface IForEach {

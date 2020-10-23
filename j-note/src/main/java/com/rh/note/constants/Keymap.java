@@ -54,4 +54,12 @@ public interface Keymap {
     static boolean isSafeDelete(@NotNull KeyEvent event) {
         return event.getKeyCode() == 127 && event.getModifiers() == 8;
     }
+
+    /**
+     * ctrl + alt + m
+     * 下沉标题
+     */
+    static boolean isSinkTitle(@NonNull KeyEvent event) {
+        return event.getKeyCode() == 77 && event.getModifiers() == 10;
+    }
 }

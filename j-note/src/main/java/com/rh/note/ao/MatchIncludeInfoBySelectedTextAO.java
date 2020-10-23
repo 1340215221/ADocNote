@@ -1,6 +1,5 @@
 package com.rh.note.ao;
 
-import com.rh.note.base.ICreateFileAndInitContentAO;
 import com.rh.note.path.ProBeanPath;
 import com.rh.note.syntax.IncludeSyntaxSugar;
 import lombok.Getter;

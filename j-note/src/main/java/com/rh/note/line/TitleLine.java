@@ -36,6 +36,7 @@ public class TitleLine extends BaseLine implements ITitleLineVO {
 
     /**
      * 指定解析第几行的内容
+     * todo 这是干啥的是不是没用了
      */
     public static @Nullable TitleLine parseByLineNumber(JTextPane textPane, Integer lineNumber) {
         if (textPane == null || lineNumber == null) {
@@ -171,5 +172,12 @@ public class TitleLine extends BaseLine implements ITitleLineVO {
             parentTitle.addParentTitles(resultList);
         }
         resultList.add(this);
+    }
+
+    /**
+     * 是否为根标题
+     */
+    public boolean isRootTitle() {
+        return parentTitle == null || !getFilePath().equals(parentTitle.getFilePath());
     }
 }

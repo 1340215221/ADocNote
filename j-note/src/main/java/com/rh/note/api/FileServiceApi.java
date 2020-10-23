@@ -1,7 +1,7 @@
 package com.rh.note.api;
 
 import com.rh.note.ao.ClickedHistoryProjectListAO;
-import com.rh.note.base.ICreateFileAndInitContentAO;
+import com.rh.note.ao.ICreateFileAndInitContentAO;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.file.AdocFile;
@@ -18,7 +18,6 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 /**

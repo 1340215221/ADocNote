@@ -108,10 +108,10 @@ public class TextPaneView extends Init<AdocTextPane> {
     }
 
     /**
-     * 获得标题, 通过光标所在行内容
+     * 获得标题路径对象, 通过光标所在行内容
      */
-    public @Nullable TitleBeanPath getTitleByCaretLineContent() {
-        return new ParsingCareLineApi().getTitleByCaretLineContent();
+    public @Nullable TitleBeanPath getTitleBeanPathByCaretLineContent() {
+        return new ParsingCareLineApi().getTitleBeanPathByCaretLineContent();
     }
 
     /**
@@ -247,12 +247,52 @@ public class TextPaneView extends Init<AdocTextPane> {
         textPane().select(startOffset, startOffset + length);
     }
 
+    /**
+     * 获得标题, 通过光标所在行内容
+     */
+    public TitleLine getSimpleTitleByCaretLineContent() {
+        return new ParsingCareLineApi().getTitleByCaretLineContent();
+    }
+
+    /**
+     * 选择行, 通过范围
+     * 选择时, 不包含最后一个换行符
+     */
+    public void selectLineByRange(int startLineIndex, int endLineIndex) {
+        Element rootElement = textPane().getDocument().getDefaultRootElement();
+        Element startElement = rootElement.getElement(startLineIndex);
+        if (startElement == null) {
+            return;
+        }
+
+        Element endElement = Integer.MAX_VALUE == endLineIndex ?
+                rootElement.getElement(rootElement.getElementCount() - 1) :
+                rootElement.getElement(endLineIndex);
+        if (endElement == null) {
+            return;
+        }
+
+        textPane().select(startElement.getStartOffset(), endElement.getEndOffset());
+    }
+
     private class ParsingCareLineApi {
 
         /**
          * 获得标题, 通过光标所在行内容
          */
-        public @Nullable TitleBeanPath getTitleByCaretLineContent() {
+        public @Nullable TitleLine getTitleByCaretLineContent() {
+            int lineNumber = getCareLineNumber() + 1;
+            if (lineNumber < 1) {
+                return null;
+            }
+            AdocFile adocFile = getSimpleAdocFile();
+            return adocFile.getTitleByLineNumber(lineNumber);
+        }
+
+        /**
+         * 获得标题路径, 通过光标所在行内容
+         */
+        public @Nullable TitleBeanPath getTitleBeanPathByCaretLineContent() {
             int lineNumber = getCareLineNumber() + 1;
             if (lineNumber < 1) {
                 return null;
@@ -262,6 +302,7 @@ public class TextPaneView extends Init<AdocTextPane> {
             if (titleLine == null) {
                 return null;
             }
+
             return titleLine.getBeanPath();
         }
     }

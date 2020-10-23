@@ -1,6 +1,7 @@
 package com.rh.note.api;
 
 import com.rh.note.ao.IncludeFilePathInfoAO;
+import com.rh.note.ao.LineRangeAO;
 import com.rh.note.ao.MatchIncludeInfoBySelectedTextAO;
 import com.rh.note.ao.MatchTitleInfoBySelectedTextAO;
 import com.rh.note.ao.RenameIncludeAO;
@@ -148,7 +149,7 @@ public class WorkViewApi {
         }
         String filePath = textScrollPane.getFilePath();
         TextPaneView textPane = new TextPaneView().initByFilePath(filePath);
-        return textPane.getTitleByCaretLineContent();
+        return textPane.getTitleBeanPathByCaretLineContent();
     }
 
     /**
@@ -510,5 +511,53 @@ public class WorkViewApi {
     public boolean requestConfirm(PromptMessageEnum message) {
         PromptMessageEnum msg = message != null ? message : PromptMessageEnum.are_you_sure_you_want_to_delete_safely;
         return new ConfirmDialogView().init(msg).isConfirm();
+    }
+
+    /**
+     * 获得选择内容, 通过编辑区域文件地址
+     */
+    public @Nullable String getSelectContentByFilePath(String filePath) {
+        if (StringUtils.isBlank(filePath)) {
+            return null;
+        }
+
+        TextPaneView textPane = new TextPaneView().initByFilePath(filePath);
+        if (textPane == null) {
+            return null;
+        }
+
+        return textPane.getSelectedText();
+    }
+
+    /**
+     * 获得简单标题, 通过光标所在行
+     */
+    public @Nullable TitleLine getSimpleTitleLineByCaretLine(AdocTextPane bean) {
+        if (bean == null) {
+            return null;
+        }
+
+        TextPaneView textPane = TextPaneView.cast(bean);
+        if (textPane == null) {
+            return null;
+        }
+
+        return textPane.getSimpleTitleByCaretLineContent();
+    }
+
+    /**
+     * 选择行内容, 通过范围
+     */
+    public void selectLineByRange(LineRangeAO ao) {
+        if (ao == null) {
+            return;
+        }
+
+        TextPaneView textPane = new TextPaneView().initByFilePath(ao.getFilePath());
+        if (textPane == null) {
+            return;
+        }
+
+        textPane.selectLineByRange(ao.getStartLineIndex(), ao.getEndLineIndex());
     }
 }

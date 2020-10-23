@@ -1,4 +1,4 @@
-package com.rh.note.base;
+package com.rh.note.ao;
 
 /**
  * 创建文件和初始化内容

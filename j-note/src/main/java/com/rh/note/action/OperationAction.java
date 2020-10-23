@@ -3,8 +3,11 @@ package com.rh.note.action;
 import com.rh.note.ao.ClickedHistoryProjectListAO;
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
+import com.rh.note.ao.ITitleContentAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
+import com.rh.note.ao.LineRangeAO;
 import com.rh.note.ao.RenameIncludeAO;
+import com.rh.note.ao.TitleContentAO;
 import com.rh.note.api.FileServiceApi;
 import com.rh.note.api.ProManageViewApi;
 import com.rh.note.api.WorkViewApi;
@@ -14,6 +17,8 @@ import com.rh.note.constants.Keymap;
 import com.rh.note.constants.PromptMessageEnum;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
+import com.rh.note.exception.UnknownLogicException;
+import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.path.TitleBeanPath;
 import com.rh.note.view.TextPaneView;
@@ -161,6 +166,32 @@ public class OperationAction implements IOperationAction {
             workViewApi.writeTextPaneByFile(targetBeanPath);
         }
         workViewApi.selectRootTitleName(targetFilePath);
+        return ao;
+    }
+
+    @Override
+    public ITitleContentAO sinkTitleOperation(@NonNull KeyEvent event) {
+        if (!Keymap.isSinkTitle(event)) {
+            return null;
+        }
+        Object source = event.getSource();
+        if (!(source instanceof AdocTextPane)) {
+            return null;
+        }
+
+        TitleContentAO ao = new TitleContentAO();
+        // 判断光标所在行是否为标题, 且非根标题
+        TitleLine titleLine = workViewApi.getSimpleTitleLineByCaretLine(((AdocTextPane) source));
+        if (titleLine == null || ao.isRootTitle(titleLine)) {
+            return null;
+        }
+        ao.copy(titleLine);
+        LineRangeAO lrAO = ao.getTitleContentRange(titleLine);
+        if (lrAO == null || !lrAO.isReasonable()) {
+            throw new UnknownLogicException();
+        }
+        // 选择标题下所有内容
+        workViewApi.selectLineByRange(lrAO);
         return ao;
     }
 

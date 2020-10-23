@@ -1,6 +1,7 @@
 package com.rh.note.event;
 
 
+import com.rh.note.ao.ITitleContentAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
@@ -75,6 +76,17 @@ public class TextPaneEvent {
      * 下沉标题
      */
     public static void sink_title(KeyEvent event) {
+        ITitleContentAO ao = operationAction().sinkTitleOperation(event);
+        if (ao == null) {
+            return;
+        }
+        workAction().sinkTitle(ao);
+        workAction().saveAllEdited();
+        workAction().loadTitleTree();
+        ITitleLineVO vo = operationAction().getTitleByCaretLineContent();
+        if (vo != null) {
+            workAction().loadTitleNavigate(vo);
+        }
     }
 
     /**

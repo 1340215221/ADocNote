@@ -2,11 +2,11 @@ package com.rh.note.action;
 
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
+import com.rh.note.ao.ITitleContentAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.vo.ITitleLineVO;
 
-import java.awt.AWTEvent;
 import java.awt.event.ActionEvent;
 
 /**
@@ -62,4 +62,9 @@ public interface IWorkAction {
      * 重命名include块
      */
     void renameInclude(RenameIncludeAO ao);
+
+    /**
+     * 下沉标题
+     */
+    void sinkTitle(ITitleContentAO ao);
 }

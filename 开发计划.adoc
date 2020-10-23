@@ -1,14 +1,13 @@
 == 记录现有bug
 
-- [ ] `shift + F6` (在include行上) 重命名操作, 如果指向文件没有打开过, 会报错
+- [*] `shift + F6` (在include行上) 重命名操作, 如果指向文件没有打开过, 会报错
 
 
 
 == 待开发使用功能
 
-- [ ] `alt + del` (在include块使用) 安全删除include
-- [ ] `ctrl + 点击` (在根标题上使用) 进入根标题引用方
-- [ ] `ctrl + alt + <-` 退回上个鼠标位置
-- [ ] `ctrl + alt + ->` 回到前个鼠标位置
+- [*] `alt + del` (在include块使用) 安全删除include
 - [ ] `ctrl + alt + m` (在非根标题上使用) 标题沉入新文件中, 内容替换为include行
 - [ ] `ctrl + alt + n` (在include行使用) 取消include引用, 上升内容
+- [ ] `ctrl + alt + <-` 退回上个鼠标位置
+- [ ] `ctrl + alt + ->` 回到前个鼠标位置
