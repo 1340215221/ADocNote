@@ -152,4 +152,20 @@ public class IncludeSyntax {
     public int getLengthOfOfTargetFileName() {
         return targetFileName.length();
     }
+
+    /**
+     * 是否为父目录
+     */
+    public boolean isChildPathOf(String filePath) {
+        if (StringUtils.isBlank(filePath)) {
+            return false;
+        }
+
+        AdocFileTypeEnum fileType = AdocFileTypeEnum.matchByFilePath(filePath);
+        if (fileType == null) {
+            return false;
+        }
+
+        return fileType.isParentPathOf(getTargetFilePath());
+    }
 }

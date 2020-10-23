@@ -174,10 +174,10 @@ public class WorkAction implements IWorkAction {
         TitleContentAO ao = ((TitleContentAO) iao);
         // 获取选择内容
         String selectedContent = workViewApi.getSelectContentByFilePath(ao.getFilePath());
-        if (StringUtils.isBlank(selectedContent)) {
+        String newFileText = workViewApi.batchHandleFilePathInIncludeSyntax(selectedContent, ao.getFilePath());
+        if (StringUtils.isBlank(newFileText)) {
             return;
         }
-        // 获得指向文件路径
         // 创建include指向文件
         // 向include指向文件中写入, 两个空白行, 选择内容
         ICreateFileAndInitContentAO createAO = ao.getCreateFileAO()

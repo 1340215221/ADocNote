@@ -42,6 +42,13 @@ public enum AdocFileTypeEnum {
         public String getFilePathOfNextDirectory() {
             return towLevel.getFileDirectory();
         }
+
+        @Override
+        public boolean isParentPathOf(String childFilePath) {
+            return StringUtils.isNotBlank(getFilePathOfNextDirectory())
+                    || StringUtils.isNotBlank(childFilePath)
+                    || childFilePath.startsWith("adoc/twoLevel/");
+        }
     },
     /**
      * towLevel
@@ -74,6 +81,13 @@ public enum AdocFileTypeEnum {
         @Override
         public String getFilePathOfNextDirectory() {
             return content.getFileDirectory();
+        }
+
+        @Override
+        public boolean isParentPathOf(String childFilePath) {
+            return StringUtils.isNotBlank(getFilePathOfNextDirectory())
+                    || StringUtils.isNotBlank(childFilePath)
+                    || childFilePath.startsWith("adoc/content/");
         }
     },
     /**
@@ -113,6 +127,11 @@ public enum AdocFileTypeEnum {
         @Override
         public String getFilePathOfNextDirectory() {
             return "";
+        }
+
+        @Override
+        public boolean isParentPathOf(String childFilePath) {
+            return false;
         }
     },
     ;
@@ -178,4 +197,10 @@ public enum AdocFileTypeEnum {
                 .findFirst()
                 .orElse(null);
     }
+
+    /**
+     * 是否为父目录
+     * @param childFilePath
+     */
+    public abstract boolean isParentPathOf(String childFilePath);
 }

@@ -36,10 +36,12 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * 工作窗口 操作
@@ -260,7 +262,7 @@ public class WorkViewApi {
     }
 
     /**
-     *用生成的include语句替换选择的内容
+     * 用生成的include语句替换选择的内容
      */
     public MatchTitleInfoBySelectedTextAO getTitleInfoBySelectedText(String filePath) {
         if (StringUtils.isBlank(filePath)) {
@@ -506,6 +508,7 @@ public class WorkViewApi {
 
     /**
      * 请求确认
+     *
      * @return
      */
     public boolean requestConfirm(PromptMessageEnum message) {
@@ -559,5 +562,34 @@ public class WorkViewApi {
         }
 
         textPane.selectLineByRange(ao.getStartLineIndex(), ao.getEndLineIndex());
+    }
+
+    /**
+     * 批量处理include语句中的文件路径
+     */
+    public @Nullable String batchHandleFilePathInIncludeSyntax(String selectedContent, String filePath) {
+        if (StringUtils.isBlank(selectedContent) || StringUtils.isBlank(filePath)) {
+            return null;
+        }
+
+        return Arrays.stream(selectedContent.split("\n")).map(lineContent -> {
+            if (StringUtils.isBlank(lineContent)) {
+                return lineContent;
+            }
+
+            IncludeSyntax syntax = new IncludeSyntax().init(lineContent);
+            if (syntax == null) {
+                return lineContent;
+            }
+
+            if (!syntax.isChildPathOf(filePath)) {
+                return lineContent;
+            }
+
+            String includeFileContent = syntax.getIncludeFileContent();
+            return StringUtils.isNotBlank(includeFileContent) ?
+                    includeFileContent :
+                    lineContent;
+        }).collect(Collectors.joining("\n"));
     }
 }
