@@ -9,6 +9,7 @@ import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.ao.SelectCaretLineAO;
 import com.rh.note.component.AdocTextPane;
 import com.rh.note.component.TitleButton;
+import com.rh.note.constants.AdocFileTypeEnum;
 import com.rh.note.constants.PromptMessageEnum;
 import com.rh.note.exception.UnknownLogicException;
 import com.rh.note.frame.WorkFrame;
@@ -632,8 +633,38 @@ public class WorkViewApi {
             return null;
         }
 
-        Arrays.stream(ao.getTargetFileContent().split("\n"))
-                .map(lineContent -> {
+        return Arrays.stream(ao.getTargetFileContent().split("\n"))
+                .map(lineContent -> { // 遍历每一行
+                    // 校验是否为include语句, 父目录是否匹配
+                    if (StringUtils.isBlank(lineContent)) {
+                        return lineContent;
+                    }
+
+                    IncludeSyntax syntax = new IncludeSyntax().init(lineContent);
+                    if (syntax == null) {
+                        return lineContent;
+                    }
+
+                    AdocFileTypeEnum fileType = AdocFileTypeEnum.matchByFilePath(ao.getFilePath());
+                    if (fileType == null) {
+                        return lineContent;
+                    }
+
+                    if (!fileType.isParentPathOf(syntax.getTargetFilePath())) {
+                        return lineContent;
+                    }
+
+                    // include相对路径生成, 替换
+                    // todo
+                    String newRelativePath = "";
+                    if (StringUtils.isBlank(newRelativePath)) {
+                        return lineContent;
+                    }
+
+                    syntax.setTargetRelativePath(newRelativePath);
+                    return syntax.toString();
                 })
+                .collect(Collectors.joining("\n"));
+        // 合并为字符串
     }
 }
