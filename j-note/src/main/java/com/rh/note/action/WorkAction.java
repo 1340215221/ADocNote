@@ -13,15 +13,14 @@ import com.rh.note.api.FileServiceApi;
 import com.rh.note.api.WorkViewApi;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
-import com.rh.note.exception.RequestParamsValidException;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
-import com.rh.note.util.ViewUtil;
 import com.rh.note.view.TextPaneView;
 import com.rh.note.vo.ITitleLineVO;
 import com.rh.note.vo.WriterVO;
 import lombok.NonNull;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -34,6 +33,7 @@ import java.util.function.Function;
 /**
  * 工作窗口 入口
  */
+@Slf4j
 @Setter
 public class WorkAction implements IWorkAction {
 
@@ -202,8 +202,12 @@ public class WorkAction implements IWorkAction {
         // 删除旧的指向的文件
         if (CollectionUtils.isNotEmpty(deleteFilePaths)) {
             deleteFilePaths.forEach(filePath -> {
-                workViewApi.closeTextPaneByFilePath(filePath);
-                fileServiceApi.deleteFileByFilePath(filePath);
+                try {
+                    workViewApi.closeTextPaneByFilePath(filePath);
+                    fileServiceApi.deleteFileByFilePath(filePath);
+                } catch (Exception e) {
+                    log.error("标题下沉-删除include指向文件  失败, filePath={}", filePath, e);
+                }
             });
         }
     }
