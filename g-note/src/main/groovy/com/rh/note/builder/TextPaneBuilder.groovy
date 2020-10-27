@@ -32,6 +32,7 @@ class TextPaneBuilder implements ISwingBuilder {
                     keyPressed: {
                         TextPaneEvent.renameInclude(it)
                         TextPaneEvent.sink_title(it)
+                        TextPaneEvent.inline_title(it)
                         TextPaneEvent.delete_include(it)
                     },
                     mouseClicked: {

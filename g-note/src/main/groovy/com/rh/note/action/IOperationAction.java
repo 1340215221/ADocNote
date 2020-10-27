@@ -5,6 +5,7 @@ import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
 import com.rh.note.ao.ITitleContentAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
+import com.rh.note.ao.InlineTitleAO;
 import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.vo.ITitleLineVO;
 import org.jetbrains.annotations.NotNull;
@@ -72,4 +73,9 @@ public interface IOperationAction {
      * 下沉标题
      */
     ITitleContentAO sinkTitleOperation(KeyEvent event);
+
+    /**
+     * 内联标题
+     */
+    InlineTitleAO inlineTitleOperation(KeyEvent event);
 }

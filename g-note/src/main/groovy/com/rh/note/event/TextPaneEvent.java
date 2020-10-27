@@ -5,6 +5,7 @@ import com.rh.note.ao.ITitleContentAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
+import com.rh.note.ao.InlineTitleAO;
 import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.vo.ITitleLineVO;
 
@@ -70,6 +71,24 @@ public class TextPaneEvent {
         workAction().renameInclude(ao);
         // 重新加载标题
         workAction().loadTitleTree();
+    }
+
+    /**
+     * 内联标题
+     */
+    public static void inline_title(KeyEvent event) {
+        InlineTitleAO ao = operationAction().inlineTitleOperation(event);
+        if (ao == null) {
+            return;
+        }
+        workAction().saveAllEdited();
+        workAction().inlineTitle(ao);
+        workAction().saveAllEdited();
+        workAction().loadTitleTree();
+        ITitleLineVO titleLineVO = operationAction().getTitleByCaretLineContent();
+        if (titleLineVO != null) {
+            workAction().loadTitleNavigate(titleLineVO);
+        }
     }
 
     /**

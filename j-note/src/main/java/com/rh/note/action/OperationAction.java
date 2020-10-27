@@ -5,6 +5,7 @@ import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
 import com.rh.note.ao.ITitleContentAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
+import com.rh.note.ao.InlineTitleAO;
 import com.rh.note.ao.LineRangeAO;
 import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.ao.TitleContentAO;
@@ -192,6 +193,43 @@ public class OperationAction implements IOperationAction {
         }
         // 选择标题下所有内容
         workViewApi.selectLineByRange(lrAO);
+        return ao;
+    }
+
+    @Override
+    public InlineTitleAO inlineTitleOperation(@NonNull KeyEvent event) {
+        if (!Keymap.isInlineTitle(event)) {
+            return null;
+        }
+        Object source = event.getSource();
+        if (!(source instanceof AdocTextPane)) {
+            return null;
+        }
+        // 判断是否为include语句
+        IncludeFilePathInfoAO filePathAO = workViewApi.getIncludeFilePathInfoOnCaretLine(((AdocTextPane) source));
+        if (filePathAO == null) {
+            return null;
+        }
+        // 安全打开include指向文件
+        AdocFileBeanPath targetBeanPath = fileServiceApi.getFileByProPath(filePathAO.getTargetFilePath());
+        TextPaneView targetTextPane = workViewApi.safeCreateAndGetTextPane(targetBeanPath);
+        if (targetTextPane == null) {
+            return null;
+        }
+        if (workViewApi.isBlankTextPane(filePathAO.getTargetFilePath())) {
+            workViewApi.writeTextPaneByFile(targetBeanPath);
+        }
+        // 获得include指向文件内容
+        String targetFileContent = workViewApi.getFileContentByTextPane(targetTextPane);
+        if (StringUtils.isBlank(targetFileContent)) {
+            return null;
+        }
+        // 当前文件选择include行内容
+        workViewApi.selectCaretLine(((AdocTextPane) source));
+        // 返回: 文件路径, 指向文件路径, include指向文件内容
+        InlineTitleAO ao = new InlineTitleAO();
+        ao.copy(filePathAO);
+        ao.setTargetFileContent(targetFileContent);
         return ao;
     }
 

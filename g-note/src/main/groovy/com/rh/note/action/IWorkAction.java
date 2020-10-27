@@ -4,6 +4,7 @@ import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
 import com.rh.note.ao.ITitleContentAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
+import com.rh.note.ao.InlineTitleAO;
 import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.vo.ITitleLineVO;
 
@@ -67,4 +68,9 @@ public interface IWorkAction {
      * 下沉标题
      */
     void sinkTitle(ITitleContentAO ao);
+
+    /**
+     * 内联标题
+     */
+    void inlineTitle(InlineTitleAO ao);
 }

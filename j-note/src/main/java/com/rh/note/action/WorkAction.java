@@ -5,6 +5,7 @@ import com.rh.note.ao.GenerateTitleSyntaxAO;
 import com.rh.note.ao.ICreateFileAndInitContentAO;
 import com.rh.note.ao.ITitleContentAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
+import com.rh.note.ao.InlineTitleAO;
 import com.rh.note.ao.MatchIncludeInfoBySelectedTextAO;
 import com.rh.note.ao.MatchTitleInfoBySelectedTextAO;
 import com.rh.note.ao.RenameIncludeAO;
@@ -172,6 +173,25 @@ public class WorkAction implements IWorkAction {
     }
 
     @Override
+    public void inlineTitle(InlineTitleAO ao) {
+        if (ao == null) {
+            return;
+        }
+        ao.checkRequiredItems();
+        // include指向文件内容中, include语句相对路径修改
+        String replaceContent = workViewApi.updateRelativePathOfIncludeSyntax(ao);
+        if (StringUtils.isBlank(replaceContent)) {
+            return;
+        }
+        // 替换被选择的include行 为include指向文件内容
+        workViewApi.replaceSelectedText(ao.getFilePath(), ao.getTargetFileContent());
+        // 关闭include指向文件, 从选项卡中
+        workViewApi.closeTextPaneByFilePath(ao.getTargetFilePath());
+        // 删除include指向文件
+        fileServiceApi.deleteFileByFilePath(ao.getTargetFilePath());
+    }
+
+    @Override
     public void sinkTitle(ITitleContentAO iao) {
         if (!(iao instanceof TitleContentAO)) {
             return;
@@ -180,10 +200,8 @@ public class WorkAction implements IWorkAction {
         // 获取选择内容
         String selectedContent = workViewApi.getSelectContentByFilePath(ao.getFilePath());
 
-        Function<String, WriterVO> function = filePath -> fileServiceApi.openFileOutputStream(filePath);
-
         List<String> deleteFilePaths = new ArrayList<>();
-        String newFileText = workViewApi.batchHandleFilePathInIncludeSyntax(selectedContent, ao.getFilePath(), function, deleteFilePaths);
+        String newFileText = workViewApi.batchHandleFilePathInIncludeSyntax(selectedContent, ao.getFilePath(), deleteFilePaths);
         if (StringUtils.isBlank(newFileText)) {
             return;
         }

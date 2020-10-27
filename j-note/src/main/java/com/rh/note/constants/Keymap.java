@@ -62,4 +62,11 @@ public interface Keymap {
     static boolean isSinkTitle(@NonNull KeyEvent event) {
         return event.getKeyCode() == 77 && event.getModifiers() == 10;
     }
+
+    /**
+     * 内联标题
+     */
+    static boolean isInlineTitle(@NonNull KeyEvent event) {
+        return event.getKeyCode() == 78 && event.getModifiers() == 10;
+    }
 }

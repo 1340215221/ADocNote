@@ -1,6 +1,7 @@
 package com.rh.note.api;
 
 import com.rh.note.ao.IncludeFilePathInfoAO;
+import com.rh.note.ao.InlineTitleAO;
 import com.rh.note.ao.LineRangeAO;
 import com.rh.note.ao.MatchIncludeInfoBySelectedTextAO;
 import com.rh.note.ao.MatchTitleInfoBySelectedTextAO;
@@ -567,8 +568,8 @@ public class WorkViewApi {
     /**
      * 批量处理include语句中的文件路径
      */
-    public @Nullable String batchHandleFilePathInIncludeSyntax(String selectedContent, String filePath, Function<String, WriterVO> function, List<String> deleteFilePaths) {
-        if (StringUtils.isBlank(selectedContent) || StringUtils.isBlank(filePath) || function == null) {
+    public @Nullable String batchHandleFilePathInIncludeSyntax(String selectedContent, String filePath, List<String> deleteFilePaths) {
+        if (StringUtils.isBlank(selectedContent) || StringUtils.isBlank(filePath)) {
             return null;
         }
 
@@ -587,8 +588,9 @@ public class WorkViewApi {
                 return lineContent;
             }
 
-            // 获得include指向文件内容
-            AdocFileBeanPath beanPath = AdocFileBeanPath.create(syntax.getTargetFilePath());
+            String targetFilePath = syntax.getTargetFilePath();
+            // 获得include指向文件内容 todo 这个对象的创建不应该放在view中
+            AdocFileBeanPath beanPath = AdocFileBeanPath.create(targetFilePath);
             if (beanPath == null) {
                 return lineContent;
             }
@@ -599,15 +601,39 @@ public class WorkViewApi {
             }
 
             if (textPane.isBlank()) {
-                textPane.write(function);
+                this.writeTextPaneByFile(beanPath);
             }
             String fileContent = textPane.getText();
             if (StringUtils.isBlank(fileContent)) {
                 return lineContent;
             }
 
-            deleteFilePaths.add(syntax.getTargetFilePath());
+            deleteFilePaths.add(targetFilePath);
             return fileContent;
         }).collect(Collectors.joining("\n"));
+    }
+
+    /**
+     * 获得编辑区内容, 通过编辑区控件
+     */
+    public @Nullable String getFileContentByTextPane(TextPaneView textPane) {
+        if (textPane == null) {
+            return null;
+        }
+
+        return textPane.getText();
+    }
+
+    /**
+     * 修改文本中所有的include语句的相对路径
+     */
+    public @Nullable String updateRelativePathOfIncludeSyntax(InlineTitleAO ao) {
+        if (ao == null || ao.isErrorParams()) {
+            return null;
+        }
+
+        Arrays.stream(ao.getTargetFileContent().split("\n"))
+                .map(lineContent -> {
+                })
     }
 }
