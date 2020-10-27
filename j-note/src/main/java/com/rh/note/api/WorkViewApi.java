@@ -567,8 +567,8 @@ public class WorkViewApi {
     /**
      * 批量处理include语句中的文件路径
      */
-    public @Nullable String batchHandleFilePathInIncludeSyntax(String selectedContent, String filePath) {
-        if (StringUtils.isBlank(selectedContent) || StringUtils.isBlank(filePath)) {
+    public @Nullable String batchHandleFilePathInIncludeSyntax(String selectedContent, String filePath, Function<String, WriterVO> function, List<String> deleteFilePaths) {
+        if (StringUtils.isBlank(selectedContent) || StringUtils.isBlank(filePath) || function == null) {
             return null;
         }
 
@@ -577,6 +577,7 @@ public class WorkViewApi {
                 return lineContent;
             }
 
+            // 校验include语法是否正确
             IncludeSyntax syntax = new IncludeSyntax().init(lineContent);
             if (syntax == null) {
                 return lineContent;
@@ -586,10 +587,27 @@ public class WorkViewApi {
                 return lineContent;
             }
 
-            String includeFileContent = syntax.getIncludeFileContent();
-            return StringUtils.isNotBlank(includeFileContent) ?
-                    includeFileContent :
-                    lineContent;
+            // 获得include指向文件内容
+            AdocFileBeanPath beanPath = AdocFileBeanPath.create(syntax.getTargetFilePath());
+            if (beanPath == null) {
+                return lineContent;
+            }
+
+            TextPaneView textPane = this.safeCreateAndGetTextPane(beanPath);
+            if (textPane == null) {
+                return lineContent;
+            }
+
+            if (textPane.isBlank()) {
+                textPane.write(function);
+            }
+            String fileContent = textPane.getText();
+            if (StringUtils.isBlank(fileContent)) {
+                return lineContent;
+            }
+
+            deleteFilePaths.add(syntax.getTargetFilePath());
+            return fileContent;
         }).collect(Collectors.joining("\n"));
     }
 }

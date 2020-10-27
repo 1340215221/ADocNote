@@ -1,6 +1,7 @@
 package com.rh.note.path;
 
 import com.rh.note.base.BeanPath;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,7 @@ import java.io.File;
 /**
  * adoc文件地址
  */
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class AdocFileBeanPath implements BeanPath {
     /**
      * 文件地址

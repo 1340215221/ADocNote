@@ -80,6 +80,7 @@ public class TextPaneEvent {
         if (ao == null) {
             return;
         }
+        workAction().saveAllEdited();
         workAction().sinkTitle(ao);
         workAction().saveAllEdited();
         workAction().loadTitleTree();

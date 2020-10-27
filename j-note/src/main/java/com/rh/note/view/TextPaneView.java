@@ -275,6 +275,13 @@ public class TextPaneView extends Init<AdocTextPane> {
         textPane().select(startElement.getStartOffset(), endElement.getEndOffset());
     }
 
+    /**
+     * 获得文件内容
+     */
+    public @Nullable String getText() {
+        return textPane().getText();
+    }
+
     private class ParsingCareLineApi {
 
         /**

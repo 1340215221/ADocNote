@@ -2,6 +2,7 @@ package com.rh.note.action;
 
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
+import com.rh.note.ao.ICreateFileAndInitContentAO;
 import com.rh.note.ao.ITitleContentAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.MatchIncludeInfoBySelectedTextAO;
@@ -10,20 +11,24 @@ import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.ao.TitleContentAO;
 import com.rh.note.api.FileServiceApi;
 import com.rh.note.api.WorkViewApi;
-import com.rh.note.ao.ICreateFileAndInitContentAO;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
+import com.rh.note.exception.RequestParamsValidException;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
+import com.rh.note.util.ViewUtil;
 import com.rh.note.view.TextPaneView;
 import com.rh.note.vo.ITitleLineVO;
 import com.rh.note.vo.WriterVO;
 import lombok.NonNull;
 import lombok.Setter;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.text.DefaultEditorKit;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
 /**
@@ -174,7 +179,11 @@ public class WorkAction implements IWorkAction {
         TitleContentAO ao = ((TitleContentAO) iao);
         // 获取选择内容
         String selectedContent = workViewApi.getSelectContentByFilePath(ao.getFilePath());
-        String newFileText = workViewApi.batchHandleFilePathInIncludeSyntax(selectedContent, ao.getFilePath());
+
+        Function<String, WriterVO> function = filePath -> fileServiceApi.openFileOutputStream(filePath);
+
+        List<String> deleteFilePaths = new ArrayList<>();
+        String newFileText = workViewApi.batchHandleFilePathInIncludeSyntax(selectedContent, ao.getFilePath(), function, deleteFilePaths);
         if (StringUtils.isBlank(newFileText)) {
             return;
         }
@@ -182,11 +191,20 @@ public class WorkAction implements IWorkAction {
         // 向include指向文件中写入, 两个空白行, 选择内容
         ICreateFileAndInitContentAO createAO = ao.getCreateFileAO()
                 .addTwoBlankLine()
-                .addText(selectedContent);
+                .addText(newFileText);
         fileServiceApi.createFileAndInitContent(createAO);
         // 生成include语句内容
         String includeLineText = ao.getIncludeLineText();
             // 替换到选中区域
         workViewApi.replaceSelectedText(ao.getFilePath(), includeLineText);
+
+        this.saveAllEdited();
+        // 删除旧的指向的文件
+        if (CollectionUtils.isNotEmpty(deleteFilePaths)) {
+            deleteFilePaths.forEach(filePath -> {
+                workViewApi.closeTextPaneByFilePath(filePath);
+                fileServiceApi.deleteFileByFilePath(filePath);
+            });
+        }
     }
 }
