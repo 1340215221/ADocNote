@@ -179,10 +179,10 @@ public class WorkAction implements IWorkAction {
         }
         ao.checkRequiredItems();
         // include指向文件内容中, include语句相对路径修改
-        String replaceContent = workViewApi.updateRelativePathOfIncludeSyntax(ao);
-        if (StringUtils.isBlank(replaceContent)) {
-            return;
-        }
+//        String replaceContent = workViewApi.updateRelativePathOfIncludeSyntax(ao);
+//        if (StringUtils.isBlank(replaceContent)) {
+//            return;
+//        }
         // 替换被选择的include行 为include指向文件内容
         workViewApi.replaceSelectedText(ao.getFilePath(), ao.getTargetFileContent());
         // 关闭include指向文件, 从选项卡中

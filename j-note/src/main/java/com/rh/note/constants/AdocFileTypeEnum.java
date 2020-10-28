@@ -46,8 +46,13 @@ public enum AdocFileTypeEnum {
         @Override
         public boolean isParentPathOf(String childFilePath) {
             return StringUtils.isNotBlank(getFilePathOfNextDirectory())
-                    || StringUtils.isNotBlank(childFilePath)
-                    || childFilePath.startsWith("adoc/twoLevel/");
+                    && StringUtils.isNotBlank(childFilePath)
+                    && childFilePath.startsWith("adoc/twoLevel/");
+        }
+
+        @Override
+        public AdocFileTypeEnum getNextFileType() {
+            return towLevel;
         }
     },
     /**
@@ -86,8 +91,13 @@ public enum AdocFileTypeEnum {
         @Override
         public boolean isParentPathOf(String childFilePath) {
             return StringUtils.isNotBlank(getFilePathOfNextDirectory())
-                    || StringUtils.isNotBlank(childFilePath)
-                    || childFilePath.startsWith("adoc/content/");
+                    && StringUtils.isNotBlank(childFilePath)
+                    && childFilePath.startsWith("adoc/content/");
+        }
+
+        @Override
+        public AdocFileTypeEnum getNextFileType() {
+            return content;
         }
     },
     /**
@@ -133,6 +143,11 @@ public enum AdocFileTypeEnum {
         public boolean isParentPathOf(String childFilePath) {
             return false;
         }
+
+        @Override
+        public AdocFileTypeEnum getNextFileType() {
+            return null;
+        }
     },
     ;
 
@@ -167,6 +182,11 @@ public enum AdocFileTypeEnum {
     public boolean matchByFPath(String filePath) {
         return StringUtils.isNotBlank(filePath) && filePath.matches(getRegex());
     }
+
+    /**
+     * 获得下个目录对象
+     */
+    public abstract AdocFileTypeEnum getNextFileType();
 
     /**
      * 通过地址匹配

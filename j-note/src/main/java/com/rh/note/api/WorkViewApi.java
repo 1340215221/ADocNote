@@ -650,18 +650,34 @@ public class WorkViewApi {
                         return lineContent;
                     }
 
-                    if (!fileType.isParentPathOf(syntax.getTargetFilePath())) {
+                    AdocFileTypeEnum targetFileType = fileType.getNextFileType();
+                    if (targetFileType == null) {
+                        return lineContent;
+                    }
+
+                    if (!targetFileType.isParentPathOf(syntax.getTargetFilePath())) {
                         return lineContent;
                     }
 
                     // include相对路径生成, 替换
-                    // todo
-                    String newRelativePath = "";
-                    if (StringUtils.isBlank(newRelativePath)) {
+
+                    String relativePathOfIncludeTargetFile = targetFileType.getRelativePathOfNextDirectory();
+                    if (StringUtils.isBlank(relativePathOfIncludeTargetFile)) {
                         return lineContent;
                     }
 
-                    syntax.setTargetRelativePath(newRelativePath);
+                    String targetRelativePath = syntax.getTargetRelativePath();
+                    int index = targetRelativePath.indexOf(relativePathOfIncludeTargetFile);
+                    if (index < 0) {
+                        return lineContent;
+                    }
+
+                    String newTargetRelativePath = targetRelativePath.replaceFirst(relativePathOfIncludeTargetFile, fileType.getRelativePathOfNextDirectory());
+                    if (StringUtils.isBlank(newTargetRelativePath)) {
+                        return lineContent;
+                    }
+
+                    syntax.setTargetRelativePath(newTargetRelativePath);
                     return syntax.toString();
                 })
                 .collect(Collectors.joining("\n"));
