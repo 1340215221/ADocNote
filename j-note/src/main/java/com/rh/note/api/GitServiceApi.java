@@ -6,6 +6,7 @@ import com.rh.note.path.ProBeanPath;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.merge.MergeStrategy;
 
 import java.io.File;
 
@@ -19,6 +20,28 @@ public class GitServiceApi {
      */
     public void push() {
         // todo push 中可能出现冲突合并
+    }
+
+    /**
+     * 更新
+     */
+    public void pull() {
+        String projectPath = new ProBeanPath().getProjectPath();
+        if (StringUtils.isBlank(projectPath)) {
+            return;
+        }
+
+        File file = new File(projectPath);
+        if (!file.exists() || !file.isDirectory()) {
+            return;
+        }
+
+        try {
+            Git git = Git.open(file);
+            git.pull().setStrategy(MergeStrategy.RECURSIVE).call();
+        } catch (Exception e) {
+            throw new ApplicationException(ErrorCodeEnum.GIT_PULL_ERROR);
+        }
     }
 
     /**
@@ -38,13 +61,11 @@ public class GitServiceApi {
         String commitMsg = StringUtils.isNotBlank(msg) ? msg : "update";
         try {
             Git git = Git.open(file);
-            // readMe
-            git.add().addFilepattern("README.adoc").call();
-            // twoLevel
-            git.add().addFilepattern("adoc/twoLevel").call();
-            // content
-            git.add().addFilepattern("adoc/content/").call();
-            git.commit().setMessage(commitMsg).call();
+            git.add().addFilepattern("README.adoc")
+                    .addFilepattern("adoc/twoLevel")
+                    .addFilepattern("adoc/content/")
+                    .call();
+            git.commit().setMessage(commitMsg).setAllowEmpty(false).call();
         } catch (Exception e) {
             throw new ApplicationException(ErrorCodeEnum.GIT_COMMIT_ERROR, e);
         }

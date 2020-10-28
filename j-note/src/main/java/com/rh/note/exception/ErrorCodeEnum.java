@@ -14,6 +14,7 @@ public enum ErrorCodeEnum implements IErrorCode {
     FAILED_TO_CREATE_AND_OPEN_EDITING_AREA(3006, "编辑区创建并打开失败"),
     INCLUDE_TARGET_TO_THE_FILE_CANNOT_BE_OPENED(3007, "include指向文件无法打开"),
     GIT_COMMIT_ERROR(3008, "git commit 失败"),
+    GIT_PULL_ERROR(3009, "git pull 失败"),
     ;
     private Integer code;
     private String msg;
