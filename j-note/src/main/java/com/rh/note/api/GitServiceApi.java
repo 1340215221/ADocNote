@@ -38,6 +38,8 @@ public class GitServiceApi {
         String commitMsg = StringUtils.isNotBlank(msg) ? msg : "update";
         try {
             Git git = Git.open(file);
+            // readMe
+            git.add().addFilepattern("README.adoc").call();
             // twoLevel
             git.add().addFilepattern("adoc/twoLevel").call();
             // content
