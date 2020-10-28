@@ -234,6 +234,11 @@ public class OperationAction implements IOperationAction {
     }
 
     @Override
+    public boolean checkIsCommitHotKey(@NonNull AWTEvent event) {
+        return Keymap.isCommit(event);
+    }
+
+    @Override
     public ClickedHistoryProjectListAO clickedHistoryProjectList(@NotNull MouseEvent event) {
         if (!Keymap.isDoubleClick(event)) {
             return null;

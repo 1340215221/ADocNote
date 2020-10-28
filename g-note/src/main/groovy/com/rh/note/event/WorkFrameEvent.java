@@ -11,6 +11,16 @@ import static com.rh.note.config.BridgingBeanConfig.workAction;
 public class WorkFrameEvent {
 
     /**
+     * git 提交adoc内容
+     */
+    public static void git_commit_adoc(AWTEvent event) {
+        if(operationAction().checkIsCommitHotKey(event)) {
+            workAction().saveAllEdited();
+            workAction().commit();
+        }
+    }
+
+    /**
      * 保存已打开文件内容
      */
     public static void save_all_edited(AWTEvent event) {

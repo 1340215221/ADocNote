@@ -26,6 +26,7 @@ class WorkFrame implements IWorkConfig, IFrame, ISwingBuilder {
             @Override
             void eventDispatched(AWTEvent event) {
                 WorkFrameEvent.save_all_edited(event)
+                WorkFrameEvent.git_commit_adoc(event)
             }
         }, AWTEvent.KEY_EVENT_MASK)
     }

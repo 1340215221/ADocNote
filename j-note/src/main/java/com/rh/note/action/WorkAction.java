@@ -11,6 +11,7 @@ import com.rh.note.ao.MatchTitleInfoBySelectedTextAO;
 import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.ao.TitleContentAO;
 import com.rh.note.api.FileServiceApi;
+import com.rh.note.api.GitServiceApi;
 import com.rh.note.api.WorkViewApi;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
@@ -40,6 +41,22 @@ public class WorkAction implements IWorkAction {
 
     private WorkViewApi workViewApi;
     private FileServiceApi fileServiceApi;
+    private GitServiceApi gitServiceApi;
+
+    /**
+     * 提交adoc内容
+     * git add和commit
+     */
+    public void commit() {
+        gitServiceApi.commit(null);
+    }
+
+    /**
+     * git push
+     */
+    public void push() {
+        gitServiceApi.push();
+    }
 
     /**
      * 启动窗口

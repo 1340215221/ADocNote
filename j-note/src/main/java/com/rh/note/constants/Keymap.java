@@ -4,6 +4,7 @@ import lombok.NonNull;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.AWTEvent;
+import java.awt.Event;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
@@ -22,6 +23,17 @@ public interface Keymap {
         }
         KeyEvent keyEvent = (KeyEvent) event;
         return keyEvent.getKeyCode() == 83 && keyEvent.getModifiers() == 2;
+    }
+
+    /**
+     * git提交
+     */
+    static boolean isCommit(@NonNull AWTEvent event) {
+        if (!(event instanceof KeyEvent) || event.getID() != KeyEvent.KEY_PRESSED) {
+            return false;
+        }
+        KeyEvent keyEvent = (KeyEvent) event;
+        return keyEvent.getKeyCode() == 75 && keyEvent.getModifiers() == 2;
     }
 
     /**

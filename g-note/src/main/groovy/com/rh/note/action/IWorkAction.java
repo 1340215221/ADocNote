@@ -15,6 +15,16 @@ import java.awt.event.ActionEvent;
  */
 public interface IWorkAction {
     /**
+     * 提交adoc内容
+     */
+    void commit();
+
+    /**
+     * git push
+     */
+    void push();
+
+    /**
      * 打开编辑区, 通过标题节点
      */
     void openTextPaneByTitleNode(ITitleLineVO vo);

@@ -6,6 +6,8 @@
 
 == 待开发使用功能
 
+- [ ] `ctrl + shift + k` (全局) 推到远程分支
+- [ ] `ctrl + k` (全局) 提交修改内容. 默认信息为"update"
 - [*] `alt + del` (在include块使用) 安全删除include
 - [ ] `ctrl + alt + m` (在非根标题上使用) 标题沉入新文件中, 内容替换为include行
 - [ ] `ctrl + alt + n` (在include行使用) 取消include引用, 上升内容

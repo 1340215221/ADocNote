@@ -78,4 +78,9 @@ public interface IOperationAction {
      * 内联标题
      */
     InlineTitleAO inlineTitleOperation(KeyEvent event);
+
+    /**
+     * git提交操作
+     */
+    boolean checkIsCommitHotKey(AWTEvent event);
 }

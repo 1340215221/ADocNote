@@ -18,6 +18,18 @@
     </properties>
 
     <dependencies>
+        <!-- git -->
+        <dependency>
+            <groupId>org.eclipse.jgit</groupId>
+            <artifactId>org.eclipse.jgit</artifactId>
+            <version>5.9.0.202009080501-r</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <!-- groovy笔记本项目 -->
         <dependency>
             <groupId>com.rh.note</groupId>
