@@ -13,6 +13,7 @@ import com.rh.note.ao.TitleContentAO;
 import com.rh.note.api.FileServiceApi;
 import com.rh.note.api.GitServiceApi;
 import com.rh.note.api.WorkViewApi;
+import com.rh.note.constants.PromptMessageEnum;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.line.TitleLine;
@@ -49,6 +50,7 @@ public class WorkAction implements IWorkAction {
      */
     public void commit() {
         gitServiceApi.commit(null);
+        workViewApi.promptPopup(PromptMessageEnum.GIT_SUBMITTED_SUCCESSFULLY);
     }
 
     /**

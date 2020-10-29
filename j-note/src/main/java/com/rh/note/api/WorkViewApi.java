@@ -38,6 +38,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
+import javax.swing.JOptionPane;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -682,5 +683,16 @@ public class WorkViewApi {
                 })
                 .collect(Collectors.joining("\n"));
         // 合并为字符串
+    }
+
+    /**
+     * 提示弹窗
+     */
+    public void promptPopup(PromptMessageEnum msg) {
+        if (msg == null) {
+            return;
+        }
+
+        JOptionPane.showMessageDialog(null,msg.getValue());
     }
 }
