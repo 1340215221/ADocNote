@@ -8,7 +8,9 @@ import com.rh.note.ao.GenerateTitleSyntaxAO;
 import com.rh.note.ao.InlineTitleAO;
 import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.vo.ITitleLineVO;
+import groovy.swing.binding.JComboBoxMetaMethods;
 
+import javax.swing.JComboBox;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -107,6 +109,12 @@ public class TextPaneEvent {
         if (vo != null) {
             workAction().loadTitleNavigate(vo);
         }
+    }
+
+    /**
+     * 输入提示下拉
+     */
+    public static void inputPromptDropDown(KeyEvent event) {
     }
 
     /**

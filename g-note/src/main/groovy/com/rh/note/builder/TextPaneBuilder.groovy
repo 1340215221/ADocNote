@@ -34,6 +34,7 @@ class TextPaneBuilder implements ISwingBuilder {
                         TextPaneEvent.sink_title(it)
                         TextPaneEvent.inline_title(it)
                         TextPaneEvent.delete_include(it)
+                        TextPaneEvent.inputPromptDropDown(it)
                     },
                     mouseClicked: {
                         TextPaneEvent.enter_include_file(it)
