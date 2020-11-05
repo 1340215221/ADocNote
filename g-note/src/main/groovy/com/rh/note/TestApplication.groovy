@@ -1,11 +1,15 @@
 package com.rh.note
 
+
 import groovy.swing.SwingBuilder
+import org.apache.commons.lang3.StringUtils
 
 import javax.swing.JFrame
 import javax.swing.JPopupMenu
 import javax.swing.JTextPane
 import javax.swing.event.MenuKeyEvent
+import javax.swing.text.DefaultEditorKit
+import javax.swing.text.JTextComponent
 import java.awt.Point
 import java.awt.event.ActionEvent
 
@@ -47,8 +51,12 @@ class TestApplication {
                         menuKeyPressed: {
                             def event = it as MenuKeyEvent
                             def textPane = swingBuilder.textPane as JTextPane
-                            def actionEvent = new ActionEvent(textPane, 1001, String.valueOf(event.keyChar), event.when, event.modifiers)
-                            textPane.dispatchEvent(actionEvent)
+                            def inputStr = String.valueOf(event.keyChar)
+                            def actionEvent = new ActionEvent(textPane, 1001, inputStr, event.when, event.modifiers)
+                            textPane.caret.visible = true
+                            if (StringUtils.isNotBlank(inputStr) && inputStr.matches('[0-9a-zA-Z_\\-]')) {
+                                new DefaultEditorKit.InsertContentAction().actionPerformed(actionEvent)
+                            }
                         },
                         menuKeyTyped: {
                             println '2'
@@ -66,6 +74,10 @@ class TestApplication {
                 }
             }
         }
+
+        def textPane1 = swingBuilder.textPane as JTextPane
+        def newKeymap = JTextComponent.addKeymap("textPane", textPane1.keymap)
+        textPane1.setKeymap(newKeymap)
 
         swingBuilder.frame.visible = true
     }
