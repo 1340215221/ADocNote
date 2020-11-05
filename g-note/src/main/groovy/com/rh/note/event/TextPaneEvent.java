@@ -1,16 +1,14 @@
 package com.rh.note.event;
 
 
-import com.rh.note.ao.ITitleContentAO;
-import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
+import com.rh.note.ao.ITitleContentAO;
+import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.InlineTitleAO;
 import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.vo.ITitleLineVO;
-import groovy.swing.binding.JComboBoxMetaMethods;
 
-import javax.swing.JComboBox;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -64,7 +62,7 @@ public class TextPaneEvent {
     /**
      * include重命名
      */
-    public static void renameInclude(KeyEvent event) {
+    public static void rename_include(KeyEvent event) {
         RenameIncludeAO ao = operationAction().renameIncludeOperation(event);
         if (ao == null) {
             return;
@@ -114,7 +112,7 @@ public class TextPaneEvent {
     /**
      * 输入提示下拉
      */
-    public static void inputPromptDropDown(KeyEvent event) {
+    public static void input_prompt_drop_down(KeyEvent event) {
     }
 
     /**
@@ -139,5 +137,13 @@ public class TextPaneEvent {
             return;
         }
         workAction().loadTitleNavigate(vo);
+    }
+
+    /**
+     * 打开输入弹窗
+     */
+    public static void open_input_prompt(KeyEvent event) {
+        // todo
+        System.out.println("open_input_prompt");
     }
 }

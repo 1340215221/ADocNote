@@ -3,6 +3,7 @@ package com.rh.note.config;
 import com.rh.note.builder.BasePanelBuilder;
 import com.rh.note.builder.BottomSidebarPanelBuilder;
 import com.rh.note.builder.HeadMenuPanelBuilder;
+import com.rh.note.builder.InputPromptListBuilder;
 import com.rh.note.builder.LeftSidebarPanelBuilder;
 import com.rh.note.builder.LeftSidebarTabPanelBuilder;
 import com.rh.note.builder.TabbedPaneBuilder;
@@ -47,6 +48,10 @@ public interface IWorkConfig {
 
     default void tabbed_pane(Closure children) {
         new TabbedPaneBuilder().init(children);
+    }
+
+    default void input_prompt_list(Closure children) {
+        new InputPromptListBuilder().init(children);
     }
 
 }

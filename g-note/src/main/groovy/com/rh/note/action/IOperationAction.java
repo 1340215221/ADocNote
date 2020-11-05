@@ -6,10 +6,12 @@ import com.rh.note.ao.GenerateTitleSyntaxAO;
 import com.rh.note.ao.ITitleContentAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.InlineTitleAO;
+import com.rh.note.ao.InputResultAO;
 import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.vo.ITitleLineVO;
 import org.jetbrains.annotations.NotNull;
 
+import javax.swing.event.MenuKeyEvent;
 import java.awt.AWTEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -83,4 +85,11 @@ public interface IOperationAction {
      * git提交操作
      */
     boolean checkIsCommitHotKey(AWTEvent event);
+
+    /**
+     * 检查输入是否为
+     * @param event
+     * @return
+     */
+    InputResultAO checkInputSimpleChar(MenuKeyEvent event);
 }

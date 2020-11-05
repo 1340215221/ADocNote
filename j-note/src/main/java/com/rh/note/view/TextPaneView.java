@@ -55,7 +55,7 @@ public class TextPaneView extends Init<AdocTextPane> {
         if (StringUtils.isBlank(filePath)) {
             return null;
         }
-        return new TextPaneView().initByFilePath(filePath);
+        return new TextPaneView().init(filePath);
     }
 
     /**
@@ -78,7 +78,8 @@ public class TextPaneView extends Init<AdocTextPane> {
         ViewUtil.removeByComponentId(TextPaneBuilder.id(filePath));
     }
 
-    public @Nullable TextPaneView initByFilePath(String filePath) {
+    @Override
+    public @Nullable TextPaneView init(String filePath) {
         return super.init(TextPaneBuilder.id(filePath));
     }
 

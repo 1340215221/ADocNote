@@ -7,10 +7,10 @@ import javax.swing.JButton;
 /**
  * 标题按钮
  * builder {@link com.rh.note.builder.TitleNavigateButtonBuilder#id}
- * factory {@link com.rh.note.component.factory.TitleButtonFactory}
  */
 public class TitleButton extends JButton {
 
+    public static final String NAME = "tnButton";
     /**
      * 对象地址
      */

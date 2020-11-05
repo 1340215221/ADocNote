@@ -7,9 +7,9 @@ import javax.swing.JTextPane;
 /**
  * 编辑面板
  * builder {@link com.rh.note.builder.TextPaneBuilder#id}
- * factory {@link com.rh.note.component.factory.AdocTextPaneFactory}
  */
 public class AdocTextPane extends JTextPane {
+    public static final String NAME = "textPane";
     /**
      * 对象地址
      */

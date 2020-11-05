@@ -17,7 +17,8 @@ import java.awt.Component;
  */
 public class TextScrollPaneView extends Init<AdocScrollPane> {
 
-    public @Nullable TextScrollPaneView initByFilePath(String filePath) {
+    @Override
+    public @Nullable TextScrollPaneView init(String filePath) {
         return super.init(TextPaneBuilder.scrollId(filePath));
     }
 
@@ -47,7 +48,7 @@ public class TextScrollPaneView extends Init<AdocScrollPane> {
         if (!(beanPath instanceof AdocFileBeanPath)) {
             return null;
         }
-        return new TextScrollPaneView().initByFilePath(((AdocFileBeanPath) beanPath).getFilePath());
+        return new TextScrollPaneView().init(((AdocFileBeanPath) beanPath).getFilePath());
     }
 
     public @NotNull String getFilePath() {

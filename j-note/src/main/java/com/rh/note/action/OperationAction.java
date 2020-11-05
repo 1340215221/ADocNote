@@ -6,6 +6,7 @@ import com.rh.note.ao.GenerateTitleSyntaxAO;
 import com.rh.note.ao.ITitleContentAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.InlineTitleAO;
+import com.rh.note.ao.InputResultAO;
 import com.rh.note.ao.LineRangeAO;
 import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.ao.TitleContentAO;
@@ -32,6 +33,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.JList;
+import javax.swing.event.MenuKeyEvent;
 import java.awt.AWTEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -236,6 +238,24 @@ public class OperationAction implements IOperationAction {
     @Override
     public boolean checkIsCommitHotKey(@NonNull AWTEvent event) {
         return Keymap.isCommit(event);
+    }
+
+    @Override
+    public InputResultAO checkInputSimpleChar(@NotNull MenuKeyEvent event) {
+        if (event.getKeyCode() == 0) {
+            return null;
+        }
+        InputResultAO ao = new InputResultAO();
+        // 输入值
+        String keyChar = String.valueOf(event.getKeyChar());
+        if (StringUtils.isBlank(keyChar) || keyChar.matches("[0-9a-zA-Z\\.\\-_]")) {
+            return null;
+        }
+
+        ao.setValue(keyChar);
+        // 当前被选择的编辑区
+        AdocTextPane textPane = workViewApi.getSelectedTextPane();
+        return ao.copy(textPane);
     }
 
     @Override

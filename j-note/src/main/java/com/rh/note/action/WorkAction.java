@@ -6,6 +6,7 @@ import com.rh.note.ao.ICreateFileAndInitContentAO;
 import com.rh.note.ao.ITitleContentAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.InlineTitleAO;
+import com.rh.note.ao.InputResultAO;
 import com.rh.note.ao.MatchIncludeInfoBySelectedTextAO;
 import com.rh.note.ao.MatchTitleInfoBySelectedTextAO;
 import com.rh.note.ao.RenameIncludeAO;
@@ -208,6 +209,11 @@ public class WorkAction implements IWorkAction {
         workViewApi.closeTextPaneByFilePath(ao.getTargetFilePath());
         // 删除include指向文件
         fileServiceApi.deleteFileByFilePath(ao.getTargetFilePath());
+    }
+
+    @Override
+    public void inputToTextPane(InputResultAO ao) {
+        // todo
     }
 
     @Override

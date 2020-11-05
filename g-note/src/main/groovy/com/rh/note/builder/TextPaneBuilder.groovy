@@ -30,11 +30,12 @@ class TextPaneBuilder implements ISwingBuilder {
                     styledDocument: new DefaultStyledDocument(),
                     font: new Font(null, 0, 17),
                     keyPressed: {
-                        TextPaneEvent.renameInclude(it)
+                        TextPaneEvent.rename_include(it)
                         TextPaneEvent.sink_title(it)
                         TextPaneEvent.inline_title(it)
                         TextPaneEvent.delete_include(it)
-                        TextPaneEvent.inputPromptDropDown(it)
+                        TextPaneEvent.input_prompt_drop_down(it)
+                        TextPaneEvent.open_input_prompt(it)
                     },
                     mouseClicked: {
                         TextPaneEvent.enter_include_file(it)

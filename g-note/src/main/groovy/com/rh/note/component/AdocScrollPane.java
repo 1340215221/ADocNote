@@ -11,6 +11,7 @@ import javax.swing.JScrollPane;
  */
 public class AdocScrollPane extends JScrollPane {
 
+    public static final String NAME = "tScrollPane";
     /**
      * 对象地址
      */

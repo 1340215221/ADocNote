@@ -130,11 +130,11 @@ public class WorkViewApi {
         if (titleLine == null) {
             return;
         }
-        TextPaneView textPane = new TextPaneView().initByFilePath(titleLine.getFilePath());
+        TextPaneView textPane = new TextPaneView().init(titleLine.getFilePath());
         if (textPane == null) {
             return;
         }
-        TextScrollPaneView textScrollPane = new TextScrollPaneView().initByFilePath(titleLine.getFilePath());
+        TextScrollPaneView textScrollPane = new TextScrollPaneView().init(titleLine.getFilePath());
         ScrollPositionUtil.builder()
                 .adocTextPane(textPane.getBean())
                 .adocScrollPane(textScrollPane.getBean())
@@ -153,7 +153,7 @@ public class WorkViewApi {
             return null;
         }
         String filePath = textScrollPane.getFilePath();
-        TextPaneView textPane = new TextPaneView().initByFilePath(filePath);
+        TextPaneView textPane = new TextPaneView().init(filePath);
         return textPane.getTitleBeanPathByCaretLineContent();
     }
 
@@ -180,7 +180,7 @@ public class WorkViewApi {
             return;
         }
         filePaths.stream()
-                .map(filePath -> new TextPaneView().initByFilePath(filePath))
+                .map(filePath -> new TextPaneView().init(filePath))
                 .filter(Objects::nonNull)
                 .forEach(textPane -> textPane.write(getFileWriterFunction));
     }
@@ -245,7 +245,7 @@ public class WorkViewApi {
             return null;
         }
         // 获得选择内容
-        TextPaneView textPane = new TextPaneView().initByFilePath(filePath);
+        TextPaneView textPane = new TextPaneView().init(filePath);
         if (textPane == null) {
             return null;
         }
@@ -272,7 +272,7 @@ public class WorkViewApi {
             return null;
         }
         // 获得选择内容
-        TextPaneView textPane = new TextPaneView().initByFilePath(filePath);
+        TextPaneView textPane = new TextPaneView().init(filePath);
         if (textPane == null) {
             return null;
         }
@@ -296,7 +296,7 @@ public class WorkViewApi {
             return;
         }
         // 获得选择内容
-        TextPaneView textPane = new TextPaneView().initByFilePath(filePath);
+        TextPaneView textPane = new TextPaneView().init(filePath);
         if (textPane == null) {
             return;
         }
@@ -415,7 +415,7 @@ public class WorkViewApi {
         if (StringUtils.isBlank(filePath)) {
             return;
         }
-        TextPaneView textPane = new TextPaneView().initByFilePath(filePath);
+        TextPaneView textPane = new TextPaneView().init(filePath);
         if (textPane == null) {
             throw new UnknownLogicException();
         }
@@ -431,13 +431,13 @@ public class WorkViewApi {
         }
 
         String filePath = beanPath.getFilePath();
-        TextPaneView textPaneOfExist = new TextPaneView().initByFilePath(filePath);
+        TextPaneView textPaneOfExist = new TextPaneView().init(filePath);
         if (textPaneOfExist != null) {
             return textPaneOfExist;
         }
 
         TextPaneView.create(beanPath);
-        return new TextPaneView().initByFilePath(filePath);
+        return new TextPaneView().init(filePath);
     }
 
     /**
@@ -447,7 +447,7 @@ public class WorkViewApi {
         if (StringUtils.isBlank(filePath)) {
             return;
         }
-        TextScrollPaneView textScrollPane = new TextScrollPaneView().initByFilePath(filePath);
+        TextScrollPaneView textScrollPane = new TextScrollPaneView().init(filePath);
         if (textScrollPane == null) {
             return;
         }
@@ -469,7 +469,7 @@ public class WorkViewApi {
             return false;
         }
 
-        TextPaneView textPane = new TextPaneView().initByFilePath(filePath);
+        TextPaneView textPane = new TextPaneView().init(filePath);
         if (textPane == null) {
             return false;
         }
@@ -485,7 +485,7 @@ public class WorkViewApi {
             return;
         }
 
-        TextPaneView textPane = new TextPaneView().initByFilePath(beanPath.getFilePath());
+        TextPaneView textPane = new TextPaneView().init(beanPath.getFilePath());
         if (textPane == null) {
             return;
         }
@@ -500,7 +500,7 @@ public class WorkViewApi {
         if (StringUtils.isBlank(filePath)) {
             return;
         }
-        TextScrollPaneView scrollPane = new TextScrollPaneView().initByFilePath(filePath);
+        TextScrollPaneView scrollPane = new TextScrollPaneView().init(filePath);
         // 从选项卡中删除
         TabbedPaneView tabbedPane = new TabbedPaneView().init();
         tabbedPane.remove(scrollPane);
@@ -527,7 +527,7 @@ public class WorkViewApi {
             return null;
         }
 
-        TextPaneView textPane = new TextPaneView().initByFilePath(filePath);
+        TextPaneView textPane = new TextPaneView().init(filePath);
         if (textPane == null) {
             return null;
         }
@@ -559,7 +559,7 @@ public class WorkViewApi {
             return;
         }
 
-        TextPaneView textPane = new TextPaneView().initByFilePath(ao.getFilePath());
+        TextPaneView textPane = new TextPaneView().init(ao.getFilePath());
         if (textPane == null) {
             return;
         }
@@ -694,5 +694,17 @@ public class WorkViewApi {
         }
 
         JOptionPane.showMessageDialog(null,msg.getValue());
+    }
+
+    /**
+     * 获得被选择的编辑区
+     */
+    public @Nullable AdocTextPane getSelectedTextPane() {
+        TabbedPaneView tabbedPane = new TabbedPaneView().init();
+        TextScrollPaneView scrollPane = tabbedPane.getSelectedTextPane();
+        if (scrollPane == null) {
+            return null;
+        }
+        //todo
     }
 }
