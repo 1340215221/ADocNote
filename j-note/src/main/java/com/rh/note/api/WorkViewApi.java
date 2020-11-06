@@ -2,6 +2,7 @@ package com.rh.note.api;
 
 import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.InlineTitleAO;
+import com.rh.note.ao.InputResultAO;
 import com.rh.note.ao.LineRangeAO;
 import com.rh.note.ao.MatchIncludeInfoBySelectedTextAO;
 import com.rh.note.ao.MatchTitleInfoBySelectedTextAO;
@@ -705,6 +706,22 @@ public class WorkViewApi {
         if (scrollPane == null) {
             return null;
         }
-        //todo
+        String filePath = scrollPane.getFilePath();
+        TextPaneView textPane = new TextPaneView().init(filePath);
+        return textPane.getBean();
+    }
+
+    /**
+     * 输入内容到编辑区
+     */
+    public void inputToTextPane(InputResultAO ao) {
+        if (ao == null) {
+            return;
+        }
+        TextPaneView textPane = TextPaneView.cast(ao.getTextPane());
+        if (textPane == null) {
+            return;
+        }
+        textPane.insertContent(ao.getEvent());
     }
 }

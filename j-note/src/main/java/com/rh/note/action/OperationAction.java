@@ -252,10 +252,11 @@ public class OperationAction implements IOperationAction {
             return null;
         }
 
-        ao.setValue(keyChar);
+        ao.copy(event);
+        ao.setEvent(keyChar);
         // 当前被选择的编辑区
         AdocTextPane textPane = workViewApi.getSelectedTextPane();
-        return ao.copy(textPane);
+        return ao.setTextPane(textPane);
     }
 
     @Override

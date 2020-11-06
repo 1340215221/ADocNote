@@ -21,7 +21,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.swing.text.Caret;
+import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.Element;
+import java.awt.event.ActionEvent;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -281,6 +284,20 @@ public class TextPaneView extends Init<AdocTextPane> {
      */
     public @Nullable String getText() {
         return textPane().getText();
+    }
+
+    /**
+     * 模拟输入内容
+     */
+    public void insertContent(ActionEvent event) {
+        if (event == null) {
+            return;
+        }
+        Caret caret = textPane().getCaret();
+        if (!caret.isVisible()) {
+            caret.setVisible(true);
+        }
+        new DefaultEditorKit.InsertContentAction().actionPerformed(event);
     }
 
     private class ParsingCareLineApi {

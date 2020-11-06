@@ -213,7 +213,11 @@ public class WorkAction implements IWorkAction {
 
     @Override
     public void inputToTextPane(InputResultAO ao) {
-        // todo
+        if (ao == null) {
+            return;
+        }
+        ao.checkRequiredItems();
+        workViewApi.inputToTextPane(ao);
     }
 
     @Override
