@@ -1,7 +1,10 @@
 package com.rh.note.api;
 
+import com.rh.note.ao.CaretPointAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
+import com.rh.note.ao.IncludePromptAO;
 import com.rh.note.ao.InlineTitleAO;
+import com.rh.note.ao.InputPromptItemAO;
 import com.rh.note.ao.InputResultAO;
 import com.rh.note.ao.LineRangeAO;
 import com.rh.note.ao.MatchIncludeInfoBySelectedTextAO;
@@ -25,6 +28,8 @@ import com.rh.note.syntax.TitleSyntaxSugar;
 import com.rh.note.util.ScrollPositionUtil;
 import com.rh.note.view.ConfirmDialogView;
 import com.rh.note.view.InputDialogView;
+import com.rh.note.view.InputPromptItemView;
+import com.rh.note.view.InputPromptMenuView;
 import com.rh.note.view.RootTitleNodeView;
 import com.rh.note.view.TabbedPaneView;
 import com.rh.note.view.TextPaneView;
@@ -723,7 +728,8 @@ public class WorkViewApi {
         if (textPane == null) {
             return;
         }
-        textPane.insertContent(ao.getEvent());
+        textPane.insertContent(ao.getActionEvent());
+        textPane.addKeyEvent(ao.getKeyEvent());
     }
 
     /**
@@ -741,5 +747,53 @@ public class WorkViewApi {
         String lineContent = textPane.getCaretLineContent();
         // 判断是否为include java语法, 待完善文件目录状态
         return new IncludeJavaSyntax().init(lineContent);
+    }
+
+    /**
+     * 打开输入提示
+     */
+    public void openInputPrompt(IncludePromptAO ao) {
+        if (ao == null) {
+            return;
+        }
+        List<InputPromptItemAO> itemAOS = ao.getAoList();
+        if (CollectionUtils.isEmpty(itemAOS)) {
+            return;
+        }
+        List<InputPromptItemView> items = itemAOS.stream()
+                .peek(InputPromptItemView::create)
+                .map(itemAO -> new InputPromptItemView().init(itemAO.getCompleteValue()))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        InputPromptMenuView inputPrompt = new InputPromptMenuView().init();
+        inputPrompt.addAll(items);
+        inputPrompt.show(ao);
+        inputPrompt.selectFirst();
+    }
+
+    /**
+     * 获得光标坐标
+     */
+    public @Nullable CaretPointAO getCaretPoint(AdocTextPane bean) {
+        TextPaneView textPane = TextPaneView.cast(bean);
+        if (textPane == null) {
+            return null;
+        }
+        CaretPointAO ao = new CaretPointAO();
+        ao.copy(textPane);
+        return ao;
+    }
+
+    /**
+     * 关闭输入提示
+     */
+    public void closeInputPrompt() {
+        InputPromptMenuView inputPromptMenu = new InputPromptMenuView().init();
+        inputPromptMenu.hidden();
+        List<String> values = inputPromptMenu.getAllValues();
+        inputPromptMenu.clearItems();
+        if (CollectionUtils.isNotEmpty(values)) {
+            values.forEach(InputPromptItemView::deleteByValue);
+        }
     }
 }

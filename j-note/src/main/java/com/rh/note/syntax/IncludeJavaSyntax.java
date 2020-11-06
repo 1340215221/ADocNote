@@ -5,6 +5,7 @@ import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,7 +15,7 @@ import java.util.regex.Pattern;
 @Data
 public class IncludeJavaSyntax {
 
-    private static final String regex = "^(\\s*)=>j.(?:(" + BaseConstants.pro_label_regex + ") (?:(" + BaseConstants.package_path_regex + "))?)?\\s*$";
+    private static final String regex = "^(\\s*)=>j.(?:(" + BaseConstants.pro_label_regex + ")(?:(\\s+)(" + BaseConstants.package_path_regex + "))?)?\\s*$";
     /**
      * 缩进
      */
@@ -31,6 +32,10 @@ public class IncludeJavaSyntax {
      * 需要提示的类型
      */
     private NeedPromptType type;
+    /**
+     * 分隔符是否存在
+     */
+    private boolean existSeparator = false;
 
     public @Nullable IncludeJavaSyntax init(String lineContent) {
         if (StringUtils.isBlank(lineContent)) {
@@ -42,7 +47,10 @@ public class IncludeJavaSyntax {
         }
         indented = matcher.group(1);
         proLabel = matcher.group(2);
-        packagePath = matcher.group(3);
+        existSeparator = Optional.ofNullable(matcher.group(3))
+                .filter(str -> str.length() > 0)
+                .isPresent();
+        packagePath = matcher.group(4);
         type = parsingType();
         return this;
     }
@@ -65,11 +73,11 @@ public class IncludeJavaSyntax {
      * 判断需要提示类型
      */
     private NeedPromptType parsingType() {
-        if (StringUtils.isBlank(proLabel)) {
-            return NeedPromptType.PRO_LIST;
-        }
-        if (StringUtils.isBlank(packagePath)) {
+        if (StringUtils.isNotBlank(proLabel) && existSeparator) {
             return NeedPromptType.FILE_PATH;
+        }
+        if (!existSeparator) {
+            return NeedPromptType.PRO_LIST;
         }
         return NeedPromptType.NOTHING;
     }

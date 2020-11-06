@@ -3,10 +3,12 @@ package com.rh.note.ao;
 import com.rh.note.base.Init;
 import com.rh.note.component.AdocTextPane;
 import com.rh.note.exception.RequestParamsValidException;
-import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.event.MenuKeyEvent;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 /**
  * 输入值 参数
@@ -19,11 +21,15 @@ public class InputResultAO {
     /**
      * 输入值
      */
-    private String inputStr;
+    private Character keyChar;
     /**
      * 时间时间
      */
     private Long when;
+    /**
+     * keycode
+     */
+    private Integer keyCode;
     /**
      * 按键
      */
@@ -33,18 +39,18 @@ public class InputResultAO {
      */
     private AdocTextPane textPane;
 
-    public ActionEvent getEvent() {
-        if (textPane == null || StringUtils.isBlank(inputStr) || when == null || modifiers == null) {
+    public @Nullable ActionEvent getActionEvent() {
+        if (textPane == null || keyChar == null || when == null || modifiers == null) {
             return null;
         }
-        return new ActionEvent(textPane, eventId, inputStr, when, modifiers);
+        return new ActionEvent(textPane, eventId, keyChar.toString(), when, modifiers);
     }
 
     public AdocTextPane getTextPane() {
         return textPane;
     }
 
-    public <T extends Init<AdocTextPane>> InputResultAO copy(T textPane) {
+    public <T extends Init<AdocTextPane>> @NotNull InputResultAO copy(T textPane) {
         if (textPane != null) {
             this.textPane = textPane.getBean();
         }
@@ -52,7 +58,7 @@ public class InputResultAO {
     }
 
     public void checkRequiredItems() {
-        if (textPane == null || StringUtils.isBlank(inputStr) || when == null || modifiers == null) {
+        if (textPane == null || keyChar == null || when == null || modifiers == null) {
             throw new RequestParamsValidException();
         }
     }
@@ -62,8 +68,19 @@ public class InputResultAO {
             return;
         }
 
-        inputStr = event.getKeyChar() + "";
+        keyChar = event.getKeyChar();
         when = event.getWhen();
         modifiers = event.getModifiers();
+        keyCode = event.getKeyCode();
+    }
+
+    /**
+     * 获得一个键盘事件
+     */
+    public @Nullable KeyEvent getKeyEvent() {
+        if (textPane == null || when == null || modifiers == null || keyCode == null || keyChar == null) {
+            return null;
+        }
+        return new KeyEvent(textPane, 402, when, modifiers, keyCode, keyChar);
     }
 }

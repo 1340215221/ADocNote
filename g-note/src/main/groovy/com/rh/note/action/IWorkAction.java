@@ -4,6 +4,7 @@ import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
 import com.rh.note.ao.ITitleContentAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
+import com.rh.note.ao.IncludePromptAO;
 import com.rh.note.ao.InlineTitleAO;
 import com.rh.note.ao.InputResultAO;
 import com.rh.note.ao.RenameIncludeAO;
@@ -89,4 +90,14 @@ public interface IWorkAction {
      * 输入到编辑区
      */
     void inputToTextPane(InputResultAO ao);
+
+    /**
+     * 打开输入提示
+     */
+    void openInputPrompt(IncludePromptAO ao);
+
+    /**
+     * 关闭输入提示
+     */
+    void closeInputPrompt();
 }

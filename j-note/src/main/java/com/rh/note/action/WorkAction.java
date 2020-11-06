@@ -5,6 +5,7 @@ import com.rh.note.ao.GenerateTitleSyntaxAO;
 import com.rh.note.ao.ICreateFileAndInitContentAO;
 import com.rh.note.ao.ITitleContentAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
+import com.rh.note.ao.IncludePromptAO;
 import com.rh.note.ao.InlineTitleAO;
 import com.rh.note.ao.InputResultAO;
 import com.rh.note.ao.MatchIncludeInfoBySelectedTextAO;
@@ -218,6 +219,16 @@ public class WorkAction implements IWorkAction {
         }
         ao.checkRequiredItems();
         workViewApi.inputToTextPane(ao);
+    }
+
+    @Override
+    public void openInputPrompt(IncludePromptAO ao) {
+        workViewApi.openInputPrompt(ao);
+    }
+
+    @Override
+    public void closeInputPrompt() {
+        workViewApi.closeInputPrompt();
     }
 
     @Override

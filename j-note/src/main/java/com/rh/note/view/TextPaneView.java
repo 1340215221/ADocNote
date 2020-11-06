@@ -24,7 +24,9 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.text.Caret;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.Element;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -298,6 +300,27 @@ public class TextPaneView extends Init<AdocTextPane> {
             caret.setVisible(true);
         }
         new DefaultEditorKit.InsertContentAction().actionPerformed(event);
+    }
+
+    /**
+     * 获得光标坐标
+     */
+    public @Nullable Point getCaretPoint() {
+        Caret caret = textPane().getCaret();
+        if (!caret.isVisible()) {
+            caret.setVisible(true);
+        }
+        return caret.getMagicCaretPosition();
+    }
+
+    /**
+     * 添加一个键盘事件
+     */
+    public void addKeyEvent(KeyEvent keyEvent) {
+        if (keyEvent == null) {
+            return;
+        }
+        textPane().dispatchEvent(keyEvent);
     }
 
     private class ParsingCareLineApi {

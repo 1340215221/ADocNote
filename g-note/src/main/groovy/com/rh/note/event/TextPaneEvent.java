@@ -111,12 +111,6 @@ public class TextPaneEvent {
     }
 
     /**
-     * 输入提示下拉
-     */
-    public static void input_prompt_drop_down(KeyEvent event) {
-    }
-
-    /**
      * 安全删除include行
      */
     public static void delete_include(KeyEvent event) {
@@ -146,8 +140,9 @@ public class TextPaneEvent {
     public static void open_input_prompt(KeyEvent event) {
         IncludePromptAO ao = operationAction().getFilePromptByIncludeLine(event);
         if (ao != null) {
+            workAction().openInputPrompt(ao);
+        } else {
+            workAction().closeInputPrompt();
         }
-        // todo
-        System.out.println("open_input_prompt");
     }
 }

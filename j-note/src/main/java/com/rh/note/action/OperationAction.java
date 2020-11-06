@@ -1,11 +1,12 @@
 package com.rh.note.action;
 
+import com.rh.note.ao.CaretPointAO;
 import com.rh.note.ao.ClickedHistoryProjectListAO;
-import com.rh.note.ao.IncludePromptAO;
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
 import com.rh.note.ao.ITitleContentAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
+import com.rh.note.ao.IncludePromptAO;
 import com.rh.note.ao.InlineTitleAO;
 import com.rh.note.ao.InputResultAO;
 import com.rh.note.ao.LineRangeAO;
@@ -30,7 +31,6 @@ import com.rh.note.vo.ITitleLineVO;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
 import lombok.NonNull;
 import lombok.Setter;
-import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -251,7 +251,7 @@ public class OperationAction implements IOperationAction {
         InputResultAO ao = new InputResultAO();
         // 输入值
         String keyChar = String.valueOf(event.getKeyChar());
-        if (StringUtils.isBlank(keyChar) || keyChar.matches("[0-9a-zA-Z\\.\\-_]")) {
+        if (StringUtils.isBlank(keyChar) || !keyChar.matches("[0-9a-zA-Z\\.\\-_]")) {
             return null;
         }
 
@@ -267,15 +267,18 @@ public class OperationAction implements IOperationAction {
         if (!(source instanceof AdocTextPane)) {
             return null;
         }
-        IncludeJavaSyntax syntax = workViewApi.getPromptSyntaxByIncludeLine(((AdocTextPane) source));
+        IncludeJavaSyntax syntax = workViewApi.getPromptSyntaxByIncludeLine((AdocTextPane) source);
         if (syntax == null) {
             return null;
         }
+        CaretPointAO pointAO = workViewApi.getCaretPoint((AdocTextPane) source);
         if (syntax.isProPrompt()) {
-            return fileServiceApi.getProListIncludePrompt(syntax.getProLabel());
+            IncludePromptAO ao = fileServiceApi.getProListIncludePrompt(syntax.getProLabel());
+            return ao != null ? ao.setCaretPoint(pointAO) : null;
         }
         if (syntax.isPackagePrompt()) {
-            return fileServiceApi.getPackageListIncludePrompt(syntax.getProLabel(), syntax.getPackagePath());
+            IncludePromptAO ao = fileServiceApi.getPackageListIncludePrompt(syntax.getProLabel(), syntax.getPackagePath());
+            return ao != null ? ao.setCaretPoint(pointAO) : null;
         }
         return null;
     }
