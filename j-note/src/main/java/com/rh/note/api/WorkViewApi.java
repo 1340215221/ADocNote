@@ -17,6 +17,7 @@ import com.rh.note.frame.WorkFrame;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.path.TitleBeanPath;
+import com.rh.note.syntax.IncludeJavaSyntax;
 import com.rh.note.syntax.IncludeSyntax;
 import com.rh.note.syntax.IncludeSyntaxSugar;
 import com.rh.note.syntax.TitleSyntax;
@@ -700,15 +701,15 @@ public class WorkViewApi {
     /**
      * 获得被选择的编辑区
      */
-    public @Nullable AdocTextPane getSelectedTextPane() {
+    public @Nullable TextPaneView getSelectedTextPane() {
         TabbedPaneView tabbedPane = new TabbedPaneView().init();
         TextScrollPaneView scrollPane = tabbedPane.getSelectedTextPane();
         if (scrollPane == null) {
             return null;
         }
+
         String filePath = scrollPane.getFilePath();
-        TextPaneView textPane = new TextPaneView().init(filePath);
-        return textPane.getBean();
+        return new TextPaneView().init(filePath);
     }
 
     /**
@@ -723,5 +724,22 @@ public class WorkViewApi {
             return;
         }
         textPane.insertContent(ao.getEvent());
+    }
+
+    /**
+     * 获得文件提示, 通过include行内容
+     */
+    public @Nullable IncludeJavaSyntax getPromptSyntaxByIncludeLine(AdocTextPane bean) {
+        if (bean == null) {
+            return null;
+        }
+        // 获取行内容
+        TextPaneView textPane = TextPaneView.cast(bean);
+        if (textPane == null) {
+            return null;
+        }
+        String lineContent = textPane.getCaretLineContent();
+        // 判断是否为include java语法, 待完善文件目录状态
+        return new IncludeJavaSyntax().init(lineContent);
     }
 }

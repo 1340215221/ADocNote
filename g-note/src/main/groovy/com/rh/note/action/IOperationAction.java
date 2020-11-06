@@ -1,6 +1,7 @@
 package com.rh.note.action;
 
 import com.rh.note.ao.ClickedHistoryProjectListAO;
+import com.rh.note.ao.IncludePromptAO;
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
 import com.rh.note.ao.ITitleContentAO;
@@ -87,9 +88,12 @@ public interface IOperationAction {
     boolean checkIsCommitHotKey(AWTEvent event);
 
     /**
-     * 检查输入是否为
-     * @param event
-     * @return
+     * 检查输入是否为简单字符
      */
     InputResultAO checkInputSimpleChar(MenuKeyEvent event);
+
+    /**
+     * 获得文件提示, 通过include行内容
+     */
+    IncludePromptAO getFilePromptByIncludeLine(KeyEvent event);
 }

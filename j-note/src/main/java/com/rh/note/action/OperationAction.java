@@ -1,6 +1,7 @@
 package com.rh.note.action;
 
 import com.rh.note.ao.ClickedHistoryProjectListAO;
+import com.rh.note.ao.IncludePromptAO;
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
 import com.rh.note.ao.ITitleContentAO;
@@ -23,11 +24,13 @@ import com.rh.note.exception.UnknownLogicException;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.path.TitleBeanPath;
+import com.rh.note.syntax.IncludeJavaSyntax;
 import com.rh.note.view.TextPaneView;
 import com.rh.note.vo.ITitleLineVO;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
 import lombok.NonNull;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -253,10 +256,28 @@ public class OperationAction implements IOperationAction {
         }
 
         ao.copy(event);
-        ao.setEvent(keyChar);
         // 当前被选择的编辑区
-        AdocTextPane textPane = workViewApi.getSelectedTextPane();
-        return ao.setTextPane(textPane);
+        TextPaneView textPane = workViewApi.getSelectedTextPane();
+        return ao.copy(textPane);
+    }
+
+    @Override
+    public IncludePromptAO getFilePromptByIncludeLine(@NotNull KeyEvent event) {
+        Object source = event.getSource();
+        if (!(source instanceof AdocTextPane)) {
+            return null;
+        }
+        IncludeJavaSyntax syntax = workViewApi.getPromptSyntaxByIncludeLine(((AdocTextPane) source));
+        if (syntax == null) {
+            return null;
+        }
+        if (syntax.isProPrompt()) {
+            return fileServiceApi.getProListIncludePrompt(syntax.getProLabel());
+        }
+        if (syntax.isPackagePrompt()) {
+            return fileServiceApi.getPackageListIncludePrompt(syntax.getProLabel(), syntax.getPackagePath());
+        }
+        return null;
     }
 
     @Override

@@ -2,9 +2,11 @@ package com.rh.note.api;
 
 import com.rh.note.ao.ClickedHistoryProjectListAO;
 import com.rh.note.ao.ICreateFileAndInitContentAO;
+import com.rh.note.ao.IncludePromptAO;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.file.AdocFile;
+import com.rh.note.file.JavaProConfig;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.path.ProBeanPath;
@@ -12,7 +14,9 @@ import com.rh.note.path.ReadMeBeanPath;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
 import com.rh.note.vo.WriterVO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -176,5 +180,73 @@ public class FileServiceApi {
         }
         // 重命名
         file.renameTo(newFile);
+    }
+
+    /**
+     * 获得项目列表include提示
+     */
+    public @Nullable IncludePromptAO getProListIncludePrompt(String proLabel) {
+        JavaProConfig config = new JavaProConfig();
+        return config.copyToAndFilter(proLabel);
+    }
+
+    /**
+     * 获得包路径
+     */
+    public @Nullable IncludePromptAO getPackageListIncludePrompt(String proLabel, String packagePath) {
+        if (StringUtils.isBlank(proLabel)) {
+            return null;
+        }
+        String proPath = new JavaProConfig().getProPath(proLabel);
+        if (StringUtils.isBlank(proPath)) {
+            return null;
+        }
+        String projectPath = new ProBeanPath().getProjectPath();
+        if (StringUtils.isNotBlank(projectPath)) {
+            return null;
+        }
+        String lastPackagePath = getLastPackagePath(packagePath);
+        String filePath = projectPath + proPath + lastPackagePath;
+        File proDirectory = new File(filePath);
+        if (!proDirectory.exists() || !proDirectory.isDirectory()) {
+            return null;
+        }
+        String[] fileNameArr = proDirectory.list();
+        if (ArrayUtils.isEmpty(fileNameArr)) {
+            return null;
+        }
+        String incompleteContent = getIncompleteContent(packagePath);
+        return new IncludePromptAO().copy(fileNameArr, incompleteContent);
+    }
+
+    /**
+     * 获得完整包路径
+     */
+    private @NotNull String getLastPackagePath(String packagePath) {
+        if (StringUtils.isBlank(packagePath)) {
+            return "";
+        }
+        int index = packagePath.lastIndexOf('.');
+        if (index <= 0) {
+            return "";
+        }
+        return packagePath.substring(0, index);
+    }
+
+    /**
+     * 获得不完整内容
+     */
+    private @Nullable String getIncompleteContent(String packagePath) {
+        if (StringUtils.isBlank(packagePath)) {
+            return null;
+        }
+        int index = packagePath.lastIndexOf('.');
+        if (index == 0) {
+            return null;
+        }
+        if (index < 0) {
+            return packagePath;
+        }
+        return packagePath.substring(index);
     }
 }

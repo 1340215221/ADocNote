@@ -1,6 +1,7 @@
 package com.rh.note.event;
 
 
+import com.rh.note.ao.IncludePromptAO;
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
 import com.rh.note.ao.ITitleContentAO;
@@ -143,6 +144,9 @@ public class TextPaneEvent {
      * 打开输入弹窗
      */
     public static void open_input_prompt(KeyEvent event) {
+        IncludePromptAO ao = operationAction().getFilePromptByIncludeLine(event);
+        if (ao != null) {
+        }
         // todo
         System.out.println("open_input_prompt");
     }

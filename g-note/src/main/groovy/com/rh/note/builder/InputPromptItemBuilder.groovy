@@ -15,9 +15,9 @@ class InputPromptItemBuilder implements ISwingBuilder {
     }
 
     void init() {
-        swingBuilder.menuItem(id: id(ao.getShowValue()),
-                text: ao.getShowValue(),
-                result: ao.getReplacementValue(),
+        swingBuilder.menuItem(id: id(ao.getCompleteValue()),
+                text: ao.getCompleteValue(),
+                result: ao.getDescription(),
         ) {
         }
     }

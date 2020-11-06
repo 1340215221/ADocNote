@@ -1,27 +1,52 @@
 package com.rh.note.file;
 
-import lombok.Data;
+import com.rh.note.ao.IncludePromptAO;
+import com.rh.note.ao.InputPromptItemAO;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * java项目目录配置
  */
-@Data
 public class JavaProConfig {
+
+    private final ProLabel proLabel = new ProLabel();
+
+    public @Nullable IncludePromptAO copyToAndFilter(String proLabel) {
+        if (MapUtils.isEmpty(this.proLabel.proLabel_proName)) {
+            return null;
+        }
+
+        List<InputPromptItemAO> itemList = this.proLabel.proLabel_proName.entrySet().stream()
+                .map(entry -> new InputPromptItemAO().setDescription(entry.getValue()).setCompleteValue(entry.getKey()))
+                .filter(ao -> ao.match(proLabel))
+                .collect(Collectors.toList());
+        return new IncludePromptAO().setAoList(itemList);
+    }
+
+    /**
+     * 获得项目名
+     */
+    public String getProPath(String proLabel) {
+        return this.proLabel.getProPath(proLabel);
+    }
 
     /**
      * 项目标识
      */
-    @Data
     public static class ProLabel {
+
         /**
          * key是标识
          * value是项目路径
          */
-        private Map<String, String> proLabel_proPath = new HashMap<>();
+        private Map<String, String> proLabel_proName = new HashMap<>();
 
         {
             addPro("m", "maven"); // maven项目
@@ -33,23 +58,26 @@ public class JavaProConfig {
         /**
          * 添加
          */
-        public void addPro(String proLabel, String proPath) {
-            if (StringUtils.isBlank(proLabel) || StringUtils.isBlank(proPath)) {
+        public void addPro(String proLabel, String proName) {
+            if (StringUtils.isBlank(proLabel) || StringUtils.isBlank(proName)) {
                 return;
             }
 
-            proLabel_proPath.put(proLabel, proPath);
+            proLabel_proName.put(proLabel, proName);
         }
 
         /**
          * 获得
          */
-        public String getProPath(String proLabel) {
+        public @Nullable String getProPath(String proLabel) {
             if (StringUtils.isBlank(proLabel)) {
                 return null;
             }
-
-            return proLabel_proPath.get(proLabel);
+            String proName = proLabel_proName.get(proLabel);
+            if (StringUtils.isBlank(proName)) {
+                return null;
+            }
+            return proName + "/src/main/java/";
         }
     }
 

@@ -1,32 +1,44 @@
 package com.rh.note.ao;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * 输入提示项 参数
  */
 public class InputPromptItemAO {
 
     /**
-     * 显示值
+     * 完整值
      */
-    private String showValue;
+    private String completeValue;
     /**
-     * 替换值
+     * 显示说明
      */
-    private String replacementValue;
+    private String description;
 
-    public String getShowValue() {
-        return showValue;
+    public String getCompleteValue() {
+        return completeValue;
     }
 
-    public void setShowValue(String showValue) {
-        this.showValue = showValue;
+    public InputPromptItemAO setCompleteValue(String completeValue) {
+        this.completeValue = completeValue;
+        return this;
     }
 
-    public String getReplacementValue() {
-        return replacementValue;
+    public String getDescription() {
+        return description;
     }
 
-    public void setReplacementValue(String replacementValue) {
-        this.replacementValue = replacementValue;
+    public InputPromptItemAO setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    /**
+     * 判断是否匹配
+     */
+    public boolean match(String incompleteContent) {
+        return StringUtils.isNotBlank(completeValue) && (StringUtils.isBlank(incompleteContent)
+                || completeValue.toLowerCase().startsWith(incompleteContent.toLowerCase())); // 首字母匹配,不区分大小写
     }
 }
