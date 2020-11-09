@@ -7,6 +7,7 @@ import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.IncludePromptAO;
 import com.rh.note.ao.InlineTitleAO;
 import com.rh.note.ao.RenameIncludeAO;
+import com.rh.note.ao.SelectPromptItemAO;
 import com.rh.note.vo.ITitleLineVO;
 
 import java.awt.event.ActionEvent;
@@ -94,4 +95,9 @@ public interface IWorkAction {
      * 关闭输入提示
      */
     void closeInputPrompt();
+
+    /**
+     * 选择提示
+     */
+    void selectPromptItem(SelectPromptItemAO ao);
 }

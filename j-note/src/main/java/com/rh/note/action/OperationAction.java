@@ -10,6 +10,7 @@ import com.rh.note.ao.IncludePromptAO;
 import com.rh.note.ao.InlineTitleAO;
 import com.rh.note.ao.LineRangeAO;
 import com.rh.note.ao.RenameIncludeAO;
+import com.rh.note.ao.SelectPromptItemAO;
 import com.rh.note.ao.TitleContentAO;
 import com.rh.note.api.FileServiceApi;
 import com.rh.note.api.ProManageViewApi;
@@ -270,6 +271,21 @@ public class OperationAction implements IOperationAction {
             return ao != null ? ao.setCaretPoint(pointAO) : null;
         }
         return null;
+    }
+
+    @Override
+    public SelectPromptItemAO isSelectPromptOperation(@NotNull KeyEvent event) {
+        if (!Keymap.isDownOrUp(event)) {
+            return null;
+        }
+        Object source = event.getSource();
+        if (!(source instanceof AdocTextPane)) {
+            return null;
+        }
+        if (!workViewApi.isVisibleForPromptMenu()) {
+            return null;
+        }
+        return new SelectPromptItemAO().copy(event);
     }
 
     @Override

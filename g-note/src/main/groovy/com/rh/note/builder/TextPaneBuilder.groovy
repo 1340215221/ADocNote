@@ -37,6 +37,7 @@ class TextPaneBuilder implements ISwingBuilder {
                     },
                     keyReleased: {
                         TextPaneEvent.open_input_prompt(it)
+                        TextPaneEvent.select_previous_on_prompt(it)
                     },
                     mouseClicked: {
                         TextPaneEvent.enter_include_file(it)

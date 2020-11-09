@@ -10,6 +10,7 @@ import com.rh.note.ao.InlineTitleAO;
 import com.rh.note.ao.MatchIncludeInfoBySelectedTextAO;
 import com.rh.note.ao.MatchTitleInfoBySelectedTextAO;
 import com.rh.note.ao.RenameIncludeAO;
+import com.rh.note.ao.SelectPromptItemAO;
 import com.rh.note.ao.TitleContentAO;
 import com.rh.note.api.FileServiceApi;
 import com.rh.note.api.GitServiceApi;
@@ -220,6 +221,11 @@ public class WorkAction implements IWorkAction {
     @Override
     public void closeInputPrompt() {
         workViewApi.closeInputPrompt();
+    }
+
+    @Override
+    public void selectPromptItem(SelectPromptItemAO ao) {
+        workViewApi.selectPromptItem(ao);
     }
 
     @Override

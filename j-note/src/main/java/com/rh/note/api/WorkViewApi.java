@@ -10,6 +10,7 @@ import com.rh.note.ao.MatchIncludeInfoBySelectedTextAO;
 import com.rh.note.ao.MatchTitleInfoBySelectedTextAO;
 import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.ao.SelectCaretLineAO;
+import com.rh.note.ao.SelectPromptItemAO;
 import com.rh.note.component.AdocTextPane;
 import com.rh.note.component.TitleButton;
 import com.rh.note.constants.AdocFileTypeEnum;
@@ -776,5 +777,16 @@ public class WorkViewApi {
             return;
         }
         textPane.requestFocus();
+    }
+
+    /**
+     * 提示菜单是否显示
+     */
+    public boolean isVisibleForPromptMenu() {
+        InputPromptMenuView inputPromptMenu = new InputPromptMenuView().init();
+        return inputPromptMenu.isVisible();
+    }
+
+    public void selectPromptItem(SelectPromptItemAO ao) {
     }
 }

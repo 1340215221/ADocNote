@@ -8,6 +8,7 @@ import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.IncludePromptAO;
 import com.rh.note.ao.InlineTitleAO;
 import com.rh.note.ao.RenameIncludeAO;
+import com.rh.note.ao.SelectPromptItemAO;
 import com.rh.note.vo.ITitleLineVO;
 import org.jetbrains.annotations.NotNull;
 
@@ -89,4 +90,9 @@ public interface IOperationAction {
      * 获得文件提示, 通过include行内容
      */
     IncludePromptAO getFilePromptByIncludeLine(KeyEvent event);
+
+    /**
+     * 选择提示操作
+     */
+    SelectPromptItemAO isSelectPromptOperation(KeyEvent event);
 }

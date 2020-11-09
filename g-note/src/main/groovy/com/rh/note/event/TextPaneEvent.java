@@ -8,6 +8,7 @@ import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.IncludePromptAO;
 import com.rh.note.ao.InlineTitleAO;
 import com.rh.note.ao.RenameIncludeAO;
+import com.rh.note.ao.SelectPromptItemAO;
 import com.rh.note.vo.ITitleLineVO;
 
 import java.awt.event.ActionEvent;
@@ -144,5 +145,16 @@ public class TextPaneEvent {
             return;
         }
         workAction().closeInputPrompt();
+    }
+
+    /**
+     * 在提示弹窗打开时, 使用上下键
+     */
+    public static void select_previous_on_prompt(KeyEvent event) {
+        SelectPromptItemAO ao = operationAction().isSelectPromptOperation(event);
+        if (ao == null) {
+            return;
+        }
+        workAction().selectPromptItem(ao);
     }
 }

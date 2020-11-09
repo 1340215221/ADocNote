@@ -8,7 +8,9 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 
+import javax.swing.DefaultSingleSelectionModel;
 import javax.swing.JPopupMenu;
+import javax.swing.SingleSelectionModel;
 import java.awt.Component;
 import java.util.Arrays;
 import java.util.Collections;
@@ -67,7 +69,8 @@ public class InputPromptMenuView extends Init<JPopupMenu> {
         if (ArrayUtils.isEmpty(arr)) {
             return;
         }
-        popupMenu().setSelected(arr[0]);
+        SingleSelectionModel model = popupMenu().getSelectionModel();
+        model.setSelectedIndex(0);
     }
 
     /**
@@ -101,5 +104,9 @@ public class InputPromptMenuView extends Init<JPopupMenu> {
                 .map(c -> ((InputPromptMenuItem) c))
                 .map(InputPromptMenuItem::getResult)
                 .collect(Collectors.toList());
+    }
+
+    public boolean isVisible() {
+        return popupMenu().isVisible();
     }
 }
