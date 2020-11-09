@@ -5,7 +5,6 @@ import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.IncludePromptAO;
 import com.rh.note.ao.InlineTitleAO;
 import com.rh.note.ao.InputPromptItemAO;
-import com.rh.note.ao.InputResultAO;
 import com.rh.note.ao.LineRangeAO;
 import com.rh.note.ao.MatchIncludeInfoBySelectedTextAO;
 import com.rh.note.ao.MatchTitleInfoBySelectedTextAO;
@@ -704,35 +703,6 @@ public class WorkViewApi {
     }
 
     /**
-     * 获得被选择的编辑区
-     */
-    public @Nullable TextPaneView getSelectedTextPane() {
-        TabbedPaneView tabbedPane = new TabbedPaneView().init();
-        TextScrollPaneView scrollPane = tabbedPane.getSelectedTextPane();
-        if (scrollPane == null) {
-            return null;
-        }
-
-        String filePath = scrollPane.getFilePath();
-        return new TextPaneView().init(filePath);
-    }
-
-    /**
-     * 输入内容到编辑区
-     */
-    public void inputToTextPane(InputResultAO ao) {
-        if (ao == null) {
-            return;
-        }
-        TextPaneView textPane = TextPaneView.cast(ao.getTextPane());
-        if (textPane == null) {
-            return;
-        }
-        textPane.insertContent(ao.getActionEvent());
-        textPane.addKeyEvent(ao.getKeyEvent());
-    }
-
-    /**
      * 获得文件提示, 通过include行内容
      */
     public @Nullable IncludeJavaSyntax getPromptSyntaxByIncludeLine(AdocTextPane bean) {
@@ -795,5 +765,16 @@ public class WorkViewApi {
         if (CollectionUtils.isNotEmpty(values)) {
             values.forEach(InputPromptItemView::deleteByValue);
         }
+    }
+
+    /**
+     * 编辑区获得焦点
+     */
+    public void textPaneRequestFocus(AdocTextPane bean) {
+        TextPaneView textPane = TextPaneView.cast(bean);
+        if (textPane == null) {
+            return;
+        }
+        textPane.requestFocus();
     }
 }

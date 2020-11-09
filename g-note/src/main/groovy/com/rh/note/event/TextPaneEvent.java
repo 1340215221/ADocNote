@@ -143,16 +143,6 @@ public class TextPaneEvent {
             workAction().openInputPrompt(ao);
             return;
         }
-//        EscPromptAO escPromptAO = operationAction().isEscPrompt();
-//        if (escPromptAO != null) {
-//            workAction().escPrompt(escPromptAO);
-//            return;
-//        }
-//        BackSpaceOnPromptAO backSpaceAO = operationAction().isBackSpaceOnPrompt();
-//        if (backSpaceAO != null) {
-//            workAction().backSpaceOnPrompt(backSpaceAO);
-//            return;
-//        }
         workAction().closeInputPrompt();
     }
 }

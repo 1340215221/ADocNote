@@ -6,7 +6,6 @@ import com.rh.note.ao.ITitleContentAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.IncludePromptAO;
 import com.rh.note.ao.InlineTitleAO;
-import com.rh.note.ao.InputResultAO;
 import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.vo.ITitleLineVO;
 
@@ -85,11 +84,6 @@ public interface IWorkAction {
      * 内联标题
      */
     void inlineTitle(InlineTitleAO ao);
-
-    /**
-     * 输入到编辑区
-     */
-    void inputToTextPane(InputResultAO ao);
 
     /**
      * 打开输入提示

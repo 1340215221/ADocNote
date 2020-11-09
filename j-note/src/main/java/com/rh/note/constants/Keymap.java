@@ -4,7 +4,6 @@ import lombok.NonNull;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.AWTEvent;
-import java.awt.Event;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
@@ -76,9 +75,26 @@ public interface Keymap {
     }
 
     /**
+     * ctrl + alt + n
      * 内联标题
      */
     static boolean isInlineTitle(@NonNull KeyEvent event) {
         return event.getKeyCode() == 78 && event.getModifiers() == 10;
+    }
+
+    /**
+     * esc
+     * 退出
+     */
+    static boolean isEsc(@NotNull KeyEvent event) {
+        return event.getKeyCode() == 27 && event.getModifiers() == 0;
+    }
+
+    /**
+     * ctrl + space
+     * 打开提示弹窗
+     */
+    static boolean isOpenPrompt(@NotNull KeyEvent event) {
+        return event.getKeyCode() == 17 && event.getModifiers() == 0;
     }
 }
