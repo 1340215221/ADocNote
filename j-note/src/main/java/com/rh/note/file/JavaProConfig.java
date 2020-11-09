@@ -2,6 +2,7 @@ package com.rh.note.file;
 
 import com.rh.note.ao.IncludePromptAO;
 import com.rh.note.ao.InputPromptItemAO;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
@@ -27,6 +28,9 @@ public class JavaProConfig {
                 .map(entry -> new InputPromptItemAO().setDescription(entry.getValue()).setCompleteValue(entry.getKey()))
                 .filter(ao -> ao.match(proLabel))
                 .collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(itemList)) {
+            return null;
+        }
         return new IncludePromptAO().setAoList(itemList);
     }
 

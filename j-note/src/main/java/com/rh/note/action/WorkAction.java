@@ -224,6 +224,7 @@ public class WorkAction implements IWorkAction {
     @Override
     public void openInputPrompt(IncludePromptAO ao) {
         workViewApi.openInputPrompt(ao);
+        ao.getTextPane().requestFocus();
     }
 
     @Override

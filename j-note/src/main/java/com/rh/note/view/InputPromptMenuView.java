@@ -47,7 +47,12 @@ public class InputPromptMenuView extends Init<JPopupMenu> {
      * 展示
      */
     public void show(IncludePromptAO ao) {
-        if (ao == null || ao.getTextPane() == null || popupMenu().isVisible()) {
+        if (ao == null || ao.getTextPane() == null) {
+            return;
+        }
+        if (popupMenu().isVisible()) {
+            popupMenu().setVisible(false);
+            popupMenu().setVisible(true);
             return;
         }
         popupMenu().show(ao.getTextPane(), ao.getX(), ao.getY());

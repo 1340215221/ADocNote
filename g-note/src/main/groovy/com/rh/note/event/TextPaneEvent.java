@@ -1,11 +1,11 @@
 package com.rh.note.event;
 
 
-import com.rh.note.ao.IncludePromptAO;
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
 import com.rh.note.ao.ITitleContentAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
+import com.rh.note.ao.IncludePromptAO;
 import com.rh.note.ao.InlineTitleAO;
 import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.vo.ITitleLineVO;
@@ -141,8 +141,18 @@ public class TextPaneEvent {
         IncludePromptAO ao = operationAction().getFilePromptByIncludeLine(event);
         if (ao != null) {
             workAction().openInputPrompt(ao);
-        } else {
-            workAction().closeInputPrompt();
+            return;
         }
+//        EscPromptAO escPromptAO = operationAction().isEscPrompt();
+//        if (escPromptAO != null) {
+//            workAction().escPrompt(escPromptAO);
+//            return;
+//        }
+//        BackSpaceOnPromptAO backSpaceAO = operationAction().isBackSpaceOnPrompt();
+//        if (backSpaceAO != null) {
+//            workAction().backSpaceOnPrompt(backSpaceAO);
+//            return;
+//        }
+        workAction().closeInputPrompt();
     }
 }
