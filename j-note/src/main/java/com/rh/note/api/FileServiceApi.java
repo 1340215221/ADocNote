@@ -202,7 +202,7 @@ public class FileServiceApi {
             return null;
         }
         String projectPath = new ProBeanPath().getProjectPath();
-        if (StringUtils.isNotBlank(projectPath)) {
+        if (StringUtils.isBlank(projectPath)) {
             return null;
         }
         String lastPackagePath = getLastPackagePath(packagePath);
@@ -230,7 +230,11 @@ public class FileServiceApi {
         if (index <= 0) {
             return "";
         }
-        return packagePath.substring(0, index);
+        String path = packagePath.substring(0, index).replaceAll("\\.", "/");
+        if (StringUtils.isBlank(path) || path.endsWith("/")) {
+            return path;
+        }
+        return path + "/";
     }
 
     /**
@@ -247,6 +251,9 @@ public class FileServiceApi {
         if (index < 0) {
             return packagePath;
         }
-        return packagePath.substring(index);
+        if (index + 1 > packagePath.length() -1) {
+            return null;
+        }
+        return packagePath.substring(index + 1);
     }
 }
