@@ -37,7 +37,6 @@ class TextPaneBuilder implements ISwingBuilder {
                     },
                     keyReleased: {
                         TextPaneEvent.open_input_prompt(it)
-                        TextPaneEvent.select_previous_on_prompt(it)
                     },
                     mouseClicked: {
                         TextPaneEvent.enter_include_file(it)
@@ -70,6 +69,20 @@ class TextPaneBuilder implements ISwingBuilder {
             @Override
             void actionPerformed(ActionEvent e) {
                 TextPaneEvent.enter_operation(e)
+            }
+        })
+        // 添加 上键 事件
+        newKeymap.addActionForKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), new TextAction('menu_up') {
+            @Override
+            void actionPerformed(ActionEvent e) {
+                TextPaneEvent.select_previous_on_prompt(e)
+            }
+        })
+        // 添加 下键 事件
+        newKeymap.addActionForKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), new TextAction('menu_down') {
+            @Override
+            void actionPerformed(ActionEvent e) {
+                TextPaneEvent.select_next_on_prompt(e)
             }
         })
         textPane.setKeymap(newKeymap)

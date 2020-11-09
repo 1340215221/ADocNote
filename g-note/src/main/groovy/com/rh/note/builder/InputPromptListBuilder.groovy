@@ -9,6 +9,7 @@ class InputPromptListBuilder implements ISwingBuilder {
 
     void init(Closure children) {
         swingBuilder.popupMenu(id: id(),
+                borderPainted: false,
         ) {
         }
     }

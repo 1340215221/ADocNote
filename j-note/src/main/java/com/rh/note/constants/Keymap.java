@@ -97,11 +97,4 @@ public interface Keymap {
     static boolean isOpenPrompt(@NotNull KeyEvent event) {
         return event.getKeyCode() == 17 && event.getModifiers() == 0;
     }
-
-    /**
-     * 上下键
-     */
-    static boolean isDownOrUp(@NotNull KeyEvent event) {
-        return (event.getKeyCode() == 38 || event.getKeyCode() == 40) && event.getModifiers() == 0;
-    }
 }

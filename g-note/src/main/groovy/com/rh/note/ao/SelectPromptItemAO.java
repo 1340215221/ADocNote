@@ -1,8 +1,5 @@
 package com.rh.note.ao;
 
-import java.awt.event.KeyEvent;
-import java.util.Arrays;
-
 /**
  * 选择提示内容 参数
  */
@@ -14,16 +11,42 @@ public class SelectPromptItemAO {
      */
     private Type type;
 
-    public SelectPromptItemAO copy(KeyEvent event) {
-        if (event == null) {
-            return null;
-        }
-        Type type = Type.match(event);
-        if (type == null) {
-            return null;
-        }
-        this.type = type;
+    public Type getType() {
+        return type;
+    }
+
+    /**
+     * 选择上一个
+     */
+    public SelectPromptItemAO up() {
+        type = Type.UP;
         return this;
+    }
+
+    /**
+     * 选择下一个
+     */
+    public SelectPromptItemAO down() {
+        type = Type.DOWN;
+        return this;
+    }
+
+    /**
+     * 选择下一个
+     */
+    public boolean isNext() {
+        return Type.DOWN.equals(type);
+    }
+
+    /**
+     * 选择上一个
+     */
+    public boolean isPrevious() {
+        return Type.UP.equals(type);
+    }
+
+    public boolean checkRequiredItems() {
+        return type == null;
     }
 
     /**
@@ -33,38 +56,11 @@ public class SelectPromptItemAO {
         /**
          * 上键
          */
-        UP(0) {
-            @Override
-            public boolean parsing(KeyEvent event) {
-                return event != null && event.getKeyCode() == 38 && event.getModifiers() == 0;
-            }
-        },
+        UP,
         /**
          * 下键
          */
-        DOWN(1) {
-            @Override
-            public boolean parsing(KeyEvent event) {
-                return event != null && event.getKeyCode() == 40 && event.getModifiers() == 0;
-            }
-        },
+        DOWN,
         ;
-        private Integer value;
-        Type(Integer value) {
-            this.value = value;
-        }
-        public Integer getValue() {
-            return value;
-        }
-        public abstract boolean parsing(KeyEvent event);
-        /**
-         * 匹配类型, 通过按键
-         */
-        public static Type match(KeyEvent event) {
-            return Arrays.stream(values())
-                    .filter(e -> e.parsing(event))
-                    .findFirst()
-                    .orElse(null);
-        }
     }
 }

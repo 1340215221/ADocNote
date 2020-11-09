@@ -100,4 +100,14 @@ public interface IWorkAction {
      * 选择提示
      */
     void selectPromptItem(SelectPromptItemAO ao);
+
+    /**
+     * 默认下键操作
+     */
+    void defaultDownAction(ActionEvent event);
+
+    /**
+     * 默认上键操作
+     */
+    void defaultUpAction(ActionEvent event);
 }

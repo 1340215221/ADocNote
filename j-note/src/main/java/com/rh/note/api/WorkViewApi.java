@@ -788,5 +788,16 @@ public class WorkViewApi {
     }
 
     public void selectPromptItem(SelectPromptItemAO ao) {
+        if (ao == null || ao.checkRequiredItems()) {
+            return;
+        }
+        InputPromptMenuView promptMenu = new InputPromptMenuView().init();
+        if (ao.isNext()) {
+            promptMenu.next();
+        }
+        if (ao.isPrevious()) {
+            promptMenu.previous();
+        }
+        promptMenu.showSelected();
     }
 }

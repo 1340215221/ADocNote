@@ -29,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import com.rh.note.util.DefaultEditorKitUtil;
 import javax.swing.text.DefaultEditorKit;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -226,6 +227,16 @@ public class WorkAction implements IWorkAction {
     @Override
     public void selectPromptItem(SelectPromptItemAO ao) {
         workViewApi.selectPromptItem(ao);
+    }
+
+    @Override
+    public void defaultDownAction(@NonNull ActionEvent event) {
+        DefaultEditorKitUtil.downAction(event);
+    }
+
+    @Override
+    public void defaultUpAction(@NonNull ActionEvent event) {
+        DefaultEditorKitUtil.upAction(event);
     }
 
     @Override

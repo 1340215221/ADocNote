@@ -144,17 +144,33 @@ public class TextPaneEvent {
             workAction().openInputPrompt(ao);
             return;
         }
+        if (operationAction().notCloseInputPrompt(event)) {
+            return;
+        }
         workAction().closeInputPrompt();
     }
 
     /**
-     * 在提示弹窗打开时, 使用上下键
+     * 在提示弹窗打开时, 使用下键
      */
-    public static void select_previous_on_prompt(KeyEvent event) {
-        SelectPromptItemAO ao = operationAction().isSelectPromptOperation(event);
-        if (ao == null) {
+    public static void select_next_on_prompt(ActionEvent event) {
+        SelectPromptItemAO ao = operationAction().isSelectNextPromptOperation(event);
+        if (ao != null) {
+            workAction().selectPromptItem(ao);
             return;
         }
-        workAction().selectPromptItem(ao);
+        workAction().defaultDownAction(event);
+    }
+
+    /**
+     * 在提示弹窗打开时, 使用上键
+     */
+    public static void select_previous_on_prompt(ActionEvent event) {
+        SelectPromptItemAO ao = operationAction().isSelectPreviousPromptOperation(event);
+        if (ao != null) {
+            workAction().selectPromptItem(ao);
+            return;
+        }
+        workAction().defaultUpAction(event);
     }
 }

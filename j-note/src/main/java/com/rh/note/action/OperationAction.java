@@ -274,18 +274,31 @@ public class OperationAction implements IOperationAction {
     }
 
     @Override
-    public SelectPromptItemAO isSelectPromptOperation(@NotNull KeyEvent event) {
-        if (!Keymap.isDownOrUp(event)) {
-            return null;
-        }
-        Object source = event.getSource();
-        if (!(source instanceof AdocTextPane)) {
+    public SelectPromptItemAO isSelectPreviousPromptOperation(@NotNull ActionEvent event) {
+        if (!(event.getSource() instanceof AdocTextPane)) {
             return null;
         }
         if (!workViewApi.isVisibleForPromptMenu()) {
             return null;
         }
-        return new SelectPromptItemAO().copy(event);
+        return new SelectPromptItemAO().up();
+    }
+
+    @Override
+    public SelectPromptItemAO isSelectNextPromptOperation(@NotNull ActionEvent event) {
+        if (!(event.getSource() instanceof AdocTextPane)) {
+            return null;
+        }
+        if (!workViewApi.isVisibleForPromptMenu()) {
+            return null;
+        }
+        return new SelectPromptItemAO().down();
+    }
+
+    @Override
+    public boolean notCloseInputPrompt(@NonNull KeyEvent event) {
+        // 上下键
+        return (event.getKeyCode() == 38 || event.getKeyCode() == 40) && event.getModifiers() == 0;
     }
 
     @Override

@@ -92,7 +92,17 @@ public interface IOperationAction {
     IncludePromptAO getFilePromptByIncludeLine(KeyEvent event);
 
     /**
-     * 选择提示操作
+     * 向上选择提示操作
      */
-    SelectPromptItemAO isSelectPromptOperation(KeyEvent event);
+    SelectPromptItemAO isSelectPreviousPromptOperation(ActionEvent event);
+
+    /**
+     * 向下选择提示操作
+     */
+    SelectPromptItemAO isSelectNextPromptOperation(ActionEvent event);
+
+    /**
+     * 不关闭输入提示
+     */
+    boolean notCloseInputPrompt(KeyEvent event);
 }
