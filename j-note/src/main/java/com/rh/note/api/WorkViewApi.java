@@ -12,10 +12,13 @@ import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.ao.SelectCaretLineAO;
 import com.rh.note.ao.SelectPromptItemAO;
 import com.rh.note.component.AdocTextPane;
+import com.rh.note.component.InputPromptMenuItem;
 import com.rh.note.component.TitleButton;
 import com.rh.note.constants.AdocFileTypeEnum;
+import com.rh.note.constants.BaseConstants;
 import com.rh.note.constants.PromptMessageEnum;
 import com.rh.note.exception.UnknownLogicException;
+import com.rh.note.file.JavaProConfig;
 import com.rh.note.frame.WorkFrame;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
@@ -51,6 +54,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -800,4 +805,65 @@ public class WorkViewApi {
         }
         promptMenu.showSelected();
     }
+
+    /**
+     * todo
+     * 替换提示内容到编辑区
+     */
+    public void replacePromptItem(InputPromptMenuItem bean) {
+        String proLabel = new JavaProConfig().getProLabel(bean.getResult());
+//        InputPromptItemView inputPromptItem = InputPromptItemView.cast(bean);
+        InputPromptItemView inputPromptItem = new InputPromptItemView().init(proLabel);
+        if (inputPromptItem == null) {
+            return;
+        }
+        TextScrollPaneView selectedTextPane = new TabbedPaneView().init().getSelectedTextPane();
+        if (selectedTextPane == null) {
+            return;
+        }
+        TextPaneView textPane = new TextPaneView().init(selectedTextPane.getFilePath());
+        String lineContent = textPane.getCaretLineContent();
+        IncludeJavaSyntax syntax = new IncludeJavaSyntax().init(lineContent);
+        if (syntax == null || !syntax.isProPrompt()) {
+            return;
+        }
+        if (StringUtils.isBlank(lineContent)) {
+            return;
+        }
+        int index1 = lineContent.lastIndexOf('.');
+        if (index1 < 0) {
+            return;
+        }
+        textPane.replacePromptItem(index1, proLabel);
+    }
+
+    /**
+     * todo
+     * 替换包路径
+     */
+    public void replacePromptItemForPackage(InputPromptMenuItem bean) {
+        if (bean == null || StringUtils.isBlank(bean.getResult())) {
+            return;
+        }
+        TextScrollPaneView selectedTextPane = new TabbedPaneView().init().getSelectedTextPane();
+        if (selectedTextPane == null) {
+            return;
+        }
+        TextPaneView textPane = new TextPaneView().init(selectedTextPane.getFilePath());
+        String lineContent = textPane.getCaretLineContent();
+        IncludeJavaSyntax syntax = new IncludeJavaSyntax().init(lineContent);
+        if (syntax == null || !syntax.isPackagePrompt()) {
+            return;
+        }
+        String regex = "^(\\s*=>j." + BaseConstants.pro_label_regex + "\\s+)(" + BaseConstants.package_path_regex + ")\\s*$";
+        Matcher matcher = Pattern.compile(regex).matcher(lineContent);
+        if (!matcher.find()) {
+            return;
+        }
+        String str1 = matcher.group(1);
+        String str2 = matcher.group(2);
+        if () {
+        }
+    }
 }
+// 4

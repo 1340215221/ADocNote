@@ -15,6 +15,7 @@ import com.rh.note.ao.TitleContentAO;
 import com.rh.note.api.FileServiceApi;
 import com.rh.note.api.GitServiceApi;
 import com.rh.note.api.WorkViewApi;
+import com.rh.note.component.InputPromptMenuItem;
 import com.rh.note.constants.PromptMessageEnum;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
@@ -32,6 +33,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.rh.note.util.DefaultEditorKitUtil;
 import javax.swing.text.DefaultEditorKit;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -237,6 +239,16 @@ public class WorkAction implements IWorkAction {
     @Override
     public void defaultUpAction(@NonNull ActionEvent event) {
         DefaultEditorKitUtil.upAction(event);
+    }
+
+    @Override
+    public void replacePromptItem(@NonNull MouseEvent mouseEvent) {
+        Object source = mouseEvent.getSource();
+        if (!(source instanceof InputPromptMenuItem)) {
+            return;
+        }
+        workViewApi.replacePromptItem(((InputPromptMenuItem) source));
+        workViewApi.replacePromptItemForPackage(((InputPromptMenuItem) source));
     }
 
     @Override

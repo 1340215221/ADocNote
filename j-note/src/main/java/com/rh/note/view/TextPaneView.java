@@ -303,6 +303,27 @@ public class TextPaneView extends Init<AdocTextPane> {
         textPane().requestFocus();
     }
 
+    /**
+     * todo
+     * 替换提示内容
+     */
+    public void replacePromptItem(int index1, String value) {
+        if (index1 < 0 || StringUtils.isBlank(value)) {
+            return;
+        }
+        int dot = textPane().getCaret().getDot();
+        Element rootElement = textPane().getDocument().getDefaultRootElement();
+        int elementIndex = rootElement.getElementIndex(dot);
+        Element element = rootElement.getElement(elementIndex);
+        if (element == null) {
+            return;
+        }
+        int start = element.getStartOffset() + index1 + 1;
+        int end = dot;
+        textPane().select(start, end);
+        textPane().replaceSelection(value);
+    }
+
     private class ParsingCareLineApi {
 
         /**
