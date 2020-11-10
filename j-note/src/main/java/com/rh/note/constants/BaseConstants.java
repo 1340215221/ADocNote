@@ -16,7 +16,7 @@ public interface BaseConstants {
     /**
      * 文件名正则
      */
-    String file_name_regex = "[0-9a-zA-Z\\u4e00-\\u9fa5_,\\.\\-\\s]+";
+    String file_name_regex = "[0-9a-zA-Z\\u4e00-\\u9fa5_,\\.\\-\\s+<>]+";
     /**
      * 文件路径正则
      */
