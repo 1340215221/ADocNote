@@ -11,6 +11,7 @@ import com.rh.note.ao.SelectPromptItemAO;
 import com.rh.note.vo.ITitleLineVO;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
 
 /**
  * 工作窗口--入口
@@ -110,4 +111,9 @@ public interface IWorkAction {
      * 默认上键操作
      */
     void defaultUpAction(ActionEvent event);
+
+    /**
+     * 替换提示内容到编辑区
+     */
+    void replacePromptItem(MouseEvent mouseEvent);
 }

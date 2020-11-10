@@ -2,6 +2,7 @@ package com.rh.note.builder
 
 import com.rh.note.ao.InputPromptItemAO
 import com.rh.note.base.ISwingBuilder
+import com.rh.note.event.InputPromptEvent
 
 /**
  * 输入提示项
@@ -18,6 +19,9 @@ class InputPromptItemBuilder implements ISwingBuilder {
         swingBuilder.menuItem(id: id(ao.getCompleteValue()),
                 text: ao.getCompleteValue(),
                 result: ao.getDescription(),
+                mousePressed: {
+                    InputPromptEvent.selectItem(it)
+                },
         ) {
         }
     }

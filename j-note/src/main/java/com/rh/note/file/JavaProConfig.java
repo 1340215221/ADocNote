@@ -5,6 +5,7 @@ import com.rh.note.ao.InputPromptItemAO;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.mutable.MutableObject;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -39,6 +40,19 @@ public class JavaProConfig {
      */
     public String getProPath(String proLabel) {
         return this.proLabel.getProPath(proLabel);
+    }
+
+    public String getProLabel(String result) {
+        if (StringUtils.isBlank(result)) {
+            return null;
+        }
+        MutableObject<String> mo = new MutableObject<>();
+        proLabel.proLabel_proName.forEach((key, value) -> {
+            if (value.equals(result)) {
+                mo.setValue(key);
+            }
+        });
+        return mo.getValue();
     }
 
     /**

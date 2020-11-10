@@ -1,7 +1,5 @@
 package com.rh.note.event;
 
-import static com.rh.note.config.BridgingBeanConfig.proManageAction;
-
 /**
  * 导入按钮事件
  */
