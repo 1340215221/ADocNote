@@ -19,9 +19,22 @@ class JavaTextPaneBuilder implements ISwingBuilder {
      * 文件绝对路径
      */
     private String absolutePath
+    /**
+     * 来源编辑区文件路径
+     */
+    private String sourceFilePath
+    /**
+     * include java中的文件路径
+     */
+    private String includeFilePath
 
-    JavaTextPaneBuilder(String absolutePath) {
+    /**
+     * 缺少 选择行 回显
+     */
+    JavaTextPaneBuilder(String absolutePath, String sourceFilePath, String includeFilePath) {
         this.absolutePath = absolutePath
+        this.sourceFilePath = sourceFilePath
+        this.includeFilePath = includeFilePath
     }
 
     void init() {
@@ -33,7 +46,9 @@ class JavaTextPaneBuilder implements ISwingBuilder {
                     absolutePath: absolutePath,
                     keyPressed: {
                         JTextPaneEvent.markLine(it)
-                    }
+                    },
+                    sourceFilePath: sourceFilePath,
+                    includeFilePath: includeFilePath,
             ){
                 showCaret()
             }

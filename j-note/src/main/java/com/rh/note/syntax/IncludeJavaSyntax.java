@@ -101,4 +101,41 @@ public class IncludeJavaSyntax {
         }
         return projectPath + temp;
     }
+
+    /**
+     * 更新起始行号
+     */
+    public void updateStartLine(int lineNumber) {
+        lineStart = lineNumber;
+    }
+
+    /**
+     * 更新起始行号
+     */
+    public void updateEndLine(int lineNumber) {
+        lineEnd = lineNumber;
+    }
+
+    /**
+     * 转为include语句
+     */
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder()
+                .append(indented)
+                .append("include::")
+                .append(targetRelativePath)
+                .append("[");
+        if (lineStart != null && lineEnd != null) {
+            result.append(lineStart)
+                    .append("..")
+                    .append(lineEnd);
+        } else if (lineStart != null) {
+            result.append(lineStart);
+        } else if (lineEnd != null) {
+            result.append(lineEnd);
+        }
+        result.append("]");
+        return result.toString();
+    }
 }

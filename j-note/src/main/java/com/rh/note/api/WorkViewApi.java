@@ -903,6 +903,9 @@ public class WorkViewApi {
         if (StringUtils.isBlank(targetAbsolutePath)) {
             return null;
         }
-        return new TargetFilePathByIncludeJavaLineAO().setAbsolutePath(targetAbsolutePath);
+        return new TargetFilePathByIncludeJavaLineAO()
+                .setAbsolutePath(targetAbsolutePath)
+                .setSourceFilePath(textPane.getFilePath())
+                .setIncludeFilePath(syntax.getTargetRelativePath());
     }
 }

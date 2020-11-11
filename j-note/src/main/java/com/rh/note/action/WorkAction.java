@@ -288,7 +288,7 @@ public class WorkAction implements IWorkAction {
      */
     @Override
     public void openJavaFile(TargetFilePathByIncludeJavaLineAO ao) {
-        if (ao == null || StringUtils.isBlank(ao.getAbsolutePath())) {
+        if (ao == null || StringUtils.isBlank(ao.getAbsolutePath())) { // todo 参数校验待调整
             return;
         }
         // 读取文件内容
@@ -297,7 +297,7 @@ public class WorkAction implements IWorkAction {
             return;
         }
         // 生成编辑控件
-        JavaTextPaneView.create(ao.getAbsolutePath());
+        JavaTextPaneView.create(ao.getAbsolutePath(), ao.getSourceFilePath(), ao.getIncludeFilePath());
         JavaTextPaneView textPane = new JavaTextPaneView().init(ao.getAbsolutePath());
         textPane.write();
         // 编辑控件添加到卡片面板中
@@ -316,6 +316,11 @@ public class WorkAction implements IWorkAction {
         if (ao == null || ao.checkRequiredItems()) {
             return;
         }
+        TextPaneView textPane = new TextPaneView().init(ao.getSourceFilePath());
+        if (textPane == null) {
+            return;
+        }
+        textPane.changeIncludeJavaLine(ao);
     }
 
     @Override

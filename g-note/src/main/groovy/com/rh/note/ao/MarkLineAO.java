@@ -1,5 +1,7 @@
 package com.rh.note.ao;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.awt.event.KeyEvent;
 
 /**
@@ -24,7 +26,8 @@ public class MarkLineAO {
     private String includeFilePath;
 
     public boolean checkRequiredItems() {
-        return lineNumber == null || keyMapNumber == null;
+        return lineNumber == null || keyMapNumber == null || keyMapNumber != 1 && keyMapNumber !=2
+                || StringUtils.isBlank(sourceFilePath) || StringUtils.isBlank(includeFilePath);
     }
 
     public MarkLineAO setKeyMapNumber(Integer keyMapNumber) {
@@ -73,5 +76,19 @@ public class MarkLineAO {
         if (event.getKeyCode() == 50 && event.getModifiers() == 2) {
             keyMapNumber = 2;
         }
+    }
+
+    /**
+     * 是快捷键 ctrl 1
+     */
+    public boolean isCtrlOne() {
+        return keyMapNumber == 1;
+    }
+
+    /**
+     * 是快捷键 ctrl 1
+     */
+    public boolean isCtrlTwo() {
+        return keyMapNumber == 2;
     }
 }

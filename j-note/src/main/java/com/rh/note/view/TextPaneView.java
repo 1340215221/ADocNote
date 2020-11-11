@@ -1,5 +1,6 @@
 package com.rh.note.view;
 
+import com.rh.note.ao.MarkLineAO;
 import com.rh.note.ao.SelectCaretLineAO;
 import com.rh.note.base.Init;
 import com.rh.note.builder.TextPaneBuilder;
@@ -12,12 +13,14 @@ import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.path.ProBeanPath;
 import com.rh.note.path.TitleBeanPath;
+import com.rh.note.syntax.IncludeJavaSyntax;
 import com.rh.note.syntax.TitleSyntax;
 import com.rh.note.util.ViewUtil;
 import com.rh.note.vo.WriterVO;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,7 +31,9 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -345,6 +350,58 @@ public class TextPaneView extends Init<AdocTextPane> {
         System.out.println("__" + textPane().getSelectedText() + "__");
         textPane().replaceSelection(value);
         System.out.println(value);
+    }
+
+    /**
+     * todo
+     * 改变引用java行
+     */
+    public void changeIncludeJavaLine(MarkLineAO ao) {
+        if (ao == null || ao.checkRequiredItems()) {
+            return;
+        }
+        // 获得行号
+        MutableInt lineNumber = new MutableInt(0);
+        IncludeJavaSyntax javaSyntax = Arrays.stream(textPane().getText().split("\n"))
+                .peek(e -> lineNumber.increment())
+                .map(lineContent -> {
+                    IncludeJavaSyntax syntax = new IncludeJavaSyntax().init(lineContent);
+                    if (syntax == null) {
+                        return null;
+                    }
+                    if (!syntax.getTargetRelativePath().equals(ao.getIncludeFilePath())) {
+                        return null;
+                    }
+                    return syntax;
+                }).filter(Objects::nonNull)
+                .findFirst()
+                .orElse(null);
+        if (javaSyntax == null) {
+            return;
+        }
+        // 修改内容
+        if (ao.isCtrlOne()) {
+            javaSyntax.updateStartLine(ao.getLineNumber());
+        }
+        if (ao.isCtrlTwo()) {
+            javaSyntax.updateEndLine(ao.getLineNumber());
+        }
+        String includeStr = javaSyntax.toString();
+        Element rootElement = textPane().getDocument().getDefaultRootElement();
+        Element element = rootElement.getElement(lineNumber.getValue() - 1);
+        if (element == null) {
+            return;
+        }
+        int totalLineNumber = rootElement.getElementCount();
+        // 如果非最后一行, 不选择行尾的换行符
+        if (totalLineNumber == lineNumber.getValue()) {
+            textPane().select(element.getStartOffset(), element.getEndOffset());
+        } else {
+            textPane().select(element.getStartOffset(), element.getEndOffset() - 1);
+        }
+        System.out.println("___" + textPane().getSelectedText()  +"___");
+        System.out.println(includeStr);
+        replaceSelectedText(includeStr);
     }
 
     private class ParsingCareLineApi {

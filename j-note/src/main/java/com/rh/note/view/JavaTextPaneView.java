@@ -19,11 +19,14 @@ import java.io.FileReader;
  */
 public class JavaTextPaneView extends Init<JavaTextPane> {
 
-    public static void create(String absolutePath) {
+    /**
+     * todo 方法参数有待封装成对象
+     */
+    public static void create(String absolutePath, String sourceFilePath, String includeFilePath) {
         if (StringUtils.isBlank(absolutePath)) {
             return;
         }
-        new JavaTextPaneBuilder(absolutePath).init();
+        new JavaTextPaneBuilder(absolutePath, sourceFilePath, includeFilePath).init();
     }
 
     public static @Nullable JavaTextPaneView cast(JavaTextPane bean) {
