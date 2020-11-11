@@ -279,7 +279,6 @@ public class WorkAction implements IWorkAction {
             return;
         }
         IncludeSyntax syntax = syntaxSugar.copyToByFilePath(textPane.getFilePath());
-        System.out.println(syntax.toString());
         textPane.replaceSelectedText(syntax.toString());
     }
 

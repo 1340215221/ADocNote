@@ -123,7 +123,7 @@ public class IncludeJavaSyntaxSugar {
         if (packageEndIndex > 0) {
             package_path = strTemp.substring(0, packageEndIndex + 1).replaceAll("\\.", "/");
         }
-        return relativePath + proPath + "/src/main/java/" + package_path + getTargetRelativeName() + ".java";
+        return relativePath + proPath + package_path + getTargetRelativeName() + ".java";
     }
 
     /**
