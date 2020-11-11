@@ -8,6 +8,7 @@ import com.rh.note.ao.ITitleContentAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.IncludePromptAO;
 import com.rh.note.ao.InlineTitleAO;
+import com.rh.note.ao.MarkLineAO;
 import com.rh.note.ao.MatchIncludeInfoBySelectedTextAO;
 import com.rh.note.ao.MatchTitleInfoBySelectedTextAO;
 import com.rh.note.ao.RenameIncludeAO;
@@ -305,6 +306,16 @@ public class WorkAction implements IWorkAction {
         tabbedPane.add(scrollPane);
         // 显示java文件编辑区
         tabbedPane.show(scrollPane);
+    }
+
+    /**
+     * todo
+     */
+    @Override
+    public void markLine(MarkLineAO ao) {
+        if (ao == null || ao.checkRequiredItems()) {
+            return;
+        }
     }
 
     @Override

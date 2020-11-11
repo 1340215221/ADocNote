@@ -7,6 +7,7 @@ import com.rh.note.ao.ITitleContentAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.IncludePromptAO;
 import com.rh.note.ao.InlineTitleAO;
+import com.rh.note.ao.MarkLineAO;
 import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.ao.SelectPromptItemAO;
 import com.rh.note.ao.TargetFilePathByIncludeJavaLineAO;
@@ -129,4 +130,9 @@ public interface IWorkAction {
      * 打开java文件
      */
     void openJavaFile(TargetFilePathByIncludeJavaLineAO ao);
+
+    /**
+     * 标记行 1
+     */
+    void markLine(MarkLineAO ao);
 }

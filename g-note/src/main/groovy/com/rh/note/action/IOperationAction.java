@@ -8,6 +8,7 @@ import com.rh.note.ao.ITitleContentAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.IncludePromptAO;
 import com.rh.note.ao.InlineTitleAO;
+import com.rh.note.ao.MarkLineAO;
 import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.ao.SelectPromptItemAO;
 import com.rh.note.ao.TargetFilePathByIncludeJavaLineAO;
@@ -117,4 +118,9 @@ public interface IOperationAction {
      * 获得指向java文件的路径
      */
     TargetFilePathByIncludeJavaLineAO getTargetFilePathByIncludeJavaLine(MouseEvent event);
+
+    /**
+     * 获得光标行号, 在java编辑区
+     */
+    MarkLineAO getCareLineNumberForJavaTextPane(KeyEvent event);
 }

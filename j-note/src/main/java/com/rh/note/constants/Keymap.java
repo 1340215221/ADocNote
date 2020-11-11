@@ -97,4 +97,20 @@ public interface Keymap {
     static boolean isOpenPrompt(@NotNull KeyEvent event) {
         return event.getKeyCode() == 17 && event.getModifiers() == 0;
     }
+
+    /**
+     * ctrl + 1
+     * java文件标记行1
+     */
+    static boolean isCtrlOne(@NonNull KeyEvent event) {
+        return event.getKeyCode() == 49 && event.getModifiers() == 2;
+    }
+
+    /**
+     * ctrl + 2
+     * java文件标记行2
+     */
+    static boolean isCtrlTwo(@NonNull KeyEvent event) {
+        return event.getKeyCode() == 50 && event.getModifiers() == 2;
+    }
 }

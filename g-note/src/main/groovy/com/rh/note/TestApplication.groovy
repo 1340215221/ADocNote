@@ -10,6 +10,7 @@ import javax.swing.text.StyleConstants
 import javax.swing.text.StyledDocument
 import java.awt.BorderLayout
 import java.awt.Color
+import java.awt.event.KeyEvent
 
 class TestApplication {
     public static void main(String[] args) {
@@ -22,6 +23,12 @@ class TestApplication {
                 builder.textPane(id: 'textPane',
                         editable: false,
 //                        text: 'afdafa\nafdasf\nafasfsa',
+                        keyPressed: {KeyEvent event ->
+                            println event.keyCode
+                            println event.modifiers
+                            // ctrl 1 -----49 2
+                            // ctrl 2 -----50 2
+                        }
                 ){
                 }
             }

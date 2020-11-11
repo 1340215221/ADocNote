@@ -5,17 +5,14 @@ import com.rh.note.builder.JavaTextPaneBuilder;
 import com.rh.note.component.JavaTextPane;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
-import com.rh.note.exception.UnknownLogicException;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.swing.text.Caret;
+import javax.swing.text.Element;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.Reader;
-import java.io.Writer;
 
 /**
  * java文件编辑控件
@@ -27,6 +24,13 @@ public class JavaTextPaneView extends Init<JavaTextPane> {
             return;
         }
         new JavaTextPaneBuilder(absolutePath).init();
+    }
+
+    public static @Nullable JavaTextPaneView cast(JavaTextPane bean) {
+        if (bean == null) {
+            return null;
+        }
+        return new JavaTextPaneView().init(bean.getAbsolutePath());
     }
 
     public @Nullable JavaTextPaneView init(String absolutePath) {
@@ -54,5 +58,36 @@ public class JavaTextPaneView extends Init<JavaTextPane> {
         } catch (Exception e) {
             throw new ApplicationException(ErrorCodeEnum.READ_FILE_ERROR, e);
         }
+    }
+
+    /**
+     * 获得光标所在行号
+     */
+    public @Nullable Integer getLineNumberByCaret() {
+        Caret caret = textPane().getCaret();
+        if (!caret.isVisible()) {
+            return null;
+        }
+        int dot = caret.getDot();
+        Element rootElement = textPane().getDocument().getDefaultRootElement();
+        int index = rootElement.getElementIndex(dot);
+        if (index < 0) {
+            return null;
+        }
+        return index + 1;
+    }
+
+    /**
+     * 来源编辑区文件路径
+     */
+    public @NotNull String getSourceFilePath() {
+        return textPane().getSourceFilePath();
+    }
+
+    /**
+     * include java中的文件路径
+     */
+    public @NotNull String getIncludeFilePath() {
+        return textPane().getIncludeFilePath();
     }
 }

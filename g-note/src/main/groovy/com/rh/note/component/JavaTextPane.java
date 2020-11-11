@@ -13,12 +13,48 @@ public class JavaTextPane extends JTextPane {
      * 文件绝对路径
      */
     private String absolutePath;
+    /**
+     * 标记行 1
+     */
+    private Integer markLineNumber1;
+    /**
+     * 标记行 2
+     */
+    private Integer markLineNumber2;
+    /**
+     * 临时 标记行 1
+     */
+    private Integer tempMarkLineNumber1;
+    /**
+     * 临时 标记行 2
+     */
+    private Integer tempMarkLineNumber2;
+    /**
+     * 来源编辑区信息
+     */
+    private final SourceTextPaneInfo sourceTextPaneInfo = new SourceTextPaneInfo();
 
     public JavaTextPane() {
     }
 
     public JavaTextPane(StyledDocument doc) {
         super(doc);
+    }
+
+    public void setIncludeFilePath(String includeFilePath) {
+        sourceTextPaneInfo.includeFilePath = includeFilePath;
+    }
+
+    public void setSourceFilePath(String sourceFilePath) {
+        sourceTextPaneInfo.sourceFilePath = sourceFilePath;
+    }
+
+    public String getIncludeFilePath() {
+        return sourceTextPaneInfo.includeFilePath;
+    }
+
+    public String getSourceFilePath() {
+        return sourceTextPaneInfo.sourceFilePath;
     }
 
     public JavaTextPane setAbsolutePath(String absolutePath) {
@@ -28,5 +64,67 @@ public class JavaTextPane extends JTextPane {
 
     public String getAbsolutePath() {
         return absolutePath;
+    }
+
+    public Integer getMarkLineNumber1() {
+        return markLineNumber1;
+    }
+
+    public void setMarkLineNumber1(Integer markLineNumber1) {
+        this.markLineNumber1 = markLineNumber1;
+    }
+
+    public Integer getMarkLineNumber2() {
+        return markLineNumber2;
+    }
+
+    public void setMarkLineNumber2(Integer markLineNumber2) {
+        this.markLineNumber2 = markLineNumber2;
+    }
+
+    public Integer getTempMarkLineNumber1() {
+        return tempMarkLineNumber1;
+    }
+
+    public void setTempMarkLineNumber1(Integer tempMarkLineNumber1) {
+        this.tempMarkLineNumber1 = tempMarkLineNumber1;
+    }
+
+    public Integer getTempMarkLineNumber2() {
+        return tempMarkLineNumber2;
+    }
+
+    public void setTempMarkLineNumber2(Integer tempMarkLineNumber2) {
+        this.tempMarkLineNumber2 = tempMarkLineNumber2;
+    }
+
+    /**
+     * 来源信息
+     */
+    private class SourceTextPaneInfo {
+        /**
+         * 来源文件路径
+         */
+        private String sourceFilePath;
+        /**
+         * include java指向的文件路径
+         */
+        private String includeFilePath;
+
+        public String getSourceFilePath() {
+            return sourceFilePath;
+        }
+
+        public void setSourceFilePath(String sourceFilePath) {
+            this.sourceFilePath = sourceFilePath;
+        }
+
+        public String getIncludeFilePath() {
+            return includeFilePath;
+        }
+
+        public void setIncludeFilePath(String includeFilePath) {
+            this.includeFilePath = includeFilePath;
+        }
     }
 }

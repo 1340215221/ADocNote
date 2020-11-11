@@ -10,6 +10,7 @@ import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.IncludePromptAO;
 import com.rh.note.ao.InlineTitleAO;
 import com.rh.note.ao.LineRangeAO;
+import com.rh.note.ao.MarkLineAO;
 import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.ao.SelectPromptItemAO;
 import com.rh.note.ao.TargetFilePathByIncludeJavaLineAO;
@@ -18,6 +19,7 @@ import com.rh.note.api.FileServiceApi;
 import com.rh.note.api.ProManageViewApi;
 import com.rh.note.api.WorkViewApi;
 import com.rh.note.component.AdocTextPane;
+import com.rh.note.component.JavaTextPane;
 import com.rh.note.component.TitleButton;
 import com.rh.note.constants.Keymap;
 import com.rh.note.constants.PromptMessageEnum;
@@ -28,6 +30,7 @@ import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.path.TitleBeanPath;
 import com.rh.note.syntax.IncludeJavaSyntaxSugar;
+import com.rh.note.view.JavaTextPaneView;
 import com.rh.note.view.TextPaneView;
 import com.rh.note.vo.ITitleLineVO;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
@@ -339,6 +342,34 @@ public class OperationAction implements IOperationAction {
             return null;
         }
         return workViewApi.getTargetJavaFilePathByCaretLine(((AdocTextPane) source));
+    }
+
+    /**
+     * todo
+     */
+    @Override
+    public MarkLineAO getCareLineNumberForJavaTextPane(@NonNull KeyEvent event) {
+        if (!Keymap.isCtrlOne(event) && !Keymap.isCtrlTwo(event)) {
+            return null;
+        }
+        Object source = event.getSource();
+        if (!(source instanceof JavaTextPane)) {
+            return null;
+        }
+        JavaTextPaneView textPane = JavaTextPaneView.cast(((JavaTextPane) source));
+        if (textPane == null) {
+            return null;
+        }
+        Integer lineNumber = textPane.getLineNumberByCaret();
+        if (lineNumber == null || lineNumber < 1) {
+            return null;
+        }
+        MarkLineAO ao = new MarkLineAO()
+                .setLineNumber(lineNumber)
+                .setSourceFilePath(textPane.getSourceFilePath())
+                .setIncludeFilePath(textPane.getIncludeFilePath());
+        ao.copy(event);
+        return ao;
     }
 
     @Override
