@@ -1,6 +1,7 @@
 package com.rh.note.action;
 
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
+import com.rh.note.ao.GenerateJavaIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
 import com.rh.note.ao.ICreateFileAndInitContentAO;
 import com.rh.note.ao.ITitleContentAO;
@@ -21,6 +22,8 @@ import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
+import com.rh.note.syntax.IncludeJavaSyntaxSugar;
+import com.rh.note.syntax.IncludeSyntax;
 import com.rh.note.view.TextPaneView;
 import com.rh.note.vo.ITitleLineVO;
 import com.rh.note.vo.WriterVO;
@@ -249,6 +252,28 @@ public class WorkAction implements IWorkAction {
         }
         workViewApi.replacePromptItem(((InputPromptMenuItem) source));
         workViewApi.replacePromptItemForPackage(((InputPromptMenuItem) source));
+    }
+
+    /**
+     * todo
+     */
+    @Override
+    public void generateJavaIncludeSyntaxBySelectedText(GenerateJavaIncludeSyntaxAO ao) {
+        if (ao == null) {
+            return;
+        }
+        TextPaneView textPane = new TextPaneView().init(ao.getFilePath());
+        if (textPane == null) {
+            return;
+        }
+        String selectedText = textPane.getSelectedText();
+        IncludeJavaSyntaxSugar syntaxSugar = new IncludeJavaSyntaxSugar().init(selectedText);
+        if (syntaxSugar == null) {
+            return;
+        }
+        IncludeSyntax syntax = syntaxSugar.copyToByFilePath(textPane.getFilePath());
+        System.out.println(syntax.toString());
+        textPane.replaceSelectedText(syntax.toString());
     }
 
     @Override

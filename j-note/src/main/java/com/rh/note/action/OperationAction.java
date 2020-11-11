@@ -3,6 +3,7 @@ package com.rh.note.action;
 import com.rh.note.ao.CaretPointAO;
 import com.rh.note.ao.ClickedHistoryProjectListAO;
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
+import com.rh.note.ao.GenerateJavaIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
 import com.rh.note.ao.ITitleContentAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
@@ -25,7 +26,7 @@ import com.rh.note.exception.UnknownLogicException;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.path.TitleBeanPath;
-import com.rh.note.syntax.IncludeJavaSyntax;
+import com.rh.note.syntax.IncludeJavaSyntaxSugar;
 import com.rh.note.view.TextPaneView;
 import com.rh.note.vo.ITitleLineVO;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
@@ -257,7 +258,7 @@ public class OperationAction implements IOperationAction {
         ) {
             return null;
         }
-        IncludeJavaSyntax syntax = workViewApi.getPromptSyntaxByIncludeLine((AdocTextPane) source);
+        IncludeJavaSyntaxSugar syntax = workViewApi.getPromptSyntaxByIncludeLine((AdocTextPane) source);
         if (syntax == null) {
             return null;
         }
@@ -299,6 +300,32 @@ public class OperationAction implements IOperationAction {
     public boolean notCloseInputPrompt(@NonNull KeyEvent event) {
         // 上下键
         return (event.getKeyCode() == 38 || event.getKeyCode() == 40) && event.getModifiers() == 0;
+    }
+
+    /**
+     * todo
+     */
+    @Override
+    public GenerateJavaIncludeSyntaxAO selectCaretLineOfJavaIncludeSyntaxSugar(@NonNull ActionEvent event) {
+        Object source = event.getSource();
+        if (!(source instanceof AdocTextPane)) {
+            return null;
+        }
+        AdocTextPane bean = (AdocTextPane) source;
+        TextPaneView textPane = TextPaneView.cast(bean);
+        if (textPane == null) {
+            return null;
+        }
+        String lineContent = textPane.getCaretLineContent();
+        if (StringUtils.isBlank(lineContent)) {
+            return null;
+        }
+        IncludeJavaSyntaxSugar syntax = new IncludeJavaSyntaxSugar().init(lineContent);
+        if (syntax == null) {
+            return null;
+        }
+        textPane.selectCaretLine();
+        return new GenerateJavaIncludeSyntaxAO().setFilePath(textPane.getFilePath());
     }
 
     @Override

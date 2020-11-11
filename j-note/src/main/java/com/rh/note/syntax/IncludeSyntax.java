@@ -60,6 +60,9 @@ public class IncludeSyntax {
         targetRelativePath = matcher.group(2) + ".adoc";
         targetFileName = parsingTargetFileName(matcher.group(2));
         targetFileSuf = matcher.group(3);
+        if (!"adoc".equals(targetFileSuf)) {
+            return null;
+        }
         lineStart = parsingNumber(matcher.group(4));
         lineEnd = parsingNumber(matcher.group(5));
         return this;

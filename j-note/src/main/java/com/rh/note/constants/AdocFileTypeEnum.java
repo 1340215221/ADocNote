@@ -54,6 +54,11 @@ public enum AdocFileTypeEnum {
         public AdocFileTypeEnum getNextFileType() {
             return towLevel;
         }
+
+        @Override
+        public String getJavaRelativePath() {
+            return "";
+        }
     },
     /**
      * towLevel
@@ -98,6 +103,11 @@ public enum AdocFileTypeEnum {
         @Override
         public AdocFileTypeEnum getNextFileType() {
             return content;
+        }
+
+        @Override
+        public String getJavaRelativePath() {
+            return "../../";
         }
     },
     /**
@@ -147,6 +157,11 @@ public enum AdocFileTypeEnum {
         @Override
         public AdocFileTypeEnum getNextFileType() {
             return null;
+        }
+
+        @Override
+        public String getJavaRelativePath() {
+            return "../../";
         }
     },
     ;
@@ -223,4 +238,9 @@ public enum AdocFileTypeEnum {
      * @param childFilePath
      */
     public abstract boolean isParentPathOf(String childFilePath);
+
+    /**
+     * 获得java项目相对路径
+     */
+    public abstract String getJavaRelativePath();
 }

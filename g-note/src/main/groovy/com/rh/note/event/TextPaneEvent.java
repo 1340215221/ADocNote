@@ -2,6 +2,7 @@ package com.rh.note.event;
 
 
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
+import com.rh.note.ao.GenerateJavaIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
 import com.rh.note.ao.ITitleContentAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
@@ -48,12 +49,17 @@ public class TextPaneEvent {
         if (titleAO != null) {
             workAction().generateTitleSyntaxBySelectedText(titleAO);
         }
+        // include java 快捷语法
+        GenerateJavaIncludeSyntaxAO javaIncludeSyntaxAO = operationAction().selectCaretLineOfJavaIncludeSyntaxSugar(event);
+        if (javaIncludeSyntaxAO != null) {
+            workAction().generateJavaIncludeSyntaxBySelectedText(javaIncludeSyntaxAO);
+        }
         // 修改成功保存编辑区内容
-        if (includeAO != null || titleAO != null) {
+        if (includeAO != null || titleAO != null || javaIncludeSyntaxAO != null) {
             workAction().saveAllEdited();
         }
         // 重新加载标题树
-        if (includeAO != null || titleAO != null) {
+        if (includeAO != null || titleAO != null || javaIncludeSyntaxAO != null) {
             workAction().loadTitleTree();
             return;
         }

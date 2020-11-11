@@ -324,6 +324,29 @@ public class TextPaneView extends Init<AdocTextPane> {
         textPane().replaceSelection(value);
     }
 
+    /**
+     * todo
+     * 替换提示内容
+     */
+    public void replacePromptItem2(int index1, String value) {
+        if (index1 < 0 || StringUtils.isBlank(value)) {
+            return;
+        }
+        int dot = textPane().getCaret().getDot();
+        Element rootElement = textPane().getDocument().getDefaultRootElement();
+        int elementIndex = rootElement.getElementIndex(dot);
+        Element element = rootElement.getElement(elementIndex);
+        if (element == null) {
+            return;
+        }
+        int start = element.getStartOffset() + index1;
+        int end = dot;
+        textPane().select(start, end);
+        System.out.println("__" + textPane().getSelectedText() + "__");
+        textPane().replaceSelection(value);
+        System.out.println(value);
+    }
+
     private class ParsingCareLineApi {
 
         /**

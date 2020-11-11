@@ -2,6 +2,7 @@ package com.rh.note.action;
 
 import com.rh.note.ao.ClickedHistoryProjectListAO;
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
+import com.rh.note.ao.GenerateJavaIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
 import com.rh.note.ao.ITitleContentAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
@@ -105,4 +106,9 @@ public interface IOperationAction {
      * 不关闭输入提示
      */
     boolean notCloseInputPrompt(KeyEvent event);
+
+    /**
+     * 选择java include快捷语法行
+     */
+    GenerateJavaIncludeSyntaxAO selectCaretLineOfJavaIncludeSyntaxSugar(ActionEvent event);
 }

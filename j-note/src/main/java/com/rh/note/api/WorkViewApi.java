@@ -23,7 +23,7 @@ import com.rh.note.frame.WorkFrame;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.path.TitleBeanPath;
-import com.rh.note.syntax.IncludeJavaSyntax;
+import com.rh.note.syntax.IncludeJavaSyntaxSugar;
 import com.rh.note.syntax.IncludeSyntax;
 import com.rh.note.syntax.IncludeSyntaxSugar;
 import com.rh.note.syntax.TitleSyntax;
@@ -711,7 +711,7 @@ public class WorkViewApi {
     /**
      * 获得文件提示, 通过include行内容
      */
-    public @Nullable IncludeJavaSyntax getPromptSyntaxByIncludeLine(AdocTextPane bean) {
+    public @Nullable IncludeJavaSyntaxSugar getPromptSyntaxByIncludeLine(AdocTextPane bean) {
         if (bean == null) {
             return null;
         }
@@ -722,7 +722,7 @@ public class WorkViewApi {
         }
         String lineContent = textPane.getCaretLineContent();
         // 判断是否为include java语法, 待完善文件目录状态
-        return new IncludeJavaSyntax().init(lineContent);
+        return new IncludeJavaSyntaxSugar().init(lineContent);
     }
 
     /**
@@ -823,7 +823,7 @@ public class WorkViewApi {
         }
         TextPaneView textPane = new TextPaneView().init(selectedTextPane.getFilePath());
         String lineContent = textPane.getCaretLineContent();
-        IncludeJavaSyntax syntax = new IncludeJavaSyntax().init(lineContent);
+        IncludeJavaSyntaxSugar syntax = new IncludeJavaSyntaxSugar().init(lineContent);
         if (syntax == null || !syntax.isProPrompt()) {
             return;
         }
@@ -842,28 +842,45 @@ public class WorkViewApi {
      * 替换包路径
      */
     public void replacePromptItemForPackage(InputPromptMenuItem bean) {
-        if (bean == null || StringUtils.isBlank(bean.getResult())) {
+        if (bean == null || StringUtils.isBlank(bean.getText())) {
+            System.out.println("0   " + bean.getText());
             return;
         }
         TextScrollPaneView selectedTextPane = new TabbedPaneView().init().getSelectedTextPane();
         if (selectedTextPane == null) {
+            System.out.println("1");
             return;
         }
         TextPaneView textPane = new TextPaneView().init(selectedTextPane.getFilePath());
         String lineContent = textPane.getCaretLineContent();
-        IncludeJavaSyntax syntax = new IncludeJavaSyntax().init(lineContent);
+        IncludeJavaSyntaxSugar syntax = new IncludeJavaSyntaxSugar().init(lineContent);
         if (syntax == null || !syntax.isPackagePrompt()) {
+            System.out.println("2");
             return;
         }
         String regex = "^(\\s*=>j." + BaseConstants.pro_label_regex + "\\s+)(" + BaseConstants.package_path_regex + ")\\s*$";
         Matcher matcher = Pattern.compile(regex).matcher(lineContent);
         if (!matcher.find()) {
+            System.out.println("3");
             return;
         }
         String str1 = matcher.group(1);
         String str2 = matcher.group(2);
-        if () {
+        int index = getIndex(str2);
+        textPane.replacePromptItem2(str1.length() + index, bean.getText());
+    }
+
+    /**
+     * todo
+     */
+    private int getIndex(String str2) {
+        if (StringUtils.isBlank(str2)) {
+            return 0;
         }
+        int index = str2.lastIndexOf('.');
+        if (index < 0) {
+            return 0;
+        }
+        return index + 1;
     }
 }
-// 4

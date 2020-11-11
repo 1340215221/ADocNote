@@ -1,6 +1,7 @@
 package com.rh.note.action;
 
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
+import com.rh.note.ao.GenerateJavaIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
 import com.rh.note.ao.ITitleContentAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
@@ -116,4 +117,10 @@ public interface IWorkAction {
      * 替换提示内容到编辑区
      */
     void replacePromptItem(MouseEvent mouseEvent);
+
+    /**
+     * Java include快捷语法转换
+     * @param ao
+     */
+    void generateJavaIncludeSyntaxBySelectedText(GenerateJavaIncludeSyntaxAO ao);
 }
