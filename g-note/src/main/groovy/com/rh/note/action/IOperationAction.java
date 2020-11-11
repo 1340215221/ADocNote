@@ -10,6 +10,7 @@ import com.rh.note.ao.IncludePromptAO;
 import com.rh.note.ao.InlineTitleAO;
 import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.ao.SelectPromptItemAO;
+import com.rh.note.ao.TargetFilePathByIncludeJavaLineAO;
 import com.rh.note.vo.ITitleLineVO;
 import org.jetbrains.annotations.NotNull;
 
@@ -111,4 +112,9 @@ public interface IOperationAction {
      * 选择java include快捷语法行
      */
     GenerateJavaIncludeSyntaxAO selectCaretLineOfJavaIncludeSyntaxSugar(ActionEvent event);
+
+    /**
+     * 获得指向java文件的路径
+     */
+    TargetFilePathByIncludeJavaLineAO getTargetFilePathByIncludeJavaLine(MouseEvent event);
 }

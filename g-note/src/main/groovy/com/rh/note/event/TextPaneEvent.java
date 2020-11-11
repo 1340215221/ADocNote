@@ -10,6 +10,7 @@ import com.rh.note.ao.IncludePromptAO;
 import com.rh.note.ao.InlineTitleAO;
 import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.ao.SelectPromptItemAO;
+import com.rh.note.ao.TargetFilePathByIncludeJavaLineAO;
 import com.rh.note.vo.ITitleLineVO;
 
 import java.awt.event.ActionEvent;
@@ -23,6 +24,17 @@ import static com.rh.note.config.BridgingBeanConfig.workAction;
  * 编辑区事件
  */
 public class TextPaneEvent {
+
+    /**
+     * 进入include java文件
+     */
+    public static void enter_include_java_file(MouseEvent event) {
+        TargetFilePathByIncludeJavaLineAO ao = operationAction().getTargetFilePathByIncludeJavaLine(event);
+        if (ao == null) {
+            return;
+        }
+        workAction().openJavaFile(ao);
+    }
 
     /**
      * 进入include指向文件

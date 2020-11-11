@@ -28,17 +28,6 @@ public class TabbedPaneView extends Init<JTabbedPane> {
         return super.init(TabbedPaneBuilder.id());
     }
 
-    /**
-     * 添加编辑文件
-     */
-    public void add(TextScrollPaneView textScrollPane) {
-        if (textScrollPane == null) {
-            return;
-        }
-        String titleName = textScrollPane.getBean().getBeanPath().getTitleName();
-        tabbedPane().add(textScrollPane.getBean(), titleName);
-    }
-
     private @NotNull JTabbedPane tabbedPane() {
         return getBean();
     }
@@ -52,6 +41,38 @@ public class TabbedPaneView extends Init<JTabbedPane> {
         }
 
         tabbedPane().setSelectedComponent(textScrollPane.getBean());
+    }
+
+    /**
+     * 显示java文件编辑区
+     */
+    public void show(JavaScrollPaneView scrollPane) {
+        if (scrollPane == null) {
+            return;
+        }
+        tabbedPane().setSelectedComponent(scrollPane.getBean());
+    }
+
+    /**
+     * 添加java文件滚动面板
+     */
+    public void add(JavaScrollPaneView scrollPane) {
+        if (scrollPane == null) {
+            return;
+        }
+        String fileName = scrollPane.getBean().getFileName();
+        tabbedPane().add(scrollPane.getBean(), fileName);
+    }
+
+    /**
+     * 添加编辑文件
+     */
+    public void add(TextScrollPaneView textScrollPane) {
+        if (textScrollPane == null) {
+            return;
+        }
+        String titleName = textScrollPane.getBean().getBeanPath().getTitleName();
+        tabbedPane().add(textScrollPane.getBean(), titleName);
     }
 
     /**

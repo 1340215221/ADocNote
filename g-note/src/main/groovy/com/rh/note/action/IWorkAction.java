@@ -9,6 +9,7 @@ import com.rh.note.ao.IncludePromptAO;
 import com.rh.note.ao.InlineTitleAO;
 import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.ao.SelectPromptItemAO;
+import com.rh.note.ao.TargetFilePathByIncludeJavaLineAO;
 import com.rh.note.vo.ITitleLineVO;
 
 import java.awt.event.ActionEvent;
@@ -123,4 +124,9 @@ public interface IWorkAction {
      * @param ao
      */
     void generateJavaIncludeSyntaxBySelectedText(GenerateJavaIncludeSyntaxAO ao);
+
+    /**
+     * 打开java文件
+     */
+    void openJavaFile(TargetFilePathByIncludeJavaLineAO ao);
 }

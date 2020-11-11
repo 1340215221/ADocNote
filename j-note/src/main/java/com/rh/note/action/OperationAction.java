@@ -12,6 +12,7 @@ import com.rh.note.ao.InlineTitleAO;
 import com.rh.note.ao.LineRangeAO;
 import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.ao.SelectPromptItemAO;
+import com.rh.note.ao.TargetFilePathByIncludeJavaLineAO;
 import com.rh.note.ao.TitleContentAO;
 import com.rh.note.api.FileServiceApi;
 import com.rh.note.api.ProManageViewApi;
@@ -326,6 +327,18 @@ public class OperationAction implements IOperationAction {
         }
         textPane.selectCaretLine();
         return new GenerateJavaIncludeSyntaxAO().setFilePath(textPane.getFilePath());
+    }
+
+    @Override
+    public TargetFilePathByIncludeJavaLineAO getTargetFilePathByIncludeJavaLine(@NonNull MouseEvent event) {
+        if (!Keymap.isEnterInclude(event)) {
+            return null;
+        }
+        Object source = event.getSource();
+        if (!(source instanceof AdocTextPane)) {
+            return null;
+        }
+        return workViewApi.getTargetJavaFilePathByCaretLine(((AdocTextPane) source));
     }
 
     @Override

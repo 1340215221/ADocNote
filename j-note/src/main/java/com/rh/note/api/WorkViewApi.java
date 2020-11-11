@@ -11,6 +11,7 @@ import com.rh.note.ao.MatchTitleInfoBySelectedTextAO;
 import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.ao.SelectCaretLineAO;
 import com.rh.note.ao.SelectPromptItemAO;
+import com.rh.note.ao.TargetFilePathByIncludeJavaLineAO;
 import com.rh.note.component.AdocTextPane;
 import com.rh.note.component.InputPromptMenuItem;
 import com.rh.note.component.TitleButton;
@@ -23,6 +24,7 @@ import com.rh.note.frame.WorkFrame;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.path.TitleBeanPath;
+import com.rh.note.syntax.IncludeJavaSyntax;
 import com.rh.note.syntax.IncludeJavaSyntaxSugar;
 import com.rh.note.syntax.IncludeSyntax;
 import com.rh.note.syntax.IncludeSyntaxSugar;
@@ -882,5 +884,25 @@ public class WorkViewApi {
             return 0;
         }
         return index + 1;
+    }
+
+    /**
+     * 获得指向java文件路径, 通过光标行
+     */
+    public @Nullable TargetFilePathByIncludeJavaLineAO getTargetJavaFilePathByCaretLine(AdocTextPane bean) {
+        TextPaneView textPane = TextPaneView.cast(bean);
+        if (textPane == null) {
+            return null;
+        }
+        String lineContent = textPane.getCaretLineContent();
+        IncludeJavaSyntax syntax = new IncludeJavaSyntax().init(lineContent);
+        if (syntax == null) {
+            return null;
+        }
+        String targetAbsolutePath = syntax.getTargetAbsolutePath();
+        if (StringUtils.isBlank(targetAbsolutePath)) {
+            return null;
+        }
+        return new TargetFilePathByIncludeJavaLineAO().setAbsolutePath(targetAbsolutePath);
     }
 }

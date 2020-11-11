@@ -40,6 +40,7 @@ class TextPaneBuilder implements ISwingBuilder {
                     },
                     mouseClicked: {
                         TextPaneEvent.enter_include_file(it)
+                        TextPaneEvent.enter_include_java_file(it)
                     },
                     caretUpdate: {
                         TextPaneEvent.move_caret()

@@ -12,6 +12,7 @@ import com.rh.note.ao.MatchIncludeInfoBySelectedTextAO;
 import com.rh.note.ao.MatchTitleInfoBySelectedTextAO;
 import com.rh.note.ao.RenameIncludeAO;
 import com.rh.note.ao.SelectPromptItemAO;
+import com.rh.note.ao.TargetFilePathByIncludeJavaLineAO;
 import com.rh.note.ao.TitleContentAO;
 import com.rh.note.api.FileServiceApi;
 import com.rh.note.api.GitServiceApi;
@@ -24,7 +25,12 @@ import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.syntax.IncludeJavaSyntaxSugar;
 import com.rh.note.syntax.IncludeSyntax;
+import com.rh.note.util.DefaultEditorKitUtil;
+import com.rh.note.view.JavaScrollPaneView;
+import com.rh.note.view.JavaTextPaneView;
+import com.rh.note.view.TabbedPaneView;
 import com.rh.note.view.TextPaneView;
+import com.rh.note.view.TextScrollPaneView;
 import com.rh.note.vo.ITitleLineVO;
 import com.rh.note.vo.WriterVO;
 import lombok.NonNull;
@@ -33,10 +39,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import com.rh.note.util.DefaultEditorKitUtil;
 import javax.swing.text.DefaultEditorKit;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -274,6 +281,31 @@ public class WorkAction implements IWorkAction {
         IncludeSyntax syntax = syntaxSugar.copyToByFilePath(textPane.getFilePath());
         System.out.println(syntax.toString());
         textPane.replaceSelectedText(syntax.toString());
+    }
+
+    /**
+     * todo
+     */
+    @Override
+    public void openJavaFile(TargetFilePathByIncludeJavaLineAO ao) {
+        if (ao == null || StringUtils.isBlank(ao.getAbsolutePath())) {
+            return;
+        }
+        // 读取文件内容
+        File file = new File(ao.getAbsolutePath());
+        if (!file.exists() || !file.isFile()) {
+            return;
+        }
+        // 生成编辑控件
+        JavaTextPaneView.create(ao.getAbsolutePath());
+        JavaTextPaneView textPane = new JavaTextPaneView().init(ao.getAbsolutePath());
+        textPane.write();
+        // 编辑控件添加到卡片面板中
+        TabbedPaneView tabbedPane = new TabbedPaneView().init();
+        JavaScrollPaneView scrollPane = new JavaScrollPaneView().init(ao.getAbsolutePath());
+        tabbedPane.add(scrollPane);
+        // 显示java文件编辑区
+        tabbedPane.show(scrollPane);
     }
 
     @Override
