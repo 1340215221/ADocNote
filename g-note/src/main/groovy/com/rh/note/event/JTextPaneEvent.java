@@ -20,5 +20,6 @@ public class JTextPaneEvent {
             return;
         }
         workAction().markLine(ao);
+        workAction().saveAllEdited();
     }
 }

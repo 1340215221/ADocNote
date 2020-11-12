@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.swing.LookAndFeel;
 import javax.swing.text.Caret;
 import javax.swing.text.Element;
 import javax.swing.text.SimpleAttributeSet;
@@ -105,7 +106,25 @@ public class JavaTextPaneView extends Init<JavaTextPane> {
      */
     public void updateMarkColorOnCaretLine(MarkLineAO ao) {
         // 清除旧标记颜色
+        Integer oldMarkLineNumber = null;
+        if (ao.isCtrlOne()) {
+            oldMarkLineNumber = textPane().getTempMarkLineNumber1();
+        }
+        if (ao.isCtrlTwo()) {
+            oldMarkLineNumber = textPane().getTempMarkLineNumber2();
+        }
+        if (oldMarkLineNumber != null) {
+            Element rootElement = textPane().getDocument().getDefaultRootElement();
+            Element element = rootElement.getElement(oldMarkLineNumber - 1);
 
+            if (element != null) {
+                SimpleAttributeSet aSet = new SimpleAttributeSet();
+                StyleConstants.setBackground(aSet, textPane().getBackground());
+                StyledDocument doc = textPane().getStyledDocument();
+
+                doc.setCharacterAttributes(element.getStartOffset(), element.getEndOffset() - element.getStartOffset(), aSet, false);
+            }
+        }
 
         // 更新新标记颜色
         int dot = textPane().getCaret().getDot();
@@ -127,7 +146,7 @@ public class JavaTextPaneView extends Init<JavaTextPane> {
             textPane().setTempMarkLineNumber1(ao.getLineNumber());
         }
         if (ao.isCtrlTwo()) {
-            textPane().setTempMarkLineNumber1(ao.getLineNumber());
+            textPane().setTempMarkLineNumber2(ao.getLineNumber());
         }
     }
 }

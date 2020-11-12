@@ -38,6 +38,18 @@ class TestApplication {
                             StyledDocument doc = textPane.getStyledDocument()
 
                             doc.setCharacterAttributes(element.getStartOffset(), element.getEndOffset() - element.getStartOffset(), aSet, false)
+                        },
+                        keyPressed: {
+                            // 修改背景色
+                            def textPane = builder.textPane as JTextPane
+                            def rootElement = textPane.getDocument().getDefaultRootElement()
+                            def element = rootElement.getElement(0)
+
+                            SimpleAttributeSet aSet = new SimpleAttributeSet()
+                            StyleConstants.setBackground(aSet, textPane.getBackground())
+                            StyledDocument doc = textPane.getStyledDocument()
+
+                            doc.setCharacterAttributes(element.getStartOffset(), element.getEndOffset() - element.getStartOffset(), aSet, false)
                         }
                 ){
                 }
