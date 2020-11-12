@@ -22,14 +22,6 @@ public class JavaTextPane extends JTextPane {
      */
     private Integer markLineNumber2;
     /**
-     * 临时 标记行 1
-     */
-    private Integer tempMarkLineNumber1;
-    /**
-     * 临时 标记行 2
-     */
-    private Integer tempMarkLineNumber2;
-    /**
      * 来源编辑区信息
      */
     private final SourceTextPaneInfo sourceTextPaneInfo = new SourceTextPaneInfo();
@@ -80,22 +72,6 @@ public class JavaTextPane extends JTextPane {
 
     public void setMarkLineNumber2(Integer markLineNumber2) {
         this.markLineNumber2 = markLineNumber2;
-    }
-
-    public Integer getTempMarkLineNumber1() {
-        return tempMarkLineNumber1;
-    }
-
-    public void setTempMarkLineNumber1(Integer tempMarkLineNumber1) {
-        this.tempMarkLineNumber1 = tempMarkLineNumber1;
-    }
-
-    public Integer getTempMarkLineNumber2() {
-        return tempMarkLineNumber2;
-    }
-
-    public void setTempMarkLineNumber2(Integer tempMarkLineNumber2) {
-        this.tempMarkLineNumber2 = tempMarkLineNumber2;
     }
 
     /**

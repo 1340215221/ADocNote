@@ -28,11 +28,11 @@ public class JavaTextPaneView extends Init<JavaTextPane> {
     /**
      * todo 方法参数有待封装成对象
      */
-    public static void create(String absolutePath, String sourceFilePath, String includeFilePath) {
+    public static void create(String absolutePath, String sourceFilePath, String includeFilePath, Integer markLineNumber1, Integer markLineNumber2) {
         if (StringUtils.isBlank(absolutePath)) {
             return;
         }
-        new JavaTextPaneBuilder(absolutePath, sourceFilePath, includeFilePath).init();
+        new JavaTextPaneBuilder(absolutePath, sourceFilePath, includeFilePath, markLineNumber1, markLineNumber2).init();
     }
 
     public static @Nullable JavaTextPaneView cast(JavaTextPane bean) {
@@ -108,10 +108,10 @@ public class JavaTextPaneView extends Init<JavaTextPane> {
         // 清除旧标记颜色
         Integer oldMarkLineNumber = null;
         if (ao.isCtrlOne()) {
-            oldMarkLineNumber = textPane().getTempMarkLineNumber1();
+            oldMarkLineNumber = textPane().getMarkLineNumber1();
         }
         if (ao.isCtrlTwo()) {
-            oldMarkLineNumber = textPane().getTempMarkLineNumber2();
+            oldMarkLineNumber = textPane().getMarkLineNumber2();
         }
         if (oldMarkLineNumber != null) {
             Element rootElement = textPane().getDocument().getDefaultRootElement();
@@ -137,16 +137,50 @@ public class JavaTextPaneView extends Init<JavaTextPane> {
         }
 
         SimpleAttributeSet aSet = new SimpleAttributeSet();
-        StyleConstants.setBackground(aSet, Color.GRAY);
+        StyleConstants.setBackground(aSet, Color.gray);
         StyledDocument doc = textPane().getStyledDocument();
 
         doc.setCharacterAttributes(element.getStartOffset(), element.getEndOffset() - element.getStartOffset(), aSet, false);
         // 记录标记
         if (ao.isCtrlOne()) {
-            textPane().setTempMarkLineNumber1(ao.getLineNumber());
+            textPane().setMarkLineNumber1(ao.getLineNumber());
         }
         if (ao.isCtrlTwo()) {
-            textPane().setTempMarkLineNumber2(ao.getLineNumber());
+            textPane().setMarkLineNumber2(ao.getLineNumber());
+        }
+    }
+
+    /**
+     * todo
+     * 初始化标记行颜色
+     */
+    public void initMarkLineColor() {
+        Element rootElement = textPane().getDocument().getDefaultRootElement();
+
+        Integer markLineNumber1 = textPane().getMarkLineNumber1();
+        if (markLineNumber1 != null) {
+            Element element = rootElement.getElement(markLineNumber1 - 1);
+
+            if (element != null) {
+                SimpleAttributeSet aSet = new SimpleAttributeSet();
+                StyleConstants.setBackground(aSet, Color.gray);
+                StyledDocument doc = textPane().getStyledDocument();
+
+                doc.setCharacterAttributes(element.getStartOffset(), element.getEndOffset() - element.getStartOffset(), aSet, false);
+            }
+        }
+
+        Integer markLineNumber2 = textPane().getMarkLineNumber2();
+        if (markLineNumber2 != null) {
+            Element element = rootElement.getElement(markLineNumber2 - 1);
+
+            if (element != null) {
+                SimpleAttributeSet aSet = new SimpleAttributeSet();
+                StyleConstants.setBackground(aSet, Color.gray);
+                StyledDocument doc = textPane().getStyledDocument();
+
+                doc.setCharacterAttributes(element.getStartOffset(), element.getEndOffset() - element.getStartOffset(), aSet, false);
+            }
         }
     }
 }

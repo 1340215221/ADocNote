@@ -3,8 +3,6 @@ package com.rh.note.builder
 import com.rh.note.base.ISwingBuilder
 import com.rh.note.component.JavaTextPane
 import com.rh.note.event.JTextPaneEvent
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 import javax.swing.text.DefaultEditorKit
 import javax.swing.text.DefaultStyledDocument
@@ -15,7 +13,6 @@ import java.awt.Font
  */
 class JavaTextPaneBuilder implements ISwingBuilder {
 
-    private static final Logger log = LoggerFactory.getLogger(JavaTextPaneBuilder)
     /**
      * 文件绝对路径
      */
@@ -28,14 +25,24 @@ class JavaTextPaneBuilder implements ISwingBuilder {
      * include java中的文件路径
      */
     private String includeFilePath
+    /**
+     * 标记行 1
+     */
+    private Integer markLineNumber1
+    /**
+     * 标记行 2
+     */
+    private Integer markLineNumber2
 
     /**
      * 缺少 选择行 回显
      */
-    JavaTextPaneBuilder(String absolutePath, String sourceFilePath, String includeFilePath) {
+    JavaTextPaneBuilder(String absolutePath, String sourceFilePath, String includeFilePath, Integer markLineNumber1, Integer markLineNumber2) {
         this.absolutePath = absolutePath
         this.sourceFilePath = sourceFilePath
         this.includeFilePath = includeFilePath
+        this.markLineNumber1 = markLineNumber1
+        this.markLineNumber2 = markLineNumber2
     }
 
     void init() {
@@ -44,11 +51,13 @@ class JavaTextPaneBuilder implements ISwingBuilder {
                     styledDocument: new DefaultStyledDocument(),
                     font: new Font(null, 0, 17),
                     absolutePath: absolutePath,
+                    sourceFilePath: sourceFilePath,
+                    includeFilePath: includeFilePath,
+                    markLineNumber1: markLineNumber1,
+                    markLineNumber2: markLineNumber2,
                     keyPressed: {
                         JTextPaneEvent.markLine(it)
                     },
-                    sourceFilePath: sourceFilePath,
-                    includeFilePath: includeFilePath,
             ){
                 setReadOnly()
             }

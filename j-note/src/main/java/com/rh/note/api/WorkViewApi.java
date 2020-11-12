@@ -906,6 +906,8 @@ public class WorkViewApi {
         return new TargetFilePathByIncludeJavaLineAO()
                 .setAbsolutePath(targetAbsolutePath)
                 .setSourceFilePath(textPane.getFilePath())
-                .setIncludeFilePath(syntax.getTargetRelativePath());
+                .setIncludeFilePath(syntax.getTargetRelativePath())
+                .setMarkLineNumber1(syntax.getLineStart())
+                .setMarkLineNumber2(syntax.getLineEnd());
     }
 }

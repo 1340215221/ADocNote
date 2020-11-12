@@ -310,9 +310,11 @@ public class WorkAction implements IWorkAction {
             return;
         }
         // 生成编辑控件
-        JavaTextPaneView.create(ao.getAbsolutePath(), ao.getSourceFilePath(), ao.getIncludeFilePath());
+        JavaTextPaneView.create(ao.getAbsolutePath(), ao.getSourceFilePath(), ao.getIncludeFilePath(), ao.getMarkLineNumber1(), ao.getMarkLineNumber2());
         JavaTextPaneView textPane = new JavaTextPaneView().init(ao.getAbsolutePath());
         textPane.write();
+        // 修改标记行背景色
+        textPane.initMarkLineColor();
         // 编辑控件添加到卡片面板中
         TabbedPaneView tabbedPane = new TabbedPaneView().init();
         JavaScrollPaneView scrollPane = new JavaScrollPaneView().init(ao.getAbsolutePath());
