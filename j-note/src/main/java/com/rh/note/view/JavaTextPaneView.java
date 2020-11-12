@@ -1,5 +1,6 @@
 package com.rh.note.view;
 
+import com.rh.note.ao.MarkLineAO;
 import com.rh.note.base.Init;
 import com.rh.note.builder.JavaTextPaneBuilder;
 import com.rh.note.component.JavaTextPane;
@@ -102,7 +103,11 @@ public class JavaTextPaneView extends Init<JavaTextPane> {
      * todo
      * 更新光标行标记颜色
      */
-    public void updateMarkColorOnCaretLine() {
+    public void updateMarkColorOnCaretLine(MarkLineAO ao) {
+        // 清除旧标记颜色
+
+
+        // 更新新标记颜色
         int dot = textPane().getCaret().getDot();
 
         Element rootElement = textPane().getDocument().getDefaultRootElement();
@@ -117,5 +122,12 @@ public class JavaTextPaneView extends Init<JavaTextPane> {
         StyledDocument doc = textPane().getStyledDocument();
 
         doc.setCharacterAttributes(element.getStartOffset(), element.getEndOffset() - element.getStartOffset(), aSet, false);
+        // 记录标记
+        if (ao.isCtrlOne()) {
+            textPane().setTempMarkLineNumber1(ao.getLineNumber());
+        }
+        if (ao.isCtrlTwo()) {
+            textPane().setTempMarkLineNumber1(ao.getLineNumber());
+        }
     }
 }

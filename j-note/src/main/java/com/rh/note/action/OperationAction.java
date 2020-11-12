@@ -370,7 +370,7 @@ public class OperationAction implements IOperationAction {
                 .setIncludeFilePath(textPane.getIncludeFilePath());
         ao.copy(event);
         // 修改行颜色
-        textPane.updateMarkColorOnCaretLine();
+        textPane.updateMarkColorOnCaretLine(ao);
         return ao;
     }
 
