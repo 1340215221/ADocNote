@@ -17,7 +17,7 @@ public class IncludeJavaSyntax {
     /**
      * include::../../maven/src/main/java/com/rh/note/Main.java[]
      */
-    private static final String regex = "^(\\s*)include::(" + BaseConstants.file_path_regex + ").java\\[(?:([0-9]+)\\.\\.([0-9]+))?\\]\\s*$";
+    private static final String regex = "^(\\s*)include::(" + BaseConstants.file_path_regex + ").java\\[(?:([0-9]+)(?:\\.\\.([0-9]+))?)?\\]\\s*$";
     /**
      * 缩进
      */

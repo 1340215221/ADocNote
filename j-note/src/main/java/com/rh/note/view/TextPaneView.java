@@ -399,8 +399,6 @@ public class TextPaneView extends Init<AdocTextPane> {
         } else {
             textPane().select(element.getStartOffset(), element.getEndOffset() - 1);
         }
-        System.out.println("___" + textPane().getSelectedText()  +"___");
-        System.out.println(includeStr);
         replaceSelectedText(includeStr);
     }
 

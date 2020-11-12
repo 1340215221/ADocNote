@@ -11,6 +11,10 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.text.Caret;
 import javax.swing.text.Element;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
+import java.awt.Color;
 import java.io.File;
 import java.io.FileReader;
 
@@ -92,5 +96,26 @@ public class JavaTextPaneView extends Init<JavaTextPane> {
      */
     public @NotNull String getIncludeFilePath() {
         return textPane().getIncludeFilePath();
+    }
+
+    /**
+     * todo
+     * 更新光标行标记颜色
+     */
+    public void updateMarkColorOnCaretLine() {
+        int dot = textPane().getCaret().getDot();
+
+        Element rootElement = textPane().getDocument().getDefaultRootElement();
+        int elementIndex = rootElement.getElementIndex(dot);
+        Element element = rootElement.getElement(elementIndex);
+        if (element == null) {
+            return;
+        }
+
+        SimpleAttributeSet aSet = new SimpleAttributeSet();
+        StyleConstants.setBackground(aSet, Color.GRAY);
+        StyledDocument doc = textPane().getStyledDocument();
+
+        doc.setCharacterAttributes(element.getStartOffset(), element.getEndOffset() - element.getStartOffset(), aSet, false);
     }
 }
