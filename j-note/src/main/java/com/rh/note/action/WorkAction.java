@@ -291,6 +291,19 @@ public class WorkAction implements IWorkAction {
         if (ao == null || StringUtils.isBlank(ao.getAbsolutePath())) { // todo 参数校验待调整
             return;
         }
+        //// 显示已打开的文件
+        JavaTextPaneView javaTextPane = new JavaTextPaneView().init(ao.getAbsolutePath());
+        // 在卡片面板中显示
+        if (javaTextPane != null) {
+            // 编辑控件添加到卡片面板中
+            TabbedPaneView tabbedPane = new TabbedPaneView().init();
+            JavaScrollPaneView scrollPane = new JavaScrollPaneView().init(ao.getAbsolutePath());
+            tabbedPane.add(scrollPane);
+            // 显示java文件编辑区
+            tabbedPane.show(scrollPane);
+            return;
+        }
+        //// 打开一个新文件
         // 读取文件内容
         File file = new File(ao.getAbsolutePath());
         if (!file.exists() || !file.isFile()) {
