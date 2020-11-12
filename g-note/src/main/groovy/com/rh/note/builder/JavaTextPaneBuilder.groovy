@@ -6,6 +6,8 @@ import com.rh.note.event.JTextPaneEvent
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
+import javax.swing.ActionMap
+import javax.swing.text.DefaultEditorKit
 import javax.swing.text.DefaultStyledDocument
 import java.awt.Font
 
@@ -42,7 +44,6 @@ class JavaTextPaneBuilder implements ISwingBuilder {
             swingBuilder.jTextPane(id: id(absolutePath),
                     styledDocument: new DefaultStyledDocument(),
                     font: new Font(null, 0, 17),
-                    editable: false,
                     absolutePath: absolutePath,
                     keyPressed: {
                         JTextPaneEvent.markLine(it)
@@ -50,7 +51,7 @@ class JavaTextPaneBuilder implements ISwingBuilder {
                     sourceFilePath: sourceFilePath,
                     includeFilePath: includeFilePath,
             ){
-                showCaret()
+                setReadOnly()
             }
         }
 
@@ -62,19 +63,37 @@ class JavaTextPaneBuilder implements ISwingBuilder {
     }
 
     /**
-     * 初始化显示光标
+     * 编辑相关action key
      */
-    private void showCaret() {
-        try {
-            def textPane = swingBuilder."${id(absolutePath)}" as JavaTextPane
-            def caretVisible = textPane.caret.visible
-            if (!caretVisible) {
-                textPane.caret.dot = 0
-                textPane.caret.visible = true
-            }
-        } catch (Exception e) {
-            log.error("[java文件编辑区-光标显示 失败] absolutePath={}", absolutePath, e)
+    private static final List<String> list = Arrays.asList(
+            DefaultEditorKit.insertContentAction,
+            DefaultEditorKit.deletePrevCharAction,
+            DefaultEditorKit.deleteNextCharAction,
+            DefaultEditorKit.deletePrevWordAction,
+            DefaultEditorKit.deleteNextWordAction,
+            DefaultEditorKit.cutAction,
+            DefaultEditorKit.pasteAction,
+            DefaultEditorKit.insertBreakAction,
+            DefaultEditorKit.defaultKeyTypedAction,
+            DefaultEditorKit.insertTabAction,
+            DefaultEditorKit.writableAction,
+    )
+
+    /**
+     * 清除编辑功能
+     */
+    private void setReadOnly() {
+        def textPane = swingBuilder."${id(absolutePath)}" as JavaTextPane
+        list.each {
+            textPane.actionMap.parent.parent.remove(it)
         }
+        def parent = textPane.actionMap.parent
+        def field = parent.class.getDeclaredField('keymap')
+        field.setAccessible(true)
+        def keymap = field.get(parent)
+        def pParent = keymap.class.getDeclaredField('parent')
+        pParent.setAccessible(true)
+        pParent.set(keymap, null)
     }
 
     static String id(String absolutePath) {
