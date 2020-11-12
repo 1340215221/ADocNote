@@ -6,7 +6,6 @@ import com.rh.note.event.JTextPaneEvent
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-import javax.swing.ActionMap
 import javax.swing.text.DefaultEditorKit
 import javax.swing.text.DefaultStyledDocument
 import java.awt.Font
@@ -84,10 +83,12 @@ class JavaTextPaneBuilder implements ISwingBuilder {
      */
     private void setReadOnly() {
         def textPane = swingBuilder."${id(absolutePath)}" as JavaTextPane
+        // 清除 textPane.actionMap.parent.parent 中的编辑action
         list.each {
             textPane.actionMap.parent.parent.remove(it)
         }
         def parent = textPane.actionMap.parent
+        // 清除 textPane.actionMap.parent.keymap.parent 中的编辑action
         def field = parent.class.getDeclaredField('keymap')
         field.setAccessible(true)
         def keymap = field.get(parent)
