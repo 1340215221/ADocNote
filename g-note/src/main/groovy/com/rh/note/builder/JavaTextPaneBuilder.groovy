@@ -100,10 +100,11 @@ class JavaTextPaneBuilder implements ISwingBuilder {
         // 清除 textPane.actionMap.parent.keymap.parent 中的编辑action
         def field = parent.class.getDeclaredField('keymap')
         field.setAccessible(true)
-        def keymap = field.get(parent)
-        def pParent = keymap.class.getDeclaredField('parent')
-        pParent.setAccessible(true)
-        pParent.set(keymap, null)
+        // 创建默认keymap
+        def clazz = Class.forName('javax.swing.text.JTextComponent$DefaultKeymap')
+        def instance = clazz.newInstance("BasicTextPaneUI", null)
+        // 修改textPane默认keymap
+        field.set(parent, instance)
     }
 
     static String id(String absolutePath) {

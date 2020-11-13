@@ -1,6 +1,5 @@
 package com.rh.note
 
-
 import groovy.swing.SwingBuilder
 
 import javax.swing.JFrame
@@ -23,35 +22,42 @@ class TestApplication {
         ){
             builder.panel(layout: new BorderLayout(),
             ){
-                builder.textPane(id: 'textPane',
-                        styledDocument: new DefaultStyledDocument(),
-                        text: 'asfasf\nafddasfdsa\nafa',
-                        font: new Font(null, 0, 17),
-                        mouseClicked: {
-                            // 修改背景色
-                            def textPane = builder.textPane as JTextPane
-                            def rootElement = textPane.getDocument().getDefaultRootElement()
-                            def element = rootElement.getElement(0)
+                builder.tabbedPane(){
+                    builder.textPane(id: 'tp',
+                            text: '112313'
+                    ){
+                    }
 
-                            SimpleAttributeSet aSet = new SimpleAttributeSet()
-                            StyleConstants.setBackground(aSet, Color.green)
-                            StyledDocument doc = textPane.getStyledDocument()
+                    builder.textPane(id: 'textPane',
+                            styledDocument: new DefaultStyledDocument(),
+                            text: 'asfasf\nafddasfdsa\nafa',
+                            font: new Font(null, 0, 17),
+                            mouseClicked: {
+                                // 修改背景色
+                                def textPane = builder.textPane as JTextPane
+                                def rootElement = textPane.getDocument().getDefaultRootElement()
+                                def element = rootElement.getElement(0)
 
-                            doc.setCharacterAttributes(element.getStartOffset(), element.getEndOffset() - element.getStartOffset(), aSet, false)
-                        },
-                        keyPressed: {
-                            // 修改背景色
-                            def textPane = builder.textPane as JTextPane
-                            def rootElement = textPane.getDocument().getDefaultRootElement()
-                            def element = rootElement.getElement(0)
+                                SimpleAttributeSet aSet = new SimpleAttributeSet()
+                                StyleConstants.setBackground(aSet, Color.green)
+                                StyledDocument doc = textPane.getStyledDocument()
 
-                            SimpleAttributeSet aSet = new SimpleAttributeSet()
-                            StyleConstants.setBackground(aSet, textPane.getBackground())
-                            StyledDocument doc = textPane.getStyledDocument()
+                                doc.setCharacterAttributes(element.getStartOffset(), element.getEndOffset() - element.getStartOffset(), aSet, false)
+                            },
+                            keyPressed: {
+                                // 修改背景色
+                                def textPane = builder.textPane as JTextPane
+                                def rootElement = textPane.getDocument().getDefaultRootElement()
+                                def element = rootElement.getElement(0)
 
-                            doc.setCharacterAttributes(element.getStartOffset(), element.getEndOffset() - element.getStartOffset(), aSet, false)
-                        }
-                ){
+                                SimpleAttributeSet aSet = new SimpleAttributeSet()
+                                StyleConstants.setBackground(aSet, textPane.getBackground())
+                                StyledDocument doc = textPane.getStyledDocument()
+
+                                doc.setCharacterAttributes(element.getStartOffset(), element.getEndOffset() - element.getStartOffset(), aSet, false)
+                            }
+                    ){
+                    }
                 }
             }
         }
@@ -93,9 +99,10 @@ class TestApplication {
         // 清除 textPane.actionMap.parent.keymap.parent 中的编辑action
         def field = parent.class.getDeclaredField('keymap')
         field.setAccessible(true)
-        def keymap = field.get(parent)
-        def pParent = keymap.class.getDeclaredField('parent')
-        pParent.setAccessible(true)
-        pParent.set(keymap, null)
+
+        def clazz = Class.forName('javax.swing.text.JTextComponent$DefaultKeymap')
+        def instance = clazz.newInstance("BasicTextPaneUI", null)
+
+        field.set(parent, instance)
     }
 }
