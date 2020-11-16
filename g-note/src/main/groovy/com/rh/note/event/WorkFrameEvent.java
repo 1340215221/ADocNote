@@ -11,6 +11,14 @@ import static com.rh.note.config.BridgingBeanConfig.workAction;
 public class WorkFrameEvent {
 
     /**
+     * 关闭项目前保存
+     */
+    public static void save_all_text_pane() {
+        workAction().saveAllEdited();
+        workAction().promptToSaveSuccess();
+    }
+
+    /**
      * git 提交adoc内容
      */
     public static void git_commit_adoc(AWTEvent event) {
@@ -30,4 +38,10 @@ public class WorkFrameEvent {
         }
     }
 
+    /**
+     * 关闭主窗口
+     */
+    public static void close_frame() {
+        workAction().closeFrame();
+    }
 }

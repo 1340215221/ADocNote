@@ -135,4 +135,14 @@ public interface IWorkAction {
      * 标记行 1
      */
     void markLine(MarkLineAO ao);
+
+    /**
+     * 提示保存成功
+     */
+    void promptToSaveSuccess();
+
+    /**
+     * 关闭窗口
+     */
+    void closeFrame();
 }

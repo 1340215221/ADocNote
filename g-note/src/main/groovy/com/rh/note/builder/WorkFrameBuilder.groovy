@@ -1,6 +1,7 @@
 package com.rh.note.builder
 
 import com.rh.note.base.ISwingBuilder
+import com.rh.note.event.WorkFrameEvent
 
 import javax.swing.WindowConstants
 
@@ -12,7 +13,14 @@ class WorkFrameBuilder implements ISwingBuilder {
         swingBuilder.frame(id: id(),
                 title: 'adoc笔记',
                 pack: true,
-                defaultCloseOperation: WindowConstants.EXIT_ON_CLOSE,
+                defaultCloseOperation: WindowConstants.DO_NOTHING_ON_CLOSE,
+                windowClosing: {
+                    // 主线程不能阻塞, 阻塞时无法渲染页面
+                    swingBuilder.doOutside {
+                        WorkFrameEvent.save_all_text_pane()
+                        WorkFrameEvent.close_frame()
+                    }
+                }
         ){
             children()
         }

@@ -29,9 +29,10 @@ import com.rh.note.syntax.IncludeSyntax;
 import com.rh.note.util.DefaultEditorKitUtil;
 import com.rh.note.view.JavaScrollPaneView;
 import com.rh.note.view.JavaTextPaneView;
+import com.rh.note.view.ShowMessageDialogView;
 import com.rh.note.view.TabbedPaneView;
 import com.rh.note.view.TextPaneView;
-import com.rh.note.view.TextScrollPaneView;
+import com.rh.note.view.WorkFrameView;
 import com.rh.note.vo.ITitleLineVO;
 import com.rh.note.vo.WriterVO;
 import lombok.NonNull;
@@ -44,7 +45,6 @@ import javax.swing.text.DefaultEditorKit;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -336,6 +336,24 @@ public class WorkAction implements IWorkAction {
             return;
         }
         textPane.changeIncludeJavaLine(ao);
+    }
+
+    /**
+     * todo
+     */
+    @Override
+    public void promptToSaveSuccess() {
+        ShowMessageDialogView messageDialog = new ShowMessageDialogView().init(PromptMessageEnum.AUTO_SAVE_SUCCESSFULLY);
+        messageDialog.showAndClose();
+    }
+
+    /**
+     * todo
+     */
+    @Override
+    public void closeFrame() {
+        WorkFrameView workFrame = new WorkFrameView().init();
+        workFrame.close();
     }
 
     @Override

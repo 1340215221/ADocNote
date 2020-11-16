@@ -30,4 +30,12 @@ public class WorkFrameView extends Init<JFrame> {
     private @NotNull JFrame workFrame() {
         return getBean();
     }
+
+    /**
+     * 关闭
+     */
+    public void close() {
+        workFrame().dispose();
+        System.exit(0);
+    }
 }

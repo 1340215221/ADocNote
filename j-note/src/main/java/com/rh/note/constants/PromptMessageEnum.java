@@ -15,6 +15,7 @@ public enum PromptMessageEnum {
     are_you_sure_you_want_to_delete_safely("您确定要安全删除"),
     are_you_sure_you_want_to_delete_safely_include("您确定要安全删除 Include 相关内容"),
     GIT_SUBMITTED_SUCCESSFULLY("git提交成功"),
+    AUTO_SAVE_SUCCESSFULLY("自动保存成功"),
     ;
     @NonNull
     private String value;

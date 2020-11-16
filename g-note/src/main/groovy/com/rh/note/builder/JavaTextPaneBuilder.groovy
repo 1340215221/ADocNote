@@ -97,7 +97,7 @@ class JavaTextPaneBuilder implements ISwingBuilder {
             textPane.actionMap.parent.parent.remove(it)
         }
         def parent = textPane.actionMap.parent
-        // 清除 textPane.actionMap.parent.keymap.parent 中的编辑action
+        // 替换 textPane.actionMap.parent.keymap
         def field = parent.class.getDeclaredField('keymap')
         field.setAccessible(true)
         // 创建默认keymap
