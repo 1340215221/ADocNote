@@ -15,13 +15,4 @@ public class NoteApplication {
         new NoteMain().init();
     }
 
-    /**
-     *
-     log.info("启动笔记软件");
-     FlatDarculaLaf.install();
-     log.info("完成Darcula主题初始化");
-     pro_manage_action.startFrame();
-     log.info("完成[笔记APP]初始化");
-     */
-
 }
