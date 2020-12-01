@@ -1,7 +1,7 @@
 package com.rh.note.ao;
 
 import com.rh.note.path.ProBeanPath;
-import com.rh.note.syntax.IncludeSyntaxSugar;
+import com.rh.note.sugar.IncludeSyntaxSugar;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;

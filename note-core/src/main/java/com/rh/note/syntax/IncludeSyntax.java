@@ -3,6 +3,7 @@ package com.rh.note.syntax;
 import com.rh.note.constants.AdocFileTypeEnum;
 import com.rh.note.constants.BaseConstants;
 import com.rh.note.path.TitleBeanPath;
+import com.rh.note.sugar.IncludeSyntaxSugar;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;

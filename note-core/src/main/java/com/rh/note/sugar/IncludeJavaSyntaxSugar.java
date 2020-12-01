@@ -1,8 +1,9 @@
-package com.rh.note.syntax;
+package com.rh.note.sugar;
 
 import com.rh.note.constants.AdocFileTypeEnum;
 import com.rh.note.constants.BaseConstants;
 import com.rh.note.file.JavaProConfig;
+import com.rh.note.syntax.IncludeSyntax;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;

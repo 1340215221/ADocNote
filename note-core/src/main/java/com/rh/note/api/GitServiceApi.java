@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.merge.MergeStrategy;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 
@@ -14,6 +15,7 @@ import java.io.File;
  * git操作
  */
 @Slf4j
+@Component
 public class GitServiceApi {
     /**
      * 推送到远程分支

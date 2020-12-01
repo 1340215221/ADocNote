@@ -1,5 +1,6 @@
-package com.rh.note.action;
+package com.rh.note.action.impl;
 
+import com.rh.note.action.IOperationAction;
 import com.rh.note.ao.CaretPointAO;
 import com.rh.note.ao.ClickedHistoryProjectListAO;
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
@@ -29,17 +30,17 @@ import com.rh.note.exception.UnknownLogicException;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.path.TitleBeanPath;
-import com.rh.note.syntax.IncludeJavaSyntaxSugar;
+import com.rh.note.sugar.IncludeJavaSyntaxSugar;
 import com.rh.note.view.JavaTextPaneView;
 import com.rh.note.view.TextPaneView;
 import com.rh.note.vo.ITitleLineVO;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
 import lombok.NonNull;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.swing.JList;
 import java.awt.AWTEvent;
@@ -47,12 +48,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-@Setter
-@Accessors(chain = true)
+@Component
 public class OperationAction implements IOperationAction {
 
+    @Autowired
     private ProManageViewApi proManageViewApi;
+    @Autowired
     private WorkViewApi workViewApi;
+    @Autowired
     private FileServiceApi fileServiceApi;
 
     @Override

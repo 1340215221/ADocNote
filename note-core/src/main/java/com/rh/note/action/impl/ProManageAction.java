@@ -1,22 +1,25 @@
-package com.rh.note.action;
+package com.rh.note.action.impl;
 
+import com.rh.note.action.IProManageAction;
 import com.rh.note.ao.ClickedHistoryProjectListAO;
 import com.rh.note.api.FileServiceApi;
 import com.rh.note.api.ProManageViewApi;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * 项目管理 入口
  */
-@Setter
-@Accessors(chain = true)
+@Component
 public class ProManageAction implements IProManageAction {
 
+    @Autowired
     private ProManageViewApi proManageViewApi;
+    @Autowired
     private FileServiceApi fileServiceApi;
+    @Autowired
     private WorkAction workAction;
 
     @Override

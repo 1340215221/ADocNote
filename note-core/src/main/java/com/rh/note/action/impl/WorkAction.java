@@ -1,5 +1,6 @@
-package com.rh.note.action;
+package com.rh.note.action.impl;
 
+import com.rh.note.action.IWorkAction;
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.ao.GenerateJavaIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
@@ -24,7 +25,7 @@ import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
-import com.rh.note.syntax.IncludeJavaSyntaxSugar;
+import com.rh.note.sugar.IncludeJavaSyntaxSugar;
 import com.rh.note.syntax.IncludeSyntax;
 import com.rh.note.util.DefaultEditorKitUtil;
 import com.rh.note.view.JavaScrollPaneView;
@@ -36,11 +37,11 @@ import com.rh.note.view.WorkFrameView;
 import com.rh.note.vo.ITitleLineVO;
 import com.rh.note.vo.WriterVO;
 import lombok.NonNull;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.swing.text.DefaultEditorKit;
 import java.awt.event.ActionEvent;
@@ -54,12 +55,14 @@ import java.util.function.Function;
  * 工作窗口 入口
  */
 @Slf4j
-@Setter
-@Accessors(chain = true)
+@Component
 public class WorkAction implements IWorkAction {
 
+    @Autowired
     private WorkViewApi workViewApi;
+    @Autowired
     private FileServiceApi fileServiceApi;
+    @Autowired
     private GitServiceApi gitServiceApi;
 
     /**

@@ -6,12 +6,14 @@ import com.rh.note.view.ProManageFrameView;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.stereotype.Component;
 
 import javax.swing.JList;
 
 /**
  * 项目管理
  */
+@Component
 public class ProManageViewApi {
 
     public @Nullable ClickedHistoryProjectListAO getSelectedHistoryProjectAO(JList<RecentlyOpenedRecordVO> jList) {

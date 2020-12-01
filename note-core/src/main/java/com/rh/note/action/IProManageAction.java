@@ -11,4 +11,9 @@ public interface IProManageAction {
      * 打开项目, 通过路径
      */
     void openProjectByPath(@NotNull ClickedHistoryProjectListAO ao);
+
+    /**
+     * 启动窗口
+     */
+    void startFrame();
 }

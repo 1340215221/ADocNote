@@ -1,6 +1,7 @@
-package com.rh.note.syntax;
+package com.rh.note.sugar;
 
 import com.rh.note.constants.BaseConstants;
+import com.rh.note.syntax.TitleSyntax;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

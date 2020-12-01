@@ -3,41 +3,38 @@ package com.rh.note.config;
 import com.rh.note.action.IOperationAction;
 import com.rh.note.action.IProManageAction;
 import com.rh.note.action.IWorkAction;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 
 /**
  * 桥接对象实例配置
  */
-public class BridgingBeanConfig {
+@Component
+public class BridgingBeanConfig implements ApplicationContextAware {
     /**
      * 工作窗口操作入口
      */
+    @Autowired
     private static IWorkAction workAction;
     /**
      * 项目管理操作入口
      */
+    @Autowired
     private static IProManageAction proManageAction;
     /**
      * 匹配操作入口
      */
+    @Autowired
     private static IOperationAction operationAction;
-
-    public static void setWorkAction(IWorkAction workAction) {
-        if (BridgingBeanConfig.workAction == null) {
-            BridgingBeanConfig.workAction = workAction;
-        }
-    }
 
     /**
      * 工作窗口入口
      */
     public static IWorkAction workAction() {
         return workAction;
-    }
-
-    public static void setProManageAction(IProManageAction proManageAction) {
-        if (BridgingBeanConfig.proManageAction == null) {
-            BridgingBeanConfig.proManageAction = proManageAction;
-        }
     }
 
     /**
@@ -47,12 +44,6 @@ public class BridgingBeanConfig {
         return proManageAction;
     }
 
-    public static void setOperationAction(IOperationAction operationAction) {
-        if (BridgingBeanConfig.operationAction == null) {
-            BridgingBeanConfig.operationAction = operationAction;
-        }
-    }
-
     /**
      * 匹配操作入口
      */
@@ -60,4 +51,8 @@ public class BridgingBeanConfig {
         return operationAction;
     }
 
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        System.out.println("ok");
+    }
 }

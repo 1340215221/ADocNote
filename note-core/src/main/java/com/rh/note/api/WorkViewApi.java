@@ -25,11 +25,11 @@ import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.path.TitleBeanPath;
 import com.rh.note.syntax.IncludeJavaSyntax;
-import com.rh.note.syntax.IncludeJavaSyntaxSugar;
+import com.rh.note.sugar.IncludeJavaSyntaxSugar;
 import com.rh.note.syntax.IncludeSyntax;
-import com.rh.note.syntax.IncludeSyntaxSugar;
+import com.rh.note.sugar.IncludeSyntaxSugar;
 import com.rh.note.syntax.TitleSyntax;
-import com.rh.note.syntax.TitleSyntaxSugar;
+import com.rh.note.sugar.TitleSyntaxSugar;
 import com.rh.note.util.ScrollPositionUtil;
 import com.rh.note.view.ConfirmDialogView;
 import com.rh.note.view.InputDialogView;
@@ -49,6 +49,7 @@ import com.rh.note.vo.WriterVO;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.stereotype.Component;
 
 import javax.swing.JOptionPane;
 import java.util.Arrays;
@@ -63,6 +64,7 @@ import java.util.stream.Collectors;
 /**
  * 工作窗口 操作
  */
+@Component
 public class WorkViewApi {
     /**
      * 显示窗口
