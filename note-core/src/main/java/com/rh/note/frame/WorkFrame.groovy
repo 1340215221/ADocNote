@@ -1,7 +1,6 @@
 package com.rh.note.frame
 
-import com.rh.note.base.IFrame
-import com.rh.note.base.ISwingBuilder
+import com.rh.note.common.IFrame
 import com.rh.note.component.AdocScrollPane
 import com.rh.note.component.AdocTextPane
 import com.rh.note.component.InputPromptMenuItem
@@ -14,8 +13,11 @@ import com.rh.note.component.factory.JavaScrollPaneFactory
 import com.rh.note.component.factory.TitleTreeNodeFactory
 import com.rh.note.config.IWorkConfig
 import com.rh.note.event.WorkFrameEvent
+import groovy.swing.SwingBuilder
 import groovy.swing.factory.RichActionWidgetFactory
 import groovy.swing.factory.TextArgWidgetFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
 
 import java.awt.AWTEvent
 import java.awt.Toolkit
@@ -24,7 +26,13 @@ import java.awt.event.AWTEventListener
 /**
  * 工作窗口工厂
  */
-class WorkFrame implements IWorkConfig, IFrame, ISwingBuilder {
+@Component
+class WorkFrame implements IWorkConfig, IFrame {
+
+    @Autowired
+    private WorkFrameEvent workFrameEvent
+    @Autowired
+    private SwingBuilder swingBuilder
 
     @Override
     void globalSettings() {
@@ -32,8 +40,8 @@ class WorkFrame implements IWorkConfig, IFrame, ISwingBuilder {
         toolkit.addAWTEventListener(new AWTEventListener() {
             @Override
             void eventDispatched(AWTEvent event) {
-                WorkFrameEvent.save_all_edited(event)
-                WorkFrameEvent.git_commit_adoc(event)
+                workFrameEvent.save_all_edited(event)
+                workFrameEvent.git_commit_adoc(event)
             }
         }, AWTEvent.KEY_EVENT_MASK)
     }

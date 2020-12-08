@@ -1,15 +1,21 @@
 package com.rh.note.builder
 
-
-import com.rh.note.base.ISwingBuilder
+import com.rh.note.annotation.WorkSingleton
 import com.rh.note.base.ITitleBeanPath
 import com.rh.note.event.NavigateButtonEvent
+import groovy.swing.SwingBuilder
+import org.springframework.beans.factory.annotation.Autowired
 
 /**
  * 标题导航栏按钮
  */
-class TitleNavigateButtonBuilder implements ISwingBuilder {
+@WorkSingleton
+class TitleNavigateButtonBuilder {
 
+    @Autowired
+    private SwingBuilder swingBuilder
+    @Autowired
+    private NavigateButtonEvent event
     private ITitleBeanPath beanPath
 
     TitleNavigateButtonBuilder(ITitleBeanPath beanPath) {
@@ -20,7 +26,7 @@ class TitleNavigateButtonBuilder implements ISwingBuilder {
         swingBuilder.tnButton(id: id(beanPath.getBeanPath()),
                 text: beanPath.getTitleName(),
                 mouseClicked: {
-                    NavigateButtonEvent.clicked_navigate_button(it)
+                    event.clicked_navigate_button(it)
                 },
                 beanPath: beanPath,
                 foreground: beanPath.getColor(),

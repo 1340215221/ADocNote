@@ -12,46 +12,48 @@ import com.rh.note.builder.TitleTreeTabButtonBuilder;
 import com.rh.note.builder.WorkFrameBuilder;
 import groovy.lang.Closure;
 
+import static com.rh.note.util.SpringUtil.get;
+
 public interface IWorkConfig {
 
     default void work_frame(Closure children) {
-        new WorkFrameBuilder().init(children);
+        get(WorkFrameBuilder.class).init(children);
     }
 
     default void base_panel(Closure children) {
-        new BasePanelBuilder().init(children);
+        get(BasePanelBuilder.class).init(children);
     }
 
     default void head_menu_panel(Closure children) {
-        new HeadMenuPanelBuilder().init(children);
+        get(HeadMenuPanelBuilder.class).init(children);
     }
 
     default void bottom_sidebar_panel(Closure children) {
-        new BottomSidebarPanelBuilder().init(children);
+        get(BottomSidebarPanelBuilder.class).init(children);
     }
 
     default void left_sidebar_panel(Closure children) {
-        new LeftSidebarPanelBuilder().init(children);
+        get(LeftSidebarPanelBuilder.class).init(children);
     }
 
     default void left_sidebar_tab_panel(Closure children) {
-        new LeftSidebarTabPanelBuilder().init(children);
+        get(LeftSidebarTabPanelBuilder.class).init(children);
     }
 
     default void title_tree_tab_button(Closure children) {
-        new TitleTreeTabButtonBuilder().init(children);
+        get(TitleTreeTabButtonBuilder.class).init(children);
     }
 
     default void title_tree(Closure children) {
-        new TitleTreeBuilder().init(children);
+        get(TitleTreeBuilder.class).init(children);
     }
 
     default void tabbed_pane(Closure children) {
-        new TabbedPaneBuilder().init(children);
+        get(TabbedPaneBuilder.class).init(children);
     }
 
     default void input_prompt_list(Closure children) {
-        new InputPromptListBuilder().init(children);
+        get(InputPromptListBuilder.class).init(children);
     }
 
 }

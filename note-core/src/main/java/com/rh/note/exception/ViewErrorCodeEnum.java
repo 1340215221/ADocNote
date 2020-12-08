@@ -1,5 +1,7 @@
 package com.rh.note.exception;
 
+import com.rh.note.common.IErrorCode;
+
 /**
  * 图形异常码
  */

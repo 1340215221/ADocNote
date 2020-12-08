@@ -1,15 +1,26 @@
 package com.rh.note.builder
 
-import com.rh.note.base.ISwingBuilder
+import com.rh.note.annotation.WorkSingleton
+import com.rh.note.common.DefaultBuilder
 import com.rh.note.component.TitleTreeCellRenderer
 import com.rh.note.event.TitleTreeEvent
+import groovy.swing.SwingBuilder
+import org.springframework.beans.factory.annotation.Autowired
 
 import java.awt.BorderLayout
 
 /**
  * 工作窗口-标题树
  */
-class TitleTreeBuilder implements ISwingBuilder {
+@WorkSingleton
+class TitleTreeBuilder implements DefaultBuilder {
+
+    @Autowired
+    private SwingBuilder swingBuilder
+    @Autowired
+    private TitleTreeEvent event
+
+    @Override
     void init(Closure children) {
         def model = {
             swingBuilder.model(id: "${modelId()}")
@@ -20,7 +31,7 @@ class TitleTreeBuilder implements ISwingBuilder {
                     constraints: BorderLayout.EAST,
                     model: model(),
                     mouseClicked: {
-                        TitleTreeEvent.clicked_title_node()
+                        event.clicked_title_node()
                     },
                     cellRenderer: new TitleTreeCellRenderer(),
             ) {

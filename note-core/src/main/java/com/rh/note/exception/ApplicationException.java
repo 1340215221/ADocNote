@@ -1,5 +1,7 @@
 package com.rh.note.exception;
 
+import com.rh.note.common.IErrorCode;
+
 public class ApplicationException extends RuntimeException {
 
     private Integer code;

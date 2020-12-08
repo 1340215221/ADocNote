@@ -1,4 +1,4 @@
-package com.rh.note.base;
+package com.rh.note.common;
 
 /**
  * 窗口基础接口

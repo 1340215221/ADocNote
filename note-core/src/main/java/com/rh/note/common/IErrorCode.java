@@ -1,4 +1,4 @@
-package com.rh.note.exception;
+package com.rh.note.common;
 
 public interface IErrorCode {
 

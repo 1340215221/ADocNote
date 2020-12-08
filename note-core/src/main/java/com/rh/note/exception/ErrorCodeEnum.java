@@ -1,5 +1,7 @@
 package com.rh.note.exception;
 
+import com.rh.note.common.IErrorCode;
+
 /**
  * 异常的错误信息
  */
@@ -15,6 +17,7 @@ public enum ErrorCodeEnum implements IErrorCode {
     INCLUDE_TARGET_TO_THE_FILE_CANNOT_BE_OPENED(3007, "include指向文件无法打开"),
     GIT_COMMIT_ERROR(3008, "git commit 失败"),
     GIT_PULL_ERROR(3009, "git pull 失败"),
+    THE_PLACEHOLDER_AND_THE_NUMBER_OF_PARAMETERS_ARE_NOT_EQUAL(4000, "占位符{}和参数数量不等"),
     ;
     private Integer code;
     private String msg;

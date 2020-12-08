@@ -1,14 +1,28 @@
 package com.rh.note.builder
 
-import com.rh.note.base.ISwingBuilder
+import com.rh.note.annotation.WorkSingleton
+import com.rh.note.common.DefaultBuilder
 import com.rh.note.event.WorkFrameEvent
+import groovy.swing.SwingBuilder
+import org.jetbrains.annotations.NotNull
+import org.springframework.beans.factory.annotation.Autowired
 
+import javax.annotation.PreDestroy
+import javax.swing.JFrame
 import javax.swing.WindowConstants
 
 /**
  * 工作窗口
  */
-class WorkFrameBuilder implements ISwingBuilder {
+@WorkSingleton
+class WorkFrameBuilder implements DefaultBuilder {
+
+    @Autowired
+    private SwingBuilder swingBuilder
+    @Autowired
+    private WorkFrameEvent event
+
+    @Override
     void init(Closure children) {
         swingBuilder.frame(id: id(),
                 title: 'adoc笔记',
@@ -17,11 +31,11 @@ class WorkFrameBuilder implements ISwingBuilder {
                 windowClosing: {
                     // 主线程不能阻塞, 阻塞时无法渲染页面
                     swingBuilder.doOutside {
-                        WorkFrameEvent.save_all_text_pane()
-                        WorkFrameEvent.close_frame()
+                        event.save_all_text_pane()
+                        event.close_frame()
                     }
                 }
-        ){
+        ) {
             children()
         }
         windowCentered()
@@ -35,7 +49,16 @@ class WorkFrameBuilder implements ISwingBuilder {
         swingBuilder."${id()}".locationRelativeTo = null
     }
 
+    @PreDestroy
+    void destroy() {
+        swingBuilder.variables.remove(id())
+    }
+
     static String id() {
         return 'work_frame'
+    }
+
+    @NotNull JFrame getWorkFrame() {
+        return swingBuilder."${id()}"
     }
 }

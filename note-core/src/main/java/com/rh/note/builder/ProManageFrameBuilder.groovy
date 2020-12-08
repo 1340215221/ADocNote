@@ -1,13 +1,22 @@
 package com.rh.note.builder
 
-import com.rh.note.base.ISwingBuilder
+import com.rh.note.annatation.ProjectManage
+import com.rh.note.common.DefaultBuilder
+import groovy.swing.SwingBuilder
+import org.springframework.beans.factory.annotation.Autowired
 
 import javax.swing.WindowConstants
 
 /**
  * 项目管理窗口
  */
-class ProManageFrameBuilder implements ISwingBuilder {
+@ProjectManage
+class ProManageFrameBuilder implements DefaultBuilder {
+
+    @Autowired
+    private SwingBuilder swingBuilder
+
+    @Override
     void init(Closure children) {
         swingBuilder.frame(id: id(),
                 pack: true,

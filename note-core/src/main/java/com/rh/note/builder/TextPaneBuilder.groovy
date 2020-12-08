@@ -1,9 +1,11 @@
 package com.rh.note.builder
 
+import com.rh.note.annotation.WorkSingleton
 import com.rh.note.base.BeanPath
-import com.rh.note.base.ISwingBuilder
 import com.rh.note.component.AdocTextPane
 import com.rh.note.event.TextPaneEvent
+import groovy.swing.SwingBuilder
+import org.springframework.beans.factory.annotation.Autowired
 
 import javax.swing.KeyStroke
 import javax.swing.text.DefaultStyledDocument
@@ -16,8 +18,13 @@ import java.awt.event.KeyEvent
 /**
  * 工作窗口-编辑区
  */
-class TextPaneBuilder implements ISwingBuilder {
+@WorkSingleton
+class TextPaneBuilder {
 
+    @Autowired
+    private SwingBuilder swingBuilder
+    @Autowired
+    private TextPaneEvent event
     private BeanPath beanPath
 
     TextPaneBuilder(BeanPath beanPath) {
@@ -30,20 +37,20 @@ class TextPaneBuilder implements ISwingBuilder {
                     styledDocument: new DefaultStyledDocument(),
                     font: new Font(null, 0, 17),
                     keyPressed: {
-                        TextPaneEvent.rename_include(it)
-                        TextPaneEvent.sink_title(it)
-                        TextPaneEvent.inline_title(it)
-                        TextPaneEvent.delete_include(it)
+                        event.rename_include(it)
+                        event.sink_title(it)
+                        event.inline_title(it)
+                        event.delete_include(it)
                     },
                     keyReleased: {
-                        TextPaneEvent.open_input_prompt(it)
+                        event.open_input_prompt(it)
                     },
                     mouseClicked: {
-                        TextPaneEvent.enter_include_file(it)
-                        TextPaneEvent.enter_include_java_file(it)
+                        event.enter_include_file(it)
+                        event.enter_include_java_file(it)
                     },
                     caretUpdate: {
-                        TextPaneEvent.move_caret()
+                        event.move_caret()
                     },
                     beanPath: beanPath,
             ) {
@@ -69,21 +76,21 @@ class TextPaneBuilder implements ISwingBuilder {
         newKeymap.addActionForKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), new TextAction('textPane') {
             @Override
             void actionPerformed(ActionEvent e) {
-                TextPaneEvent.enter_operation(e)
+                event.enter_operation(e)
             }
         })
         // 添加 上键 事件
         newKeymap.addActionForKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), new TextAction('menu_up') {
             @Override
             void actionPerformed(ActionEvent e) {
-                TextPaneEvent.select_previous_on_prompt(e)
+                event.select_previous_on_prompt(e)
             }
         })
         // 添加 下键 事件
         newKeymap.addActionForKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), new TextAction('menu_down') {
             @Override
             void actionPerformed(ActionEvent e) {
-                TextPaneEvent.select_next_on_prompt(e)
+                event.select_next_on_prompt(e)
             }
         })
         textPane.setKeymap(newKeymap)

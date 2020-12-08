@@ -1,7 +1,7 @@
 package com.rh.note.view;
 
-import com.rh.note.base.Init;
 import com.rh.note.builder.WorkFrameBuilder;
+import com.rh.note.common.IView;
 import com.rh.note.frame.WorkFrame;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,14 +10,15 @@ import javax.swing.JFrame;
 /**
  * 工作窗口视图
  */
-public class WorkFrameView extends Init<JFrame> {
+public class WorkFrameView extends IView<JFrame> {
 
     public static void create() {
         new WorkFrame().start();
     }
 
+    @Override
     public @NotNull WorkFrameView init() {
-        return super.init(WorkFrameBuilder.id());
+        return super.init();
     }
 
     /**
@@ -28,7 +29,8 @@ public class WorkFrameView extends Init<JFrame> {
     }
 
     private @NotNull JFrame workFrame() {
-        return getBean();
+        WorkFrameBuilder builder = getBuilder();
+        return builder.getWorkFrame();
     }
 
     /**
@@ -37,5 +39,12 @@ public class WorkFrameView extends Init<JFrame> {
     public void close() {
         workFrame().dispose();
         System.exit(0);
+    }
+
+    /**
+     * beanName
+     */
+    protected @NotNull String getBuilderName() {
+        return WorkFrameBuilder.id();
     }
 }

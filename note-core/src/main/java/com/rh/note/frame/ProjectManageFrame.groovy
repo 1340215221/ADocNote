@@ -1,11 +1,13 @@
 package com.rh.note.frame
 
-import com.rh.note.base.IFrame
+import com.rh.note.common.IFrame
 import com.rh.note.config.IProManageConfig
+import org.springframework.stereotype.Component
 
 /**
  * 项目列表
  */
+@Component
 class ProjectManageFrame implements IFrame, IProManageConfig {
 
     @Override

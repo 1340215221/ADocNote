@@ -1,14 +1,25 @@
 package com.rh.note.builder
 
+import com.rh.note.annotation.WorkSingleton
 import com.rh.note.ao.InputPromptItemAO
-import com.rh.note.base.ISwingBuilder
 import com.rh.note.event.InputPromptEvent
+import groovy.swing.SwingBuilder
+import org.springframework.beans.factory.annotation.Autowired
 
 /**
  * 输入提示项
  */
-class InputPromptItemBuilder implements ISwingBuilder {
+@WorkSingleton(id)
+class InputPromptItemBuilder {
 
+    /**
+     * 输入提示项id
+     */
+    static final String id = 'input_prompt_item_{}'
+    @Autowired
+    private SwingBuilder swingBuilder
+    @Autowired
+    private InputPromptEvent event
     private InputPromptItemAO ao
 
     InputPromptItemBuilder(InputPromptItemAO ao) {
@@ -20,7 +31,7 @@ class InputPromptItemBuilder implements ISwingBuilder {
                 text: ao.getCompleteValue(),
                 result: ao.getDescription(),
                 mousePressed: {
-                    InputPromptEvent.selectItem(it)
+                    event.selectItem(it)
                 },
         ) {
         }

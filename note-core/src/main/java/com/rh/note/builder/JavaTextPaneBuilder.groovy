@@ -1,8 +1,10 @@
 package com.rh.note.builder
 
-import com.rh.note.base.ISwingBuilder
+import com.rh.note.annotation.WorkPrototype
 import com.rh.note.component.JavaTextPane
 import com.rh.note.event.JTextPaneEvent
+import groovy.swing.SwingBuilder
+import org.springframework.beans.factory.annotation.Autowired
 
 import javax.swing.text.DefaultEditorKit
 import javax.swing.text.DefaultStyledDocument
@@ -11,8 +13,13 @@ import java.awt.Font
 /**
  * java文件控件
  */
-class JavaTextPaneBuilder implements ISwingBuilder {
+@WorkPrototype
+class JavaTextPaneBuilder {
 
+    @Autowired
+    private SwingBuilder swingBuilder
+    @Autowired
+    private JTextPaneEvent event
     /**
      * 文件绝对路径
      */
@@ -56,7 +63,7 @@ class JavaTextPaneBuilder implements ISwingBuilder {
                     markLineNumber1: markLineNumber1,
                     markLineNumber2: markLineNumber2,
                     keyPressed: {
-                        JTextPaneEvent.markLine(it)
+                        event.markLine(it)
                     },
             ){
                 setReadOnly()

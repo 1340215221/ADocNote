@@ -1,6 +1,7 @@
 package com.rh.note.component;
 
 import com.rh.note.base.BeanPath;
+import com.rh.note.builder.TitleNavigateButtonBuilder;
 
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -8,7 +9,7 @@ import javax.swing.JButton;
 
 /**
  * 标题按钮
- * builder {@link com.rh.note.builder.TitleNavigateButtonBuilder#id}
+ * builder {@link TitleNavigateButtonBuilder#id}
  */
 public class TitleButton extends JButton {
 

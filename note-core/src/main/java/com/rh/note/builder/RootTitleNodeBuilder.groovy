@@ -1,14 +1,19 @@
 package com.rh.note.builder
 
-import com.rh.note.base.ISwingBuilder
+import com.rh.note.annotation.WorkSingleton
 import com.rh.note.vo.ITitleLineVO
+import groovy.swing.SwingBuilder
 import org.apache.commons.collections4.CollectionUtils
+import org.springframework.beans.factory.annotation.Autowired
 
 /**
  * 工作窗口-标题列表根节点
  */
-class RootTitleNodeBuilder implements ISwingBuilder {
+@WorkSingleton
+class RootTitleNodeBuilder {
 
+    @Autowired
+    private SwingBuilder swingBuilder
     private ITitleLineVO vo
 
     RootTitleNodeBuilder(ITitleLineVO vo) {
