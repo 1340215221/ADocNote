@@ -1,11 +1,12 @@
 package com.rh.note.view;
 
 import com.rh.note.ao.MarkLineAO;
-import com.rh.note.base.Init;
 import com.rh.note.builder.JavaTextPaneBuilder;
+import com.rh.note.common.IPrototypeView;
 import com.rh.note.component.JavaTextPane;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
+import com.rh.note.util.StrUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -22,7 +23,7 @@ import java.io.FileReader;
 /**
  * java文件编辑控件
  */
-public class JavaTextPaneView extends Init<JavaTextPane> {
+public class JavaTextPaneView extends IPrototypeView<JavaTextPaneBuilder, JavaTextPane> {
 
     /**
      * todo 方法参数有待封装成对象
@@ -32,6 +33,11 @@ public class JavaTextPaneView extends Init<JavaTextPane> {
             return;
         }
         new JavaTextPaneBuilder(absolutePath, sourceFilePath, includeFilePath, markLineNumber1, markLineNumber2).init();
+    }
+
+    @Override
+    protected @NotNull String getBuilderInstanceName(String... args) {
+        return StrUtils.replacePlaceholder(JavaTextPaneBuilder.id, args);
     }
 
     public static @Nullable JavaTextPaneView cast(JavaTextPane bean) {
@@ -49,7 +55,7 @@ public class JavaTextPaneView extends Init<JavaTextPane> {
     }
 
     private @NotNull JavaTextPane textPane() {
-        return getBean();
+        return getBuilder().getTextPane();
     }
 
     public void write() {

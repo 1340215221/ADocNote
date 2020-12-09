@@ -18,6 +18,7 @@ public enum ErrorCodeEnum implements IErrorCode {
     GIT_COMMIT_ERROR(3008, "git commit 失败"),
     GIT_PULL_ERROR(3009, "git pull 失败"),
     THE_PLACEHOLDER_AND_THE_NUMBER_OF_PARAMETERS_ARE_NOT_EQUAL(4000, "占位符{}和参数数量不等"),
+    FAILED_TO_CREATE_MULTIPLE_CONTROL(4001, "创建多例控件失败"),
     ;
     private Integer code;
     private String msg;

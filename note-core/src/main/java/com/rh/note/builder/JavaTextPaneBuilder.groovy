@@ -1,9 +1,11 @@
 package com.rh.note.builder
 
 import com.rh.note.annotation.WorkPrototype
+import com.rh.note.common.PrototypeBuilder
 import com.rh.note.component.JavaTextPane
 import com.rh.note.event.JTextPaneEvent
 import groovy.swing.SwingBuilder
+import org.jetbrains.annotations.NotNull
 import org.springframework.beans.factory.annotation.Autowired
 
 import javax.swing.text.DefaultEditorKit
@@ -14,8 +16,9 @@ import java.awt.Font
  * java文件控件
  */
 @WorkPrototype
-class JavaTextPaneBuilder {
+class JavaTextPaneBuilder implements PrototypeBuilder {
 
+    public static final String id = "java_text_pane_{}"
     @Autowired
     private SwingBuilder swingBuilder
     @Autowired
@@ -65,14 +68,14 @@ class JavaTextPaneBuilder {
                     keyPressed: {
                         event.markLine(it)
                     },
-            ){
+            ) {
                 setReadOnly()
             }
         }
 
         swingBuilder.jScrollPane(id: scrollId(absolutePath),
                 absolutePath: absolutePath,
-        ){
+        ) {
             textPane()
         }
     }
@@ -120,5 +123,15 @@ class JavaTextPaneBuilder {
 
     static String scrollId(String absolutePath) {
         return "java_text_pane_scroll_${absolutePath}"
+    }
+
+    @Override
+    String getBeanName() {
+        return id(absolutePath)
+    }
+
+    @NotNull
+    JavaTextPane getTextPane() {
+        return swingBuilder."${id(absolutePath)}"
     }
 }
