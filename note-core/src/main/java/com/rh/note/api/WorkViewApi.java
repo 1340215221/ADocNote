@@ -24,12 +24,12 @@ import com.rh.note.frame.WorkFrame;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.path.TitleBeanPath;
-import com.rh.note.syntax.IncludeJavaSyntax;
 import com.rh.note.sugar.IncludeJavaSyntaxSugar;
-import com.rh.note.syntax.IncludeSyntax;
 import com.rh.note.sugar.IncludeSyntaxSugar;
-import com.rh.note.syntax.TitleSyntax;
 import com.rh.note.sugar.TitleSyntaxSugar;
+import com.rh.note.syntax.IncludeJavaSyntax;
+import com.rh.note.syntax.IncludeSyntax;
+import com.rh.note.syntax.TitleSyntax;
 import com.rh.note.util.ScrollPositionUtil;
 import com.rh.note.view.ConfirmDialogView;
 import com.rh.note.view.InputDialogView;
@@ -49,7 +49,6 @@ import com.rh.note.vo.WriterVO;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.swing.JOptionPane;
@@ -89,8 +88,7 @@ public class WorkViewApi {
             return;
         }
         // 加载节点数据
-        RootTitleNodeView.create(rootTitle);
-        RootTitleNodeView rootTitleNode = new RootTitleNodeView().init();
+        RootTitleNodeView rootTitleNode = new RootTitleNodeView().create(rootTitle);
         TitleTreeModelView titleTreeModel = new TitleTreeModelView().init();
         titleTreeModel.setRoot(rootTitleNode);
         // 展开所有节点
@@ -118,8 +116,7 @@ public class WorkViewApi {
         TitleNavigatePanelView titleNavigatePanel = new TitleNavigatePanelView().init();
         titleNavigatePanel.clearTitle();
         parentTitles.stream().sorted(Comparator.comparing(title -> title.getTitleSyntax().getLevel())).forEach(title -> {
-            TitleNavigateButtonView.create(title.getBeanPath());
-            TitleNavigateButtonView titleNavigateButton = new TitleNavigateButtonView().initByBeanPath(title.getBeanPathStr());
+            TitleNavigateButtonView titleNavigateButton = new TitleNavigateButtonView().create(title.getBeanPath());
             titleNavigatePanel.add(titleNavigateButton);
         });
     }
@@ -153,8 +150,8 @@ public class WorkViewApi {
         }
         TextScrollPaneView textScrollPane = new TextScrollPaneView().init(titleLine.getFilePath());
         ScrollPositionUtil.builder()
-                .adocTextPane(textPane.getBean())
-                .adocScrollPane(textScrollPane.getBean())
+                .adocTextPane(textPane.textPane())
+                .adocScrollPane(textScrollPane.scrollPane())
                 .lineNumber(titleLine.getLineNumber())
                 .build()
                 .positioningToTitleRow();
@@ -453,8 +450,7 @@ public class WorkViewApi {
             return textPaneOfExist;
         }
 
-        TextPaneView.create(beanPath);
-        return new TextPaneView().init(filePath);
+        return new TextPaneView().create(beanPath);
     }
 
     /**

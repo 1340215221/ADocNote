@@ -1,7 +1,7 @@
 package com.rh.note.builder
 
 import com.rh.note.annotation.WorkSingleton
-import com.rh.note.common.ISingletonBuilder
+import com.rh.note.common.ISingletonStaticBuilder
 import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -12,7 +12,7 @@ import java.awt.BorderLayout
  * 工作窗口-底边栏
  */
 @WorkSingleton(builder_name)
-class BottomSidebarPanelBuilder implements ISingletonBuilder {
+class BottomSidebarPanelBuilder implements ISingletonStaticBuilder {
 
     static final String builder_name = 'bottom_sidebar'
     @Autowired

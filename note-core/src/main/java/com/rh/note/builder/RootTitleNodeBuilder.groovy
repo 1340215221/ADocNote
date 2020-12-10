@@ -2,9 +2,11 @@ package com.rh.note.builder
 
 import com.rh.note.annotation.WorkPrototype
 import com.rh.note.common.IPrototypeBuilder
+import com.rh.note.component.TitleTreeNode
 import com.rh.note.vo.ITitleLineVO
 import groovy.swing.SwingBuilder
 import org.apache.commons.collections4.CollectionUtils
+import org.jetbrains.annotations.NotNull
 import org.springframework.beans.factory.annotation.Autowired
 
 import javax.annotation.PostConstruct
@@ -16,7 +18,7 @@ import javax.annotation.PreDestroy
 @WorkPrototype(builder_name)
 class RootTitleNodeBuilder implements IPrototypeBuilder {
 
-    static final String builder_name = "tree_node"
+    public static final String builder_name = "tree_node"
     @Autowired
     private SwingBuilder swingBuilder
     private ITitleLineVO vo
@@ -58,7 +60,7 @@ class RootTitleNodeBuilder implements IPrototypeBuilder {
     @PreDestroy
     void destroy() {
         swingBuilder.variables.remove(id())
-        swingBuilder.variables.removeAll {String key, value ->
+        swingBuilder.variables.removeAll { String key, value ->
             key.startsWith(nodeId(""))
         }
     }
@@ -74,5 +76,10 @@ class RootTitleNodeBuilder implements IPrototypeBuilder {
 
     static String nodeId(String beanPath) {
         "tree_node_${beanPath}"
+    }
+
+    @NotNull
+    TitleTreeNode getTreeNode() {
+        swingBuilder."${id()}"
     }
 }

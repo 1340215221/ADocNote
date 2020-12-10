@@ -1,7 +1,7 @@
 package com.rh.note.builder
 
 import com.rh.note.annotation.WorkSingleton
-import com.rh.note.common.ISingletonBuilder
+import com.rh.note.common.ISingletonStaticBuilder
 import com.rh.note.event.WorkFrameEvent
 import groovy.swing.SwingBuilder
 import org.jetbrains.annotations.NotNull
@@ -15,7 +15,7 @@ import javax.swing.WindowConstants
  * 工作窗口
  */
 @WorkSingleton(builder_name)
-class WorkFrameBuilder implements ISingletonBuilder {
+class WorkFrameBuilder implements ISingletonStaticBuilder {
 
     static final String builder_name = "work_frame"
     @Autowired

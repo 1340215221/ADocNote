@@ -1,7 +1,7 @@
 package com.rh.note.view;
 
-import com.rh.note.base.Init;
 import com.rh.note.builder.TabbedPaneBuilder;
+import com.rh.note.common.ISingletonView;
 import com.rh.note.component.AdocScrollPane;
 import com.rh.note.path.AdocFileBeanPath;
 import org.apache.commons.lang3.ArrayUtils;
@@ -18,14 +18,14 @@ import java.util.stream.Collectors;
 /**
  * 编辑区标签面板视图
  */
-public class TabbedPaneView extends Init<JTabbedPane> {
+public class TabbedPaneView extends ISingletonView<TabbedPaneBuilder, JTabbedPane> {
 
     public @NotNull TabbedPaneView init() {
-        return super.init(TabbedPaneBuilder.id());
+        return super.init();
     }
 
     private @NotNull JTabbedPane tabbedPane() {
-        return getBean();
+        return super.getComponent(TabbedPaneBuilder::getTabbedPane);
     }
 
     /**
@@ -36,7 +36,7 @@ public class TabbedPaneView extends Init<JTabbedPane> {
             return;
         }
 
-        tabbedPane().setSelectedComponent(textScrollPane.getBean());
+        tabbedPane().setSelectedComponent(textScrollPane.scrollPane());
     }
 
     /**
@@ -46,7 +46,7 @@ public class TabbedPaneView extends Init<JTabbedPane> {
         if (scrollPane == null) {
             return;
         }
-        tabbedPane().setSelectedComponent(scrollPane.getBean());
+        tabbedPane().setSelectedComponent(scrollPane.scrollPane());
     }
 
     /**
@@ -56,8 +56,8 @@ public class TabbedPaneView extends Init<JTabbedPane> {
         if (scrollPane == null) {
             return;
         }
-        String fileName = scrollPane.getBean().getFileName();
-        tabbedPane().add(scrollPane.getBean(), fileName);
+        String fileName = scrollPane.scrollPane().getFileName();
+        tabbedPane().add(scrollPane.scrollPane(), fileName);
     }
 
     /**
@@ -67,8 +67,8 @@ public class TabbedPaneView extends Init<JTabbedPane> {
         if (textScrollPane == null) {
             return;
         }
-        String titleName = textScrollPane.getBean().getBeanPath().getTitleName();
-        tabbedPane().add(textScrollPane.getBean(), titleName);
+        String titleName = textScrollPane.scrollPane().getBeanPath().getTitleName();
+        tabbedPane().add(textScrollPane.scrollPane(), titleName);
     }
 
     /**
@@ -102,7 +102,7 @@ public class TabbedPaneView extends Init<JTabbedPane> {
             return false;
         }
 
-        int index = tabbedPane().indexOfComponent(textScrollPane.getBean());
+        int index = tabbedPane().indexOfComponent(textScrollPane.scrollPane());
         return index > -1;
     }
 
@@ -114,6 +114,6 @@ public class TabbedPaneView extends Init<JTabbedPane> {
             return;
         }
 
-        tabbedPane().remove(textScrollPane.getBean());
+        tabbedPane().remove(textScrollPane.scrollPane());
     }
 }

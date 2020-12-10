@@ -16,5 +16,5 @@ public @interface ProManageSingleton {
     /**
      * spring对象beanName
      */
-    String value();
+    String value() default "";
 }

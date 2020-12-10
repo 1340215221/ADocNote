@@ -2,7 +2,7 @@ package com.rh.note.builder
 
 
 import com.rh.note.annotation.ProManageSingleton
-import com.rh.note.common.ISingletonBuilder
+import com.rh.note.common.ISingletonStaticBuilder
 import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -12,7 +12,7 @@ import java.awt.BorderLayout
  * 项目管理窗口-菜单面板
  */
 @ProManageSingleton(builder_name)
-class ProMenuPanelBuilder implements ISingletonBuilder {
+class ProMenuPanelBuilder implements ISingletonStaticBuilder {
 
     static final String builder_name = "project_menu"
     @Autowired

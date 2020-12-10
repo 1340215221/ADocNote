@@ -4,8 +4,10 @@ import com.rh.note.annotation.WorkPrototype
 import com.rh.note.annotation.WorkSingleton
 import com.rh.note.base.ITitleBeanPath
 import com.rh.note.common.IPrototypeBuilder
+import com.rh.note.component.TitleButton
 import com.rh.note.event.NavigateButtonEvent
 import groovy.swing.SwingBuilder
+import org.jetbrains.annotations.NotNull
 import org.springframework.beans.factory.annotation.Autowired
 
 import javax.annotation.PostConstruct
@@ -54,5 +56,10 @@ class TitleNavigateButtonBuilder implements IPrototypeBuilder {
 
     static String id(String beanPath) {
         "title_navigate_button_${beanPath}"
+    }
+
+    @NotNull
+    TitleButton getNavigateButton() {
+        return swingBuilder."${id(beanPath.getBeanPath())}"
     }
 }

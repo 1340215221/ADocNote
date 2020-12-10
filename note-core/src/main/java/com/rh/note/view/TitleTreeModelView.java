@@ -1,7 +1,7 @@
 package com.rh.note.view;
 
-import com.rh.note.base.Init;
 import com.rh.note.builder.TitleTreeBuilder;
+import com.rh.note.common.ISingletonView;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.tree.DefaultTreeModel;
@@ -9,10 +9,10 @@ import javax.swing.tree.DefaultTreeModel;
 /**
  * 根节点视图
  */
-public class TitleTreeModelView extends Init<DefaultTreeModel> {
+public class TitleTreeModelView extends ISingletonView<TitleTreeBuilder, DefaultTreeModel> {
 
     public @NotNull TitleTreeModelView init() {
-        return super.init(TitleTreeBuilder.modelId());
+        return super.init();
     }
 
     /**
@@ -23,10 +23,10 @@ public class TitleTreeModelView extends Init<DefaultTreeModel> {
             return;
         }
 
-        model().setRoot(rootTitleNode.getBean());
+        model().setRoot(rootTitleNode.treeNode());
     }
 
     private @NotNull DefaultTreeModel model() {
-        return getBean();
+        return super.getComponent(TitleTreeBuilder::getModel);
     }
 }

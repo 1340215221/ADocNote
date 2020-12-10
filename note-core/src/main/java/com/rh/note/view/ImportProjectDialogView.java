@@ -27,6 +27,6 @@ public class ImportProjectDialogView {
     }
 
     public static @Nullable String create(ProManageFrameView proManageFrame) {
-        return showOpenDialog(proManageFrame.getBean());
+        return showOpenDialog(proManageFrame.proManageFrame());
     }
 }

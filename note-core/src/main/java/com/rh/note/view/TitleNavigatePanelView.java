@@ -1,17 +1,19 @@
 package com.rh.note.view;
 
-import com.rh.note.base.Init;
 import com.rh.note.builder.TabbedPaneBuilder;
+import com.rh.note.common.ISingletonView;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JPanel;
 
 /**
  * 标题导航栏
  */
-public class TitleNavigatePanelView extends Init<JPanel> {
+public class TitleNavigatePanelView extends ISingletonView<TabbedPaneBuilder, JPanel> {
 
-    public TitleNavigatePanelView init() {
-        return super.init(TabbedPaneBuilder.navigateId());
+    @Override
+    public @NotNull TitleNavigatePanelView init() {
+        return super.init();
     }
 
     /**
@@ -22,7 +24,7 @@ public class TitleNavigatePanelView extends Init<JPanel> {
             return;
         }
 
-        navigatePanel().add(titleNavigateButton.getBean());
+        navigatePanel().add(titleNavigateButton.navigateButton());
     }
 
     /**
@@ -34,7 +36,7 @@ public class TitleNavigatePanelView extends Init<JPanel> {
         navigatePanel().repaint();
     }
 
-    private JPanel navigatePanel() {
-        return getBean();
+    private @NotNull JPanel navigatePanel() {
+        return super.getComponent(TabbedPaneBuilder::getNavigatePanel);
     }
 }

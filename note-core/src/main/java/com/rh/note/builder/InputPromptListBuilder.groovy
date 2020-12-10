@@ -1,17 +1,19 @@
 package com.rh.note.builder
 
 import com.rh.note.annotation.WorkSingleton
-import com.rh.note.common.ISingletonBuilder
+import com.rh.note.common.ISingletonStaticBuilder
 import groovy.swing.SwingBuilder
+import org.jetbrains.annotations.NotNull
 import org.springframework.beans.factory.annotation.Autowired
 
 import javax.annotation.PreDestroy
+import javax.swing.JPopupMenu
 
 /**
  * 输入提示列表
  */
 @WorkSingleton(builder_name)
-class InputPromptListBuilder implements ISingletonBuilder {
+class InputPromptListBuilder implements ISingletonStaticBuilder {
 
     /**
      * 输入提示列表id
@@ -39,4 +41,8 @@ class InputPromptListBuilder implements ISingletonBuilder {
         'input_prompt_list'
     }
 
+    @NotNull
+    JPopupMenu getPopupMenu() {
+        return swingBuilder."${id()}"
+    }
 }

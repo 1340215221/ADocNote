@@ -1,7 +1,7 @@
 package com.rh.note.view;
 
-import com.rh.note.base.Init;
 import com.rh.note.builder.TitleTreeBuilder;
+import com.rh.note.common.ISingletonView;
 import com.rh.note.component.TitleTreeNode;
 import com.rh.note.vo.ITitleLineVO;
 import org.jetbrains.annotations.NotNull;
@@ -13,14 +13,14 @@ import javax.swing.tree.TreePath;
 /**
  * 标签树视图
  */
-public class TitleTreeView extends Init<JTree> {
+public class TitleTreeView extends ISingletonView<TitleTreeBuilder, JTree> {
 
     public @NotNull TitleTreeView init() {
-        return super.init(TitleTreeBuilder.treeId());
+        return super.init();
     }
 
     private @NotNull JTree tree() {
-        return getBean();
+        return super.getComponent(TitleTreeBuilder::getTree);
     }
 
     /**

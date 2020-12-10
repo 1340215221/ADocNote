@@ -2,7 +2,7 @@ package com.rh.note.builder
 
 
 import com.rh.note.annotation.ProManageSingleton
-import com.rh.note.common.ISingletonBuilder
+import com.rh.note.common.ISingletonStaticBuilder
 import com.rh.note.event.HistoryProjectListEvent
 import com.rh.note.vo.RecentlyOpenedRecordVO
 import groovy.swing.SwingBuilder
@@ -17,7 +17,7 @@ import java.awt.BorderLayout
  * 项目管理窗口-历史打开项目列表
  */
 @ProManageSingleton(builder_name)
-class HistoryProListBuilder implements ISingletonBuilder {
+class HistoryProListBuilder implements ISingletonStaticBuilder {
 
     static final String builder_name = "project_list"
     @Autowired

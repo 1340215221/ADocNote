@@ -2,8 +2,8 @@ package com.rh.note.view;
 
 import com.rh.note.ao.MarkLineAO;
 import com.rh.note.ao.SelectCaretLineAO;
-import com.rh.note.base.Init;
 import com.rh.note.builder.TextPaneBuilder;
+import com.rh.note.common.IPrototypeView;
 import com.rh.note.component.AdocTextPane;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
@@ -41,13 +41,10 @@ import java.util.stream.Collectors;
  * 编辑区视图
  */
 @Slf4j
-public class TextPaneView extends Init<AdocTextPane> {
+public class TextPaneView extends IPrototypeView<TextPaneBuilder, AdocTextPane> {
 
-    public static void create(AdocFileBeanPath beanPath) {
-        if (beanPath == null) {
-            return;
-        }
-        new TextPaneBuilder(beanPath).init();
+    public @NotNull TextPaneView create(AdocFileBeanPath beanPath) {
+        return super.create(beanPath);
     }
 
     /**
@@ -87,11 +84,14 @@ public class TextPaneView extends Init<AdocTextPane> {
 
     @Override
     public @Nullable TextPaneView init(String filePath) {
-        return super.init(TextPaneBuilder.id(filePath));
+        return super.init(filePath);
     }
 
-    private @NotNull AdocTextPane textPane() {
-        return getBean();
+    /**
+     * todo private
+     */
+    public @NotNull AdocTextPane textPane() {
+        return super.getComponent(TextPaneBuilder::getTextPane);
     }
 
     /**

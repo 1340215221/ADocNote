@@ -1,11 +1,12 @@
 package com.rh.note.builder
 
-import com.rh.note.annotation.WorkSingleton
+import com.rh.note.annotation.WorkPrototype
 import com.rh.note.ao.InputPromptItemAO
-import com.rh.note.common.ISingletonBuilder
+import com.rh.note.common.IPrototypeBuilder
+import com.rh.note.component.InputPromptMenuItem
 import com.rh.note.event.InputPromptEvent
 import groovy.swing.SwingBuilder
-import org.jetbrains.annotations.Nullable
+import org.jetbrains.annotations.NotNull
 import org.springframework.beans.factory.annotation.Autowired
 
 import javax.annotation.PreDestroy
@@ -13,8 +14,8 @@ import javax.annotation.PreDestroy
 /**
  * 输入提示项
  */
-@WorkSingleton(builder_name)
-class InputPromptItemBuilder implements ISingletonBuilder {
+@WorkPrototype(builder_name)
+class InputPromptItemBuilder implements IPrototypeBuilder {
 
     static final String builder_name = 'input_prompt_item_{}'
     @Autowired
@@ -27,10 +28,8 @@ class InputPromptItemBuilder implements ISingletonBuilder {
         this.ao = ao
     }
 
-    /**
-     * todo 动态创建的单例对象, 不需要子控件参数 children
-     */
-    void init(@Nullable Closure children) {
+    @Override
+    void init() {
         swingBuilder.menuItem(id: id(ao.getCompleteValue()),
                 text: ao.getCompleteValue(),
                 result: ao.getDescription(),
@@ -47,8 +46,17 @@ class InputPromptItemBuilder implements ISingletonBuilder {
         swingBuilder.variables.remove(id())
     }
 
+    @Override
+    String getInstanceName() {
+        return id(ao.getCompleteValue())
+    }
+
     static String id(String value) {
         "input_prompt_item_${value}"
     }
 
+    @NotNull
+    InputPromptMenuItem getMenuItem() {
+        return swingBuilder."${id(ao.getCompleteValue())}"
+    }
 }

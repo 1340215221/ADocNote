@@ -1,8 +1,8 @@
 package com.rh.note.view;
 
 import com.rh.note.base.BeanPath;
-import com.rh.note.base.Init;
 import com.rh.note.builder.TextPaneBuilder;
+import com.rh.note.common.IPrototypeView;
 import com.rh.note.component.AdocScrollPane;
 import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.util.ViewUtil;
@@ -15,15 +15,18 @@ import java.awt.Component;
 /**
  * 编辑区滚动面板视图
  */
-public class TextScrollPaneView extends Init<AdocScrollPane> {
+public class TextScrollPaneView extends IPrototypeView<TextPaneBuilder, AdocScrollPane> {
 
     @Override
     public @Nullable TextScrollPaneView init(String filePath) {
-        return super.init(TextPaneBuilder.scrollId(filePath));
+        return super.init(filePath);
     }
 
-    private @NotNull AdocScrollPane scrollPane() {
-        return getBean();
+    /**
+     * todo private
+     */
+    public @NotNull AdocScrollPane scrollPane() {
+        return super.getComponent(TextPaneBuilder::getScrollPane);
     }
 
     /**

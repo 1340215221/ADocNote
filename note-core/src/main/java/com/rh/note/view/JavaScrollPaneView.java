@@ -16,7 +16,7 @@ public class JavaScrollPaneView extends IPrototypeView<JavaTextPaneBuilder, Java
         return super.init(absolutePath);
     }
 
-    private @NotNull JavaScrollPane scrollPane() {
+    protected @NotNull JavaScrollPane scrollPane() {
         return super.getComponent(JavaTextPaneBuilder::getScrollPane);
     }
 }

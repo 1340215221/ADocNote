@@ -1,8 +1,8 @@
 package com.rh.note.view;
 
 import com.rh.note.ao.InputPromptItemAO;
-import com.rh.note.base.Init;
 import com.rh.note.builder.InputPromptItemBuilder;
+import com.rh.note.common.IPrototypeView;
 import com.rh.note.component.InputPromptMenuItem;
 import com.rh.note.util.ViewUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * 输入提示项
  */
-public class InputPromptItemView extends Init<InputPromptMenuItem> {
+public class InputPromptItemView extends IPrototypeView<InputPromptItemBuilder, InputPromptMenuItem> {
 
     public static void create(InputPromptItemAO ao) {
         if (ao == null) {
@@ -35,13 +35,12 @@ public class InputPromptItemView extends Init<InputPromptMenuItem> {
         return new InputPromptItemView().init(bean.getResult());
     }
 
-    @Override
     public @Nullable InputPromptItemView init(String showValue) {
-        return super.init(InputPromptItemBuilder.id(showValue));
+        return super.init(showValue);
     }
 
-    private @NotNull InputPromptMenuItem menuItem() {
-        return getBean();
+    protected @NotNull InputPromptMenuItem menuItem() {
+        return super.getComponent(InputPromptItemBuilder::getMenuItem);
     }
 
     /**

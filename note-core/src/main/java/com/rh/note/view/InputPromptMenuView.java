@@ -1,8 +1,8 @@
 package com.rh.note.view;
 
 import com.rh.note.ao.IncludePromptAO;
-import com.rh.note.base.Init;
 import com.rh.note.builder.InputPromptListBuilder;
+import com.rh.note.common.ISingletonView;
 import com.rh.note.component.InputPromptMenuItem;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -20,14 +20,14 @@ import java.util.stream.Collectors;
 /**
  * 输入提示菜单
  */
-public class InputPromptMenuView extends Init<JPopupMenu> {
+public class InputPromptMenuView extends ISingletonView<InputPromptListBuilder, JPopupMenu> {
 
     public @NotNull InputPromptMenuView init() {
-        return super.init(InputPromptListBuilder.id());
+        return super.init();
     }
 
     private @NotNull JPopupMenu popupMenu() {
-        return getBean();
+        return super.getComponent(InputPromptListBuilder::getPopupMenu);
     }
 
     /**
@@ -41,7 +41,7 @@ public class InputPromptMenuView extends Init<JPopupMenu> {
         clearItems();
         // 批量添加
         items.stream()
-                .map(InputPromptItemView::getBean)
+                .map(InputPromptItemView::menuItem)
                 .forEach(popupMenu()::add);
     }
 

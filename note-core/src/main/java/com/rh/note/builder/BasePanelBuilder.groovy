@@ -1,7 +1,7 @@
 package com.rh.note.builder
 
 import com.rh.note.annotation.WorkSingleton
-import com.rh.note.common.ISingletonBuilder
+import com.rh.note.common.ISingletonStaticBuilder
 import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -12,7 +12,7 @@ import java.awt.BorderLayout
  * 工作窗口-基础面板
  */
 @WorkSingleton(builder_name)
-class BasePanelBuilder implements ISingletonBuilder {
+class BasePanelBuilder implements ISingletonStaticBuilder {
 
     static final builder_name = 'base_panel'
     @Autowired

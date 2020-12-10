@@ -1,7 +1,7 @@
 package com.rh.note.view;
 
-import com.rh.note.base.Init;
 import com.rh.note.builder.ProManageFrameBuilder;
+import com.rh.note.common.ISingletonView;
 import com.rh.note.frame.ProjectManageFrame;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,14 +10,15 @@ import javax.swing.JFrame;
 /**
  * 项目管理视图
  */
-public class ProManageFrameView extends Init<JFrame> {
+public class ProManageFrameView extends ISingletonView<ProManageFrameBuilder, JFrame> {
 
     public static void create() {
         new ProjectManageFrame().start();
     }
 
+    @Override
     public @NotNull ProManageFrameView init() {
-        return super.init(ProManageFrameBuilder.id());
+        return super.init();
     }
 
     /**
@@ -27,8 +28,11 @@ public class ProManageFrameView extends Init<JFrame> {
         proManageFrame().setVisible(true);
     }
 
-    private @NotNull JFrame proManageFrame() {
-        return getBean();
+    /**
+     * todo private
+     */
+    public @NotNull JFrame proManageFrame() {
+        return super.getComponent(ProManageFrameBuilder::getFrame);
     }
 
     /**

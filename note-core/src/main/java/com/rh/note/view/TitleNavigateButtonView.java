@@ -1,7 +1,7 @@
 package com.rh.note.view;
 
-import com.rh.note.base.Init;
 import com.rh.note.builder.TitleNavigateButtonBuilder;
+import com.rh.note.common.IPrototypeView;
 import com.rh.note.component.TitleButton;
 import com.rh.note.path.TitleBeanPath;
 import org.apache.commons.lang3.StringUtils;
@@ -11,14 +11,14 @@ import org.jetbrains.annotations.Nullable;
 /**
  * 标题导航栏按钮
  */
-public class TitleNavigateButtonView extends Init<TitleButton> {
+public class TitleNavigateButtonView extends IPrototypeView<TitleNavigateButtonBuilder, TitleButton> {
 
-    public static void create(TitleBeanPath beanPath) {
-        if (beanPath == null) {
-            return;
-        }
+    public @NotNull TitleNavigateButtonView create(TitleBeanPath beanPath) {
+        return super.create(beanPath);
+    }
 
-        new TitleNavigateButtonBuilder(beanPath).init();
+    public @Nullable TitleNavigateButtonView init(String beanPath) {
+        return super.init(beanPath);
     }
 
     /**
@@ -32,15 +32,11 @@ public class TitleNavigateButtonView extends Init<TitleButton> {
         if (StringUtils.isBlank(beanPath)) {
             return null;
         }
-        return new TitleNavigateButtonView().initByBeanPath(beanPath);
+        return new TitleNavigateButtonView().init(beanPath);
     }
 
-    public @Nullable TitleNavigateButtonView initByBeanPath(String beanPath) {
-        return super.init(TitleNavigateButtonBuilder.id(beanPath));
-    }
-
-    private @NotNull TitleButton navigateButton() {
-        return getBean();
+    protected @NotNull TitleButton navigateButton() {
+        return super.getComponent(TitleNavigateButtonBuilder::getNavigateButton);
     }
 
     /**

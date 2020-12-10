@@ -1,7 +1,7 @@
 package com.rh.note.view;
 
-import com.rh.note.base.Init;
 import com.rh.note.builder.RootTitleNodeBuilder;
+import com.rh.note.common.IPrototypeView;
 import com.rh.note.component.TitleTreeNode;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.TitleBeanPath;
@@ -17,18 +17,18 @@ import java.util.List;
 /**
  * 根节点视图
  */
-public class RootTitleNodeView extends Init<TitleTreeNode> {
+public class RootTitleNodeView extends IPrototypeView<RootTitleNodeBuilder, TitleTreeNode> {
 
-    public static void create(ITitleLineVO vo) {
-        new RootTitleNodeBuilder(vo).init();
+    public @NotNull RootTitleNodeView create(ITitleLineVO vo) {
+        return super.create(vo);
     }
 
     public @NotNull RootTitleNodeView init() {
-        return super.init(RootTitleNodeBuilder.id());
+        return super.init(null);
     }
 
-    private TitleTreeNode treeNode() {
-        return getBean();
+    protected TitleTreeNode treeNode() {
+        return super.getComponent(RootTitleNodeBuilder::getTreeNode);
     }
 
     /**

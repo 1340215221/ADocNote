@@ -2,18 +2,20 @@ package com.rh.note.builder
 
 
 import com.rh.note.annotation.ProManageSingleton
-import com.rh.note.common.ISingletonBuilder
+import com.rh.note.common.ISingletonStaticBuilder
 import groovy.swing.SwingBuilder
+import org.jetbrains.annotations.NotNull
 import org.springframework.beans.factory.annotation.Autowired
 
 import javax.annotation.PreDestroy
+import javax.swing.JFrame
 import javax.swing.WindowConstants
 
 /**
  * 项目管理窗口
  */
 @ProManageSingleton(builder_name)
-class ProManageFrameBuilder implements ISingletonBuilder {
+class ProManageFrameBuilder implements ISingletonStaticBuilder {
 
     static final String builder_name = "project_list_frame"
     @Autowired
@@ -26,7 +28,7 @@ class ProManageFrameBuilder implements ISingletonBuilder {
                 resizable: false,
                 defaultCloseOperation: WindowConstants.EXIT_ON_CLOSE,
                 title: '打开项目',
-        ){
+        ) {
             children()
         }
         windowCentered()
@@ -48,5 +50,10 @@ class ProManageFrameBuilder implements ISingletonBuilder {
 
     static String id() {
         'project_list_frame'
+    }
+
+    @NotNull
+    JFrame getFrame() {
+        return swingBuilder."${id()}"
     }
 }

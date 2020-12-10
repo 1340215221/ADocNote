@@ -2,7 +2,7 @@ package com.rh.note.builder
 
 
 import com.rh.note.annotation.ProManageSingleton
-import com.rh.note.common.ISingletonBuilder
+import com.rh.note.common.ISingletonStaticBuilder
 import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -13,7 +13,7 @@ import java.awt.BorderLayout
  * 项目管理窗口-最近打开项目列表
  */
 @ProManageSingleton(builder_name)
-class ProListPanelBuilder implements ISingletonBuilder {
+class ProListPanelBuilder implements ISingletonStaticBuilder {
 
     static final String builder_name = "project_list_panel"
     @Autowired

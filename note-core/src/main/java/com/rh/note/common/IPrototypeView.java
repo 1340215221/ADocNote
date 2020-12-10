@@ -27,16 +27,16 @@ public abstract class IPrototypeView<B extends IPrototypeBuilder, C> {
      * 创建
      * 不是所有的view都需要create方法
      */
-    protected <R extends IPrototypeView<B, C>> @NotNull R create(Object args) {
+    protected <R extends IPrototypeView<B, C>> @NotNull R create(Object arg) {
         WorkContextApi workContextApi = SpringUtil.get(WorkContextApi.class);
-        builder = workContextApi.createWorkPrototype(getBuilderType(), args);
+        builder = workContextApi.createWorkPrototype(getBuilderType(), arg);
         return (R) this;
     }
 
     /**
      * 初始化
      */
-    public <R extends IPrototypeView<B, C>> @Nullable R init(String args) {
+    protected <R extends IPrototypeView<B, C>> @Nullable R init(String args) {
         // 获得spring容器
         ApplicationContext app = ViewContextUtil.context.get();
         if (app == null) {
@@ -82,9 +82,6 @@ public abstract class IPrototypeView<B extends IPrototypeBuilder, C> {
      * 多例实例名字
      */
     private @Nullable String getBuilderInstanceName(String param) {
-        if (StringUtils.isBlank(param)) {
-            return null;
-        }
         Class<B> builderClass = getBuilderType();
         if (builderClass == null) {
             return null;
@@ -92,6 +89,9 @@ public abstract class IPrototypeView<B extends IPrototypeBuilder, C> {
         try {
             Field field = builderClass.getDeclaredField("builder_name");
             String builderName = (String) field.get(builderClass);
+            if (StringUtils.isBlank(param)) {
+                return builderName;
+            }
             return StrUtils.replacePlaceholder(builderName, param);
         } catch (Exception e) {
             log.error("[getBuilderInstanceName] error", e);
