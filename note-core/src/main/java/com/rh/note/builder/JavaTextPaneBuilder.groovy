@@ -7,7 +7,6 @@ import com.rh.note.component.JavaScrollPane
 import com.rh.note.component.JavaTextPane
 import com.rh.note.event.JTextPaneEvent
 import groovy.swing.SwingBuilder
-import org.jetbrains.annotations.NotNull
 import org.springframework.beans.factory.annotation.Autowired
 
 import javax.annotation.PostConstruct
@@ -19,10 +18,10 @@ import java.awt.Font
 /**
  * java文件控件
  */
-@WorkPrototype(builder_name)
+@WorkPrototype(JavaTextPaneBuilder.builder_name)
 class JavaTextPaneBuilder implements IPrototypeBuilder {
 
-    public static final String builder_name = "java_text_pane_{}"
+    static final String builder_name = "java_text_pane_{}"
     @Autowired
     private SwingBuilder swingBuilder
     @Autowired
@@ -143,12 +142,10 @@ class JavaTextPaneBuilder implements IPrototypeBuilder {
         return id(absolutePath)
     }
 
-    @NotNull
     JavaTextPane getTextPane() {
         return swingBuilder."${id(absolutePath)}"
     }
 
-    @NotNull
     JavaScrollPane getScrollPane() {
         return swingBuilder."${scrollId(absolutePath)}"
     }

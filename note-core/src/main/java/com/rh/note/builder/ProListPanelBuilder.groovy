@@ -12,7 +12,7 @@ import java.awt.BorderLayout
 /**
  * 项目管理窗口-最近打开项目列表
  */
-@ProManageSingleton(builder_name)
+@ProManageSingleton(ProListPanelBuilder.builder_name)
 class ProListPanelBuilder implements ISingletonStaticBuilder {
 
     static final String builder_name = "project_list_panel"

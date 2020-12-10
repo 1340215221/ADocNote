@@ -1,12 +1,10 @@
 package com.rh.note.builder
 
-
 import com.rh.note.annotation.ProManageSingleton
 import com.rh.note.common.ISingletonStaticBuilder
 import com.rh.note.event.HistoryProjectListEvent
 import com.rh.note.vo.RecentlyOpenedRecordVO
 import groovy.swing.SwingBuilder
-import org.jetbrains.annotations.NotNull
 import org.springframework.beans.factory.annotation.Autowired
 
 import javax.annotation.PreDestroy
@@ -16,7 +14,7 @@ import java.awt.BorderLayout
 /**
  * 项目管理窗口-历史打开项目列表
  */
-@ProManageSingleton(builder_name)
+@ProManageSingleton(HistoryProListBuilder.builder_name)
 class HistoryProListBuilder implements ISingletonStaticBuilder {
 
     static final String builder_name = "project_list"
@@ -45,7 +43,6 @@ class HistoryProListBuilder implements ISingletonStaticBuilder {
         swingBuilder.variables.remove(id())
     }
 
-    @NotNull
     JList<RecentlyOpenedRecordVO> getProList() {
         return swingBuilder."${id()}"
     }

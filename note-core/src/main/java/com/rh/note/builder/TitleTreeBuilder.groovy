@@ -5,7 +5,6 @@ import com.rh.note.common.ISingletonStaticBuilder
 import com.rh.note.component.TitleTreeCellRenderer
 import com.rh.note.event.TitleTreeEvent
 import groovy.swing.SwingBuilder
-import org.jetbrains.annotations.NotNull
 import org.springframework.beans.factory.annotation.Autowired
 
 import javax.annotation.PreDestroy
@@ -16,7 +15,7 @@ import java.awt.BorderLayout
 /**
  * 工作窗口-标题树
  */
-@WorkSingleton(builder_name)
+@WorkSingleton(TitleTreeBuilder.builder_name)
 class TitleTreeBuilder implements ISingletonStaticBuilder {
 
     static final String builder_name = "title_list"
@@ -69,12 +68,10 @@ class TitleTreeBuilder implements ISingletonStaticBuilder {
         'title_list_model'
     }
 
-    @NotNull
     DefaultTreeModel getModel() {
         return swingBuilder."${modelId()}"
     }
 
-    @NotNull
     JTree getTree() {
         return swingBuilder."${treeId()}"
     }

@@ -11,7 +11,7 @@ import java.awt.BorderLayout
 /**
  * 工作窗口-左边栏-按钮面板
  */
-@WorkSingleton(builder_name)
+@WorkSingleton(LeftSidebarTabPanelBuilder.builder_name)
 class LeftSidebarTabPanelBuilder implements ISingletonStaticBuilder {
 
     static final String builder_name = "left_title_panel"

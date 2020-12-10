@@ -11,7 +11,7 @@ import java.awt.BorderLayout
 /**
  * 工作窗口-头部菜单栏
  */
-@WorkSingleton(builder_name)
+@WorkSingleton(HeadMenuPanelBuilder.builder_name)
 class HeadMenuPanelBuilder implements ISingletonStaticBuilder {
 
     static final String builder_name = 'head_menu'

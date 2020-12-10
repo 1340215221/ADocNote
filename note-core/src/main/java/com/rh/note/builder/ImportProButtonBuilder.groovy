@@ -12,9 +12,10 @@ import javax.annotation.PreDestroy
 /**
  * 项目管理窗口-导入项目按钮
  */
-@ProManageSingleton
+@ProManageSingleton(ImportProButtonBuilder.builder_name)
 class ImportProButtonBuilder implements ISingletonStaticBuilder {
 
+    static final String builder_name = "project_button"
     @Autowired
     private SwingBuilder swingBuilder
     @Autowired

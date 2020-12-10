@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 /**
  * 工作窗口-控制标题树显隐按钮
  */
-@WorkSingleton(builder_name)
+@WorkSingleton(TitleTreeTabButtonBuilder.builder_name)
 class TitleTreeTabButtonBuilder implements ISingletonStaticBuilder {
 
     static final String builder_name = "file_list_title_button"

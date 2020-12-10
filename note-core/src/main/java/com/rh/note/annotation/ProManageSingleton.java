@@ -1,5 +1,7 @@
 package com.rh.note.annotation;
 
+import org.springframework.stereotype.Indexed;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,6 +11,7 @@ import java.lang.annotation.Target;
 /**
  * 项目管理--单例控件
  */
+@Indexed
 @Documented
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

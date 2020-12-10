@@ -1,15 +1,12 @@
 package com.rh.note.builder
 
 import com.rh.note.annotation.WorkPrototype
-import com.rh.note.annotation.WorkSingleton
 import com.rh.note.base.BeanPath
 import com.rh.note.common.IPrototypeBuilder
-import com.rh.note.common.ISingletonDynamicBuilder
 import com.rh.note.component.AdocScrollPane
 import com.rh.note.component.AdocTextPane
 import com.rh.note.event.TextPaneEvent
 import groovy.swing.SwingBuilder
-import org.jetbrains.annotations.NotNull
 import org.springframework.beans.factory.annotation.Autowired
 
 import javax.annotation.PostConstruct
@@ -25,7 +22,7 @@ import java.awt.event.KeyEvent
 /**
  * 工作窗口-编辑区
  */
-@WorkPrototype(builder_name)
+@WorkPrototype(TextPaneBuilder.builder_name)
 class TextPaneBuilder implements IPrototypeBuilder {
 
     static final String builder_name = "text_pane_{}"
@@ -126,12 +123,10 @@ class TextPaneBuilder implements IPrototypeBuilder {
         return "text_pane_scroll_${filePath}"
     }
 
-    @NotNull
     AdocTextPane getTextPane() {
         return swingBuilder."${id(beanPath.getBeanPath())}"
     }
 
-    @NotNull
     AdocScrollPane getScrollPane() {
         return swingBuilder."${scrollId(beanPath.getBeanPath())}"
     }

@@ -1,7 +1,7 @@
 package com.rh.note.ao;
 
-import com.rh.note.base.Init;
 import com.rh.note.component.AdocTextPane;
+import com.rh.note.view.TextPaneView;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Arrays;
@@ -60,10 +60,10 @@ public class IncludePromptAO {
     /**
      * 光标坐标接口
      */
-    public static interface ICaretPoint<T extends Init> {
+    public static interface ICaretPoint {
         AdocTextPane getTextPane();
         int getCaretX();
         int getCaretY();
-        void copy(T view);
+        void copy(TextPaneView view);
     }
 }

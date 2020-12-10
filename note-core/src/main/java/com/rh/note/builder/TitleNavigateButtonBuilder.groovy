@@ -1,13 +1,11 @@
 package com.rh.note.builder
 
 import com.rh.note.annotation.WorkPrototype
-import com.rh.note.annotation.WorkSingleton
 import com.rh.note.base.ITitleBeanPath
 import com.rh.note.common.IPrototypeBuilder
 import com.rh.note.component.TitleButton
 import com.rh.note.event.NavigateButtonEvent
 import groovy.swing.SwingBuilder
-import org.jetbrains.annotations.NotNull
 import org.springframework.beans.factory.annotation.Autowired
 
 import javax.annotation.PostConstruct
@@ -16,7 +14,7 @@ import javax.annotation.PreDestroy
 /**
  * 标题导航栏按钮
  */
-@WorkPrototype(builder_name)
+@WorkPrototype(TitleNavigateButtonBuilder.builder_name)
 class TitleNavigateButtonBuilder implements IPrototypeBuilder {
 
     static final String builder_name = "title_navigate_button_{}"
@@ -58,7 +56,6 @@ class TitleNavigateButtonBuilder implements IPrototypeBuilder {
         "title_navigate_button_${beanPath}"
     }
 
-    @NotNull
     TitleButton getNavigateButton() {
         return swingBuilder."${id(beanPath.getBeanPath())}"
     }

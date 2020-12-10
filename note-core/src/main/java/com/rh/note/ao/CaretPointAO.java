@@ -13,7 +13,7 @@ import java.awt.Point;
  */
 @Data
 @Accessors(chain = true)
-public class CaretPointAO implements IncludePromptAO.ICaretPoint<TextPaneView> {
+public class CaretPointAO implements IncludePromptAO.ICaretPoint {
     /**
      * 编辑区控件
      */
@@ -33,7 +33,7 @@ public class CaretPointAO implements IncludePromptAO.ICaretPoint<TextPaneView> {
             return;
         }
 
-        textPane = view.getBean();
+        textPane = view.textPane();
         Point point = view.getCaretPoint();
         if (point == null) {
             return;

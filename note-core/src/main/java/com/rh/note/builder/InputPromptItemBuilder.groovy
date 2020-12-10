@@ -6,7 +6,6 @@ import com.rh.note.common.IPrototypeBuilder
 import com.rh.note.component.InputPromptMenuItem
 import com.rh.note.event.InputPromptEvent
 import groovy.swing.SwingBuilder
-import org.jetbrains.annotations.NotNull
 import org.springframework.beans.factory.annotation.Autowired
 
 import javax.annotation.PreDestroy
@@ -14,7 +13,7 @@ import javax.annotation.PreDestroy
 /**
  * 输入提示项
  */
-@WorkPrototype(builder_name)
+@WorkPrototype(InputPromptItemBuilder.builder_name)
 class InputPromptItemBuilder implements IPrototypeBuilder {
 
     static final String builder_name = 'input_prompt_item_{}'
@@ -55,7 +54,6 @@ class InputPromptItemBuilder implements IPrototypeBuilder {
         "input_prompt_item_${value}"
     }
 
-    @NotNull
     InputPromptMenuItem getMenuItem() {
         return swingBuilder."${id(ao.getCompleteValue())}"
     }

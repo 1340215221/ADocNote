@@ -11,7 +11,7 @@ import java.awt.BorderLayout
 /**
  * 项目管理窗口-菜单面板
  */
-@ProManageSingleton(builder_name)
+@ProManageSingleton(ProMenuPanelBuilder.builder_name)
 class ProMenuPanelBuilder implements ISingletonStaticBuilder {
 
     static final String builder_name = "project_menu"

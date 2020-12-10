@@ -11,7 +11,7 @@ import java.awt.BorderLayout
 /**
  * 工作窗口-基础面板
  */
-@WorkSingleton(builder_name)
+@WorkSingleton(BasePanelBuilder.builder_name)
 class BasePanelBuilder implements ISingletonStaticBuilder {
 
     static final builder_name = 'base_panel'

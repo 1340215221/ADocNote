@@ -11,7 +11,7 @@ import java.awt.BorderLayout
 /**
  * 工作窗口-底边栏
  */
-@WorkSingleton(builder_name)
+@WorkSingleton(BottomSidebarPanelBuilder.builder_name)
 class BottomSidebarPanelBuilder implements ISingletonStaticBuilder {
 
     static final String builder_name = 'bottom_sidebar'
