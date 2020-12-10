@@ -1,12 +1,13 @@
 package com.rh.note.view;
 
+import com.rh.note.ao.CreateJavaTextPaneAO;
 import com.rh.note.ao.MarkLineAO;
 import com.rh.note.builder.JavaTextPaneBuilder;
 import com.rh.note.common.IPrototypeView;
 import com.rh.note.component.JavaTextPane;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
-import com.rh.note.util.StrUtils;
+import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -25,19 +26,13 @@ import java.io.FileReader;
  */
 public class JavaTextPaneView extends IPrototypeView<JavaTextPaneBuilder, JavaTextPane> {
 
-    /**
-     * todo 方法参数有待封装成对象
-     */
-    public static void create(String absolutePath, String sourceFilePath, String includeFilePath, Integer markLineNumber1, Integer markLineNumber2) {
-        if (StringUtils.isBlank(absolutePath)) {
-            return;
-        }
-        new JavaTextPaneBuilder(absolutePath, sourceFilePath, includeFilePath, markLineNumber1, markLineNumber2).init();
+    public @NotNull JavaTextPaneView create(@NonNull CreateJavaTextPaneAO ao) {
+        return super.create(ao);
     }
 
     @Override
-    protected @NotNull String getBuilderInstanceName(String... args) {
-        return StrUtils.replacePlaceholder(JavaTextPaneBuilder.id, args);
+    public @Nullable JavaTextPaneView init(String absolutePath) {
+        return super.init(absolutePath);
     }
 
     public static @Nullable JavaTextPaneView cast(JavaTextPane bean) {
@@ -47,15 +42,8 @@ public class JavaTextPaneView extends IPrototypeView<JavaTextPaneBuilder, JavaTe
         return new JavaTextPaneView().init(bean.getAbsolutePath());
     }
 
-    public @Nullable JavaTextPaneView init(String absolutePath) {
-        if (StringUtils.isBlank(absolutePath)) {
-            return null;
-        }
-        return super.init(JavaTextPaneBuilder.id(absolutePath));
-    }
-
     private @NotNull JavaTextPane textPane() {
-        return getBuilder().getTextPane();
+        return super.getComponent(JavaTextPaneBuilder::getTextPane);
     }
 
     public void write() {

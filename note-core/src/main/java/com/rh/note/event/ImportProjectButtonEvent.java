@@ -1,11 +1,11 @@
 package com.rh.note.event;
 
-import com.rh.note.annotation.ProjectManage;
+import com.rh.note.annotation.ProManageSingleton;
 
 /**
  * 导入按钮事件
  */
-@ProjectManage
+@ProManageSingleton
 public class ImportProjectButtonEvent {
 
     /**

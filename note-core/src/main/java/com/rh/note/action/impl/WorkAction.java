@@ -1,6 +1,7 @@
 package com.rh.note.action.impl;
 
 import com.rh.note.action.IWorkAction;
+import com.rh.note.ao.CreateJavaTextPaneAO;
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.ao.GenerateJavaIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
@@ -315,8 +316,8 @@ public class WorkAction implements IWorkAction {
             return;
         }
         // 生成编辑控件
-        JavaTextPaneView.create(ao.getAbsolutePath(), ao.getSourceFilePath(), ao.getIncludeFilePath(), ao.getMarkLineNumber1(), ao.getMarkLineNumber2());
-        JavaTextPaneView textPane = new JavaTextPaneView().init(ao.getAbsolutePath());
+        CreateJavaTextPaneAO createJavaTextPaneAO = ao.copyTo();
+        JavaTextPaneView textPane = new JavaTextPaneView().create(createJavaTextPaneAO);
         textPane.write();
         // 修改标记行背景色
         textPane.initMarkLineColor();

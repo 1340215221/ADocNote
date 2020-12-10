@@ -1,13 +1,17 @@
 package com.rh.note.builder
 
 import com.rh.note.annotation.WorkPrototype
-import com.rh.note.common.PrototypeBuilder
+import com.rh.note.ao.CreateJavaTextPaneAO
+import com.rh.note.common.IPrototypeBuilder
+import com.rh.note.component.JavaScrollPane
 import com.rh.note.component.JavaTextPane
 import com.rh.note.event.JTextPaneEvent
 import groovy.swing.SwingBuilder
 import org.jetbrains.annotations.NotNull
 import org.springframework.beans.factory.annotation.Autowired
 
+import javax.annotation.PostConstruct
+import javax.annotation.PreDestroy
 import javax.swing.text.DefaultEditorKit
 import javax.swing.text.DefaultStyledDocument
 import java.awt.Font
@@ -15,10 +19,10 @@ import java.awt.Font
 /**
  * java文件控件
  */
-@WorkPrototype
-class JavaTextPaneBuilder implements PrototypeBuilder {
+@WorkPrototype(builder_name)
+class JavaTextPaneBuilder implements IPrototypeBuilder {
 
-    public static final String id = "java_text_pane_{}"
+    public static final String builder_name = "java_text_pane_{}"
     @Autowired
     private SwingBuilder swingBuilder
     @Autowired
@@ -47,14 +51,16 @@ class JavaTextPaneBuilder implements PrototypeBuilder {
     /**
      * 缺少 选择行 回显
      */
-    JavaTextPaneBuilder(String absolutePath, String sourceFilePath, String includeFilePath, Integer markLineNumber1, Integer markLineNumber2) {
-        this.absolutePath = absolutePath
-        this.sourceFilePath = sourceFilePath
-        this.includeFilePath = includeFilePath
-        this.markLineNumber1 = markLineNumber1
-        this.markLineNumber2 = markLineNumber2
+    JavaTextPaneBuilder(CreateJavaTextPaneAO ao) {
+        this.absolutePath = ao.getAbsolutePath()
+        this.sourceFilePath = ao.getSourceFilePath()
+        this.includeFilePath = ao.getIncludeFilePath()
+        this.markLineNumber1 = ao.getMarkLineNumber1()
+        this.markLineNumber2 = ao.getMarkLineNumber2()
     }
 
+    @Override
+    @PostConstruct
     void init() {
         def textPane = {
             swingBuilder.jTextPane(id: id(absolutePath),
@@ -117,21 +123,33 @@ class JavaTextPaneBuilder implements PrototypeBuilder {
         field.set(parent, instance)
     }
 
-    static String id(String absolutePath) {
+    String id(String absolutePath) {
         return "java_text_pane_${absolutePath}"
     }
 
-    static String scrollId(String absolutePath) {
+    String scrollId(String absolutePath) {
         return "java_text_pane_scroll_${absolutePath}"
     }
 
     @Override
-    String getBeanName() {
+    @PreDestroy
+    void destroy() {
+        swingBuilder.variables.remove(id(absolutePath))
+        swingBuilder.variables.remove(scrollId(absolutePath))
+    }
+
+    @Override
+    String getInstanceName() {
         return id(absolutePath)
     }
 
     @NotNull
     JavaTextPane getTextPane() {
         return swingBuilder."${id(absolutePath)}"
+    }
+
+    @NotNull
+    JavaScrollPane getScrollPane() {
+        return swingBuilder."${scrollId(absolutePath)}"
     }
 }

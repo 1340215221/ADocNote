@@ -1,12 +1,17 @@
 package com.rh.note.builder
 
+import com.rh.note.annotation.WorkPrototype
 import com.rh.note.annotation.WorkSingleton
 import com.rh.note.base.BeanPath
+import com.rh.note.common.IPrototypeBuilder
+import com.rh.note.common.ISingletonDynamicBuilder
 import com.rh.note.component.AdocTextPane
 import com.rh.note.event.TextPaneEvent
 import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
+import javax.annotation.PostConstruct
+import javax.annotation.PreDestroy
 import javax.swing.KeyStroke
 import javax.swing.text.DefaultStyledDocument
 import javax.swing.text.JTextComponent
@@ -18,9 +23,10 @@ import java.awt.event.KeyEvent
 /**
  * 工作窗口-编辑区
  */
-@WorkSingleton
-class TextPaneBuilder {
+@WorkPrototype(builder_name)
+class TextPaneBuilder implements IPrototypeBuilder {
 
+    static final String builder_name = "text_pane_{}"
     @Autowired
     private SwingBuilder swingBuilder
     @Autowired
@@ -31,6 +37,8 @@ class TextPaneBuilder {
         this.beanPath = beanPath
     }
 
+    @Override
+    @PostConstruct
     void init() {
         def textPane = {
             swingBuilder.textPane(id: id(beanPath.getBeanPath()),
@@ -95,6 +103,18 @@ class TextPaneBuilder {
         })
         textPane.setKeymap(newKeymap)
     };
+
+    @Override
+    @PreDestroy
+    void destroy() {
+        swingBuilder.variables.remove(id(beanPath.getBeanPath()))
+        swingBuilder.variables.remove(scrollId(beanPath.getBeanPath()))
+    }
+
+    @Override
+    String getInstanceName() {
+        return id(beanPath.getBeanPath())
+    }
 
     static String id(String filePath) {
         return "text_pane_${filePath}"

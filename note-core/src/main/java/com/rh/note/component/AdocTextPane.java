@@ -8,7 +8,7 @@ import javax.swing.text.StyledDocument;
 
 /**
  * 编辑面板
- * builder {@link TextPaneBuilder#id}
+ * builder {@link TextPaneBuilder#builder_name}
  */
 public class AdocTextPane extends JTextPane {
     public static final String NAME = "textPane";

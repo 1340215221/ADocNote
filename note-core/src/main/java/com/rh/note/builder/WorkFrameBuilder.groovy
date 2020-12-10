@@ -1,7 +1,7 @@
 package com.rh.note.builder
 
 import com.rh.note.annotation.WorkSingleton
-import com.rh.note.common.DefaultBuilder
+import com.rh.note.common.ISingletonBuilder
 import com.rh.note.event.WorkFrameEvent
 import groovy.swing.SwingBuilder
 import org.jetbrains.annotations.NotNull
@@ -14,9 +14,10 @@ import javax.swing.WindowConstants
 /**
  * 工作窗口
  */
-@WorkSingleton
-class WorkFrameBuilder implements DefaultBuilder {
+@WorkSingleton(builder_name)
+class WorkFrameBuilder implements ISingletonBuilder {
 
+    static final String builder_name = "work_frame"
     @Autowired
     private SwingBuilder swingBuilder
     @Autowired
@@ -49,16 +50,18 @@ class WorkFrameBuilder implements DefaultBuilder {
         swingBuilder."${id()}".locationRelativeTo = null
     }
 
+    @Override
     @PreDestroy
     void destroy() {
         swingBuilder.variables.remove(id())
     }
 
-    static String id() {
-        return 'work_frame'
+    String id() {
+        return builder_name
     }
 
-    @NotNull JFrame getWorkFrame() {
+    @NotNull
+    JFrame getWorkFrame() {
         return swingBuilder."${id()}"
     }
 }

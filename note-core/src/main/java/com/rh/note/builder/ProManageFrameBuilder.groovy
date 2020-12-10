@@ -1,18 +1,21 @@
 package com.rh.note.builder
 
-import com.rh.note.annatation.ProjectManage
-import com.rh.note.common.DefaultBuilder
+
+import com.rh.note.annotation.ProManageSingleton
+import com.rh.note.common.ISingletonBuilder
 import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
+import javax.annotation.PreDestroy
 import javax.swing.WindowConstants
 
 /**
  * 项目管理窗口
  */
-@ProjectManage
-class ProManageFrameBuilder implements DefaultBuilder {
+@ProManageSingleton(builder_name)
+class ProManageFrameBuilder implements ISingletonBuilder {
 
+    static final String builder_name = "project_list_frame"
     @Autowired
     private SwingBuilder swingBuilder
 
@@ -35,6 +38,12 @@ class ProManageFrameBuilder implements DefaultBuilder {
      */
     private void windowCentered() {
         swingBuilder."${id()}".locationRelativeTo = null
+    }
+
+    @Override
+    @PreDestroy
+    void destroy() {
+        swingBuilder.variables.remove(id())
     }
 
     static String id() {

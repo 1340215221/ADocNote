@@ -1,24 +1,22 @@
 package com.rh.note.builder
 
 import com.rh.note.annotation.WorkSingleton
-import com.rh.note.common.DefaultBuilder
+import com.rh.note.common.ISingletonBuilder
 import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
+import javax.annotation.PreDestroy
 import java.awt.BorderLayout
 
 /**
  * 工作窗口-头部菜单栏
  */
-@WorkSingleton(id)
-class HeadMenuPanelBuilder implements DefaultBuilder {
+@WorkSingleton(builder_name)
+class HeadMenuPanelBuilder implements ISingletonBuilder {
 
-    /**
-     * 菜单栏id
-     */
-    static final String id = 'head_menu'
+    static final String builder_name = 'head_menu'
     @Autowired
-    private SwingBuilder swingBuilder;
+    private SwingBuilder swingBuilder
 
     @Override
     void init(Closure children) {
@@ -27,6 +25,12 @@ class HeadMenuPanelBuilder implements DefaultBuilder {
         ){
             children()
         }
+    }
+
+    @Override
+    @PreDestroy
+    void destroy() {
+        swingBuilder.variables.remove(id())
     }
 
     static String id() {

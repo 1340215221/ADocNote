@@ -2,7 +2,7 @@ package com.rh.note.api;
 
 import com.rh.note.annotation.WorkPrototype;
 import com.rh.note.annotation.WorkSingleton;
-import com.rh.note.common.PrototypeBuilder;
+import com.rh.note.common.IPrototypeBuilder;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.util.StrUtils;
@@ -44,13 +44,13 @@ public class WorkContextApi {
     /**
      * 初始化工作窗口多例对象
      */
-    public <T extends PrototypeBuilder> @Nullable T createWorkPrototype(Class<T> clazz, Object... args) {
+    public <T extends IPrototypeBuilder> @Nullable T createWorkPrototype(Class<T> clazz, Object... args) {
         if (app == null || clazz == null || ArrayUtils.isEmpty(args)) {
             return null;
         }
         try {
             T builder = app.getBean(clazz, args);
-            app.getBeanFactory().registerSingleton(builder.getBeanName(), builder);
+            app.getBeanFactory().registerSingleton(builder.getInstanceName(), builder);
             return builder;
         } catch (Exception e) {
             throw new ApplicationException(ErrorCodeEnum.FAILED_TO_CREATE_MULTIPLE_CONTROL, e);

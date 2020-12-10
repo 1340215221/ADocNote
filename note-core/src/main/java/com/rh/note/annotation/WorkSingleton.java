@@ -14,8 +14,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface WorkSingleton {
     /**
-     * 组件id
-     * 如果存在变量, 使用{}占位, 仅限一个变量
+     * spring对象beanName
      */
-    String value() default "";
+    String value();
 }

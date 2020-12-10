@@ -1,16 +1,19 @@
 package com.rh.note.builder
 
-import com.rh.note.annatation.ProjectManage
-import com.rh.note.common.DefaultBuilder
+
+import com.rh.note.annotation.ProManageSingleton
+import com.rh.note.common.ISingletonBuilder
 import com.rh.note.event.ImportProjectButtonEvent
 import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
+import javax.annotation.PreDestroy
+
 /**
  * 项目管理窗口-导入项目按钮
  */
-@ProjectManage
-class ImportProButtonBuilder implements DefaultBuilder {
+@ProManageSingleton
+class ImportProButtonBuilder implements ISingletonBuilder {
 
     @Autowired
     private SwingBuilder swingBuilder
@@ -27,6 +30,12 @@ class ImportProButtonBuilder implements DefaultBuilder {
         ) {
             children()
         }
+    }
+
+    @Override
+    @PreDestroy
+    void destroy() {
+        swingBuilder.variables.remove(id())
     }
 
     static String id() {

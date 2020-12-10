@@ -1,5 +1,7 @@
 package com.rh.note.ao;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * 指向文件路径, 通过include java行
  */
@@ -68,5 +70,15 @@ public class TargetFilePathByIncludeJavaLineAO {
     public TargetFilePathByIncludeJavaLineAO setAbsolutePath(String absolutePath) {
         this.absolutePath = absolutePath;
         return this;
+    }
+
+    public @NotNull CreateJavaTextPaneAO copyTo() {
+        CreateJavaTextPaneAO ao = new CreateJavaTextPaneAO();
+        ao.setAbsolutePath(absolutePath);
+        ao.setSourceFilePath(sourceFilePath);
+        ao.setIncludeFilePath(includeFilePath);
+        ao.setMarkLineNumber1(markLineNumber1);
+        ao.setMarkLineNumber2(markLineNumber2);
+        return ao;
     }
 }

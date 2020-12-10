@@ -19,7 +19,7 @@ public class StrUtils {
     /**
      * 替换占位符
      */
-    public static String replacePlaceholder(String str, String[] args) {
+    public static String replacePlaceholder(String str, String... args) {
         if (StringUtils.isBlank(str) || ArrayUtils.isEmpty(args)) {
             return str;
         }

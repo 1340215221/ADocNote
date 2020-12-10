@@ -2,7 +2,7 @@ package com.rh.note.event;
 
 import com.rh.note.action.IOperationAction;
 import com.rh.note.action.IProManageAction;
-import com.rh.note.annotation.ProjectManage;
+import com.rh.note.annotation.ProManageSingleton;
 import com.rh.note.ao.ClickedHistoryProjectListAO;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -11,7 +11,7 @@ import java.awt.event.MouseEvent;
 /**
  * 项目列表 事件
  */
-@ProjectManage
+@ProManageSingleton
 public class HistoryProjectListEvent {
 
     @Autowired

@@ -7,15 +7,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 项目管理 组件
+ * 项目管理--单例控件
  */
 @Documented
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ProjectManage {
+public @interface ProManageSingleton {
     /**
-     * 组件id
-     * 如果存在变量, 使用{}占位, 仅限一个变量
+     * spring对象beanName
      */
-    String value() default "";
+    String value();
 }
