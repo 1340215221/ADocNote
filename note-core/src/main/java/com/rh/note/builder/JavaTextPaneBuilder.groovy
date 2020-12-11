@@ -6,6 +6,8 @@ import com.rh.note.common.IPrototypeBuilder
 import com.rh.note.component.JavaScrollPane
 import com.rh.note.component.JavaTextPane
 import com.rh.note.event.JTextPaneEvent
+import com.rh.note.factory.JavaScrollPaneFactory
+import com.rh.note.factory.JavaTextPaneFactory
 import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -26,6 +28,10 @@ class JavaTextPaneBuilder implements IPrototypeBuilder {
     private SwingBuilder swingBuilder
     @Autowired
     private JTextPaneEvent event
+    @Autowired
+    private JavaScrollPaneFactory jspFactory
+    @Autowired
+    private JavaTextPaneFactory jtpFactory
     /**
      * 文件绝对路径
      */

@@ -8,11 +8,10 @@ import javax.swing.JScrollPane;
 /**
  * 编辑区-滚动面板
  * builder {@link TextPaneBuilder#scrollId}
- * factory {@link com.rh.note.component.factory.AdocScrollPaneFactory}
+ * factory {@link com.rh.note.factory.AdocScrollPaneFactory}
  */
 public class AdocScrollPane extends JScrollPane {
 
-    public static final String NAME = "tScrollPane";
     /**
      * 对象地址
      */

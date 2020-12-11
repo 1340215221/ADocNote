@@ -6,6 +6,8 @@ import com.rh.note.common.IPrototypeBuilder
 import com.rh.note.component.AdocScrollPane
 import com.rh.note.component.AdocTextPane
 import com.rh.note.event.TextPaneEvent
+import com.rh.note.factory.AdocScrollPaneFactory
+import com.rh.note.factory.AdocTextPaneFactory
 import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -30,6 +32,10 @@ class TextPaneBuilder implements IPrototypeBuilder {
     private SwingBuilder swingBuilder
     @Autowired
     private TextPaneEvent event
+    @Autowired
+    private AdocTextPaneFactory atpFactory
+    @Autowired
+    private AdocScrollPaneFactory aspFactory
     private BeanPath beanPath
 
     TextPaneBuilder(BeanPath beanPath) {

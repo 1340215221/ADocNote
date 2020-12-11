@@ -9,7 +9,6 @@ import javax.swing.JScrollPane;
  */
 public class JavaScrollPane extends JScrollPane {
 
-    public static String NAME = "jScrollPane";
     /**
      * 绝对路径
      */

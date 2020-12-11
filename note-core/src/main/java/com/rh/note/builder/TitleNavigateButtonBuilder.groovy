@@ -5,6 +5,7 @@ import com.rh.note.base.ITitleBeanPath
 import com.rh.note.common.IPrototypeBuilder
 import com.rh.note.component.TitleButton
 import com.rh.note.event.NavigateButtonEvent
+import com.rh.note.factory.TitleButtonFactory
 import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -22,6 +23,8 @@ class TitleNavigateButtonBuilder implements IPrototypeBuilder {
     private SwingBuilder swingBuilder
     @Autowired
     private NavigateButtonEvent event
+    @Autowired
+    private TitleButtonFactory tbFactory
     private ITitleBeanPath beanPath
 
     TitleNavigateButtonBuilder(ITitleBeanPath beanPath) {

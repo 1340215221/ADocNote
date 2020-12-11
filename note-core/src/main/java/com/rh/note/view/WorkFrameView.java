@@ -2,7 +2,7 @@ package com.rh.note.view;
 
 import com.rh.note.builder.WorkFrameBuilder;
 import com.rh.note.common.ISingletonView;
-import com.rh.note.frame.WorkFrame;
+import com.rh.note.load.WorkLoader;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JFrame;
@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 public class WorkFrameView extends ISingletonView<WorkFrameBuilder, JFrame> {
 
     public static void create() {
-        new WorkFrame().start();
+        new WorkLoader().start();
     }
 
     @Override

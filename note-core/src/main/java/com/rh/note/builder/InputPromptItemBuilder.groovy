@@ -5,9 +5,11 @@ import com.rh.note.ao.InputPromptItemAO
 import com.rh.note.common.IPrototypeBuilder
 import com.rh.note.component.InputPromptMenuItem
 import com.rh.note.event.InputPromptEvent
+import com.rh.note.factory.InputPromptMenuItemFactory
 import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
+import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
 
 /**
@@ -21,6 +23,8 @@ class InputPromptItemBuilder implements IPrototypeBuilder {
     private SwingBuilder swingBuilder
     @Autowired
     private InputPromptEvent event
+    @Autowired
+    private InputPromptMenuItemFactory ipmiFactory
     private InputPromptItemAO ao
 
     InputPromptItemBuilder(InputPromptItemAO ao) {
@@ -28,6 +32,7 @@ class InputPromptItemBuilder implements IPrototypeBuilder {
     }
 
     @Override
+    @PostConstruct
     void init() {
         swingBuilder.menuItem(id: id(ao.getCompleteValue()),
                 text: ao.getCompleteValue(),

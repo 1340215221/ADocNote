@@ -1,14 +1,22 @@
-package com.rh.note.frame
+package com.rh.note.load
 
-import com.rh.note.common.IFrame
-import com.rh.note.config.IProManageConfig
+import com.rh.note.common.ILoader
+import com.rh.note.config.ProManageConfig
+import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
 
 /**
  * 项目列表
  */
 @Component
-class ProjectManageFrame implements IFrame, IProManageConfig {
+@Scope("prototype")
+class ProManageLoader extends ProManageConfig implements ILoader {
+
+    /**
+     * todo 加载一个子容器
+     */
+    void newAppContext() {
+    }
 
     @Override
     void init() {
@@ -26,7 +34,4 @@ class ProjectManageFrame implements IFrame, IProManageConfig {
     void globalSettings() {
     }
 
-    @Override
-    void registerComponent() {
-    }
 }

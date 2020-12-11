@@ -9,11 +9,8 @@ import javax.swing.JButton;
 
 /**
  * 标题按钮
- * builder {@link TitleNavigateButtonBuilder#builder_name}
  */
 public class TitleButton extends JButton {
-
-    public static final String NAME = "tnButton";
     /**
      * 对象地址
      */

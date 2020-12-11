@@ -8,8 +8,6 @@ import javax.swing.JMenuItem;
  * 输入提示菜单项
  */
 public class InputPromptMenuItem extends JMenuItem {
-
-    public static final String NAME = "menuItem";
     /**
      * 替换结果
      */

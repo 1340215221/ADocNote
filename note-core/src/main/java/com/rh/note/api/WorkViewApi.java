@@ -20,7 +20,7 @@ import com.rh.note.constants.BaseConstants;
 import com.rh.note.constants.PromptMessageEnum;
 import com.rh.note.exception.UnknownLogicException;
 import com.rh.note.file.JavaProConfig;
-import com.rh.note.frame.WorkFrame;
+import com.rh.note.load.WorkLoader;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.path.TitleBeanPath;
@@ -77,7 +77,7 @@ public class WorkViewApi {
      * 初始化窗口
      */
     public void initFrame() {
-        new WorkFrame().start();
+        new WorkLoader().start();
     }
 
     /**

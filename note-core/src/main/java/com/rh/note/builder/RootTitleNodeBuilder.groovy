@@ -3,6 +3,7 @@ package com.rh.note.builder
 import com.rh.note.annotation.WorkPrototype
 import com.rh.note.common.IPrototypeBuilder
 import com.rh.note.component.TitleTreeNode
+import com.rh.note.factory.TitleTreeNodeFactory
 import com.rh.note.vo.ITitleLineVO
 import groovy.swing.SwingBuilder
 import org.apache.commons.collections4.CollectionUtils
@@ -20,6 +21,8 @@ class RootTitleNodeBuilder implements IPrototypeBuilder {
     static final String builder_name = "tree_node"
     @Autowired
     private SwingBuilder swingBuilder
+    @Autowired
+    private TitleTreeNodeFactory ttnFactory
     private ITitleLineVO vo
 
     RootTitleNodeBuilder(ITitleLineVO vo) {

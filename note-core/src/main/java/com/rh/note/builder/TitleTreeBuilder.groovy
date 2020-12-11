@@ -4,6 +4,7 @@ import com.rh.note.annotation.WorkSingleton
 import com.rh.note.common.ISingletonStaticBuilder
 import com.rh.note.component.TitleTreeCellRenderer
 import com.rh.note.event.TitleTreeEvent
+import com.rh.note.factory.DefaultTreeModelFactory
 import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -23,6 +24,8 @@ class TitleTreeBuilder implements ISingletonStaticBuilder {
     private SwingBuilder swingBuilder
     @Autowired
     private TitleTreeEvent event
+    @Autowired
+    private DefaultTreeModelFactory dtmFactory
 
     @Override
     void init(Closure children) {
