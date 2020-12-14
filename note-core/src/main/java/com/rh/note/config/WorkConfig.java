@@ -20,43 +20,43 @@ public abstract class WorkConfig implements ApplicationContextAware {
 
     private ApplicationContext app;
 
-    public void work_frame(Closure children) {
+    protected void work_frame(Closure children) {
         get(WorkFrameBuilder.class).init(children);
     }
 
-    public  void base_panel(Closure children) {
+    protected   void base_panel(Closure children) {
         get(BasePanelBuilder.class).init(children);
     }
 
-    public void head_menu_panel(Closure children) {
+    protected void head_menu_panel(Closure children) {
         get(HeadMenuPanelBuilder.class).init(children);
     }
 
-    public void bottom_sidebar_panel(Closure children) {
+    protected void bottom_sidebar_panel(Closure children) {
         get(BottomSidebarPanelBuilder.class).init(children);
     }
 
-    public void left_sidebar_panel(Closure children) {
+    protected void left_sidebar_panel(Closure children) {
         get(LeftSidebarPanelBuilder.class).init(children);
     }
 
-    public void left_sidebar_tab_panel(Closure children) {
+    protected void left_sidebar_tab_panel(Closure children) {
         get(LeftSidebarTabPanelBuilder.class).init(children);
     }
 
-    public void title_tree_tab_button(Closure children) {
+    protected void title_tree_tab_button(Closure children) {
         get(TitleTreeTabButtonBuilder.class).init(children);
     }
 
-    public void title_tree(Closure children) {
+    protected void title_tree(Closure children) {
         get(TitleTreeBuilder.class).init(children);
     }
 
-    public void tabbed_pane(Closure children) {
+    protected void tabbed_pane(Closure children) {
         get(TabbedPaneBuilder.class).init(children);
     }
 
-    public void input_prompt_list(Closure children) {
+    protected void input_prompt_list(Closure children) {
         get(InputPromptListBuilder.class).init(children);
     }
 

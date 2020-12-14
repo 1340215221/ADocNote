@@ -3,6 +3,7 @@ package com.rh.note.action.impl;
 import com.rh.note.action.IProManageAction;
 import com.rh.note.ao.ClickedHistoryProjectListAO;
 import com.rh.note.api.FileServiceApi;
+import com.rh.note.api.ProManageLoaderApi;
 import com.rh.note.api.ProManageViewApi;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +21,8 @@ public class ProManageAction implements IProManageAction {
     @Autowired
     private FileServiceApi fileServiceApi;
     @Autowired
+    private ProManageLoaderApi proManageLoaderApi;
+    @Autowired
     private WorkAction workAction;
 
     @Override
@@ -36,6 +39,7 @@ public class ProManageAction implements IProManageAction {
      */
     public void startFrame() {
         RecentlyOpenedRecordVO[] voArr = fileServiceApi.getHistoryOpenRecords();
+        proManageLoaderApi.load();
         proManageViewApi.startFrame(voArr);
     }
 }

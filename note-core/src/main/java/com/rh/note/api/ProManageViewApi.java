@@ -1,5 +1,6 @@
 package com.rh.note.api;
 
+import com.rh.note.annotation.ProManageContext;
 import com.rh.note.ao.ClickedHistoryProjectListAO;
 import com.rh.note.view.HistoryProListView;
 import com.rh.note.view.ProManageFrameView;
@@ -14,6 +15,7 @@ import javax.swing.JList;
  * 项目管理
  */
 @Component
+@ProManageContext
 public class ProManageViewApi {
 
     public @Nullable ClickedHistoryProjectListAO getSelectedHistoryProjectAO(JList<RecentlyOpenedRecordVO> jList) {
@@ -37,7 +39,6 @@ public class ProManageViewApi {
      * 启动窗口, 加载历史打开记录
      */
     public void startFrame(RecentlyOpenedRecordVO[] voArr) {
-        ProManageFrameView.create();
         new HistoryProListView().init().loadData(voArr);
         new ProManageFrameView().init().show();
     }

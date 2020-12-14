@@ -1,5 +1,6 @@
 package com.rh.note.api;
 
+import com.rh.note.annotation.WorkContext;
 import com.rh.note.ao.CaretPointAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.IncludePromptAO;
@@ -65,6 +66,7 @@ import java.util.stream.Collectors;
  * 工作窗口 操作
  */
 @Component
+@WorkContext
 public class WorkViewApi {
     /**
      * 显示窗口

@@ -2,7 +2,6 @@ package com.rh.note.view;
 
 import com.rh.note.builder.ProManageFrameBuilder;
 import com.rh.note.common.ISingletonView;
-import com.rh.note.load.ProManageLoader;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JFrame;
@@ -11,10 +10,6 @@ import javax.swing.JFrame;
  * 项目管理视图
  */
 public class ProManageFrameView extends ISingletonView<ProManageFrameBuilder, JFrame> {
-
-    public static void create() {
-        new ProManageLoader().start();
-    }
 
     @Override
     public @NotNull ProManageFrameView init() {

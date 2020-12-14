@@ -1,11 +1,10 @@
 package com.rh.note.load
 
+import com.rh.note.annotation.WorkSingleton
 import com.rh.note.common.ILoader
 import com.rh.note.config.WorkConfig
 import com.rh.note.event.WorkFrameEvent
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.annotation.Scope
-import org.springframework.stereotype.Component
 
 import java.awt.AWTEvent
 import java.awt.Toolkit
@@ -14,8 +13,7 @@ import java.awt.event.AWTEventListener
 /**
  * 工作窗口工厂
  */
-@Component
-@Scope("prototype")
+@WorkSingleton
 class WorkLoader extends WorkConfig implements ILoader {
 
     @Autowired

@@ -1,15 +1,13 @@
 package com.rh.note.load
 
+import com.rh.note.annotation.ProManageSingleton
 import com.rh.note.common.ILoader
 import com.rh.note.config.ProManageConfig
-import org.springframework.context.annotation.Scope
-import org.springframework.stereotype.Component
 
 /**
  * 项目列表
  */
-@Component
-@Scope("prototype")
+@ProManageSingleton
 class ProManageLoader extends ProManageConfig implements ILoader {
 
     /**

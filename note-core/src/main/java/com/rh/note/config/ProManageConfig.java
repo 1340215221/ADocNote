@@ -18,23 +18,23 @@ public abstract class ProManageConfig implements ApplicationContextAware {
      */
     private ApplicationContext app;
 
-    public void project_management_frame(Closure children) {
+    protected void project_management_frame(Closure children) {
         get(ProManageFrameBuilder.class).init(children);
     }
 
-    public void project_list_panel(Closure children) {
+    protected void project_list_panel(Closure children) {
         get(ProListPanelBuilder.class).init(children);
     }
 
-    public void history_project_list(Closure children){
+    protected void history_project_list(Closure children){
         get(HistoryProListBuilder.class).init(children);
     }
 
-    public void project_menu_panel(Closure children) {
+    protected void project_menu_panel(Closure children) {
         get(ProMenuPanelBuilder.class).init(children);
     }
 
-    public void import_project_button(Closure children) {
+    protected void import_project_button(Closure children) {
         get(ImportProButtonBuilder.class).init(children);
     }
 

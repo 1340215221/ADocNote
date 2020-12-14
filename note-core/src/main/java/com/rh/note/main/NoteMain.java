@@ -1,4 +1,4 @@
-package com.rh.note;
+package com.rh.note.main;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.rh.note.action.IProManageAction;

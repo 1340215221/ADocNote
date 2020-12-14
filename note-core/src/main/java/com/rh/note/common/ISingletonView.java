@@ -65,6 +65,7 @@ public abstract class ISingletonView<B extends ISingletonBuilder, C> {
         }
         try {
             Field field = builderClass.getDeclaredField("builder_name");
+            field.setAccessible(true);
             return (String) field.get(builderClass);
         } catch (Exception e) {
             log.error("[getBuilderInstanceName] error", e);

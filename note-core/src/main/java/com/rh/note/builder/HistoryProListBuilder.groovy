@@ -7,6 +7,7 @@ import com.rh.note.vo.RecentlyOpenedRecordVO
 import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
+import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
 import javax.swing.JList
 import java.awt.BorderLayout
