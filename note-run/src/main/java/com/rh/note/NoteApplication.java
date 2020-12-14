@@ -10,7 +10,12 @@ import org.springframework.context.annotation.ComponentScan;
  * 笔记软件启动程序
  */
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.rh.note.main", "com.rh.note.api", "com.rh.note.action", "com.rh.note.aspect"})
+@ComponentScan(basePackages = {
+        "com.rh.note.main", // 核心包入口程序
+        "com.rh.note.api", // 业务模块聚合层
+        "com.rh.note.action", // 前后端交互聚合层
+        "com.rh.note.aspect", // 切面, 用于设置当前操作的子容器
+})
 public class NoteApplication {
 
     public static void main(String[] args) {
