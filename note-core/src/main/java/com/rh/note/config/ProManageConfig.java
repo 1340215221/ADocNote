@@ -6,16 +6,15 @@ import com.rh.note.builder.ProListPanelBuilder;
 import com.rh.note.builder.ProManageFrameBuilder;
 import com.rh.note.builder.ProMenuPanelBuilder;
 import groovy.lang.Closure;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
-public abstract class ProManageConfig implements ApplicationContextAware {
+@RequiredArgsConstructor
+public abstract class ProManageConfig {
 
-    /**
-     * todo 这些控件需要从子容器中获取
-     */
+    @NonNull
     private ApplicationContext app;
 
     protected void project_management_frame(Closure children) {
@@ -42,10 +41,4 @@ public abstract class ProManageConfig implements ApplicationContextAware {
         return app.getBean(clazz);
     }
 
-    @Override
-    public void setApplicationContext(ApplicationContext app) throws BeansException {
-        if (this.app == null) {
-            this.app = app;
-        }
-    }
 }

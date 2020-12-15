@@ -23,11 +23,7 @@ class JavaScrollPaneFactory extends BeanFactory implements ISwingBuilderFactory 
     private SwingBuilder swingBuilder
 
     JavaScrollPaneFactory() {
-        this(JavaScrollPane)
-    }
-
-    JavaScrollPaneFactory(Class klass) {
-        super(klass, false)
+        super(JavaScrollPane, false)
     }
 
     void setChild(FactoryBuilderSupport factory, Object parent, Object child) {

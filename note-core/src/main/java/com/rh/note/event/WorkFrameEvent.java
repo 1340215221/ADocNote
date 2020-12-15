@@ -5,7 +5,9 @@ import com.rh.note.action.IWorkAction;
 import com.rh.note.annotation.WorkSingleton;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.PostConstruct;
 import java.awt.AWTEvent;
+import java.awt.Toolkit;
 
 /**
  * 工作窗口 全局事件
@@ -51,5 +53,17 @@ public class WorkFrameEvent {
      */
     public void close_frame() {
         workAction.closeFrame();
+    }
+
+    /**
+     * 设置全局快捷键
+     */
+    @PostConstruct
+    public void globalSettings() {
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        toolkit.addAWTEventListener(event -> {
+            this.save_all_edited(event);
+            this.git_commit_adoc(event);
+        }, AWTEvent.KEY_EVENT_MASK);
     }
 }

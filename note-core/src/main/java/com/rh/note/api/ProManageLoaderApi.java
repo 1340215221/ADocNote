@@ -1,6 +1,7 @@
 package com.rh.note.api;
 
 import com.rh.note.annotation.ProManageSingleton;
+import com.rh.note.load.ProManageLoader;
 import groovy.swing.SwingBuilder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +37,7 @@ public class ProManageLoaderApi {
     /**
      * 加载项目管理容器
      */
-    public void load() {
+    public void loadContext() {
         AnnotationConfigApplicationContext workContext = new AnnotationConfigApplicationContext();
         // 注册单例对象
         ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
@@ -61,5 +62,12 @@ public class ProManageLoaderApi {
         workContext.setParent(mainContext);
         workContext.refresh();
         app = workContext;
+    }
+
+    /**
+     * 加载控件
+     */
+    public void loadComponent() {
+        mainContext.getBean(ProManageLoader.class, app);
     }
 }

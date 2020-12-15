@@ -1,34 +1,24 @@
 package com.rh.note.load
 
-import com.rh.note.annotation.WorkSingleton
 import com.rh.note.common.ILoader
 import com.rh.note.config.WorkConfig
-import com.rh.note.event.WorkFrameEvent
-import org.springframework.beans.factory.annotation.Autowired
-
-import java.awt.AWTEvent
-import java.awt.Toolkit
-import java.awt.event.AWTEventListener
+import org.springframework.context.ApplicationContext
+import org.springframework.context.annotation.Scope
+import org.springframework.stereotype.Component
 
 /**
  * 工作窗口工厂
  */
-@WorkSingleton
+@Component
+@Scope("prototype")
 class WorkLoader extends WorkConfig implements ILoader {
 
-    @Autowired
-    private WorkFrameEvent workFrameEvent
+    WorkLoader(ApplicationContext app) {
+        super(app)
+    }
 
     @Override
     void globalSettings() {
-        Toolkit toolkit = Toolkit.getDefaultToolkit()
-        toolkit.addAWTEventListener(new AWTEventListener() {
-            @Override
-            void eventDispatched(AWTEvent event) {
-                workFrameEvent.save_all_edited(event)
-                workFrameEvent.git_commit_adoc(event)
-            }
-        }, AWTEvent.KEY_EVENT_MASK)
     }
 
     /**

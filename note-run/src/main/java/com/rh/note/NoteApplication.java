@@ -15,6 +15,8 @@ import org.springframework.context.annotation.ComponentScan;
         "com.rh.note.api", // 业务模块聚合层
         "com.rh.note.action", // 前后端交互聚合层
         "com.rh.note.aspect", // 切面, 用于设置当前操作的子容器
+        "com.rh.note.load", // 用于加载子容器控件
+        "com.rh.note.util", // 工具类
 })
 public class NoteApplication {
 

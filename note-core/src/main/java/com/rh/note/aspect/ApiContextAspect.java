@@ -1,7 +1,9 @@
 package com.rh.note.aspect;
 
 import com.rh.note.annotation.ProManageContext;
+import com.rh.note.annotation.WorkContext;
 import com.rh.note.api.ProManageLoaderApi;
+import com.rh.note.api.WorkLoaderApi;
 import com.rh.note.util.ViewContextUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -23,24 +25,31 @@ public class ApiContextAspect {
 
     @Autowired
     private ProManageLoaderApi proManageLoaderApi;
+    @Autowired
+    private WorkLoaderApi workLoaderApi;
 
     @Pointcut("execution(* com.rh.note.api..*ViewApi.*(..))")
     public void proManageContext() {}
 
     @Around(value = "proManageContext()")
-    public void handleProManageContext(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object handleProManageContext(ProceedingJoinPoint joinPoint) throws Throwable {
         Class<?> targetClass = joinPoint.getTarget().getClass();
         ProManageContext pmc = targetClass.getDeclaredAnnotation(ProManageContext.class);
         ApplicationContext app = null;
         if (pmc != null) {
             app = proManageLoaderApi.getApp();
         }
+        WorkContext wc = targetClass.getDeclaredAnnotation(WorkContext.class);
+        if (wc != null) {
+            app = workLoaderApi.getApp();
+        }
         // 前置操作
         ViewContextUtil.context.set(app);
         // 执行方法
-        joinPoint.proceed();
+        Object result = joinPoint.proceed();
         // 后置操作
         ViewContextUtil.context.set(null);
+        return result;
     }
 
 }

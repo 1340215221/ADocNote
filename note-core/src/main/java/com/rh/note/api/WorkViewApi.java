@@ -21,8 +21,8 @@ import com.rh.note.constants.BaseConstants;
 import com.rh.note.constants.PromptMessageEnum;
 import com.rh.note.exception.UnknownLogicException;
 import com.rh.note.file.JavaProConfig;
-import com.rh.note.load.WorkLoader;
 import com.rh.note.line.TitleLine;
+import com.rh.note.load.WorkLoader;
 import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.path.TitleBeanPath;
 import com.rh.note.sugar.IncludeJavaSyntaxSugar;
@@ -73,13 +73,6 @@ public class WorkViewApi {
      */
     public void showFrame() {
         new WorkFrameView().init().show();
-    }
-
-    /**
-     * 初始化窗口
-     */
-    public void initFrame() {
-        new WorkLoader().start();
     }
 
     /**
@@ -740,9 +733,7 @@ public class WorkViewApi {
             return;
         }
         List<InputPromptItemView> items = itemAOS.stream()
-                .peek(InputPromptItemView::create)
-                .map(itemAO -> new InputPromptItemView().init(itemAO.getCompleteValue()))
-                .filter(Objects::nonNull)
+                .map(itemAO -> new InputPromptItemView().create(itemAO))
                 .collect(Collectors.toList());
         InputPromptMenuView inputPrompt = new InputPromptMenuView().init();
         inputPrompt.addAll(items);
@@ -910,5 +901,13 @@ public class WorkViewApi {
                 .setIncludeFilePath(syntax.getTargetRelativePath())
                 .setMarkLineNumber1(syntax.getLineStart())
                 .setMarkLineNumber2(syntax.getLineEnd());
+    }
+
+    /**
+     * 关闭工作区
+     */
+    public void closeFrame() {
+        WorkFrameView workFrame = new WorkFrameView().init();
+        workFrame.close();
     }
 }

@@ -2,6 +2,7 @@ package com.rh.note.factory
 
 import com.rh.note.annotation.SwingBuilderFactory
 import com.rh.note.common.ISwingBuilderFactory
+import com.rh.note.component.TitleButton
 import groovy.swing.SwingBuilder
 import groovy.swing.factory.RichActionWidgetFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,8 +15,8 @@ class TitleButtonFactory extends RichActionWidgetFactory implements ISwingBuilde
     @Autowired
     private SwingBuilder swingBuilder
 
-    TitleButtonFactory(Class klass) {
-        super(klass)
+    TitleButtonFactory() {
+        super(TitleButton)
     }
 
     @Override

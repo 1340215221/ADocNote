@@ -39,7 +39,8 @@ public class ProManageAction implements IProManageAction {
      */
     public void startFrame() {
         RecentlyOpenedRecordVO[] voArr = fileServiceApi.getHistoryOpenRecords();
-        proManageLoaderApi.load();
+        proManageLoaderApi.loadContext();
+        proManageLoaderApi.loadComponent();
         proManageViewApi.startFrame(voArr);
     }
 }

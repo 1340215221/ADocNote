@@ -14,11 +14,8 @@ import org.jetbrains.annotations.Nullable;
  */
 public class InputPromptItemView extends IPrototypeView<InputPromptItemBuilder, InputPromptMenuItem> {
 
-    public static void create(InputPromptItemAO ao) {
-        if (ao == null) {
-            return;
-        }
-        new InputPromptItemBuilder(ao).init();
+    public @NotNull InputPromptItemView create(InputPromptItemAO ao) {
+        return super.create(ao);
     }
 
     public static void deleteByValue(String value) {
@@ -26,13 +23,6 @@ public class InputPromptItemView extends IPrototypeView<InputPromptItemBuilder, 
             return;
         }
         ViewUtil.removeByComponentId(InputPromptItemBuilder.id(value));
-    }
-
-    public static @Nullable InputPromptItemView cast(InputPromptMenuItem bean) {
-        if (bean == null) {
-            return null;
-        }
-        return new InputPromptItemView().init(bean.getResult());
     }
 
     public @Nullable InputPromptItemView init(String showValue) {

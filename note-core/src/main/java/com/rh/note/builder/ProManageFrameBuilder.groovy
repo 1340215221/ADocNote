@@ -43,7 +43,7 @@ class ProManageFrameBuilder implements ISingletonStaticBuilder {
     @Override
     @PreDestroy
     void destroy() {
-        swingBuilder.variables.remove(id())
+        swingBuilder."${id()}".dispose()
     }
 
     static String id() {

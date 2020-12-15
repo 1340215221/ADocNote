@@ -3,6 +3,7 @@ package com.rh.note.view;
 import com.rh.note.constants.PromptMessageEnum;
 import com.rh.note.exception.UnknownLogicException;
 import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
@@ -20,7 +21,7 @@ public class ShowMessageDialogView {
      */
     private PromptMessageEnum message;
 
-    public ShowMessageDialogView init(@NonNull PromptMessageEnum message) {
+    public @NotNull ShowMessageDialogView init(@NonNull PromptMessageEnum message) {
         this.message = message;
         return this;
     }

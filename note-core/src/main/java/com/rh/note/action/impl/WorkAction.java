@@ -19,6 +19,7 @@ import com.rh.note.ao.TargetFilePathByIncludeJavaLineAO;
 import com.rh.note.ao.TitleContentAO;
 import com.rh.note.api.FileServiceApi;
 import com.rh.note.api.GitServiceApi;
+import com.rh.note.api.WorkLoaderApi;
 import com.rh.note.api.WorkViewApi;
 import com.rh.note.component.InputPromptMenuItem;
 import com.rh.note.constants.PromptMessageEnum;
@@ -65,6 +66,8 @@ public class WorkAction implements IWorkAction {
     private FileServiceApi fileServiceApi;
     @Autowired
     private GitServiceApi gitServiceApi;
+    @Autowired
+    private WorkLoaderApi workLoaderApi;
 
     /**
      * 提交adoc内容
@@ -90,7 +93,8 @@ public class WorkAction implements IWorkAction {
         if (rootTitle == null) {
             throw new ApplicationException(ErrorCodeEnum.CANNOT_OPEN_A_PROJECT_WITHOUT_A_TITLE);
         }
-        workViewApi.initFrame();
+        workLoaderApi.loadContext();
+        workLoaderApi.loadComponent();
         workViewApi.loadTitleTree(rootTitle);
     }
 
@@ -358,8 +362,7 @@ public class WorkAction implements IWorkAction {
      */
     @Override
     public void closeFrame() {
-        WorkFrameView workFrame = new WorkFrameView().init();
-        workFrame.close();
+        workViewApi.closeFrame();
     }
 
     @Override

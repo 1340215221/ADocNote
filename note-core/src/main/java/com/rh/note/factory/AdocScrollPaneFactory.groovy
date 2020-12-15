@@ -20,11 +20,7 @@ class AdocScrollPaneFactory extends BeanFactory implements ISwingBuilderFactory 
     private SwingBuilder swingBuilder
 
     AdocScrollPaneFactory() {
-        this(AdocScrollPane)
-    }
-
-    AdocScrollPaneFactory(Class klass) {
-        super(klass, false)
+        super(AdocScrollPane, false)
     }
 
     void setChild(FactoryBuilderSupport factory, Object parent, Object child) {

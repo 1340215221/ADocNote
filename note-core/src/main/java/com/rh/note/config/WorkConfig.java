@@ -11,13 +11,15 @@ import com.rh.note.builder.TitleTreeBuilder;
 import com.rh.note.builder.TitleTreeTabButtonBuilder;
 import com.rh.note.builder.WorkFrameBuilder;
 import groovy.lang.Closure;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
-public abstract class WorkConfig implements ApplicationContextAware {
+@RequiredArgsConstructor
+public abstract class WorkConfig {
 
+    @NonNull
     private ApplicationContext app;
 
     protected void work_frame(Closure children) {
@@ -64,10 +66,4 @@ public abstract class WorkConfig implements ApplicationContextAware {
         return app.getBean(clazz);
     }
 
-    @Override
-    public void setApplicationContext(ApplicationContext app) throws BeansException {
-        if (this.app == null) {
-            this.app = app;
-        }
-    }
 }

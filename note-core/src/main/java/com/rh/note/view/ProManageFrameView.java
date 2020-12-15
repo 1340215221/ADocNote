@@ -1,6 +1,7 @@
 package com.rh.note.view;
 
 import com.rh.note.builder.ProManageFrameBuilder;
+import com.rh.note.common.IFrameView;
 import com.rh.note.common.ISingletonView;
 import org.jetbrains.annotations.NotNull;
 
@@ -9,7 +10,7 @@ import javax.swing.JFrame;
 /**
  * 项目管理视图
  */
-public class ProManageFrameView extends ISingletonView<ProManageFrameBuilder, JFrame> {
+public class ProManageFrameView extends IFrameView<ProManageFrameBuilder, JFrame> {
 
     @Override
     public @NotNull ProManageFrameView init() {
@@ -34,6 +35,6 @@ public class ProManageFrameView extends ISingletonView<ProManageFrameBuilder, JF
      * 关闭窗口
      */
     public void close() {
-        proManageFrame().dispose();
+        super.dispose();
     }
 }

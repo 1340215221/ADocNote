@@ -1,6 +1,6 @@
 package com.rh.note.common;
 
-import com.rh.note.api.WorkContextApi;
+import com.rh.note.api.WorkLoaderApi;
 import com.rh.note.util.SpringUtil;
 import com.rh.note.util.StrUtils;
 import com.rh.note.util.ViewContextUtil;
@@ -28,7 +28,7 @@ public abstract class IPrototypeView<B extends IPrototypeBuilder, C> {
      * 不是所有的view都需要create方法
      */
     protected <R extends IPrototypeView<B, C>> @NotNull R create(Object arg) {
-        WorkContextApi workContextApi = SpringUtil.get(WorkContextApi.class);
+        WorkLoaderApi workContextApi = SpringUtil.get(WorkLoaderApi.class);
         builder = workContextApi.createWorkPrototype(getBuilderType(), arg);
         return (R) this;
     }

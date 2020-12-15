@@ -2,6 +2,7 @@ package com.rh.note.factory
 
 import com.rh.note.annotation.SwingBuilderFactory
 import com.rh.note.common.ISwingBuilderFactory
+import com.rh.note.component.AdocTextPane
 import groovy.swing.SwingBuilder
 import groovy.swing.factory.TextArgWidgetFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,8 +15,8 @@ class AdocTextPaneFactory extends TextArgWidgetFactory implements ISwingBuilderF
     @Autowired
     private SwingBuilder swingBuilder
 
-    AdocTextPaneFactory(Class klass) {
-        super(klass)
+    AdocTextPaneFactory() {
+        super(AdocTextPane)
     }
 
     @Override
