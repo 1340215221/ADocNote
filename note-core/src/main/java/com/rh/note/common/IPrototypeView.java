@@ -29,7 +29,7 @@ public abstract class IPrototypeView<B extends IPrototypeBuilder, C> {
      */
     protected <R extends IPrototypeView<B, C>> @NotNull R create(Object arg) {
         WorkLoaderApi workContextApi = SpringUtil.get(WorkLoaderApi.class);
-        builder = workContextApi.createWorkPrototype(getBuilderType(), arg);
+        builder = workContextApi.createWorkPrototype(getBuilderName(), arg);
         return (R) this;
     }
 
@@ -51,10 +51,11 @@ public abstract class IPrototypeView<B extends IPrototypeBuilder, C> {
         try {
             Object bean = app.getBean(builderInstanceName);
             builder = (B) bean;
+            return (R) this;
         } catch (Exception e) {
-            log.error("[init] error", e);
+            log.error("[init] error, {}", e.getMessage());
         }
-        return (R) this;
+        return null;
     }
 
     /**
@@ -88,11 +89,31 @@ public abstract class IPrototypeView<B extends IPrototypeBuilder, C> {
         }
         try {
             Field field = builderClass.getDeclaredField("builder_name");
+            field.setAccessible(true);
             String builderName = (String) field.get(builderClass);
             if (StringUtils.isBlank(param)) {
                 return builderName;
             }
             return StrUtils.replacePlaceholder(builderName, param);
+        } catch (Exception e) {
+            log.error("[getBuilderInstanceName] error", e);
+            return null;
+        }
+    }
+
+    /**
+     * 获取spring对象名
+     * 多例模板名字
+     */
+    private @Nullable String getBuilderName() {
+        Class<B> builderClass = getBuilderType();
+        if (builderClass == null) {
+            return null;
+        }
+        try {
+            Field field = builderClass.getDeclaredField("builder_name");
+            field.setAccessible(true);
+            return (String) field.get(builderClass);
         } catch (Exception e) {
             log.error("[getBuilderInstanceName] error", e);
             return null;

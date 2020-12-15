@@ -47,7 +47,7 @@ class InputPromptItemBuilder implements IPrototypeBuilder {
     @Override
     @PreDestroy
     void destroy() {
-        swingBuilder.variables.remove(id())
+        swingBuilder.variables.remove(id(ao.getCompleteValue()))
     }
 
     @Override

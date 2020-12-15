@@ -1,11 +1,11 @@
 package com.rh.note.common;
 
-import javax.annotation.PreDestroy;
+import groovy.lang.Closure;
 
-interface ISingletonBuilder {
+public interface ISingletonBuilder {
     /**
-     * 销毁方法
+     * 初始化
+     * 参与swing控件的组装
      */
-    @PreDestroy
-    void destroy();
+    void init(Closure children);
 }

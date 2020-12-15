@@ -1,18 +1,17 @@
 package com.rh.note.builder
 
 import com.rh.note.annotation.WorkSingleton
-import com.rh.note.common.ISingletonStaticBuilder
+import com.rh.note.common.ISingletonBuilder
 import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
-import javax.annotation.PreDestroy
 import java.awt.BorderLayout
 
 /**
  * 工作窗口-底边栏
  */
 @WorkSingleton(BottomSidebarPanelBuilder.builder_name)
-class BottomSidebarPanelBuilder implements ISingletonStaticBuilder {
+class BottomSidebarPanelBuilder implements ISingletonBuilder {
 
     static final String builder_name = 'bottom_sidebar'
     @Autowired
@@ -26,12 +25,6 @@ class BottomSidebarPanelBuilder implements ISingletonStaticBuilder {
         ){
             children()
         }
-    }
-
-    @Override
-    @PreDestroy
-    void destroy() {
-        swingBuilder.variables.remove(id())
     }
 
     static String id() {

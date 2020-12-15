@@ -1,14 +1,13 @@
 package com.rh.note.builder
 
 import com.rh.note.annotation.WorkSingleton
-import com.rh.note.common.ISingletonStaticBuilder
+import com.rh.note.common.ISingletonBuilder
 import com.rh.note.component.TitleTreeCellRenderer
 import com.rh.note.event.TitleTreeEvent
 import com.rh.note.factory.DefaultTreeModelFactory
 import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
-import javax.annotation.PreDestroy
 import javax.swing.JTree
 import javax.swing.tree.DefaultTreeModel
 import java.awt.BorderLayout
@@ -17,7 +16,7 @@ import java.awt.BorderLayout
  * 工作窗口-标题树
  */
 @WorkSingleton(TitleTreeBuilder.builder_name)
-class TitleTreeBuilder implements ISingletonStaticBuilder {
+class TitleTreeBuilder implements ISingletonBuilder {
 
     static final String builder_name = "title_list"
     @Autowired
@@ -49,14 +48,6 @@ class TitleTreeBuilder implements ISingletonStaticBuilder {
         swingBuilder.scrollPane(id: "${id()}") {
             fileList()
         }
-    }
-
-    @Override
-    @PreDestroy
-    void destroy() {
-        swingBuilder.variables.remove(id())
-        swingBuilder.variables.remove(treeId())
-        swingBuilder.variables.remove(modelId())
     }
 
     static String id() {

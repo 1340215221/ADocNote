@@ -46,12 +46,13 @@ public class WorkLoaderApi {
     /**
      * 初始化工作窗口多例对象
      */
-    public <T extends IPrototypeBuilder> @Nullable T createWorkPrototype(Class<T> clazz, Object... args) {
-        if (app == null || clazz == null || ArrayUtils.isEmpty(args)) {
+    public <T extends IPrototypeBuilder> @Nullable T createWorkPrototype(String builderName, Object... args) {
+        if (app == null || StringUtils.isBlank(builderName) || ArrayUtils.isEmpty(args)) {
             return null;
         }
         try {
-            T builder = app.getBean(clazz, args);
+            T builder = (T) app.getBean(builderName, args);
+            System.out.println(builder.getInstanceName());
             app.getBeanFactory().registerSingleton(builder.getInstanceName(), builder);
             return builder;
         } catch (Exception e) {

@@ -1,12 +1,11 @@
 package com.rh.note.builder
 
 import com.rh.note.annotation.WorkSingleton
-import com.rh.note.common.ISingletonStaticBuilder
+import com.rh.note.common.ISingletonBuilder
 import com.rh.note.event.TabbedPaneEvent
 import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
-import javax.annotation.PreDestroy
 import javax.swing.JPanel
 import javax.swing.JTabbedPane
 import java.awt.BorderLayout
@@ -16,7 +15,7 @@ import java.awt.FlowLayout
  * 工作窗口-编辑区面板
  */
 @WorkSingleton(TabbedPaneBuilder.builder_name)
-class TabbedPaneBuilder implements ISingletonStaticBuilder {
+class TabbedPaneBuilder implements ISingletonBuilder {
 
     static final String builder_name = "tabbed_pane"
     @Autowired
@@ -53,13 +52,6 @@ class TabbedPaneBuilder implements ISingletonStaticBuilder {
             navigate()
             tabbedPane()
         }
-    }
-
-    @Override
-    @PreDestroy
-    void destroy() {
-        swingBuilder.variables.remove(id())
-        swingBuilder.variables.remove(navigateId())
     }
 
     static String id() {

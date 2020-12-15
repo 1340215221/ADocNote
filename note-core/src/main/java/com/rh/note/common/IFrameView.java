@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 /**
  * 窗口 视图
  */
-public abstract class IFrameView<B extends ISingletonBuilder, C extends JFrame> extends ISingletonView<B, C> {
+public abstract class IFrameView<B extends IFrameBuilder, C extends JFrame> extends ISingletonView<B, C> {
 
     /**
      * 关闭窗口

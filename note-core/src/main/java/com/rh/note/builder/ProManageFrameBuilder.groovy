@@ -1,7 +1,7 @@
 package com.rh.note.builder
 
 import com.rh.note.annotation.ProManageSingleton
-import com.rh.note.common.ISingletonStaticBuilder
+import com.rh.note.common.IFrameBuilder
 import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -13,7 +13,7 @@ import javax.swing.WindowConstants
  * 项目管理窗口
  */
 @ProManageSingleton(ProManageFrameBuilder.builder_name)
-class ProManageFrameBuilder implements ISingletonStaticBuilder {
+class ProManageFrameBuilder implements IFrameBuilder {
 
     static final String builder_name = "project_list_frame"
     @Autowired
