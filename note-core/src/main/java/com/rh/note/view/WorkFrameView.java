@@ -1,7 +1,7 @@
 package com.rh.note.view;
 
 import com.rh.note.builder.WorkFrameBuilder;
-import com.rh.note.common.ISingletonView;
+import com.rh.note.common.IFrameView;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JFrame;
@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 /**
  * 工作窗口视图
  */
-public class WorkFrameView extends ISingletonView<WorkFrameBuilder, JFrame> {
+public class WorkFrameView extends IFrameView<WorkFrameBuilder, JFrame> {
 
     @Override
     public @NotNull WorkFrameView init() {
@@ -31,7 +31,6 @@ public class WorkFrameView extends ISingletonView<WorkFrameBuilder, JFrame> {
      * 关闭
      */
     public void close() {
-        workFrame().dispose();
-        System.exit(0);
+        super.dispose();
     }
 }

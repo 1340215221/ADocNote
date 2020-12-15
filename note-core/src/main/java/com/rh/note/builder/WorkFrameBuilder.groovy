@@ -52,7 +52,7 @@ class WorkFrameBuilder implements ISingletonStaticBuilder {
     @Override
     @PreDestroy
     void destroy() {
-        swingBuilder.variables.remove(id())
+        swingBuilder."${id()}".dispose()
     }
 
     String id() {
