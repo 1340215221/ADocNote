@@ -53,4 +53,12 @@ public class TitleNavigateButtonView extends IPrototypeView<TitleNavigateButtonB
     public @NotNull TitleBeanPath getBeanPath() {
         return (TitleBeanPath) navigateButton().getBeanPath();
     }
+
+    /**
+     * 销毁该对象
+     */
+    @Override
+    public void destroy() {
+        super.destroy();
+    }
 }

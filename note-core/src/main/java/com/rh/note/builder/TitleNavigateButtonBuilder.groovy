@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired
 
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
+import javax.swing.JPanel
+import java.awt.Component
 
 /**
  * 标题导航栏按钮
@@ -47,6 +49,9 @@ class TitleNavigateButtonBuilder implements IPrototypeBuilder {
     @Override
     @PreDestroy
     void destroy() {
+        def panel = swingBuilder."${TabbedPaneBuilder.navigateId()}" as JPanel
+        def component = swingBuilder.variables."${id(beanPath.getBeanPath())}" as Component
+        panel.remove(component)
         swingBuilder.variables.remove(id(beanPath.getBeanPath()))
     }
 

@@ -127,7 +127,7 @@ public class WorkLoaderApi {
         if (app == null || StringUtils.isBlank(componentId)) {
             return;
         }
-        app.removeBeanDefinition(componentId);
+        app.getBeanFactory().destroyBean(componentId);
     }
 
     /**
@@ -141,7 +141,7 @@ public class WorkLoaderApi {
         if (StringUtils.isBlank(beanName)) {
             return;
         }
-        app.removeBeanDefinition(beanName);
+        app.getBeanFactory().destroyBean(beanName);
     }
 
     /**

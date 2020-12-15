@@ -22,7 +22,6 @@ import com.rh.note.constants.PromptMessageEnum;
 import com.rh.note.exception.UnknownLogicException;
 import com.rh.note.file.JavaProConfig;
 import com.rh.note.line.TitleLine;
-import com.rh.note.load.WorkLoader;
 import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.path.TitleBeanPath;
 import com.rh.note.sugar.IncludeJavaSyntaxSugar;
@@ -110,6 +109,14 @@ public class WorkViewApi {
         }
         TitleNavigatePanelView titleNavigatePanel = new TitleNavigatePanelView().init();
         titleNavigatePanel.clearTitle();
+        List<String> childrenBeanPaths = titleNavigatePanel.getAllChildrenBeanPath();
+        childrenBeanPaths.forEach(childrenBeanPath -> {
+            TitleNavigateButtonView view = new TitleNavigateButtonView().init(childrenBeanPath);
+            if (view == null) {
+                return;
+            }
+            view.destroy();
+        });
         parentTitles.stream().sorted(Comparator.comparing(title -> title.getTitleSyntax().getLevel())).forEach(title -> {
             TitleNavigateButtonView titleNavigateButton = new TitleNavigateButtonView().create(title.getBeanPath());
             titleNavigatePanel.add(titleNavigateButton);

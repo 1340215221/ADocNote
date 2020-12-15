@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -117,6 +118,21 @@ public abstract class IPrototypeView<B extends IPrototypeBuilder, C> {
         } catch (Exception e) {
             log.error("[getBuilderInstanceName] error", e);
             return null;
+        }
+    }
+
+    /**
+     * 从spring中销毁
+     */
+    protected void destroy() {
+        ApplicationContext app = ViewContextUtil.context.get();
+        if (!(app instanceof AnnotationConfigApplicationContext)) {
+            return;
+        }
+        try {
+            ((AnnotationConfigApplicationContext) app).getBeanFactory().destroyBean(builder);
+        } catch (Exception e) {
+            log.error("[destroy] error, {}", e.getMessage());
         }
     }
 
