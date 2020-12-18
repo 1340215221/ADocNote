@@ -13,6 +13,13 @@ import org.jetbrains.annotations.Nullable;
  */
 public class TitleNavigateButtonView extends IPrototypeView<TitleNavigateButtonBuilder, TitleButton> {
 
+    /**
+     * 清空当前类型的实例
+     */
+    public void clearAll() {
+        super.clearAllByType();
+    }
+
     public @NotNull TitleNavigateButtonView create(TitleBeanPath beanPath) {
         return super.create(beanPath);
     }
@@ -52,13 +59,5 @@ public class TitleNavigateButtonView extends IPrototypeView<TitleNavigateButtonB
      */
     public @NotNull TitleBeanPath getBeanPath() {
         return (TitleBeanPath) navigateButton().getBeanPath();
-    }
-
-    /**
-     * 销毁该对象
-     */
-    @Override
-    public void destroy() {
-        super.destroy();
     }
 }

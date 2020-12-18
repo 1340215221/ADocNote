@@ -2,13 +2,9 @@ package com.rh.note.view;
 
 import com.rh.note.builder.TabbedPaneBuilder;
 import com.rh.note.common.ISingletonView;
-import com.rh.note.component.TitleButton;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JPanel;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 标题导航栏
@@ -31,26 +27,15 @@ public class TitleNavigatePanelView extends ISingletonView<TabbedPaneBuilder, JP
         navigatePanel().add(titleNavigateButton.navigateButton());
     }
 
-    /**
-     * 清空
-     */
-    public void clearTitle() {
-        navigatePanel().removeAll();
-        navigatePanel().updateUI();
-        navigatePanel().repaint();
-    }
-
     private @NotNull JPanel navigatePanel() {
         return super.getComponent(TabbedPaneBuilder::getNavigatePanel);
     }
 
     /**
-     * 获得包含的按钮
+     * 刷新显示
      */
-    public @NotNull List<String> getAllChildrenBeanPath() {
-        return Arrays.stream(navigatePanel().getComponents())
-                .filter(c -> c instanceof TitleButton)
-                .map(c -> ((TitleButton) c).getBeanPath().getBeanPath())
-                .collect(Collectors.toList());
+    public void refreshDisplay() {
+        navigatePanel().updateUI();
+        navigatePanel().repaint();
     }
 }

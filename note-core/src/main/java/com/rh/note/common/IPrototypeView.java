@@ -6,14 +6,17 @@ import com.rh.note.util.StrUtils;
 import com.rh.note.util.ViewContextUtil;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
+import java.util.Map;
 import java.util.function.Function;
 
 @Slf4j
@@ -134,6 +137,28 @@ public abstract class IPrototypeView<B extends IPrototypeBuilder, C> {
         } catch (Exception e) {
             log.error("[destroy] error, {}", e.getMessage());
         }
+    }
+
+    /**
+     * 清空当前类型的实例
+     */
+    protected void clearAllByType() {
+        ApplicationContext app = ViewContextUtil.context.get();
+        if (!(app instanceof AnnotationConfigApplicationContext)) {
+            return;
+        }
+        ConfigurableListableBeanFactory factory = ((AnnotationConfigApplicationContext) app).getBeanFactory();
+        Map<String, B> beanName_Bean_Map = null;
+        try {
+            beanName_Bean_Map = app.getBeansOfType(getBuilderType());
+        } catch (Exception e) {
+            log.error("[clearAllByType] error, {}", e.getMessage());
+        }
+        if (MapUtils.isEmpty(beanName_Bean_Map)) {
+            return;
+        }
+        beanName_Bean_Map.forEach((key, value) ->
+                factory.destroyBean(value));
     }
 
 }

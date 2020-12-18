@@ -7,6 +7,8 @@ import com.rh.note.component.TitleButton
 import com.rh.note.event.NavigateButtonEvent
 import com.rh.note.factory.TitleButtonFactory
 import groovy.swing.SwingBuilder
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 
 import javax.annotation.PostConstruct
@@ -20,6 +22,7 @@ import java.awt.Component
 @WorkPrototype(TitleNavigateButtonBuilder.builder_name)
 class TitleNavigateButtonBuilder implements IPrototypeBuilder {
 
+    private static final Logger log = LoggerFactory.getLogger(TitleNavigateButtonBuilder)
     static final String builder_name = "title_navigate_button_{}"
     @Autowired
     private SwingBuilder swingBuilder
@@ -49,10 +52,14 @@ class TitleNavigateButtonBuilder implements IPrototypeBuilder {
     @Override
     @PreDestroy
     void destroy() {
-        def panel = swingBuilder."${TabbedPaneBuilder.navigateId()}" as JPanel
-        def component = swingBuilder.variables."${id(beanPath.getBeanPath())}" as Component
-        panel.remove(component)
-        swingBuilder.variables.remove(id(beanPath.getBeanPath()))
+        try {
+            def panel = swingBuilder."${TabbedPaneBuilder.navigateId()}" as JPanel
+            def component = swingBuilder.variables."${id(beanPath.getBeanPath())}" as Component
+            panel.remove(component)
+            swingBuilder.variables.remove(id(beanPath.getBeanPath()))
+        } catch (Exception e) {
+            log.error("[destroy] error", e)
+        }
     }
 
     @Override

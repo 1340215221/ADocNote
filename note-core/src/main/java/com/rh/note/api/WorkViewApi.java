@@ -107,16 +107,9 @@ public class WorkViewApi {
         if (CollectionUtils.isEmpty(parentTitles)) {
             return;
         }
+        new TitleNavigateButtonView().clearAll();
         TitleNavigatePanelView titleNavigatePanel = new TitleNavigatePanelView().init();
-        titleNavigatePanel.clearTitle();
-        List<String> childrenBeanPaths = titleNavigatePanel.getAllChildrenBeanPath();
-        childrenBeanPaths.forEach(childrenBeanPath -> {
-            TitleNavigateButtonView view = new TitleNavigateButtonView().init(childrenBeanPath);
-            if (view == null) {
-                return;
-            }
-            view.destroy();
-        });
+        titleNavigatePanel.refreshDisplay();
         parentTitles.stream().sorted(Comparator.comparing(title -> title.getTitleSyntax().getLevel())).forEach(title -> {
             TitleNavigateButtonView titleNavigateButton = new TitleNavigateButtonView().create(title.getBeanPath());
             titleNavigatePanel.add(titleNavigateButton);
