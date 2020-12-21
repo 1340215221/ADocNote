@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -148,17 +149,22 @@ public abstract class IPrototypeView<B extends IPrototypeBuilder, C> {
             return;
         }
         ConfigurableListableBeanFactory factory = ((AnnotationConfigApplicationContext) app).getBeanFactory();
+        if (!(factory instanceof DefaultListableBeanFactory)) {
+            return;
+        }
         Map<String, B> beanName_Bean_Map = null;
         try {
-            beanName_Bean_Map = app.getBeansOfType(getBuilderType());
+            beanName_Bean_Map = app.getBeansOfType(getBuilderType(), false, true);
         } catch (Exception e) {
             log.error("[clearAllByType] error, {}", e.getMessage());
         }
         if (MapUtils.isEmpty(beanName_Bean_Map)) {
             return;
         }
-        beanName_Bean_Map.forEach((key, value) ->
-                factory.destroyBean(value));
+        beanName_Bean_Map.forEach((key, value) -> {
+            factory.destroyBean(value);
+            ((DefaultListableBeanFactory) factory).destroySingleton(key);
+        });
     }
 
 }
