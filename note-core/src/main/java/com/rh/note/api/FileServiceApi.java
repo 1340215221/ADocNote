@@ -52,7 +52,8 @@ public class FileServiceApi {
     public RecentlyOpenedRecordVO[] getHistoryOpenRecords() {
         return new RecentlyOpenedRecordVO[]{
                 new RecentlyOpenedRecordVO().setProjectName("java笔记").setProjectPath("/home/hang/Documents/Java-not/"),
-                new RecentlyOpenedRecordVO().setProjectName("生活笔记").setProjectPath("/InterviewNote/")
+                new RecentlyOpenedRecordVO().setProjectName("生活笔记").setProjectPath("/InterviewNote/"),
+                new RecentlyOpenedRecordVO().setProjectName("生活笔记").setProjectPath("/work-note/")
         };
     }
 
