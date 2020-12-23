@@ -9,6 +9,7 @@ import com.rh.note.event.TextPaneEvent
 import com.rh.note.factory.AdocScrollPaneFactory
 import com.rh.note.factory.AdocTextPaneFactory
 import groovy.swing.SwingBuilder
+import lombok.Getter
 import org.springframework.beans.factory.annotation.Autowired
 
 import javax.annotation.PostConstruct
@@ -36,7 +37,7 @@ class TextPaneBuilder implements IPrototypeBuilder {
     private AdocTextPaneFactory atpFactory
     @Autowired
     private AdocScrollPaneFactory aspFactory
-    private BeanPath beanPath
+    BeanPath beanPath
 
     TextPaneBuilder(BeanPath beanPath) {
         this.beanPath = beanPath

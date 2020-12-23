@@ -58,4 +58,11 @@ public class RootTitleNodeView extends IPrototypeView<RootTitleNodeBuilder, Titl
             childrenTitles.forEach(deque::push);
         }
     }
+
+    /**
+     * 清理所有节点
+     */
+    public void destroy() {
+        super.destroy();
+    }
 }

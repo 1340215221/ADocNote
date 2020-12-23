@@ -4,8 +4,6 @@ import com.rh.note.ao.InputPromptItemAO;
 import com.rh.note.builder.InputPromptItemBuilder;
 import com.rh.note.common.IPrototypeView;
 import com.rh.note.component.InputPromptMenuItem;
-import com.rh.note.util.ViewUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,11 +16,9 @@ public class InputPromptItemView extends IPrototypeView<InputPromptItemBuilder, 
         return super.create(ao);
     }
 
-    public static void deleteByValue(String value) {
-        if (StringUtils.isBlank(value)) {
-            return;
-        }
-        ViewUtil.removeByComponentId(InputPromptItemBuilder.id(value));
+    @Override
+    public void destroy() {
+        super.destroy();
     }
 
     public @Nullable InputPromptItemView init(String showValue) {

@@ -133,8 +133,17 @@ public abstract class IPrototypeView<B extends IPrototypeBuilder, C> {
         if (!(app instanceof AnnotationConfigApplicationContext)) {
             return;
         }
+        ConfigurableListableBeanFactory beanFactory = ((AnnotationConfigApplicationContext) app).getBeanFactory();
+        if (!(beanFactory instanceof DefaultListableBeanFactory)) {
+            return;
+        }
+        String builderInstanceName = getBuilderInstanceName(null);
+        if (StringUtils.isBlank(builderInstanceName)) {
+            return;
+        }
         try {
-            ((AnnotationConfigApplicationContext) app).getBeanFactory().destroyBean(builder);
+            beanFactory.destroyBean(builder);
+            ((DefaultListableBeanFactory) beanFactory).destroySingleton(builderInstanceName);
         } catch (Exception e) {
             log.error("[destroy] error, {}", e.getMessage());
         }

@@ -1,7 +1,6 @@
 package com.rh.note.action.impl;
 
 import com.rh.note.action.IWorkAction;
-import com.rh.note.ao.CreateJavaTextPaneAO;
 import com.rh.note.ao.GenerateIncludeSyntaxAO;
 import com.rh.note.ao.GenerateJavaIncludeSyntaxAO;
 import com.rh.note.ao.GenerateTitleSyntaxAO;
@@ -27,15 +26,9 @@ import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
-import com.rh.note.sugar.IncludeJavaSyntaxSugar;
-import com.rh.note.syntax.IncludeSyntax;
 import com.rh.note.util.DefaultEditorKitUtil;
-import com.rh.note.view.JavaScrollPaneView;
-import com.rh.note.view.JavaTextPaneView;
 import com.rh.note.view.ShowMessageDialogView;
-import com.rh.note.view.TabbedPaneView;
 import com.rh.note.view.TextPaneView;
-import com.rh.note.view.WorkFrameView;
 import com.rh.note.vo.ITitleLineVO;
 import com.rh.note.vo.WriterVO;
 import lombok.NonNull;
@@ -280,17 +273,7 @@ public class WorkAction implements IWorkAction {
         if (ao == null) {
             return;
         }
-        TextPaneView textPane = new TextPaneView().init(ao.getFilePath());
-        if (textPane == null) {
-            return;
-        }
-        String selectedText = textPane.getSelectedText();
-        IncludeJavaSyntaxSugar syntaxSugar = new IncludeJavaSyntaxSugar().init(selectedText);
-        if (syntaxSugar == null) {
-            return;
-        }
-        IncludeSyntax syntax = syntaxSugar.copyToByFilePath(textPane.getFilePath());
-        textPane.replaceSelectedText(syntax.toString());
+        workViewApi.generateJavaIncludeSyntaxBySelectedText(ao);
     }
 
     /**
@@ -301,16 +284,10 @@ public class WorkAction implements IWorkAction {
         if (ao == null || StringUtils.isBlank(ao.getAbsolutePath())) { // todo 参数校验待调整
             return;
         }
-        //// 显示已打开的文件
-        JavaTextPaneView javaTextPane = new JavaTextPaneView().init(ao.getAbsolutePath());
+        boolean isExist = workViewApi.isExistJavaTextPane(ao);
         // 在卡片面板中显示
-        if (javaTextPane != null) {
-            // 编辑控件添加到卡片面板中
-            TabbedPaneView tabbedPane = new TabbedPaneView().init();
-            JavaScrollPaneView scrollPane = new JavaScrollPaneView().init(ao.getAbsolutePath());
-            tabbedPane.add(scrollPane);
-            // 显示java文件编辑区
-            tabbedPane.show(scrollPane);
+        if (isExist) {
+            workViewApi.showJavaTextPane(ao);
             return;
         }
         //// 打开一个新文件
@@ -320,17 +297,7 @@ public class WorkAction implements IWorkAction {
             return;
         }
         // 生成编辑控件
-        CreateJavaTextPaneAO createJavaTextPaneAO = ao.copyTo();
-        JavaTextPaneView textPane = new JavaTextPaneView().create(createJavaTextPaneAO);
-        textPane.write();
-        // 修改标记行背景色
-        textPane.initMarkLineColor();
-        // 编辑控件添加到卡片面板中
-        TabbedPaneView tabbedPane = new TabbedPaneView().init();
-        JavaScrollPaneView scrollPane = new JavaScrollPaneView().init(ao.getAbsolutePath());
-        tabbedPane.add(scrollPane);
-        // 显示java文件编辑区
-        tabbedPane.show(scrollPane);
+        workViewApi.addJavaTextPane(ao);
     }
 
     /**
@@ -341,11 +308,7 @@ public class WorkAction implements IWorkAction {
         if (ao == null || ao.checkRequiredItems()) {
             return;
         }
-        TextPaneView textPane = new TextPaneView().init(ao.getSourceFilePath());
-        if (textPane == null) {
-            return;
-        }
-        textPane.changeIncludeJavaLine(ao);
+        workViewApi.markLine(ao);
     }
 
     /**

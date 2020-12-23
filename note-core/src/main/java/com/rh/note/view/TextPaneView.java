@@ -15,14 +15,16 @@ import com.rh.note.path.ProBeanPath;
 import com.rh.note.path.TitleBeanPath;
 import com.rh.note.syntax.IncludeJavaSyntax;
 import com.rh.note.syntax.TitleSyntax;
-import com.rh.note.util.ViewUtil;
+import com.rh.note.util.ViewContextUtil;
 import com.rh.note.vo.WriterVO;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.context.ApplicationContext;
 
 import javax.swing.text.Caret;
 import javax.swing.text.Element;
@@ -32,7 +34,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -63,23 +67,21 @@ public class TextPaneView extends IPrototypeView<TextPaneBuilder, AdocTextPane> 
     }
 
     /**
+     * todo
      * 获得所有被编辑过的文件路径
      */
     public static @NotNull List<String> getAllEditedFilePath() {
-        return ViewUtil.getComponentsByClass(AdocTextPane.class)
-                .map(textPane -> textPane.getBeanPath().getBeanPath())
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * 关闭, 通过文件路径
-     */
-    public static void deleteByFilePath(String filePath) {
-        if (StringUtils.isBlank(filePath)) {
-            return;
+        ApplicationContext app = ViewContextUtil.context.get();
+        if (app == null) {
+            return Collections.emptyList();
         }
-
-        ViewUtil.removeByComponentId(TextPaneBuilder.id(filePath));
+        Map<String, TextPaneBuilder> instanceName_TextPaneBuilder_Map = app.getBeansOfType(TextPaneBuilder.class, false, true);
+        if (MapUtils.isEmpty(instanceName_TextPaneBuilder_Map)) {
+            return Collections.emptyList();
+        }
+        return instanceName_TextPaneBuilder_Map.entrySet().stream()
+                .map(entry -> entry.getValue().getBeanPath().getBeanPath())
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -400,6 +402,10 @@ public class TextPaneView extends IPrototypeView<TextPaneBuilder, AdocTextPane> 
             textPane().select(element.getStartOffset(), element.getEndOffset() - 1);
         }
         replaceSelectedText(includeStr);
+    }
+
+    public void destroy() {
+        super.destroy();
     }
 
     private class ParsingCareLineApi {

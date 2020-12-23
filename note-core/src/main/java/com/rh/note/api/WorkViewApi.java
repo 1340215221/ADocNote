@@ -2,11 +2,14 @@ package com.rh.note.api;
 
 import com.rh.note.annotation.WorkContext;
 import com.rh.note.ao.CaretPointAO;
+import com.rh.note.ao.CreateJavaTextPaneAO;
+import com.rh.note.ao.GenerateJavaIncludeSyntaxAO;
 import com.rh.note.ao.IncludeFilePathInfoAO;
 import com.rh.note.ao.IncludePromptAO;
 import com.rh.note.ao.InlineTitleAO;
 import com.rh.note.ao.InputPromptItemAO;
 import com.rh.note.ao.LineRangeAO;
+import com.rh.note.ao.MarkLineAO;
 import com.rh.note.ao.MatchIncludeInfoBySelectedTextAO;
 import com.rh.note.ao.MatchTitleInfoBySelectedTextAO;
 import com.rh.note.ao.RenameIncludeAO;
@@ -35,6 +38,8 @@ import com.rh.note.view.ConfirmDialogView;
 import com.rh.note.view.InputDialogView;
 import com.rh.note.view.InputPromptItemView;
 import com.rh.note.view.InputPromptMenuView;
+import com.rh.note.view.JavaScrollPaneView;
+import com.rh.note.view.JavaTextPaneView;
 import com.rh.note.view.RootTitleNodeView;
 import com.rh.note.view.TabbedPaneView;
 import com.rh.note.view.TextPaneView;
@@ -82,6 +87,10 @@ public class WorkViewApi {
             return;
         }
         // 加载节点数据
+        RootTitleNodeView oldNode = new RootTitleNodeView().init();
+        if (oldNode != null) {
+            oldNode.destroy();
+        }
         RootTitleNodeView rootTitleNode = new RootTitleNodeView().create(rootTitle);
         TitleTreeModelView titleTreeModel = new TitleTreeModelView().init();
         titleTreeModel.setRoot(rootTitleNode);
@@ -513,8 +522,10 @@ public class WorkViewApi {
         TabbedPaneView tabbedPane = new TabbedPaneView().init();
         tabbedPane.remove(scrollPane);
         // 从swingBuilder中删除
-        TextPaneView.deleteByFilePath(filePath);
-        TextScrollPaneView.deleteByFilePath(filePath);
+        TextPaneView view = new TextPaneView().init(filePath);
+        if (view != null) {
+            view.destroy();
+        }
     }
 
     /**
@@ -763,7 +774,13 @@ public class WorkViewApi {
         List<String> values = inputPromptMenu.getAllValues();
         inputPromptMenu.clearItems();
         if (CollectionUtils.isNotEmpty(values)) {
-            values.forEach(InputPromptItemView::deleteByValue);
+            values.forEach(value -> {
+                InputPromptItemView view = new InputPromptItemView().init(value);
+                if (view == null) {
+                    return;
+                }
+                view.destroy();
+            });
         }
     }
 
@@ -909,5 +926,72 @@ public class WorkViewApi {
     public void closeFrame() {
         WorkFrameView workFrame = new WorkFrameView().init();
         workFrame.close();
+        // todo
+        System.exit(0);
+    }
+
+    /**
+     * 添加java编辑区
+     */
+    public void addJavaTextPane(TargetFilePathByIncludeJavaLineAO ao) {
+        CreateJavaTextPaneAO createJavaTextPaneAO = ao.copyTo();
+        JavaTextPaneView textPane = new JavaTextPaneView().create(createJavaTextPaneAO);
+        textPane.write();
+        // 修改标记行背景色
+        textPane.initMarkLineColor();
+        // 编辑控件添加到卡片面板中
+        TabbedPaneView tabbedPane = new TabbedPaneView().init();
+        JavaScrollPaneView scrollPane = new JavaScrollPaneView().init(ao.getAbsolutePath());
+        tabbedPane.add(scrollPane);
+        // 显示java文件编辑区
+        tabbedPane.show(scrollPane);
+    }
+
+    /**
+     * 判断java编辑区存在
+     */
+    public boolean isExistJavaTextPane(TargetFilePathByIncludeJavaLineAO ao) {
+        JavaTextPaneView javaTextPane = new JavaTextPaneView().init(ao.getAbsolutePath());
+        return javaTextPane != null;
+    }
+
+    /**
+     * 显示java编辑区控件
+     */
+    public void showJavaTextPane(TargetFilePathByIncludeJavaLineAO ao) {
+        // 编辑控件添加到卡片面板中
+        TabbedPaneView tabbedPane = new TabbedPaneView().init();
+        JavaScrollPaneView scrollPane = new JavaScrollPaneView().init(ao.getAbsolutePath());
+        tabbedPane.add(scrollPane);
+        // 显示java文件编辑区
+        tabbedPane.show(scrollPane);
+    }
+
+    /**
+     * 标记行
+     */
+    public void markLine(MarkLineAO ao) {
+        TextPaneView textPane = new TextPaneView().init(ao.getSourceFilePath());
+        if (textPane == null) {
+            return;
+        }
+        textPane.changeIncludeJavaLine(ao);
+    }
+
+    /**
+     * Java include快捷语法转换
+     */
+    public void generateJavaIncludeSyntaxBySelectedText(GenerateJavaIncludeSyntaxAO ao) {
+        TextPaneView textPane = new TextPaneView().init(ao.getFilePath());
+        if (textPane == null) {
+            return;
+        }
+        String selectedText = textPane.getSelectedText();
+        IncludeJavaSyntaxSugar syntaxSugar = new IncludeJavaSyntaxSugar().init(selectedText);
+        if (syntaxSugar == null) {
+            return;
+        }
+        IncludeSyntax syntax = syntaxSugar.copyToByFilePath(textPane.getFilePath());
+        textPane.replaceSelectedText(syntax.toString());
     }
 }
