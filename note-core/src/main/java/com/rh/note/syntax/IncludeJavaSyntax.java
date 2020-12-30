@@ -19,7 +19,7 @@ public class IncludeJavaSyntax {
     /**
      * include::../../maven/src/main/java/com/rh/note/Main.java[]
      */
-    private static final String regex = "^(\\s*)include::(" + BaseConstants.file_path_regex + ").java\\[(?:([0-9]+)(?:\\.\\.([0-9]+))?)?\\]\\s*$";
+    private static final String regex = "^(\\s*)include::(" + BaseConstants.file_path_regex + ").java\\[(?:lines=([0-9]+)(?:\\.\\.([0-9]+))?)?\\]\\s*$";
     /**
      * 缩进
      */
@@ -128,6 +128,9 @@ public class IncludeJavaSyntax {
                 .append("include::")
                 .append(targetRelativePath)
                 .append("[");
+        if (lineStart != null || lineEnd != null) {
+            result.append("lines=");
+        }
         if (lineStart != null && lineEnd != null) {
             result.append(lineStart)
                     .append("..")
