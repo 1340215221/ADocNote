@@ -31,7 +31,6 @@ import com.rh.note.line.TitleLine;
 import com.rh.note.path.AdocFileBeanPath;
 import com.rh.note.path.TitleBeanPath;
 import com.rh.note.sugar.IncludeJavaSyntaxSugar;
-import com.rh.note.view.JavaTextPaneView;
 import com.rh.note.view.TextPaneView;
 import com.rh.note.vo.ITitleLineVO;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
@@ -316,25 +315,7 @@ public class OperationAction implements IOperationAction {
      */
     @Override
     public GenerateJavaIncludeSyntaxAO selectCaretLineOfJavaIncludeSyntaxSugar(@NonNull ActionEvent event) {
-        Object source = event.getSource();
-        if (!(source instanceof AdocTextPane)) {
-            return null;
-        }
-        AdocTextPane bean = (AdocTextPane) source;
-        TextPaneView textPane = TextPaneView.cast(bean);
-        if (textPane == null) {
-            return null;
-        }
-        String lineContent = textPane.getCaretLineContent();
-        if (StringUtils.isBlank(lineContent)) {
-            return null;
-        }
-        IncludeJavaSyntaxSugar syntax = new IncludeJavaSyntaxSugar().init(lineContent);
-        if (syntax == null) {
-            return null;
-        }
-        textPane.selectCaretLine();
-        return new GenerateJavaIncludeSyntaxAO().setFilePath(textPane.getFilePath());
+        return workViewApi.selectCaretLineOfJavaIncludeSyntaxSugar(event);
     }
 
     @Override
@@ -361,22 +342,7 @@ public class OperationAction implements IOperationAction {
         if (!(source instanceof JavaTextPane)) {
             return null;
         }
-        JavaTextPaneView textPane = JavaTextPaneView.cast(((JavaTextPane) source));
-        if (textPane == null) {
-            return null;
-        }
-        Integer lineNumber = textPane.getLineNumberByCaret();
-        if (lineNumber == null || lineNumber < 1) {
-            return null;
-        }
-        MarkLineAO ao = new MarkLineAO()
-                .setLineNumber(lineNumber)
-                .setSourceFilePath(textPane.getSourceFilePath())
-                .setIncludeFilePath(textPane.getIncludeFilePath());
-        ao.copy(event);
-        // 修改行颜色
-        textPane.updateMarkColorOnCaretLine(ao);
-        return ao;
+        return workViewApi.getCareLineNumberForJavaTextPane(event);
     }
 
     @Override

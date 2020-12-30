@@ -52,7 +52,6 @@ public class WorkLoaderApi {
         }
         try {
             T builder = (T) app.getBean(builderName, args);
-            System.out.println(builder.getInstanceName());
             app.getBeanFactory().registerSingleton(builder.getInstanceName(), builder);
             return builder;
         } catch (Exception e) {

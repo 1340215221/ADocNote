@@ -18,6 +18,7 @@ import com.rh.note.ao.SelectPromptItemAO;
 import com.rh.note.ao.TargetFilePathByIncludeJavaLineAO;
 import com.rh.note.component.AdocTextPane;
 import com.rh.note.component.InputPromptMenuItem;
+import com.rh.note.component.JavaTextPane;
 import com.rh.note.component.TitleButton;
 import com.rh.note.constants.AdocFileTypeEnum;
 import com.rh.note.constants.BaseConstants;
@@ -57,6 +58,8 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
 
 import javax.swing.JOptionPane;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -993,5 +996,62 @@ public class WorkViewApi {
         }
         IncludeSyntax syntax = syntaxSugar.copyToByFilePath(textPane.getFilePath());
         textPane.replaceSelectedText(syntax.toString());
+    }
+
+    /**
+     * todo
+     */
+    public GenerateJavaIncludeSyntaxAO selectCaretLineOfJavaIncludeSyntaxSugar(ActionEvent event) {
+        if (event == null) {
+            return null;
+        }
+        Object source = event.getSource();
+        if (!(source instanceof AdocTextPane)) {
+            return null;
+        }
+        AdocTextPane bean = (AdocTextPane) source;
+        TextPaneView textPane = TextPaneView.cast(bean);
+        if (textPane == null) {
+            return null;
+        }
+        String lineContent = textPane.getCaretLineContent();
+        if (StringUtils.isBlank(lineContent)) {
+            return null;
+        }
+        IncludeJavaSyntaxSugar syntax = new IncludeJavaSyntaxSugar().init(lineContent);
+        if (syntax == null) {
+            return null;
+        }
+        textPane.selectCaretLine();
+        return new GenerateJavaIncludeSyntaxAO().setFilePath(textPane.getFilePath());
+    }
+
+    /**
+     * todo
+     */
+    public MarkLineAO getCareLineNumberForJavaTextPane(KeyEvent event) {
+        if (event == null) {
+            return null;
+        }
+        Object source = event.getSource();
+        if (!(source instanceof JavaTextPane)) {
+            return null;
+        }
+        JavaTextPaneView textPane = JavaTextPaneView.cast(((JavaTextPane) source));
+        if (textPane == null) {
+            return null;
+        }
+        Integer lineNumber = textPane.getLineNumberByCaret();
+        if (lineNumber == null || lineNumber < 1) {
+            return null;
+        }
+        MarkLineAO ao = new MarkLineAO()
+                .setLineNumber(lineNumber)
+                .setSourceFilePath(textPane.getSourceFilePath())
+                .setIncludeFilePath(textPane.getIncludeFilePath());
+        ao.copy(event);
+        // 修改行颜色
+        textPane.updateMarkColorOnCaretLine(ao);
+        return ao;
     }
 }
