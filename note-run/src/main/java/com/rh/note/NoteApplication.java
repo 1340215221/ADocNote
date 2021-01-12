@@ -17,6 +17,7 @@ import org.springframework.context.annotation.ComponentScan;
         "com.rh.note.aspect", // 切面, 用于设置当前操作的子容器
         "com.rh.note.load", // 用于加载子容器控件
         "com.rh.note.util", // 工具类
+        "com.rh.note.config", // 配置类
 })
 public class NoteApplication {
 

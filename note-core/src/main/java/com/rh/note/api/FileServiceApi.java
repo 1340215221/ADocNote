@@ -3,6 +3,7 @@ package com.rh.note.api;
 import com.rh.note.ao.ClickedHistoryProjectListAO;
 import com.rh.note.ao.ICreateFileAndInitContentAO;
 import com.rh.note.ao.IncludePromptAO;
+import com.rh.note.config.ProjectPathConfig;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.file.AdocFile;
@@ -14,16 +15,22 @@ import com.rh.note.path.ReadMeBeanPath;
 import com.rh.note.vo.RecentlyOpenedRecordVO;
 import com.rh.note.vo.WriterVO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.OutputStreamWriter;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 文件服务 操作
@@ -31,6 +38,10 @@ import java.io.OutputStreamWriter;
 @Slf4j
 @Component
 public class FileServiceApi {
+
+    @Autowired
+    private ProjectPathConfig projectPathConfig;
+
     /**
      * 设置项目路径
      */
@@ -50,11 +61,14 @@ public class FileServiceApi {
      * 获得历史打开记录
      */
     public RecentlyOpenedRecordVO[] getHistoryOpenRecords() {
-        return new RecentlyOpenedRecordVO[]{
-                new RecentlyOpenedRecordVO().setProjectName("java笔记").setProjectPath("/home/hang/Documents/Java-not/"),
-                new RecentlyOpenedRecordVO().setProjectName("生活笔记").setProjectPath("/InterviewNote/"),
-                new RecentlyOpenedRecordVO().setProjectName("生活笔记").setProjectPath("/work-note/")
-        };
+        List<ProjectPathConfig.ProjectPathItem> list = projectPathConfig.getList();
+        if (CollectionUtils.isEmpty(list)) {
+            return new RecentlyOpenedRecordVO[0];
+        }
+        return list.stream()
+                .map(item ->
+                        new RecentlyOpenedRecordVO().setProjectName(item.getProName()).setProjectPath(item.getProPath()))
+                .toArray(RecentlyOpenedRecordVO[]::new);
     }
 
     /**
@@ -254,7 +268,7 @@ public class FileServiceApi {
         if (index < 0) {
             return packagePath;
         }
-        if (index + 1 > packagePath.length() -1) {
+        if (index + 1 > packagePath.length() - 1) {
             return null;
         }
         return packagePath.substring(index + 1);

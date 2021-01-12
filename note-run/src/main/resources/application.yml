@@ -1,0 +1,23 @@
+# tomcat容器配置
+#server:
+#  tomcat:
+#    uri-encoding: UTF-8
+#    max-threads: 1000
+#    min-spare-threads: 30
+#    max-http-form-post-size: 10485760
+# spring配置
+spring:
+  application:
+    name: yst-transport
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss  #设置返回json参数时间类型格式
+    time-zone: GMT+8   #设置返回时间类型 时区
+# 日志的方式打印sql
+logging:
+  level:
+    com.yst.admin.dao: DEBUG
+# 项目地址配置
+pro-path:
+  list:
+    - proName: Java笔记
+      proPath: /my_code/InterviewNote/
