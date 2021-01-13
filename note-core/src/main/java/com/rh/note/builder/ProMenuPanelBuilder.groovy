@@ -1,33 +1,29 @@
 package com.rh.note.builder
 
-
-import com.rh.note.annotation.ProManageSingleton
-import com.rh.note.common.ISingletonBuilder
+import com.rh.note.annotation.ComponentBean
+import com.rh.note.constants.FrameCategoryEnum
 import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
 import java.awt.BorderLayout
 
 /**
- * 项目管理窗口-菜单面板
+ * 项目管理--菜单面板
  */
-@ProManageSingleton(ProMenuPanelBuilder.builder_name)
-class ProMenuPanelBuilder implements ISingletonBuilder {
+@ComponentBean(FrameCategoryEnum.PRO_MANAGE)
+class ProMenuPanelBuilder {
 
-    static final String builder_name = "project_menu"
+    public static final String id = 'pro_menu_panel'
     @Autowired
     private SwingBuilder swingBuilder
+    @Autowired
+    private ImportProButtonBuilder importProButtonBuilder
 
-    @Override
-    void init(Closure children) {
-        swingBuilder.panel(id: id(),
+    void init() {
+        swingBuilder.panel(id: id,
                 constraints: BorderLayout.CENTER,
-        ){
-            children()
+        ) {
+            importProButtonBuilder.init()
         }
-    }
-
-    static String id() {
-        'project_menu'
     }
 }
