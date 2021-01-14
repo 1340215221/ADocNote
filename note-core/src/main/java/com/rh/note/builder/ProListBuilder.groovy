@@ -1,6 +1,7 @@
 package com.rh.note.builder
 
 import com.rh.note.annotation.ComponentBean
+import com.rh.note.common.BaseBuilder
 import com.rh.note.constants.FrameCategoryEnum
 import com.rh.note.event.ProListEvent
 import groovy.swing.SwingBuilder
@@ -12,7 +13,7 @@ import java.awt.BorderLayout
  * 项目管理--项目列表
  */
 @ComponentBean(FrameCategoryEnum.PRO_MANAGE)
-class ProListBuilder {
+class ProListBuilder implements BaseBuilder {
 
     public static final String id = 'pro_list'
     @Autowired

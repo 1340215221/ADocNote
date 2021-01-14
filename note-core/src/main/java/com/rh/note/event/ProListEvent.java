@@ -3,6 +3,7 @@ package com.rh.note.event;
 import com.rh.note.action.OperationAction;
 import com.rh.note.action.ProManageAction;
 import com.rh.note.annotation.ComponentBean;
+import com.rh.note.ao.ClickedProjectListAO;
 import com.rh.note.common.BaseEvent;
 import com.rh.note.constants.FrameCategoryEnum;
 import com.rh.note.vo.ProItemVO;
@@ -26,6 +27,11 @@ public class ProListEvent extends BaseEvent {
      */
     public void clicked_project_list(MouseEvent mouseEvent) {
         //todo
+        ClickedProjectListAO ao = operationAction.clickedProjectList(mouseEvent);
+        if (ao == null) {
+            return;
+        }
+        proManageAction.clickedProjectList(ao);
     }
 
     /**

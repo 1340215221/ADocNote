@@ -1,6 +1,6 @@
 package com.rh.note.aspect;
 
-import com.rh.note.common.BaseView;
+import com.rh.note.common.ViewThreadContext;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -36,7 +36,7 @@ public class ApiContextAspect {
      * 后置操作
      */
     private void afterProceed() {
-        BaseView.clearThreadContext();
+        ViewThreadContext.clearThreadContext();
     }
 
     /**
@@ -48,7 +48,7 @@ public class ApiContextAspect {
             Field field = targetClass.getSuperclass().getDeclaredField("context");
             field.setAccessible(true);
             Object context = field.get(joinPoint.getTarget());
-            BaseView.setThreadContext((ApplicationContext) context);
+            ViewThreadContext.setThreadContext((ApplicationContext) context);
         } catch (Exception e) {
             log.error("[获取event所属容器]-[没有获取到当前容器] error, class={}, method={}", targetClass.getName(),
                     ((MethodSignature) joinPoint.getSignature()).getMethod().getName(), e);

@@ -1,5 +1,7 @@
 package com.rh.note.api;
 
+import com.rh.note.view.ProListView;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
 
 /**
@@ -7,4 +9,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ProManageViewApi {
+    /**
+     * 获得项目列表中被选择的项
+     */
+    public @Nullable String getSelectedItemInProList() {
+        ProListView view = new ProListView().init();
+        return view.getSelectProPath();
+    }
 }

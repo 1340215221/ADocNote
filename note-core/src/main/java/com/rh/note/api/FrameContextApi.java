@@ -74,7 +74,7 @@ public class FrameContextApi {
         // 注册swingBuilder
         AnnotatedGenericBeanDefinition swingBeanDefinition = new AnnotatedGenericBeanDefinition(SwingBuilder.class);
         context.registerBeanDefinition("swingBuilder", swingBeanDefinition);
-        // 设置aop
+        // 设置aop处理器
         DefaultListableBeanFactory factory = (DefaultListableBeanFactory) currentContext.getAutowireCapableBeanFactory();
         factory.getBeanPostProcessors().stream()
                 .filter(processor -> processor instanceof AnnotationAwareAspectJAutoProxyCreator)
