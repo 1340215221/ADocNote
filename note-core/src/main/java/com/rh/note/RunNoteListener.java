@@ -20,6 +20,7 @@ public class RunNoteListener implements ApplicationListener<ContextRefreshedEven
 
     /**
      * 在spring容器初始化完成后执行
+     * 注意: 子容器在初始化时也会被执行
      */
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {

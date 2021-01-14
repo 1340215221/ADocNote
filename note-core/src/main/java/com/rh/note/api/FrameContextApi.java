@@ -8,9 +8,12 @@ import groovy.swing.SwingBuilder;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator;
 import org.springframework.beans.factory.annotation.AnnotatedGenericBeanDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
@@ -52,7 +55,7 @@ public class FrameContextApi {
             }
             // 过滤窗口类型
             Object frameCategory = annotationParamMap.get("frame");
-            if (!ao.getFrameCategoryEnum().equals(frameCategory)) {
+            if (!(frameCategory instanceof FrameCategoryEnum) || !((FrameCategoryEnum) frameCategory).match(ao.getFrameCategoryEnum())) {
                 return;
             }
             // 获得对象名
@@ -71,9 +74,16 @@ public class FrameContextApi {
         // 注册swingBuilder
         AnnotatedGenericBeanDefinition swingBeanDefinition = new AnnotatedGenericBeanDefinition(SwingBuilder.class);
         context.registerBeanDefinition("swingBuilder", swingBeanDefinition);
+        // 设置aop
+        DefaultListableBeanFactory factory = (DefaultListableBeanFactory) currentContext.getAutowireCapableBeanFactory();
+        factory.getBeanPostProcessors().stream()
+                .filter(processor -> processor instanceof AnnotationAwareAspectJAutoProxyCreator)
+                .forEach(processor -> {
+                    DefaultListableBeanFactory beanFactory = (DefaultListableBeanFactory) context.getBeanFactory();
+                    beanFactory.addBeanPostProcessor(processor);
+                });
         // 关联父容器
         context.setParent(currentContext);
         context.refresh();
-        // todo 如何将子容器放到对应的线程中
     }
 }
