@@ -3,12 +3,14 @@ package com.rh.note.api;
 import com.rh.note.annotation.ComponentBean;
 import com.rh.note.ao.LoadContextAO;
 import com.rh.note.constants.FrameCategoryEnum;
+import com.rh.note.constants.ScopeEnum;
 import groovy.swing.SwingBuilder;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.AnnotatedGenericBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.context.annotation.ScannedGenericBeanDefinition;
@@ -23,6 +25,8 @@ import java.util.Set;
  */
 @Component
 public class FrameContextApi {
+
+    private ApplicationContext currentContext;
 
     /**
      * 加载一个窗口容器
@@ -50,24 +54,24 @@ public class FrameContextApi {
                 return;
             }
             // 获得对象名
-            Object name = annotationParamMap.get("name");
-
-            Object value = annotationParamMap.get("value");
-            if (value instanceof String && StringUtils.isNotBlank(((String) value))) {
-                workContext.registerBeanDefinition((String) value, d);
-            } else {
+            Object beanName = annotationParamMap.get("name");
+            if (!(beanName instanceof String)) {
                 String className = d.getBeanClassName();
-                String simpleClassName = className.substring(className.lastIndexOf('.') + 1);
-                log.warn("" + simpleClassName);
-                workContext.registerBeanDefinition(simpleClassName, d);
+                // 类名作为对象名
+                beanName = className.substring(className.lastIndexOf(".") + 1);
             }
+            Object scope = annotationParamMap.get("scope");
+            if (ScopeEnum.PROTOTYPE.equals(scope)) {
+                d.setScope(ScopeEnum.PROTOTYPE.getValue());
+            }
+            context.registerBeanDefinition((String) beanName, d);
         });
         // 注册swingBuilder
         AnnotatedGenericBeanDefinition swingBeanDefinition = new AnnotatedGenericBeanDefinition(SwingBuilder.class);
-        workContext.registerBeanDefinition("swingBuilder", swingBeanDefinition);
+        context.registerBeanDefinition("swingBuilder", swingBeanDefinition);
         // 关联父容器
-        workContext.setParent(mainContext);
-        workContext.refresh();
-        app = workContext;
+        context.setParent(currentContext);
+        context.refresh();
+        // todo 如何将子容器放到对应的线程中
     }
 }

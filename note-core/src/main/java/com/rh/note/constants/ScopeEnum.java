@@ -1,5 +1,6 @@
 package com.rh.note.constants;
 
+import com.rh.note.common.BaseEnum;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -9,15 +10,16 @@ import lombok.RequiredArgsConstructor;
  */
 @Getter
 @RequiredArgsConstructor
-public enum ScopeEnum {
+public enum ScopeEnum implements BaseEnum<String> {
     /**
      * 单例
      */
-    SINGLETON(0),
+    SINGLETON("singleton"),
     /**
      * 多例
      */
+    PROTOTYPE("prototype"),
     ;
     @NonNull
-    private Integer value;
+    private String value;
 }
