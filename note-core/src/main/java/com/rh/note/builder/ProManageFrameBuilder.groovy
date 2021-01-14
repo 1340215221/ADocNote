@@ -13,7 +13,7 @@ import java.awt.*
  * 项目管理窗口
  */
 @ComponentBean(FrameCategoryEnum.PRO_MANAGE)
-class ProManageBuilder {
+class ProManageFrameBuilder {
 
     public static final String frame_id = 'pro_manage_frame'
     public static final String panel_id = 'pro_manage_panel'
@@ -28,15 +28,12 @@ class ProManageBuilder {
     void init() {
         // 面板
         def panel = {
-            swingBuilder.list(id: panel_id,
-                    fixedCellHeight: 50,
-                    fixedCellWidth: 300,
-                    constraints: BorderLayout.WEST,
-                    mouseClicked: {
-                        panelBuilder.init()
-                        proListBuilder.init()
-                    },
-            ) {
+            swingBuilder.panel(id: panel_id,
+                    preferredSize: [800, 500],
+                    layout: new BorderLayout(),
+            ){
+                panelBuilder.init()
+                proListBuilder.init()
             }
         }
         // 窗口
@@ -50,6 +47,8 @@ class ProManageBuilder {
         }
         // 设置窗口位置
         windowCentered()
+        // 显示窗口
+        showFrame()
     }
 
     /**
@@ -60,4 +59,10 @@ class ProManageBuilder {
         swingBuilder."${frame_id}".locationRelativeTo = null
     }
 
+    /**
+     * 显示窗口
+     */
+    private void showFrame() {
+        swingBuilder."${frame_id}".visible = true
+    }
 }
