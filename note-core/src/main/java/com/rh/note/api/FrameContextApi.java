@@ -55,7 +55,7 @@ public class FrameContextApi {
             }
             // 获得对象名
             Object beanName = annotationParamMap.get("name");
-            if (!(beanName instanceof String)) {
+            if (!(beanName instanceof String) || StringUtils.isBlank((CharSequence) beanName)) {
                 String className = d.getBeanClassName();
                 // 类名作为对象名
                 beanName = className.substring(className.lastIndexOf(".") + 1);
