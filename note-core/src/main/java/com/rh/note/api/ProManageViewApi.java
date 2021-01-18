@@ -12,7 +12,7 @@ public class ProManageViewApi {
     /**
      * 获得项目列表中被选择的项
      */
-    public @Nullable String getSelectedItemInProList() {
+    public @Nullable String getSelectedProPathInProList() {
         ProListView view = new ProListView().init();
         return view.getSelectProPath();
     }

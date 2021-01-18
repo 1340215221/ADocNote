@@ -1,5 +1,6 @@
 package com.rh.note.action;
 
+import com.rh.note.ao.CheckIsAdocProjectAO;
 import com.rh.note.ao.ClickedProjectListAO;
 import com.rh.note.api.FileApi;
 import com.rh.note.api.ProManageViewApi;
@@ -31,8 +32,8 @@ public class OperationAction {
             return null;
         }
         // 获得被选择的项
-        String proPath = proManageViewApi.getSelectedItemInProList();
-        CheckIsAdocProjectAO ao = new CheckIsAdocProjectAO();
+        String proPath = proManageViewApi.getSelectedProPathInProList();
+        CheckIsAdocProjectAO ao = new CheckIsAdocProjectAO(proPath);
         return fileApi.checkIsAdocProject(ao);
     }
 }

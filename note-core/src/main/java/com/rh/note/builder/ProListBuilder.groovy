@@ -4,9 +4,11 @@ import com.rh.note.annotation.ComponentBean
 import com.rh.note.common.BaseBuilder
 import com.rh.note.constants.FrameCategoryEnum
 import com.rh.note.event.ProListEvent
+import com.rh.note.vo.ProItemVO
 import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
+import javax.swing.JList
 import java.awt.BorderLayout
 
 /**
@@ -32,5 +34,9 @@ class ProListBuilder implements BaseBuilder {
                 listData: event.loadProListContent()
         ) {
         }
+    }
+
+    JList<ProItemVO> getList() {
+        return swingBuilder."${id}"
     }
 }

@@ -26,7 +26,6 @@ public class ProListEvent extends BaseEvent {
      * 点击项目列表
      */
     public void clicked_project_list(MouseEvent mouseEvent) {
-        //todo
         ClickedProjectListAO ao = operationAction.clickedProjectList(mouseEvent);
         if (ao == null) {
             return;
@@ -40,7 +39,7 @@ public class ProListEvent extends BaseEvent {
     public ProItemVO[] loadProListContent() {
         // todo
         return new ProItemVO[]{
-                new ProItemVO().setProjectName("Java笔记").setProjectPath("/my_code/ADocNote")
+                new ProItemVO().setProjectName("Java笔记").setProjectPath("/my_code/InterviewNote")
         };
     }
 }
