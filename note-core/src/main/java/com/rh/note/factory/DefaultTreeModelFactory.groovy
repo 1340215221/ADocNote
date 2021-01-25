@@ -17,7 +17,7 @@ class DefaultTreeModelFactory extends AbstractFactory {
 
     @Override
     Object newInstance(FactoryBuilderSupport builder, Object name, Object value, Map attributes) throws InstantiationException, IllegalAccessException {
-        return new DefaultTreeModel(new DefaultMutableTreeNode())
+        return new DefaultTreeModel(new DefaultMutableTreeNode("空项目"))
     }
 
     @PostConstruct

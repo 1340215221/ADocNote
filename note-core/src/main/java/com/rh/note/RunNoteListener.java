@@ -26,7 +26,7 @@ public class RunNoteListener implements ApplicationListener<ContextRefreshedEven
     public void onApplicationEvent(ContextRefreshedEvent event) {
         // 只在主容器启动时加载
         if (mainContext.equals(event.getApplicationContext())) {
-            proManageAction.loadNewFrameContext();
+            proManageAction.openProMangeFrame();
         }
     }
 }

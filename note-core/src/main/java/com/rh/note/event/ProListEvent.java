@@ -30,7 +30,7 @@ public class ProListEvent extends BaseEvent {
         if (ao == null) {
             return;
         }
-        proManageAction.clickedProjectList(ao);
+        proManageAction.openAdocProject(ao);
     }
 
     /**

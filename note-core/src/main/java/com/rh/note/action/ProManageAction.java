@@ -18,16 +18,16 @@ public class ProManageAction {
     private FrameContextApi frameContextApi;
 
     /**
-     * 为窗口创建一个容器
+     * 打开项目管理窗口
      */
-    public void loadNewFrameContext() {
+    public void openProMangeFrame() {
         frameContextApi.loadContext(new LoadContextAO(FrameCategoryEnum.PRO_MANAGE));
     }
 
     /**
-     * 点击项目列表
+     * 在项目列表中打开一个项目
      */
-    public void clickedProjectList(@NonNull ClickedProjectListAO ao) {
+    public void openAdocProject(@NonNull ClickedProjectListAO ao) {
         LoadContextAO loadContextAO = ao.copyToLoadContextAO();
         frameContextApi.loadContext(loadContextAO);
         frameContextApi.closeContext();

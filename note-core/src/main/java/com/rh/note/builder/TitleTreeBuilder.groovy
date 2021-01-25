@@ -1,6 +1,7 @@
 package com.rh.note.builder
 
 import com.rh.note.annotation.ComponentBean
+import com.rh.note.common.BaseBuilder
 import com.rh.note.constants.FrameCategoryEnum
 import com.rh.note.event.TitleTreeEvent
 import com.rh.note.factory.DefaultTreeModelFactory
@@ -8,13 +9,15 @@ import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
 import javax.annotation.PostConstruct
+import javax.swing.JTree
+import javax.swing.tree.DefaultTreeModel
 import java.awt.*
 
 /**
  * 标题树
  */
 @ComponentBean(FrameCategoryEnum.WORK)
-class TitleTreeBuilder {
+class TitleTreeBuilder implements BaseBuilder {
 
     public static final String tree_id = 'title_tree'
     public static final String model_id = 'title_tree_model'
@@ -28,7 +31,10 @@ class TitleTreeBuilder {
     @PostConstruct
     void init() {
         def model = {
-            swingBuilder.model(id: "${model_id}")
+            swingBuilder.model(id: "${model_id}",
+            ) {
+                event.load_root_node()
+            }
         }
 
         def titleTree = {
@@ -48,4 +54,11 @@ class TitleTreeBuilder {
         }
     }
 
+    JTree getTree() {
+        return swingBuilder."${tree_id}"
+    }
+
+    DefaultTreeModel getModel() {
+        return swingBuilder."${model_id}"
+    }
 }

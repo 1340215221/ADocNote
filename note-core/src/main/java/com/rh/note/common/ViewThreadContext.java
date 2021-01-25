@@ -1,5 +1,6 @@
 package com.rh.note.common;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.context.ConfigurableApplicationContext;
 
@@ -29,7 +30,14 @@ public interface ViewThreadContext {
     /**
      * 获取当前线程的容器
      */
-    static @Nullable ConfigurableApplicationContext getThreadContext() {
+    static @NotNull ConfigurableApplicationContext getThreadContext() {
+        return viewContext.get();
+    }
+
+    /**
+     * 获取当前线程的容器
+     */
+    static @Nullable ConfigurableApplicationContext getThreadContextOrNull() {
         return viewContext.get();
     }
 }

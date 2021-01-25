@@ -74,7 +74,12 @@ public class FrameContextApi {
         });
         // 注册swingBuilder
         AnnotatedGenericBeanDefinition swingBeanDefinition = new AnnotatedGenericBeanDefinition(SwingBuilder.class);
-        context.registerBeanDefinition("swingBuilder", swingBeanDefinition);
+        context.registerBeanDefinition("SwingBuilder", swingBeanDefinition);
+        // 注册contextConfig
+        Object contextConfig = ao.getContextConfig();
+        if (contextConfig != null) {
+            context.getBeanFactory().registerSingleton(contextConfig.getClass().getSimpleName(), contextConfig);
+        }
         // 设置aop处理器
         DefaultListableBeanFactory factory = (DefaultListableBeanFactory) currentContext.getAutowireCapableBeanFactory();
         factory.getBeanPostProcessors().stream()
@@ -92,7 +97,7 @@ public class FrameContextApi {
      * 关闭窗口
      */
     public void closeContext() {
-        ConfigurableApplicationContext currentContext = ViewThreadContext.getThreadContext();
+        ConfigurableApplicationContext currentContext = ViewThreadContext.getThreadContextOrNull();
         if (currentContext == null) {
             return;
         }

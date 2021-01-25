@@ -31,6 +31,20 @@ public abstract class BaseView<B extends BaseBuilder, C> {
     private B builder;
 
     /**
+     * 创建对象
+     */
+    protected <R extends BaseView> @NotNull R create(IArgsConstructorBean arg) {
+        Class<B> clazz = getBuilderType();
+        String className = getBuilderClassName(clazz, arg != null ? arg.getBeanNameArgs() : null);
+        if (StringUtils.isBlank(className)) {
+            throw new ApplicationException(ErrorCodeEnum.FAILED_TO_GET_THE_BUILDER_CLASS_NAME);
+        }
+        builder = (B) context.getBean(className, arg);
+        context.getBeanFactory().registerSingleton(className, builder);
+        return (R) this;
+    }
+
+    /**
      * 从容器中获得builder
      */
     protected <R extends BaseView> @Nullable R init(String... args) {
@@ -42,12 +56,11 @@ public abstract class BaseView<B extends BaseBuilder, C> {
             throw new ApplicationException(ErrorCodeEnum.FAILED_TO_GET_THE_BUILDER_CLASS_NAME);
         }
         // 从容器中获得builder
-        try {
-            builder = (B) context.getBean(className);
-            return (R) this;
-        } catch (Exception e) { // todo 应该只捕获对象不存在异常
+        if (!context.containsBean(className)) {
             return null;
         }
+        builder = (B) context.getBean(className);
+        return (R) this;
     }
 
     /**
