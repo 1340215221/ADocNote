@@ -15,7 +15,7 @@ import javax.swing.*;
 public class ProListView extends BaseView<ProListBuilder, JList<ProItemVO>> {
 
     public @NotNull ProListView init() {
-        return super.init(null);
+        return super.init();
     }
 
     /**

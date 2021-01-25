@@ -1,6 +1,9 @@
 package com.rh.note.action;
 
+import com.rh.note.api.FrameContextApi;
+import com.rh.note.api.WorkViewApi;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -9,4 +12,16 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class WorkAction {
+
+    @Autowired
+    private WorkViewApi workViewApi;
+    @Autowired
+    private FrameContextApi frameContextApi;
+
+    /**
+     * 关闭窗口
+     */
+    public void closeContext() {
+        frameContextApi.closeContext();
+    }
 }

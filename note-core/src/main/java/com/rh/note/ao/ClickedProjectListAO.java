@@ -1,5 +1,6 @@
 package com.rh.note.ao;
 
+import com.rh.note.constants.FrameCategoryEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -13,4 +14,8 @@ public class ClickedProjectListAO {
      * 项目路径
      */
     private String proPath;
+
+    public LoadContextAO copyToLoadContextAO() {
+        return new LoadContextAO(FrameCategoryEnum.WORK);
+    }
 }

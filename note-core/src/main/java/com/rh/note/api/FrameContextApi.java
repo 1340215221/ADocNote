@@ -2,6 +2,7 @@ package com.rh.note.api;
 
 import com.rh.note.annotation.ComponentBean;
 import com.rh.note.ao.LoadContextAO;
+import com.rh.note.common.ViewThreadContext;
 import com.rh.note.constants.FrameCategoryEnum;
 import com.rh.note.constants.ScopeEnum;
 import groovy.swing.SwingBuilder;
@@ -11,10 +12,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator;
 import org.springframework.beans.factory.annotation.AnnotatedGenericBeanDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.context.annotation.ScannedGenericBeanDefinition;
@@ -85,5 +86,16 @@ public class FrameContextApi {
         // 关联父容器
         context.setParent(currentContext);
         context.refresh();
+    }
+
+    /**
+     * 关闭窗口
+     */
+    public void closeContext() {
+        ConfigurableApplicationContext currentContext = ViewThreadContext.getThreadContext();
+        if (currentContext == null) {
+            return;
+        }
+        currentContext.close();
     }
 }

@@ -8,7 +8,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
@@ -48,7 +48,7 @@ public class ApiContextAspect {
             Field field = targetClass.getSuperclass().getDeclaredField("context");
             field.setAccessible(true);
             Object context = field.get(joinPoint.getTarget());
-            ViewThreadContext.setThreadContext((ApplicationContext) context);
+            ViewThreadContext.setThreadContext((ConfigurableApplicationContext) context);
         } catch (Exception e) {
             log.error("[获取event所属容器]-[没有获取到当前容器] error, class={}, method={}", targetClass.getName(),
                     ((MethodSignature) joinPoint.getSignature()).getMethod().getName(), e);

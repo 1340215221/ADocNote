@@ -28,7 +28,8 @@ public class ProManageAction {
      * 点击项目列表
      */
     public void clickedProjectList(@NonNull ClickedProjectListAO ao) {
-        //todo
-        System.out.println(ao.getProPath());
+        LoadContextAO loadContextAO = ao.copyToLoadContextAO();
+        frameContextApi.loadContext(loadContextAO);
+        frameContextApi.closeContext();
     }
 }

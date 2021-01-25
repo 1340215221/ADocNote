@@ -10,7 +10,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
 
 import java.lang.reflect.ParameterizedType;
@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 @Slf4j
 public abstract class BaseView<B extends BaseBuilder, C> {
 
-    private final ApplicationContext context = ViewThreadContext.getThreadContext();
+    private final ConfigurableApplicationContext context = ViewThreadContext.getThreadContext();
     private B builder;
 
     /**

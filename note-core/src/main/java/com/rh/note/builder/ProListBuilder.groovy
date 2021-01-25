@@ -31,7 +31,7 @@ class ProListBuilder implements BaseBuilder {
                 mouseClicked: {
                     event.clicked_project_list(it)
                 },
-                listData: event.loadProListContent()
+                listData: event.load_pro_list_content()
         ) {
         }
     }

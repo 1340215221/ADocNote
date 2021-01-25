@@ -36,7 +36,7 @@ public class ProListEvent extends BaseEvent {
     /**
      * 加载项目列表内容
      */
-    public ProItemVO[] loadProListContent() {
+    public ProItemVO[] load_pro_list_content() {
         // todo
         return new ProItemVO[]{
                 new ProItemVO().setProjectName("Java笔记").setProjectPath("/my_code/InterviewNote")

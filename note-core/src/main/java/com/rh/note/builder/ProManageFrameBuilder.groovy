@@ -6,6 +6,7 @@ import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
 import javax.annotation.PostConstruct
+import javax.annotation.PreDestroy
 import javax.swing.*
 import java.awt.*
 
@@ -15,8 +16,7 @@ import java.awt.*
 @ComponentBean(FrameCategoryEnum.PRO_MANAGE)
 class ProManageFrameBuilder {
 
-    public static final String frame_id = 'pro_manage_frame'
-    public static final String panel_id = 'pro_manage_panel'
+    public static final String id = 'pro_manage_frame'
     @Autowired
     private SwingBuilder swingBuilder
     @Autowired
@@ -28,8 +28,7 @@ class ProManageFrameBuilder {
     void init() {
         // 面板
         def panel = {
-            swingBuilder.panel(id: panel_id,
-                    preferredSize: [800, 500],
+            swingBuilder.panel(preferredSize: [800, 500],
                     layout: new BorderLayout(),
             ){
                 panelBuilder.init()
@@ -37,7 +36,7 @@ class ProManageFrameBuilder {
             }
         }
         // 窗口
-        swingBuilder.frame(id: frame_id,
+        swingBuilder.frame(id: id,
                 pack: true,
                 resizable: false,
                 defaultCloseOperation: WindowConstants.EXIT_ON_CLOSE,
@@ -56,13 +55,18 @@ class ProManageFrameBuilder {
      * 设置窗口居中. 需要放在添加完子控件, pack通过子控件计算完窗口大小后
      */
     private void windowCentered() {
-        swingBuilder."${frame_id}".locationRelativeTo = null
+        swingBuilder."${id}".locationRelativeTo = null
     }
 
     /**
      * 显示窗口
      */
     private void showFrame() {
-        swingBuilder."${frame_id}".visible = true
+        swingBuilder."${id}".visible = true
+    }
+
+    @PreDestroy
+    void destroy() {
+        swingBuilder."${id}".dispose()
     }
 }

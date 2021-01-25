@@ -1,27 +1,66 @@
 package com.rh.note.builder
 
 import com.rh.note.annotation.ComponentBean
+import com.rh.note.common.BaseBuilder
 import com.rh.note.constants.FrameCategoryEnum
+import com.rh.note.event.WorkFrameEvent
 import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
 import javax.annotation.PostConstruct
-import javax.swing.WindowConstants
+import javax.annotation.PreDestroy
+import javax.swing.*
+import java.awt.*
 
 /**
  * 工作窗口 构建者
  */
 @ComponentBean(FrameCategoryEnum.WORK)
-class WorkFrameBuilder {
+class WorkFrameBuilder implements BaseBuilder {
 
-    public static final String id = ''
+    public static final String id = 'work_frame'
     @Autowired
     private SwingBuilder swingBuilder
     @Autowired
     private WorkFrameEvent event
+    @Autowired
+    private TitleNavigatePanelBuilder navigateButtonPanelBuilder
+    @Autowired
+    private TabbedPaneBuilder tabbedPaneBuilder
+    @Autowired
+    private LeftSidebarMenuPanelBuilder leftSidebarMenuPanelBuilder
+    @Autowired
+    private TitleTreeBuilder titleTreeBuilder
 
     @PostConstruct
     void init() {
+        def center_panel = {
+            swingBuilder.panel(constraints: BorderLayout.CENTER,
+                    layout: new BorderLayout(),
+            ){
+                navigateButtonPanelBuilder.init()
+                tabbedPaneBuilder.init()
+            }
+        }
+
+        def left_panel = {
+            swingBuilder.panel(constraints: BorderLayout.WEST,
+                    layout: new BorderLayout(),
+            ) {
+                leftSidebarMenuPanelBuilder.init()
+                titleTreeBuilder.init()
+            }
+        }
+
+        def panel = {
+            swingBuilder.panel(layout: new BorderLayout(),
+                    preferredSize: [900, 600],
+            ){
+                center_panel()
+                left_panel()
+            }
+        }
+
         swingBuilder.frame(id: id,
                 title: 'adoc笔记',
                 pack: true,
@@ -34,6 +73,33 @@ class WorkFrameBuilder {
                     }
                 }
         ) {
+            panel()
         }
+        windowCentered()
+        showFrame()
+    }
+
+    /**
+     * 窗口居中
+     * 设置窗口居中. 需要放在添加完子控件, pack通过子控件计算完窗口大小后
+     */
+    private void windowCentered() {
+        swingBuilder."${id}".locationRelativeTo = null
+    }
+
+    /**
+     * 显示窗口
+     */
+    private void showFrame() {
+        swingBuilder."${id}".visible = true
+    }
+
+    @PreDestroy
+    void destroy() {
+        swingBuilder."${id}".dispose()
+    }
+
+    JFrame getFrame() {
+        return swingBuilder."${id}"
     }
 }
