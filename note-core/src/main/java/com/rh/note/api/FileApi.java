@@ -3,11 +3,8 @@ package com.rh.note.api;
 import cn.hutool.core.io.FileUtil;
 import com.rh.note.ao.CheckIsAdocProjectAO;
 import com.rh.note.ao.ClickedProjectListAO;
-import com.rh.note.common.IncludeLineProcessor;
-import com.rh.note.file.ReadMeFile;
+import com.rh.note.file.ReadMeTitleFile;
 import com.rh.note.line.TitleLine;
-import com.rh.note.processor.TitleLineProcessor;
-import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
 
@@ -42,27 +39,13 @@ public class FileApi {
      * 读取项目的根标题
      */
     public @Nullable TitleLine readProjectRootTitle() {
-        ReadMeFile readMe = new ReadMeFile().init();
+        ReadMeTitleFile readMe = new ReadMeTitleFile().init();
         if (readMe == null) {
             return null;
         }
-        TitleLineProcessor titleProcessor = new TitleLineProcessor(readMe.getFilePath());
-        IncludeLineProcessor includeProcessor = new IncludeLineProcessor(readMe.getFilePath());
-        readMe.readFile(titleProcessor, includeProcessor);
-        includeProcessor.readIncludeFile();
-        titleProcessor.addIncludeTitle(includeProcessor);
-        return titleProcessor.getRootTitle();
-    }
-
-    /**
-     * 检查项目有根标题
-     */
-    public void checkHasRootTitle(ClickedProjectListAO ao) {
-        if (ao == null || StringUtils.isBlank(ao.getProPath())) {
-            return;
-        }
-        File file = new File(ao.getProPath());
-        if (file.exists()) {
-        }
+        readMe.readTitle();
+        readMe.loadChildrenFile();
+        readMe.addTitleRelation();
+        return readMe.getRootTitle();
     }
 }

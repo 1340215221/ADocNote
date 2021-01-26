@@ -1,6 +1,7 @@
 package com.rh.note.line;
 
 import com.rh.note.common.IArgsConstructorBean;
+import com.rh.note.common.IReadTitleLine;
 import com.rh.note.path.TitleBeanPath;
 import com.rh.note.syntax.TitleSyntax;
 import lombok.Data;
@@ -13,7 +14,7 @@ import java.util.List;
  * 标题行
  */
 @Data
-public class TitleLine implements IArgsConstructorBean {
+public class TitleLine implements IArgsConstructorBean, IReadTitleLine {
     /**
      * 父标题
      */
@@ -49,5 +50,12 @@ public class TitleLine implements IArgsConstructorBean {
     @Override
     public @NotNull String[] getBeanNameArgs() {
         return new String[0];
+    }
+
+    public void addChildrenTitles(TitleLine childrenTitle) {
+        if (childrenTitle == null) {
+            return;
+        }
+        childrenTitles.add(childrenTitle);
     }
 }

@@ -3,6 +3,7 @@ package com.rh.note.syntax;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.NumberUtil;
 import com.rh.note.constants.RegexConstants;
+import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,6 +13,7 @@ import java.util.regex.Pattern;
 /**
  * 引用语法
  */
+@Getter
 public class IncludeSyntax {
 
     /**
