@@ -19,7 +19,7 @@ import java.lang.reflect.Field;
 @Slf4j
 @Aspect
 @Component
-public class ApiContextAspect {
+public class ThreadContextAspect {
 
     @Pointcut("execution(* com.rh.note.event.*Event.*(..))")
     public void executionEvent() {}

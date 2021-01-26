@@ -1,24 +1,23 @@
 package com.rh.note.line;
 
 import com.rh.note.common.IArgsConstructorBean;
+import com.rh.note.path.TitleBeanPath;
 import com.rh.note.syntax.TitleSyntax;
 import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 标题行
  */
 @Data
 public class TitleLine implements IArgsConstructorBean {
+    /**
+     * 父标题
+     */
+    private TitleLine parentTitle;
     /**
      * 子标题
      */
@@ -27,16 +26,10 @@ public class TitleLine implements IArgsConstructorBean {
      * 语法对象
      */
     private TitleSyntax titleSyntax;
-
-    public @Nullable TitleLine init(String lineText) {
-        if (StringUtils.isBlank(lineText)) {
-            return null;
-        }
-        Matcher matcher = Pattern.compile("").matcher(lineText);
-        if (!matcher.find()) {
-            return null;
-        }
-    }
+    /**
+     * 对象路径
+     */
+    private TitleBeanPath beanPath;
 
     /**
      * 获得标题名

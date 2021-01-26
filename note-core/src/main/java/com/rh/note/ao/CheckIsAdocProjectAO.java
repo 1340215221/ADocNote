@@ -4,6 +4,7 @@ import cn.hutool.core.io.LineHandler;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.line.TitleLine;
+import com.rh.note.syntax.TitleSyntax;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -29,11 +30,20 @@ public class CheckIsAdocProjectAO {
         return new FindRootTitleHandlerImpl();
     }
 
+    public String getReadMeFilePath() {
+        if (StringUtils.isBlank(proPath)) {
+            return "";
+        }
+        return proPath + "README.adoc";
+    }
+
     /**
      * 查找根标题 处理器
      */
     public static class FindRootTitleHandlerImpl implements LineHandler {
-
+        /**
+         * 是否找到根标题
+         */
         private boolean isFind = false;
 
         @Override
@@ -41,8 +51,8 @@ public class CheckIsAdocProjectAO {
             if (isFind || StringUtils.isBlank(lineText)) {
                 return;
             }
-            TitleLine titleLine = new TitleLine().init(lineText);
-            if (titleLine == null || titleLine.getLevel() > 1) {
+            TitleSyntax titleSyntax = new TitleSyntax().init(lineText);
+            if (titleSyntax == null || titleSyntax.getLevel() > 1) {
                 throw new ApplicationException(ErrorCodeEnum.THE_READ_ME_FILE_DOES_NOT_HAVE_A_FIRST_LEVEL_TITLE);
             }
             isFind = true;
