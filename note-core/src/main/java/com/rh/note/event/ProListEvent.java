@@ -39,7 +39,7 @@ public class ProListEvent extends BaseEvent {
     public ProItemVO[] loadProListContent() {
         // todo
         return new ProItemVO[]{
-                new ProItemVO().setProjectName("Java笔记").setProjectPath("/my_code/InterviewNote")
+                new ProItemVO().setProjectName("Java笔记").setProjectPath("/home/hang/Documents/Java-not")
         };
     }
 }
