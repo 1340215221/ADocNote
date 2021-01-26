@@ -49,8 +49,9 @@ public class FileApi {
         TitleLineProcessor titleProcessor = new TitleLineProcessor(readMe.getFilePath());
         IncludeLineProcessor includeProcessor = new IncludeLineProcessor(readMe.getFilePath());
         readMe.readFile(titleProcessor, includeProcessor);
-        // todo
-        return null;
+        includeProcessor.readIncludeFile();
+        titleProcessor.addIncludeTitle(includeProcessor);
+        return titleProcessor.getRootTitle();
     }
 
     /**
