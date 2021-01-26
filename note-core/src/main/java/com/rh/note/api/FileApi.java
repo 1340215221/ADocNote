@@ -1,5 +1,7 @@
 package com.rh.note.api;
 
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.LineHandler;
 import com.rh.note.ao.CheckIsAdocProjectAO;
 import com.rh.note.ao.ClickedProjectListAO;
 import com.rh.note.config.ProjectConfig;
@@ -34,13 +36,11 @@ public class FileApi {
         if (!file.exists() || !file.isDirectory()) {
             return null;
         }
-        String[] childFileArr = file.list();
-        if (ArrayUtils.isEmpty(childFileArr)) {
+        File readMeFile = new File(ao.getReadMeFilePath());
+        if (!readMeFile.exists() || !readMeFile.isFile()) {
             return null;
         }
-        if (Arrays.stream(childFileArr).noneMatch(filePath -> filePath.endsWith("README.adoc"))) {
-            return null;
-        }
+        FileUtil.readUtf8Lines(readMeFile, ao.getLineHandler());
         return ao.copyTo();
     }
 
@@ -58,5 +58,17 @@ public class FileApi {
         }
         new AdocFile()
         return null;
+    }
+
+    /**
+     * 检查项目有根标题
+     */
+    public void checkHasRootTitle(ClickedProjectListAO ao) {
+        if (ao == null || StringUtils.isBlank(ao.getProPath())) {
+            return;
+        }
+        File file = new File(ao.getProPath());
+        if (file.exists()) {
+        }
     }
 }
