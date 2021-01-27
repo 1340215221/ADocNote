@@ -19,6 +19,12 @@ public class WorkViewApi {
         if (rooTitle == null) {
             return;
         }
+        // 删除旧节点
+        RootTitleNodeView oldNodeView = new RootTitleNodeView().init();
+        if (oldNodeView != null) {
+            oldNodeView.deleteAllNote();
+        }
+        // 更新新节点
         RootTitleNodeView nodeView = new RootTitleNodeView().create(rooTitle);
         TreeModelView modelView = new TreeModelView().init();
         modelView.setRootNode(nodeView);

@@ -33,8 +33,8 @@ class RootTitleNodeBuilder implements BaseBuilder {
     @PostConstruct
     void init() {
         swingBuilder.ttNode(id: id,
-                userObject: this.titleLine.getTitleName(),
-                titleLine: this.titleLine,
+                userObject: titleLine.getTitleName(),
+                titleLine: titleLine,
         ) {
             initChildrenNode(titleLine)
         }
@@ -51,7 +51,7 @@ class RootTitleNodeBuilder implements BaseBuilder {
         titleLine.getChildrenTitle().each { children ->
             swingBuilder.ttNode(id: nodeId(children.getBeanPathStr()),
                     userObject: children.getTitleName(),
-                    vo: children,
+                    titleLine: children,
             ) {
                 this.initChildrenNode(children)
             }

@@ -20,6 +20,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.context.annotation.ScannedGenericBeanDefinition;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -37,7 +38,9 @@ public class FrameContextApi {
     /**
      * 加载一个窗口容器
      */
+    @Async
     public void loadContext(LoadContextAO ao) {
+        System.out.println(Thread.currentThread());
         if (ao == null || ao.getFrameCategoryEnum() == null) {
             return;
         }

@@ -49,7 +49,7 @@ public interface ReadTitleLineImpl extends IReadTitleLine {
      * 关联子标题
      */
     default void relationChild(ReadTitleLineImpl titleLine) {
-        if (titleLine == null || CollectionUtils.isEmpty(getChildrenTitle())) {
+        if (titleLine == null || getChildrenTitle() == null) {
             return;
         }
         getChildrenTitle().add(titleLine);

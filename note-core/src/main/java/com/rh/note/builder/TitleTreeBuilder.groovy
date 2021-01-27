@@ -32,8 +32,7 @@ class TitleTreeBuilder implements BaseBuilder {
     void init() {
         def model = {
             swingBuilder.model(id: "${model_id}",
-            ) {
-            }
+            )
         }
 
         def titleTree = {

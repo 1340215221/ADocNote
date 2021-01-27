@@ -10,6 +10,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
 
@@ -27,8 +29,21 @@ import java.util.regex.Pattern;
 @Slf4j
 public abstract class BaseView<B extends BaseBuilder, C> {
 
+    /**
+     * 当前线程所属容器
+     */
+    @NotNull
     private final ConfigurableApplicationContext context = ViewThreadContext.getThreadContext();
+    /**
+     * 对应的构造者
+     */
+    @NotNull
     private B builder;
+    /**
+     * builder在spring容器中的名字
+     */
+    @NotNull
+    private String beanName;
 
     /**
      * 创建对象
@@ -45,7 +60,26 @@ public abstract class BaseView<B extends BaseBuilder, C> {
             throw new ApplicationException(ErrorCodeEnum.FAILED_TO_GET_THE_BUILDER_CLASS_NAME);
         }
         context.getBeanFactory().registerSingleton(beanNameWithArgs, builder);
+        beanName = beanNameWithArgs;
         return (R) this;
+    }
+
+    /**
+     * 销毁对象
+     */
+    protected void destroy() {
+        ConfigurableListableBeanFactory beanFactory = context.getBeanFactory();
+        try {
+            beanFactory.destroyBean(builder);
+            if (!(beanFactory instanceof DefaultListableBeanFactory)) {
+                throw new ApplicationException(ErrorCodeEnum.FAILED_TO_DESTROY_CONTROL);
+            }
+            ((DefaultListableBeanFactory) beanFactory).destroySingleton(beanName);
+        } catch (ApplicationException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new ApplicationException(ErrorCodeEnum.FAILED_TO_DESTROY_CONTROL, e);
+        }
     }
 
     /**
@@ -55,15 +89,16 @@ public abstract class BaseView<B extends BaseBuilder, C> {
         // 通过泛型获得对应的 builder类型
         Class<B> clazz = getBuilderType();
         // 获得 builder类名
-        String className = getBuilderBeanName(clazz, args);
-        if (StringUtils.isBlank(className)) {
+        String beanName = getBuilderBeanName(clazz, args);
+        if (StringUtils.isBlank(beanName)) {
             throw new ApplicationException(ErrorCodeEnum.FAILED_TO_GET_THE_BUILDER_CLASS_NAME);
         }
         // 从容器中获得builder
-        if (!context.containsBean(className)) {
+        if (!context.containsBean(beanName)) {
             return null;
         }
-        builder = (B) context.getBean(className);
+        builder = (B) context.getBean(beanName);
+        this.beanName = beanName;
         return (R) this;
     }
 
