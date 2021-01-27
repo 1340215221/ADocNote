@@ -44,11 +44,11 @@ class RootTitleNodeBuilder implements BaseBuilder {
      * 递归组装子节点
      */
     private void initChildrenNode(TitleLine titleLine) {
-        if (titleLine == null || CollectionUtils.isEmpty(titleLine.getChildrenTitles())) {
+        if (titleLine == null || CollectionUtils.isEmpty(titleLine.getChildrenTitle())) {
             return
         }
 
-        titleLine.getChildrenTitles().each { children ->
+        titleLine.getChildrenTitle().each { children ->
             swingBuilder.ttNode(id: nodeId(children.getBeanPathStr()),
                     userObject: children.getTitleName(),
                     vo: children,

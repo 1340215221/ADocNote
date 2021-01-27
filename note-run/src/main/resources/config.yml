@@ -1,0 +1,5 @@
+# 项目地址配置
+pro-path:
+  list:
+    - proName: Java笔记
+      proPath: /my_code/InterviewNote/

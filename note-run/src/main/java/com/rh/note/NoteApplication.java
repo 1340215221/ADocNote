@@ -2,10 +2,12 @@ package com.rh.note;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.annotation.PropertySource;
 
 /**
  * 笔记软件启动程序
  */
+@PropertySource(value= {"classpath:config.yml"})
 @SpringBootApplication
 public class NoteApplication {
 

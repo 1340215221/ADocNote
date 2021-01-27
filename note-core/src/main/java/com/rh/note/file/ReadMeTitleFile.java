@@ -1,8 +1,7 @@
 package com.rh.note.file;
 
+import com.rh.note.collection.ReadTitleLineList;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
 
 /**
  * readMe标题文件
@@ -10,7 +9,7 @@ import java.util.ArrayList;
 public class ReadMeTitleFile extends AdocTitleFile {
 
     public ReadMeTitleFile() {
-        super("README.adoc", new ArrayList<>());
+        super("README.adoc", new ReadTitleLineList());
     }
 
     @Override

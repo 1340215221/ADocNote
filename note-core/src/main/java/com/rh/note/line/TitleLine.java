@@ -1,20 +1,24 @@
 package com.rh.note.line;
 
 import com.rh.note.common.IArgsConstructorBean;
-import com.rh.note.common.IReadTitleLine;
+import com.rh.note.common.ReadTitleLineImpl;
 import com.rh.note.path.TitleBeanPath;
 import com.rh.note.syntax.TitleSyntax;
 import lombok.Data;
+import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 标题行
  */
 @Data
-public class TitleLine implements IArgsConstructorBean, IReadTitleLine {
+@Accessors(chain = true)
+public class TitleLine implements IArgsConstructorBean, ReadTitleLineImpl {
     /**
      * 父标题
      */
@@ -22,7 +26,7 @@ public class TitleLine implements IArgsConstructorBean, IReadTitleLine {
     /**
      * 子标题
      */
-    private final List<TitleLine> childrenTitles = new ArrayList<>();
+    private final List<TitleLine> childrenTitle = new ArrayList<>();
     /**
      * 语法对象
      */
@@ -56,6 +60,34 @@ public class TitleLine implements IArgsConstructorBean, IReadTitleLine {
         if (childrenTitle == null) {
             return;
         }
-        childrenTitles.add(childrenTitle);
+        this.childrenTitle.add(childrenTitle);
+    }
+
+    /**
+     * 获得行号
+     */
+    public @Nullable Integer getLineNumber() {
+        return Optional.ofNullable(beanPath)
+                .map(TitleBeanPath::getLineNumber)
+                .orElse(null);
+    }
+
+    @Override
+    public @Nullable Integer getLevel() {
+        return Optional.ofNullable(titleSyntax)
+                .map(TitleSyntax::getLevel)
+                .orElse(null);
+    }
+
+    @Override
+    public @NotNull List<TitleLine> getChildrenTitle() {
+        return childrenTitle;
+    }
+
+    @Override
+    public void setParentTitle(ReadTitleLineImpl titleLine) {
+        if (titleLine instanceof TitleLine) {
+            parentTitle = (TitleLine) titleLine;
+        }
     }
 }
