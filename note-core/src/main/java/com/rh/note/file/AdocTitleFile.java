@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class AdocTitleFile extends BaseFileConfig {
     /**
      * 子文件
      */
-    private List<AdocTitleFile> childFiles;
+    private final List<AdocTitleFile> childFiles = new ArrayList<>();
 
     public @Nullable AdocTitleFile init() {
         if (!FileUtil.isFile(getAbsolutePath()) || !"adoc".equalsIgnoreCase(FileUtil.extName(getAbsolutePath()))) {

@@ -53,7 +53,7 @@ public class TitleLine implements IArgsConstructorBean, ReadTitleLineImpl {
 
     @Override
     public @NotNull String[] getBeanNameArgs() {
-        return new String[0];
+        return new String[]{"install"};
     }
 
     public void addChildrenTitles(TitleLine childrenTitle) {

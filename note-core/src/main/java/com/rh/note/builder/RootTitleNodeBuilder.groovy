@@ -16,10 +16,10 @@ import javax.annotation.PostConstruct
 /**
  * 根标题节点
  */
-@ComponentBean(frame = FrameCategoryEnum.WORK, scope = ScopeEnum.PROTOTYPE)
+@ComponentBean(frame = FrameCategoryEnum.WORK, scope = ScopeEnum.PROTOTYPE, name = RootTitleNodeBuilder.id)
 class RootTitleNodeBuilder implements BaseBuilder {
 
-    public static final String id = 'root_node'
+    public static final String id = 'root_node_{}'
     @Autowired
     private SwingBuilder swingBuilder
     @Autowired

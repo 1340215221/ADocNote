@@ -35,12 +35,16 @@ public abstract class BaseView<B extends BaseBuilder, C> {
      */
     protected <R extends BaseView> @NotNull R create(IArgsConstructorBean arg) {
         Class<B> clazz = getBuilderType();
-        String className = getBuilderClassName(clazz, arg != null ? arg.getBeanNameArgs() : null);
-        if (StringUtils.isBlank(className)) {
+        String beanNameNoArgs = getBuilderBeanName(clazz);
+        if (StringUtils.isBlank(beanNameNoArgs)) {
             throw new ApplicationException(ErrorCodeEnum.FAILED_TO_GET_THE_BUILDER_CLASS_NAME);
         }
-        builder = (B) context.getBean(className, arg);
-        context.getBeanFactory().registerSingleton(className, builder);
+        builder = (B) context.getBean(beanNameNoArgs, arg);
+        String beanNameWithArgs = getBuilderBeanName(clazz, arg != null ? arg.getBeanNameArgs() : null);
+        if (StringUtils.isBlank(beanNameWithArgs)) {
+            throw new ApplicationException(ErrorCodeEnum.FAILED_TO_GET_THE_BUILDER_CLASS_NAME);
+        }
+        context.getBeanFactory().registerSingleton(beanNameWithArgs, builder);
         return (R) this;
     }
 
@@ -51,7 +55,7 @@ public abstract class BaseView<B extends BaseBuilder, C> {
         // 通过泛型获得对应的 builder类型
         Class<B> clazz = getBuilderType();
         // 获得 builder类名
-        String className = getBuilderClassName(clazz, args);
+        String className = getBuilderBeanName(clazz, args);
         if (StringUtils.isBlank(className)) {
             throw new ApplicationException(ErrorCodeEnum.FAILED_TO_GET_THE_BUILDER_CLASS_NAME);
         }
@@ -73,7 +77,7 @@ public abstract class BaseView<B extends BaseBuilder, C> {
     /**
      * 获得 builder类名
      */
-    private @Nullable String getBuilderClassName(Class<B> clazz, String[] args) {
+    private @Nullable String getBuilderBeanName(Class<B> clazz, String[] args) {
         if (clazz == null) {
             return null;
         }
@@ -92,6 +96,29 @@ public abstract class BaseView<B extends BaseBuilder, C> {
         }
         // 替换对象名参数
         return replaceBeanNameParam(((String) beanName), args);
+    }
+
+    /**
+     * 获得 builder对象名
+     */
+    private @Nullable String getBuilderBeanName(Class<B> clazz) {
+        if (clazz == null) {
+            return null;
+        }
+        ComponentBean annotation = AnnotationUtils.findAnnotation(clazz, ComponentBean.class);
+        if (annotation == null) {
+            return null;
+        }
+        Map<String, Object> attributeMap = AnnotationUtils.getAnnotationAttributes(annotation);
+        if (MapUtils.isEmpty(attributeMap)) {
+            return null;
+        }
+        Object beanName = attributeMap.get("name");
+        if (beanName instanceof String && StringUtils.isNotBlank((CharSequence) beanName)) {
+            return (String) beanName;
+        }
+        // 类名作为对象名
+        return clazz.getSimpleName();
     }
 
     /**

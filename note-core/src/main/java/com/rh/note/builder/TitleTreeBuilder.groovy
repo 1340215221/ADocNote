@@ -33,7 +33,6 @@ class TitleTreeBuilder implements BaseBuilder {
         def model = {
             swingBuilder.model(id: "${model_id}",
             ) {
-                event.load_root_node()
             }
         }
 
@@ -46,6 +45,7 @@ class TitleTreeBuilder implements BaseBuilder {
                     },
 //                    cellRenderer: new TitleTreeCellRenderer(), // 用于处理数结果的图标
             ) {
+                event.load_root_node()
             }
         }
 
