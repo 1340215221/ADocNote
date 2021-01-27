@@ -2,6 +2,7 @@ package com.rh.note.action;
 
 import com.rh.note.ao.CheckIsAdocProjectAO;
 import com.rh.note.ao.ClickedProjectListAO;
+import com.rh.note.ao.OpenAdocFileByTitleNodeAO;
 import com.rh.note.api.FileApi;
 import com.rh.note.api.ProManageViewApi;
 import com.rh.note.api.WorkViewApi;
@@ -35,5 +36,11 @@ public class OperationAction {
         String proPath = proManageViewApi.getSelectedProPathInProList();
         CheckIsAdocProjectAO ao = new CheckIsAdocProjectAO(proPath);
         return fileApi.checkIsAdocProject(ao);
+    }
+
+    /**
+     * 判断存在文件, 通过被选中的节点
+     */
+    public OpenAdocFileByTitleNodeAO isExistFileBySelectedNode() {
     }
 }

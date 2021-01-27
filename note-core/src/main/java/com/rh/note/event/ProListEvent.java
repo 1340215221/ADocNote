@@ -7,6 +7,7 @@ import com.rh.note.ao.ClickedProjectListAO;
 import com.rh.note.common.BaseEvent;
 import com.rh.note.constants.FrameCategoryEnum;
 import com.rh.note.vo.ProItemVO;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.awt.event.MouseEvent;
@@ -25,7 +26,7 @@ public class ProListEvent extends BaseEvent {
     /**
      * 点击项目列表
      */
-    public void clicked_project_list(MouseEvent mouseEvent) {
+    public void clicked_project_list(@NonNull MouseEvent mouseEvent) {
         ClickedProjectListAO ao = operationAction.clickedProjectList(mouseEvent);
         if (ao == null) {
             return;

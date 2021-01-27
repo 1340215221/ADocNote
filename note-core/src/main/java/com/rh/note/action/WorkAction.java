@@ -1,9 +1,11 @@
 package com.rh.note.action;
 
+import com.rh.note.ao.OpenAdocFileByTitleNodeAO;
 import com.rh.note.api.FileApi;
 import com.rh.note.api.FrameContextApi;
 import com.rh.note.api.WorkViewApi;
 import com.rh.note.line.TitleLine;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -38,5 +40,10 @@ public class WorkAction {
             return;
         }
         workViewApi.updateRootNode(rooTitle);
+    }
+
+    public void openFileByTitleNode(@NonNull OpenAdocFileByTitleNodeAO ao) {
+        ao.checkRequiredItems();
+        fileApi.read
     }
 }
