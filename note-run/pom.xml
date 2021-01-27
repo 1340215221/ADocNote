@@ -61,13 +61,11 @@
         </plugins>
         <resources>
             <resource>
-                <filtering>true</filtering>
+                <filtering>false</filtering>
                 <directory>src/main/resources</directory>
-                <includes>
-                    <include>application.yml</include>
-                    <include>logback.xml</include>
-                    <include>config.yml</include>
-                </includes>
+                <excludes>
+<!--                    <exclude>config.yml</exclude>-->
+                </excludes>
             </resource>
         </resources>
     </build>

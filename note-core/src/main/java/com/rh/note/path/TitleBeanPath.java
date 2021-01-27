@@ -49,7 +49,7 @@ public class TitleBeanPath {
         }
         TitleLine parentTitle = titleLine.getParentTitle();
         String parentName = getParentName(parentTitle);
-        return StringUtils.isNotBlank(parentName) ? parentName + titleLine.getTitleName() : titleLine.getTitleName();
+        return StringUtils.isNotBlank(parentName) ? parentName + "$" + titleLine.getTitleName() : titleLine.getTitleName();
     }
 
     @Override
@@ -60,6 +60,9 @@ public class TitleBeanPath {
         String result = "";
         if (StringUtils.isNotBlank(filePath)) {
             result += filePath;
+        }
+        if (StringUtils.isNotBlank(filePath) && StringUtils.isNotBlank(titlePath)) {
+            result += "=>";
         }
         if (StringUtils.isNotBlank(titlePath)) {
             result += titlePath;
