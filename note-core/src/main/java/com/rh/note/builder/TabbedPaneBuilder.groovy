@@ -1,6 +1,7 @@
 package com.rh.note.builder
 
 import com.rh.note.annotation.ComponentBean
+import com.rh.note.common.BaseBuilder
 import com.rh.note.constants.FrameCategoryEnum
 import com.rh.note.event.TabbedPaneEvent
 import groovy.swing.SwingBuilder
@@ -14,7 +15,7 @@ import java.awt.BorderLayout
  * 编辑区面板
  */
 @ComponentBean(FrameCategoryEnum.WORK)
-class TabbedPaneBuilder {
+class TabbedPaneBuilder implements BaseBuilder {
 
     public static final String id = 'text_tabbed_pane'
     @Autowired
@@ -34,4 +35,7 @@ class TabbedPaneBuilder {
         }
     }
 
+    JTabbedPane getTabbedPane() {
+        return swingBuilder."${id}"
+    }
 }

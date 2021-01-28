@@ -1,7 +1,10 @@
 package com.rh.note.builder
 
+import cn.hutool.core.util.StrUtil
 import com.rh.note.annotation.ComponentBean
+import com.rh.note.common.BaseBuilder
 import com.rh.note.component.AdocTextPane
+import com.rh.note.component.TextScrollPane
 import com.rh.note.constants.FrameCategoryEnum
 import com.rh.note.constants.ScopeEnum
 import com.rh.note.event.AdocTextPaneEvent
@@ -13,6 +16,7 @@ import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
 import javax.annotation.PostConstruct
+import javax.swing.JScrollPane
 import javax.swing.text.DefaultStyledDocument
 import java.awt.*
 
@@ -20,7 +24,7 @@ import java.awt.*
  * adoc编辑区
  */
 @ComponentBean(frame = FrameCategoryEnum.WORK, scope = ScopeEnum.PROTOTYPE, name = AdocTextPaneBuilder.text_pane_id)
-class AdocTextPaneBuilder {
+class AdocTextPaneBuilder implements BaseBuilder {
 
     public static final String text_pane_id = 'adoc_text_pane_{}'
     public static final String scroll_pane_id = 'scroll_pane_{}'
@@ -87,11 +91,18 @@ class AdocTextPaneBuilder {
     };
 
     String textPaneId() {
-        return "adoc_text_pane_${beanPath.getFilePath()}"
+        return StrUtil.format(text_pane_id, beanPath.getFilePath())
     }
 
     String scrollPaneId() {
-        return "scroll_pane_${beanPath.getFilePath()}"
+        return StrUtil.format(scroll_pane_id, beanPath.getFilePath())
     }
 
+    TextScrollPane getScrollPane() {
+        return swingBuilder."${scrollPaneId()}"
+    }
+
+    AdocTextPane getTextPane() {
+        return swingBuilder."${textPaneId()}"
+    }
 }

@@ -1,14 +1,17 @@
 package com.rh.note.api;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.CharsetUtil;
 import com.rh.note.ao.CheckIsAdocProjectAO;
 import com.rh.note.ao.ClickedProjectListAO;
 import com.rh.note.file.ReadMeTitleFile;
 import com.rh.note.line.TitleLine;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
+import java.io.Reader;
 
 /**
  * 文件操作 接口
@@ -47,5 +50,15 @@ public class FileApi {
         readMe.loadChildrenFile();
         readMe.addTitleRelation();
         return readMe.getRootTitle();
+    }
+
+    /**
+     * 读取文件内容
+     */
+    public @Nullable Reader readFileContent(String absolutePath) {
+        if (StringUtils.isBlank(absolutePath) || !FileUtil.isFile(absolutePath)) {
+            return null;
+        }
+        return FileUtil.getReader(absolutePath, CharsetUtil.CHARSET_UTF_8);
     }
 }

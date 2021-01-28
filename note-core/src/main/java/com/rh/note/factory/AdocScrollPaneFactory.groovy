@@ -1,7 +1,7 @@
 package com.rh.note.factory
 
 import com.rh.note.annotation.ComponentBean
-import com.rh.note.component.AdocScrollPane
+import com.rh.note.component.TextScrollPane
 import com.rh.note.constants.FrameCategoryEnum
 import groovy.swing.SwingBuilder
 import groovy.swing.factory.BeanFactory
@@ -18,7 +18,7 @@ class AdocScrollPaneFactory extends BeanFactory {
     private SwingBuilder swingBuilder
 
     AdocScrollPaneFactory() {
-        super(AdocScrollPane, false)
+        super(TextScrollPane, false)
     }
 
     void setChild(FactoryBuilderSupport factory, Object parent, Object child) {
