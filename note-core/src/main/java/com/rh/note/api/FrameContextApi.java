@@ -90,6 +90,7 @@ public class FrameContextApi {
         // 关联父容器
         context.setParent(currentContext);
         context.refresh();
+        System.out.println(context);
     }
 
     /**

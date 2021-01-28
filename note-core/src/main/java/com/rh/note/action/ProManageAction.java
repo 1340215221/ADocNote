@@ -21,6 +21,7 @@ public class ProManageAction {
      * 打开项目管理窗口
      */
     public void openProMangeFrame() {
+        System.out.println(Thread.currentThread());
         frameContextApi.loadContext(new LoadContextAO(FrameCategoryEnum.PRO_MANAGE));
     }
 
@@ -28,8 +29,8 @@ public class ProManageAction {
      * 在项目列表中打开一个项目
      */
     public void openAdocProject(@NonNull ClickedProjectListAO ao) {
-        System.out.println(Thread.currentThread());
         LoadContextAO loadContextAO = ao.copyToLoadContextAO();
+        System.out.println(Thread.currentThread());
         frameContextApi.loadContext(loadContextAO);
         frameContextApi.closeContext();
     }
