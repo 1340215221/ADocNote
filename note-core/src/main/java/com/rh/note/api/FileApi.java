@@ -61,4 +61,12 @@ public class FileApi {
         }
         return FileUtil.getReader(absolutePath, CharsetUtil.CHARSET_UTF_8);
     }
+
+    /**
+     * 判断是adoc文件
+     */
+    public boolean checkIsAdocFile(String absolutePath) {
+        return StringUtils.isNotBlank(absolutePath) && FileUtil.isFile(absolutePath)
+                && "adoc".equalsIgnoreCase(FileUtil.extName(absolutePath));
+    }
 }

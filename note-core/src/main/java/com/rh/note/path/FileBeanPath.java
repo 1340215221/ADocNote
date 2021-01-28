@@ -3,12 +3,14 @@ package com.rh.note.path;
 import com.rh.note.common.BaseFileConfig;
 import com.rh.note.common.IArgsConstructorBean;
 import lombok.Data;
+import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * 文件对象路径
  */
 @Data
+@Accessors(chain = true)
 public class FileBeanPath extends BaseFileConfig implements IArgsConstructorBean {
     /**
      * 文件项目路径

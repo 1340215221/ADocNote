@@ -5,6 +5,7 @@ import com.rh.note.line.TitleLine;
 import com.rh.note.path.FileBeanPath;
 import com.rh.note.view.*;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.io.Reader;
@@ -75,5 +76,14 @@ public class WorkViewApi {
         }
         TabbedPaneView tabbedPaneView = new TabbedPaneView().init();
         tabbedPaneView.add(scrollPaneView);
+        tabbedPaneView.show(scrollPaneView);
+    }
+
+    /**
+     * 获得被选择节点的标题对象
+     */
+    public @Nullable TitleLine getTitleLineBySelectedNode() {
+        TitleTreeView treeView = new TitleTreeView().init();
+        return treeView.getTitleLineBySelectedNode();
     }
 }

@@ -2,9 +2,13 @@ package com.rh.note.view;
 
 import com.rh.note.builder.TitleTreeBuilder;
 import com.rh.note.common.BaseView;
+import com.rh.note.component.TitleTreeNode;
+import com.rh.note.line.TitleLine;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import javax.swing.tree.TreePath;
 
 /**
  * 标题树
@@ -26,5 +30,20 @@ public class TitleTreeView extends BaseView<TitleTreeBuilder, JTree> {
         for (int i = 0; i <tree().getRowCount(); i++) {
             tree().expandRow(i);
         }
+    }
+
+    /**
+     * 获得被选择节点的标题对象
+     */
+    public @Nullable TitleLine getTitleLineBySelectedNode() {
+        TreePath treePath = tree().getSelectionPath();
+        if (treePath == null) {
+            return null;
+        }
+        Object lastPathComponent = treePath.getLastPathComponent();
+        if (!(lastPathComponent instanceof TitleTreeNode)) {
+            return null;
+        }
+        return ((TitleTreeNode) lastPathComponent).getTitleLine();
     }
 }

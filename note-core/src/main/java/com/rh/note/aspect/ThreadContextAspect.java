@@ -1,6 +1,8 @@
 package com.rh.note.aspect;
 
+import com.rh.note.annotation.ComponentBean;
 import com.rh.note.common.ViewThreadContext;
+import com.rh.note.constants.FrameCategoryEnum;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -9,7 +11,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
 
@@ -18,7 +19,7 @@ import java.lang.reflect.Field;
  */
 @Slf4j
 @Aspect
-@Component
+@ComponentBean(FrameCategoryEnum.UNIVERSAL)
 public class ThreadContextAspect {
 
     @Pointcut("execution(* com.rh.note.event.*Event.*(..))")

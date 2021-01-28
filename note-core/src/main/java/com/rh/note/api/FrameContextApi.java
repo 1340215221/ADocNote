@@ -9,11 +9,10 @@ import groovy.swing.SwingBuilder;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator;
+import org.springframework.aop.config.AopConfigUtils;
 import org.springframework.beans.factory.annotation.AnnotatedGenericBeanDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -84,13 +83,10 @@ public class FrameContextApi {
             context.getBeanFactory().registerSingleton(contextConfig.getClass().getSimpleName(), contextConfig);
         }
         // 设置aop处理器
-        DefaultListableBeanFactory factory = (DefaultListableBeanFactory) currentContext.getAutowireCapableBeanFactory();
-        factory.getBeanPostProcessors().stream()
-                .filter(processor -> processor instanceof AnnotationAwareAspectJAutoProxyCreator)
-                .forEach(processor -> {
-                    DefaultListableBeanFactory beanFactory = (DefaultListableBeanFactory) context.getBeanFactory();
-                    beanFactory.addBeanPostProcessor(processor);
-                });
+        BeanDefinition aopBeanDefinition = AopConfigUtils.registerAspectJAnnotationAutoProxyCreatorIfNecessary(context);
+        if (aopBeanDefinition != null) {
+            context.registerBeanDefinition(AopConfigUtils.AUTO_PROXY_CREATOR_BEAN_NAME, aopBeanDefinition);
+        }
         // 关联父容器
         context.setParent(currentContext);
         context.refresh();

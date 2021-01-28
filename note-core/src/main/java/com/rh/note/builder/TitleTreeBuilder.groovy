@@ -9,7 +9,7 @@ import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
 import javax.annotation.PostConstruct
-import javax.swing.JTree
+import javax.swing.*
 import javax.swing.tree.DefaultTreeModel
 import java.awt.*
 

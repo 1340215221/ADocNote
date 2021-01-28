@@ -8,8 +8,8 @@ import com.rh.note.api.ProManageViewApi;
 import com.rh.note.api.WorkViewApi;
 import com.rh.note.config.KeymapConfig;
 import com.rh.note.line.TitleLine;
-import com.rh.note.view.TitleTreeView;
 import lombok.NonNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -43,9 +43,15 @@ public class OperationAction {
     /**
      * 判断存在文件, 通过被选中的节点
      */
-    public OpenAdocFileByTitleNodeAO isExistFileBySelectedNode() {
-        TitleTreeView treeView = new TitleTreeView().init();
-        TitleLine titleLine = treeView.getTitleLineBySelectedNode();
-        workViewApi.isExistFileBySelectedNode();
+    public @Nullable OpenAdocFileByTitleNodeAO isExistFileBySelectedNode() {
+        TitleLine titleLine = workViewApi.getTitleLineBySelectedNode();
+        if (titleLine == null || titleLine.getBeanPath() == null) {
+            return null;
+        }
+        boolean isAdocFile = fileApi.checkIsAdocFile(titleLine.getBeanPath().getAbsolutePath());
+        if (!isAdocFile) {
+            return null;
+        }
+        return OpenAdocFileByTitleNodeAO.copy(titleLine);
     }
 }

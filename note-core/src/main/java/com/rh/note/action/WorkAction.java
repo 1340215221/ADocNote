@@ -29,7 +29,6 @@ public class WorkAction {
     private FileApi fileApi;
 
     public void openFileByTitleNode(@NonNull OpenAdocFileByTitleNodeAO ao) {
-        ao.checkRequiredItems();
         // 显示已打开文件
         workViewApi.showOpenedFileByFilePath(ao.getFilePath());
         // 打开文件, 加载内容, 并显示

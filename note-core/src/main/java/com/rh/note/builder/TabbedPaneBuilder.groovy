@@ -29,7 +29,7 @@ class TabbedPaneBuilder implements BaseBuilder {
                 constraints: BorderLayout.CENTER,
                 tabLayoutPolicy: JTabbedPane.SCROLL_TAB_LAYOUT,
                 stateChanged: {
-                    event.load_title_navigate_on_selected_tab()
+//                    event.load_title_navigate_on_selected_tab()
                 }
         ){
         }
