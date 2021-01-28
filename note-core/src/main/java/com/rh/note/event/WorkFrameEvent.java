@@ -3,7 +3,6 @@ package com.rh.note.event;
 import com.rh.note.action.OperationAction;
 import com.rh.note.action.WorkAction;
 import com.rh.note.annotation.ComponentBean;
-import com.rh.note.common.BaseEvent;
 import com.rh.note.constants.FrameCategoryEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -11,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * 工作窗口 事件
  */
 @ComponentBean(FrameCategoryEnum.WORK)
-public class WorkFrameEvent extends BaseEvent {
+public class WorkFrameEvent {
 
     @Autowired
     private OperationAction operationAction;

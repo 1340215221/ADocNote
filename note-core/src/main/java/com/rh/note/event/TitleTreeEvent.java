@@ -4,7 +4,6 @@ import com.rh.note.action.OperationAction;
 import com.rh.note.action.WorkAction;
 import com.rh.note.annotation.ComponentBean;
 import com.rh.note.ao.OpenAdocFileByTitleNodeAO;
-import com.rh.note.common.BaseEvent;
 import com.rh.note.constants.FrameCategoryEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * 标题树 事件
  */
 @ComponentBean(FrameCategoryEnum.WORK)
-public class TitleTreeEvent extends BaseEvent {
+public class TitleTreeEvent {
 
     @Autowired
     private OperationAction operationAction;

@@ -18,6 +18,7 @@ public enum ErrorCodeEnum {
     FAILED_TO_GET_THE_BUILDER_CLASS_NAME(1001, "获取builder类名失败"),
     FAILED_TO_DESTROY_CONTROL(1002, "销毁控件失败"),
     FAILED_TO_INITIALIZE_EDIT_AREA_CONTENT(1003, "初始化编辑区内容失败"),
+    NOT_ALLOWED_TO_OPERATE_TWO_CONTAINER_CONTROLS_IN_ONE_THREAD(1004, "不允许在一个线程内操作两个容器的控件"),
     // 语法
     THE_READ_ME_FILE_DOES_NOT_HAVE_A_FIRST_LEVEL_TITLE(2000, "该ReadMe文件没有一级标题"),
     ;

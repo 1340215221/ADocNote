@@ -34,7 +34,7 @@ public class CheckIsAdocProjectAO {
         if (StringUtils.isBlank(proPath)) {
             return "";
         }
-        return proPath + "README.adoc";
+        return proPath.endsWith("/") ? proPath + "README.adoc" : proPath + "/" + "README.adoc";
     }
 
     /**

@@ -2,12 +2,11 @@ package com.rh.note.event;
 
 import com.rh.note.annotation.ComponentBean;
 import com.rh.note.ao.TextPaneKeyStrokeAO;
-import com.rh.note.common.BaseEvent;
 import com.rh.note.constants.FrameCategoryEnum;
 import lombok.NonNull;
 
 @ComponentBean(FrameCategoryEnum.WORK)
-public class AdocTextPaneEvent extends BaseEvent {
+public class AdocTextPaneEvent {
 
     /**
      * 回车操作

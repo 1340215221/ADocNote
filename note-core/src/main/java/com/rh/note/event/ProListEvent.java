@@ -4,7 +4,6 @@ import com.rh.note.action.OperationAction;
 import com.rh.note.action.ProManageAction;
 import com.rh.note.annotation.ComponentBean;
 import com.rh.note.ao.ClickedProjectListAO;
-import com.rh.note.common.BaseEvent;
 import com.rh.note.constants.FrameCategoryEnum;
 import com.rh.note.vo.ProItemVO;
 import lombok.NonNull;
@@ -16,7 +15,7 @@ import java.awt.event.MouseEvent;
  * 项目管理--项目列表 事件
  */
 @ComponentBean(FrameCategoryEnum.PRO_MANAGE)
-public class ProListEvent extends BaseEvent {
+public class ProListEvent {
 
     @Autowired
     private OperationAction operationAction;
@@ -40,7 +39,7 @@ public class ProListEvent extends BaseEvent {
     public ProItemVO[] load_pro_list_content() {
         // todo
         return new ProItemVO[]{
-                new ProItemVO().setProjectName("Java笔记").setProjectPath("/my_code/InterviewNote/")
+                new ProItemVO().setProjectName("Java笔记").setProjectPath("/home/hang/Documents/Java-not")
         };
     }
 }

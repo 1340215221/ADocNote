@@ -1,5 +1,6 @@
 package com.rh.note.common;
 
+import com.rh.note.bean.ThreadContextBean;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -8,7 +9,7 @@ import org.springframework.context.ConfigurableApplicationContext;
  * 视图线程容器
  */
 public interface ViewThreadContext {
-    ThreadLocal<ConfigurableApplicationContext> viewContext = new ThreadLocal<>();
+    ThreadLocal<ThreadContextBean> viewContext = new ThreadLocal<>();
 
     /**
      * 清空当前线程的容器
@@ -20,24 +21,32 @@ public interface ViewThreadContext {
     /**
      * 设置当前线程的容器
      */
-    static void setThreadContext(ConfigurableApplicationContext context) {
-        if (context == null) {
+    static void setThreadContextBean(ThreadContextBean bean) {
+        if (bean == null) {
             return;
         }
-        viewContext.set(context);
+        viewContext.set(bean);
+    }
+
+    /**
+     * 获取当前线程的容器
+     */
+    static @Nullable ThreadContextBean getThreadContextBean() {
+        return viewContext.get();
     }
 
     /**
      * 获取当前线程的容器
      */
     static @NotNull ConfigurableApplicationContext getThreadContext() {
-        return viewContext.get();
+        return viewContext.get().getContext();
     }
 
     /**
      * 获取当前线程的容器
      */
     static @Nullable ConfigurableApplicationContext getThreadContextOrNull() {
-        return viewContext.get();
+        ThreadContextBean bean = viewContext.get();
+        return bean != null ? bean.getContext() : null;
     }
 }
