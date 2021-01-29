@@ -5,6 +5,7 @@ import com.rh.note.exception.UnknownBusinessSituationException;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.FileBeanPath;
 import com.rh.note.view.*;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
@@ -78,22 +79,6 @@ public class WorkViewApi {
     }
 
     /**
-     * 关闭当前编辑区
-     */
-    public void closeCurrentTextPane() {
-        TabbedPaneView tabbedPaneView = new TabbedPaneView().init();
-        if (tabbedPaneView == null) {
-            return;
-        }
-        String filePath = tabbedPaneView.getFilePathOfTextPaneSelected();
-        AdocTextPaneView textPaneView = new AdocTextPaneView().init(filePath);
-        if (textPaneView == null) {
-            return;
-        }
-        textPaneView.close();
-    }
-
-    /**
      * 生成编辑区
      */
     public void createAdocTextPane(FileBeanPath beanPath, Reader reader) {
@@ -123,6 +108,14 @@ public class WorkViewApi {
     }
 
     /**
+     * 获得被选择的编辑区对应的文件地址
+     */
+    public @Nullable String getFilePathOfTextPaneSelected() {
+        TabbedPaneView tabbedPaneView = new TabbedPaneView().init();
+        return tabbedPaneView != null ? tabbedPaneView.getFilePathOfTextPaneSelected() : null;
+    }
+
+    /**
      * 获得选项卡中的编辑控件对应的文件地址
      */
     public @Nullable List<String> getFilePathsOfTextPaneByTabbedPane() {
@@ -140,5 +133,21 @@ public class WorkViewApi {
     public boolean hasTextPaneSelected() {
         TabbedPaneView tabbedPaneView = new TabbedPaneView().init();
         return tabbedPaneView != null && tabbedPaneView.existSelected();
+    }
+
+    /**
+     * 关闭编辑区
+     */
+    public void closeTextPaneByFilePaths(List<String> filePaths) {
+        if (CollectionUtils.isEmpty(filePaths)) {
+            return;
+        }
+        filePaths.forEach(filePath -> {
+            AdocTextPaneView textPaneView = new AdocTextPaneView().init(filePath);
+            if (textPaneView == null) {
+                return;
+            }
+            textPaneView.close();
+        });
     }
 }

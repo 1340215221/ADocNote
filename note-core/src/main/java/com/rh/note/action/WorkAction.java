@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.Reader;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 工作窗口 入口
@@ -42,7 +44,18 @@ public class WorkAction {
      * 关闭当前编辑区
      */
     public void closeCurrentTextPane() {
-        workViewApi.closeCurrentTextPane();
+        // 获得要当前被选择的编辑区
+        String filePath = workViewApi.getFilePathOfTextPaneSelected();
+        if (StringUtils.isBlank(filePath)) {
+            return;
+        }
+        // 保存编辑区内容
+        List<String> filePaths = Collections.singletonList(filePath);
+        SaveTextPaneFileByFilePathAO ao = new SaveTextPaneFileByFilePathAO(filePaths);
+        TextPaneFileWritersAO writerAO = fileApi.getWriterByFilePath(ao);
+        workViewApi.saveTextPaneFileByFilePaths(writerAO);
+        // 关闭编辑区
+        workViewApi.closeTextPaneByFilePaths(filePaths);
     }
 
     /**
