@@ -7,6 +7,7 @@ import com.rh.note.ao.ClickedProjectListAO;
 import com.rh.note.constants.FrameCategoryEnum;
 import com.rh.note.vo.ProItemVO;
 import lombok.NonNull;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.awt.event.MouseEvent;
@@ -36,10 +37,7 @@ public class ProListEvent {
     /**
      * 加载项目列表内容
      */
-    public ProItemVO[] load_pro_list_content() {
-        // todo
-        return new ProItemVO[]{
-                new ProItemVO().setProjectName("Java笔记").setProjectPath("/home/hang/Documents/Java-not")
-        };
+    public @NotNull ProItemVO[] load_pro_list_content() {
+        return proManageAction.getProPathList();
     }
 }

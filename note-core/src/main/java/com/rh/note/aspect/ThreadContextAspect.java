@@ -32,9 +32,11 @@ public class ThreadContextAspect {
     @Around(value = "executionEvent()")
     public Object handleThreadContext(ProceedingJoinPoint joinPoint) throws Throwable {
         ThreadContextBean bean = beforeProceed();
-        Object result = joinPoint.proceed();
-        afterProceed(bean);
-        return result;
+        try {
+            return joinPoint.proceed();
+        } finally {
+            afterProceed(bean);
+        }
     }
 
     /**

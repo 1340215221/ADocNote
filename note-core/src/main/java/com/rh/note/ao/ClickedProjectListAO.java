@@ -1,6 +1,6 @@
 package com.rh.note.ao;
 
-import com.rh.note.config.ProjectConfig;
+import com.rh.note.config.FrameLaunchConfig;
 import com.rh.note.constants.FrameCategoryEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -17,7 +17,7 @@ public class ClickedProjectListAO {
     private String proPath;
 
     public LoadContextAO copyToLoadContextAO() {
-        ProjectConfig config = new ProjectConfig(proPath);
+        FrameLaunchConfig config = new FrameLaunchConfig(proPath);
         return new LoadContextAO(FrameCategoryEnum.WORK)
                 .setContextConfig(config);
     }

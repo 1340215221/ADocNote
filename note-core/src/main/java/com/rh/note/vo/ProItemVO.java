@@ -1,7 +1,9 @@
 package com.rh.note.vo;
 
+import com.rh.note.config.UserProPathConfig;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 项目 结果
@@ -18,6 +20,13 @@ public class ProItemVO {
      */
     private String projectPath;
 
+    /**
+     * 是空的
+     */
+    public boolean isNotEmpty() {
+        return StringUtils.isNotBlank(projectName) && StringUtils.isNotBlank(projectPath);
+    }
+
     public String toString(){
         return "<html>" +
                 "<body>" +
@@ -25,5 +34,13 @@ public class ProItemVO {
                 "<p>" + projectPath + "</p>" +
                 "</body>" +
                 "</html>";
+    }
+
+    public void copy(UserProPathConfig.ProItem item) {
+        if (item == null) {
+            return;
+        }
+        projectName = item.getProName();
+        projectPath = item.getProPath();
     }
 }

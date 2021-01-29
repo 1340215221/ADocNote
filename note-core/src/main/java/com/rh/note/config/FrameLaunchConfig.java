@@ -5,10 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * adoc项目配置
+ * 窗口启动配置
  */
 @RequiredArgsConstructor
-public class ProjectConfig {
+public class FrameLaunchConfig {
 
     /**
      * 项目目录绝对路径
@@ -20,7 +20,7 @@ public class ProjectConfig {
         if (StringUtils.isBlank(proPath)) {
             return null;
         }
-        return !proPath.endsWith("/") ? proPath + "/" : proPath;
+        return proPath.endsWith("/") ? proPath : proPath + "/";
     }
 
 }
