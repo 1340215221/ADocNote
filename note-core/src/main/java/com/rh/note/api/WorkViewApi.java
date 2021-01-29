@@ -78,6 +78,22 @@ public class WorkViewApi {
     }
 
     /**
+     * 关闭当前编辑区
+     */
+    public void closeCurrentTextPane() {
+        TabbedPaneView tabbedPaneView = new TabbedPaneView().init();
+        if (tabbedPaneView == null) {
+            return;
+        }
+        String filePath = tabbedPaneView.getFilePathOfTextPaneSelected();
+        AdocTextPaneView textPaneView = new AdocTextPaneView().init(filePath);
+        if (textPaneView == null) {
+            return;
+        }
+        textPaneView.close();
+    }
+
+    /**
      * 生成编辑区
      */
     public void createAdocTextPane(FileBeanPath beanPath, Reader reader) {
@@ -116,5 +132,13 @@ public class WorkViewApi {
             return null;
         }
         return tabbedPaneView.getFilePathsOfTextPane();
+    }
+
+    /**
+     * 判断是否有被选中的编辑区
+     */
+    public boolean hasTextPaneSelected() {
+        TabbedPaneView tabbedPaneView = new TabbedPaneView().init();
+        return tabbedPaneView != null && tabbedPaneView.existSelected();
     }
 }

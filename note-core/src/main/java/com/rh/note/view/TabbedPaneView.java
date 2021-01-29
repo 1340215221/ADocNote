@@ -3,9 +3,9 @@ package com.rh.note.view;
 import com.rh.note.builder.TabbedPaneBuilder;
 import com.rh.note.common.BaseView;
 import com.rh.note.component.TextScrollPane;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -60,5 +60,23 @@ public class TabbedPaneView extends BaseView<TabbedPaneBuilder, JTabbedPane> {
                 .filter(c -> c instanceof TextScrollPane)
                 .map(scrollPane -> ((TextScrollPane) scrollPane).getBeanPath().getFilePath())
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * 获得被选择的编辑区对应的文件地址
+     */
+    public @Nullable String getFilePathOfTextPaneSelected() {
+        Component scrollPane = tabbedPane().getSelectedComponent();
+        if (!(scrollPane instanceof TextScrollPane)) {
+            return null;
+        }
+        return ((TextScrollPane) scrollPane).getBeanPath().getFilePath();
+    }
+
+    /**
+     * 存在被选择的编辑区
+     */
+    public boolean existSelected() {
+        return tabbedPane().getSelectedIndex() >= 0;
     }
 }

@@ -65,7 +65,8 @@ public abstract class BaseView<B extends BaseBuilder, C> {
     }
 
     /**
-     * 销毁对象
+     * 销毁对象<br/>
+     * 只有多例的builder才能执行该方法
      */
     protected void destroy() {
         ConfigurableListableBeanFactory beanFactory = context.getBeanFactory();

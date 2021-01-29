@@ -67,4 +67,11 @@ public class AdocTextPaneView extends BaseView<AdocTextPaneBuilder, AdocTextPane
             IoUtil.close(reader);
         }
     }
+
+    /**
+     * 关闭编辑区
+     */
+    public void close() {
+        super.destroy();
+    }
 }

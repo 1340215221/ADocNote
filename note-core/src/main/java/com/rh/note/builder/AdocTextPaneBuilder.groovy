@@ -16,7 +16,8 @@ import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
 import javax.annotation.PostConstruct
-import javax.swing.JScrollPane
+import javax.annotation.PreDestroy
+import javax.swing.*
 import javax.swing.text.DefaultStyledDocument
 import java.awt.*
 
@@ -75,6 +76,22 @@ class AdocTextPaneBuilder implements BaseBuilder {
         ) {
             textPane()
         }
+    }
+
+    /**
+     * 销毁
+     * 1. 从tabbedPane中删除 scrollPane
+     * 2. 从swingBuilder中删除控件: textPane scrollPane
+     */
+    @PreDestroy
+    void destroy() {
+        // 从选项卡中删除
+        def tabbedPane = swingBuilder."${TabbedPaneBuilder.id}" as JTabbedPane
+        def scrollPane = getScrollPane()
+        tabbedPane.remove(scrollPane)
+        // 从swingBuilder中删除
+        swingBuilder.variables.remove(textPaneId())
+        swingBuilder.variables.remove(scrollPaneId())
     }
 
     /**

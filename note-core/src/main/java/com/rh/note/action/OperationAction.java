@@ -31,6 +31,13 @@ public class OperationAction {
     private FileApi fileApi;
 
     /**
+     * 判断是否有被选中的编辑区
+     */
+    public boolean hasTextPaneSelected() {
+        return workViewApi.hasTextPaneSelected();
+    }
+
+    /**
      * 点击项目列表
      */
     public ClickedProjectListAO clickedProjectList(@NonNull MouseEvent mouseEvent) {

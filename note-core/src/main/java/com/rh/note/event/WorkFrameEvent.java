@@ -19,6 +19,16 @@ public class WorkFrameEvent {
     private WorkAction workAction;
 
     /**
+     * 关闭当前编辑区
+     */
+    public void closeCurrentTextPane() {
+        boolean hasTextPaneSelected = operationAction.hasTextPaneSelected();
+        if (hasTextPaneSelected) {
+            workAction.closeCurrentTextPane();
+        }
+    }
+
+    /**
      * 保存所有编辑区内容
      */
     public void save_all_edit_text() {

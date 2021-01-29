@@ -4,6 +4,7 @@ import com.rh.note.annotation.ComponentBean
 import com.rh.note.common.BaseBuilder
 import com.rh.note.constants.FrameCategoryEnum
 import com.rh.note.event.WorkFrameEvent
+import com.rh.note.util.GlobalKeymapUtil
 import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -38,7 +39,7 @@ class WorkFrameBuilder implements BaseBuilder {
         def center_panel = {
             swingBuilder.panel(constraints: BorderLayout.CENTER,
                     layout: new BorderLayout(),
-            ){
+            ) {
                 navigateButtonPanelBuilder.init()
                 tabbedPaneBuilder.init()
             }
@@ -56,7 +57,7 @@ class WorkFrameBuilder implements BaseBuilder {
         def panel = {
             swingBuilder.panel(layout: new BorderLayout(),
                     preferredSize: [900, 600],
-            ){
+            ) {
                 center_panel()
                 left_panel()
             }
@@ -110,10 +111,12 @@ class WorkFrameBuilder implements BaseBuilder {
      * 1. ctrl + s 保存
      */
     void globalKeymap() {
-        Toolkit toolkit = Toolkit.getDefaultToolkit()
-        AWTEventListener listener = {
+        def keymap = new GlobalKeymapUtil()
+        keymap.event_ctrl_S {
             event.save_all_edit_text()
         }
-        toolkit.addAWTEventListener(listener, AWTEvent.KEY_EVENT_MASK)
+        keymap.event_alt_Q {
+            event.closeCurrentTextPane()
+        }
     }
 }

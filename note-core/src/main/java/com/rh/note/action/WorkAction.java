@@ -38,6 +38,16 @@ public class WorkAction {
         workViewApi.saveTextPaneFileByFilePaths(writerAO);
     }
 
+    /**
+     * 关闭当前编辑区
+     */
+    public void closeCurrentTextPane() {
+        workViewApi.closeCurrentTextPane();
+    }
+
+    /**
+     * 打开文件, 通过标题节点
+     */
     public void openFileByTitleNode(@NonNull OpenAdocFileByTitleNodeAO ao) {
         // 显示已打开文件
         workViewApi.showOpenedFileByFilePath(ao.getFilePath());
