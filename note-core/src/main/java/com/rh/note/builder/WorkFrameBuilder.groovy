@@ -11,6 +11,7 @@ import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
 import javax.swing.*
 import java.awt.*
+import java.awt.event.AWTEventListener
 
 /**
  * 工作窗口 构建者
@@ -74,6 +75,7 @@ class WorkFrameBuilder implements BaseBuilder {
                 }
         ) {
             panel()
+            globalKeymap()
         }
         windowCentered()
         showFrame()
@@ -101,5 +103,16 @@ class WorkFrameBuilder implements BaseBuilder {
 
     JFrame getFrame() {
         return swingBuilder."${id}"
+    }
+
+    /**
+     * 全局快捷键
+     */
+    void globalKeymap() {
+        Toolkit toolkit = Toolkit.getDefaultToolkit()
+        AWTEventListener listener = {event ->
+            this.save_all_text_pane(event)
+        }
+        toolkit.addAWTEventListener(listener, AWTEvent.KEY_EVENT_MASK)
     }
 }

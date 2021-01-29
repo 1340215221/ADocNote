@@ -1,5 +1,6 @@
 package com.rh.note.builder
 
+import cn.hutool.core.util.StrUtil
 import com.rh.note.annotation.ComponentBean
 import com.rh.note.common.BaseBuilder
 import com.rh.note.component.TitleTreeNode
@@ -12,6 +13,7 @@ import org.apache.commons.collections4.CollectionUtils
 import org.springframework.beans.factory.annotation.Autowired
 
 import javax.annotation.PostConstruct
+import javax.annotation.PreDestroy
 
 /**
  * 根标题节点
@@ -59,10 +61,22 @@ class RootTitleNodeBuilder implements BaseBuilder {
     }
 
     /**
+     * 销毁
+     * 1. 销毁时, 从swingBuilder中删除所有节点
+     */
+    @PreDestroy
+    void destroy() {
+        swingBuilder.variables.remove(id)
+        swingBuilder.variables.each {String key, value ->
+            key.startsWith(nodeId(""))
+        }
+    }
+
+    /**
      * 生成节点id
      */
     private String nodeId(String beanPath) {
-        return "tree_node_${beanPath}"
+        return StrUtil.format(id, beanPath)
     }
 
     TitleTreeNode getNode() {
