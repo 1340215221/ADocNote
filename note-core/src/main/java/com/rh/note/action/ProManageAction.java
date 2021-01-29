@@ -3,14 +3,17 @@ package com.rh.note.action;
 import com.rh.note.ao.ClickedProjectListAO;
 import com.rh.note.ao.LoadContextAO;
 import com.rh.note.api.FrameContextApi;
+import com.rh.note.common.ViewThreadContext;
 import com.rh.note.constants.FrameCategoryEnum;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
  * 项目管理 入口
  */
+@Slf4j
 @Component
 public class ProManageAction {
 
@@ -21,7 +24,6 @@ public class ProManageAction {
      * 打开项目管理窗口
      */
     public void openProMangeFrame() {
-        System.out.println(Thread.currentThread());
         frameContextApi.loadContext(new LoadContextAO(FrameCategoryEnum.PRO_MANAGE));
     }
 
@@ -30,7 +32,6 @@ public class ProManageAction {
      */
     public void openAdocProject(@NonNull ClickedProjectListAO ao) {
         LoadContextAO loadContextAO = ao.copyToLoadContextAO();
-        System.out.println(Thread.currentThread());
         frameContextApi.loadContext(loadContextAO);
         frameContextApi.closeContext();
     }

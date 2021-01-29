@@ -6,6 +6,7 @@ import com.rh.note.common.ViewThreadContext;
 import com.rh.note.constants.FrameCategoryEnum;
 import com.rh.note.constants.ScopeEnum;
 import groovy.swing.SwingBuilder;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -28,6 +29,7 @@ import java.util.Set;
 /**
  * 窗口容器操作 接口
  */
+@Slf4j
 @Component
 public class FrameContextApi {
 
@@ -39,7 +41,6 @@ public class FrameContextApi {
      */
     @Async
     public void loadContext(LoadContextAO ao) {
-        System.out.println(Thread.currentThread());
         if (ao == null || ao.getFrameCategoryEnum() == null) {
             return;
         }
@@ -90,7 +91,6 @@ public class FrameContextApi {
         // 关联父容器
         context.setParent(currentContext);
         context.refresh();
-        System.out.println(context);
     }
 
     /**
