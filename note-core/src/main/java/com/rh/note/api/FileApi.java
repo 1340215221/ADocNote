@@ -4,6 +4,8 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.CharsetUtil;
 import com.rh.note.ao.CheckIsAdocProjectAO;
 import com.rh.note.ao.ClickedProjectListAO;
+import com.rh.note.ao.SaveTextPaneFileByFilePathAO;
+import com.rh.note.ao.TextPaneFileWritersAO;
 import com.rh.note.file.ReadMeTitleFile;
 import com.rh.note.line.TitleLine;
 import org.apache.commons.lang3.StringUtils;
@@ -50,6 +52,21 @@ public class FileApi {
         readMe.loadChildrenFile();
         readMe.addTitleRelation();
         return readMe.getRootTitle();
+    }
+
+    /**
+     * 获得文件写入流, 通过文件路径
+     */
+    public @Nullable TextPaneFileWritersAO getWriterByFilePath(SaveTextPaneFileByFilePathAO ao) {
+        if (ao == null || ao.checkRequiredParamsError()) {
+            return null;
+        }
+        return ao.forEach((String absolutePath) -> {
+            if (!FileUtil.isFile(absolutePath)) {
+                return null;
+            }
+            return FileUtil.getWriter(absolutePath, CharsetUtil.UTF_8, false);
+        });
     }
 
     /**

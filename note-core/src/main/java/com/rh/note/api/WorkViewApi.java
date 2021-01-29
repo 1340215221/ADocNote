@@ -1,5 +1,6 @@
 package com.rh.note.api;
 
+import com.rh.note.ao.TextPaneFileWritersAO;
 import com.rh.note.exception.UnknownBusinessSituationException;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.FileBeanPath;
@@ -9,6 +10,8 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.io.Reader;
+import java.io.Writer;
+import java.util.List;
 
 /**
  * 工作窗口操作 接口
@@ -59,6 +62,22 @@ public class WorkViewApi {
     }
 
     /**
+     * 保存编辑区内容,通过文件路径
+     */
+    public void saveTextPaneFileByFilePaths(TextPaneFileWritersAO ao) {
+        if (ao == null || ao.checkRequiredParamsError()) {
+            return;
+        }
+        ao.forEach((String filePath, Writer writer) -> {
+            AdocTextPaneView textPaneView = new AdocTextPaneView().init(filePath);
+            if (textPaneView == null) {
+                return;
+            }
+            textPaneView.writerToFile(writer);
+        });
+    }
+
+    /**
      * 生成编辑区
      */
     public void createAdocTextPane(FileBeanPath beanPath, Reader reader) {
@@ -85,5 +104,17 @@ public class WorkViewApi {
     public @Nullable TitleLine getTitleLineBySelectedNode() {
         TitleTreeView treeView = new TitleTreeView().init();
         return treeView.getTitleLineBySelectedNode();
+    }
+
+    /**
+     * 获得选项卡中的编辑控件对应的文件地址
+     */
+    public @Nullable List<String> getFilePathsOfTextPaneByTabbedPane() {
+        TabbedPaneView tabbedPaneView = new TabbedPaneView().init();
+        // 在非编辑窗口使用ctrl + s 时, 编辑区选项卡会为空
+        if (tabbedPaneView == null) {
+            return null;
+        }
+        return tabbedPaneView.getFilePathsOfTextPane();
     }
 }

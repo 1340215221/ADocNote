@@ -12,17 +12,20 @@ public class AdocTextPaneEvent {
      * 回车操作
      */
     public void enter_operation(@NonNull TextPaneKeyStrokeAO ao) {
+        throw new RuntimeException();
     }
 
     /**
      * 选择上一个在提示框
      */
     public void select_previous_on_prompt(@NonNull TextPaneKeyStrokeAO ao) {
+        throw new RuntimeException();
     }
 
     /**
      * 选择下一个在提示框
      */
     public void select_next_on_prompt(@NonNull TextPaneKeyStrokeAO ao) {
+        throw new RuntimeException();
     }
 }

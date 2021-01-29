@@ -107,11 +107,12 @@ class WorkFrameBuilder implements BaseBuilder {
 
     /**
      * 全局快捷键
+     * 1. ctrl + s 保存
      */
     void globalKeymap() {
         Toolkit toolkit = Toolkit.getDefaultToolkit()
-        AWTEventListener listener = {event ->
-            this.save_all_text_pane(event)
+        AWTEventListener listener = {
+            event.save_all_edit_text()
         }
         toolkit.addAWTEventListener(listener, AWTEvent.KEY_EVENT_MASK)
     }

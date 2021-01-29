@@ -3,17 +3,20 @@ package com.rh.note.action;
 import com.rh.note.ao.CheckIsAdocProjectAO;
 import com.rh.note.ao.ClickedProjectListAO;
 import com.rh.note.ao.OpenAdocFileByTitleNodeAO;
+import com.rh.note.ao.SaveTextPaneFileByFilePathAO;
 import com.rh.note.api.FileApi;
 import com.rh.note.api.ProManageViewApi;
 import com.rh.note.api.WorkViewApi;
 import com.rh.note.config.KeymapConfig;
 import com.rh.note.line.TitleLine;
 import lombok.NonNull;
+import org.apache.commons.collections4.CollectionUtils;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 @Component
 public class OperationAction {
@@ -53,5 +56,13 @@ public class OperationAction {
             return null;
         }
         return OpenAdocFileByTitleNodeAO.copy(titleLine);
+    }
+
+    /**
+     * 判断存在被打开的编辑区
+     */
+    public @Nullable SaveTextPaneFileByFilePathAO hasTextPaneOpened() {
+        List<String> list = workViewApi.getFilePathsOfTextPaneByTabbedPane();
+        return CollectionUtils.isNotEmpty(list) ? new SaveTextPaneFileByFilePathAO(list) : null;
     }
 }

@@ -27,3 +27,6 @@ hs_err_pid*
 .idea/
 target/
 *.iml
+
+# 用户配置文件
+config.yml

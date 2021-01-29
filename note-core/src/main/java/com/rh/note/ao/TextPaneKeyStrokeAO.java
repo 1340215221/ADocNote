@@ -26,7 +26,7 @@ public class TextPaneKeyStrokeAO implements BaseAO {
     }
 
     @Override
-    public void checkRequiredItems() throws RequestParamsValidException {
+    public void assertThrow() throws RequestParamsValidException {
         if (beanPath == null) {
             throw new RequestParamsValidException();
         }

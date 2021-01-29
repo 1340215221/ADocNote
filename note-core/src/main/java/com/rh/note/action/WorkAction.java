@@ -1,6 +1,8 @@
 package com.rh.note.action;
 
 import com.rh.note.ao.OpenAdocFileByTitleNodeAO;
+import com.rh.note.ao.SaveTextPaneFileByFilePathAO;
+import com.rh.note.ao.TextPaneFileWritersAO;
 import com.rh.note.api.FileApi;
 import com.rh.note.api.FrameContextApi;
 import com.rh.note.api.WorkViewApi;
@@ -27,6 +29,14 @@ public class WorkAction {
     private FrameContextApi frameContextApi;
     @Autowired
     private FileApi fileApi;
+
+    /**
+     * 保存编辑区内容,通过文件路径
+     */
+    public void saveTextPaneFileByFilePaths(@NonNull SaveTextPaneFileByFilePathAO ao) {
+        TextPaneFileWritersAO writerAO = fileApi.getWriterByFilePath(ao);
+        workViewApi.saveTextPaneFileByFilePaths(writerAO);
+    }
 
     public void openFileByTitleNode(@NonNull OpenAdocFileByTitleNodeAO ao) {
         // 显示已打开文件
