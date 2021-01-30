@@ -58,7 +58,7 @@ public class FileApi {
      * 获得文件写入流, 通过文件路径
      */
     public @Nullable TextPaneFileWritersAO getWriterByFilePath(SaveTextPaneFileByFilePathAO ao) {
-        if (ao == null || ao.checkRequiredParamsError()) {
+        if (ao == null || ao.checkMissRequiredParams()) {
             return null;
         }
         return ao.forEach((String absolutePath) -> {

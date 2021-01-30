@@ -49,6 +49,21 @@ public class TabbedPaneView extends BaseView<TabbedPaneBuilder, JTabbedPane> {
     }
 
     /**
+     * 获得没有被选择的编辑区
+     */
+    public @NotNull List<String> getFilePathOfTextPaneNotSelected() {
+        Component[] arr = tabbedPane().getComponents();
+        if (ArrayUtils.isEmpty(arr)) {
+            return Collections.emptyList();
+        }
+        Component selected = tabbedPane().getSelectedComponent();
+        return Arrays.stream(arr)
+                .filter(c -> c instanceof TextScrollPane && c != selected)
+                .map(scrollPane -> ((TextScrollPane) scrollPane).getBeanPath().getFilePath())
+                .collect(Collectors.toList());
+    }
+
+    /**
      * 获得编辑控件的文件路径
      */
     public @NotNull List<String> getFilePathsOfTextPane() {
@@ -78,5 +93,12 @@ public class TabbedPaneView extends BaseView<TabbedPaneBuilder, JTabbedPane> {
      */
     public boolean existSelected() {
         return tabbedPane().getSelectedIndex() >= 0;
+    }
+
+    /**
+     * 判断存在没有被选择的编辑区
+     */
+    public boolean existNotSelected() {
+        return tabbedPane().getComponentCount() > 1;
     }
 }

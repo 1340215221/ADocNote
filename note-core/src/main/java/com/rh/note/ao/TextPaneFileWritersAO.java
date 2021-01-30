@@ -20,7 +20,7 @@ public class TextPaneFileWritersAO implements BaseAO {
     private final List<Item> items = new ArrayList<>();
 
     @Override
-    public boolean checkRequiredParamsError() {
+    public boolean checkMissRequiredParams() {
         return CollectionUtils.isEmpty(items);
     }
 

@@ -108,15 +108,20 @@ class WorkFrameBuilder implements BaseBuilder {
 
     /**
      * 全局快捷键
-     * 1. ctrl + s 保存
      */
     void globalKeymap() {
         def keymap = new GlobalKeymapUtil()
+        // ctrl + s 保存
         keymap.event_ctrl_S {
             event.save_all_edit_text()
         }
+        // alt + q 关闭当前文件
         keymap.event_alt_Q {
             event.closeCurrentTextPane()
+        }
+        // alt + w 关闭其它文件
+        keymap.event_alt_W {
+            event.closeOtherTextPane()
         }
     }
 }

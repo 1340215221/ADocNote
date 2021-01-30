@@ -3,7 +3,7 @@ package com.rh.note.config;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
 
-import java.awt.*;
+import java.awt.AWTEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
@@ -12,6 +12,17 @@ import java.awt.event.MouseEvent;
  */
 @Component
 public class KeymapConfig {
+    /**
+     * alt w
+     * 关闭其它编辑区
+     */
+    public static boolean altW(@NonNull AWTEvent event) {
+        if (!(event instanceof KeyEvent) || event.getID() != KeyEvent.KEY_PRESSED) {
+            return false;
+        }
+        KeyEvent keyEvent = (KeyEvent) event;
+        return keyEvent.getKeyCode() == 87 && keyEvent.getModifiers() == 8;
+    }
     /**
      * alt q
      * 关闭当前编辑区

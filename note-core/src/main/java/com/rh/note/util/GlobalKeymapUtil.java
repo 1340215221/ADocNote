@@ -18,6 +18,18 @@ public class GlobalKeymapUtil {
     }
 
     /**
+     * alt + w
+     */
+    public void event_alt_W(@NonNull Runnable run) {
+        AWTEventListener listener = event -> {
+            if (KeymapConfig.altW(event)) {
+                run.run();
+            }
+        };
+        toolkit.addAWTEventListener(listener, AWTEvent.KEY_EVENT_MASK);
+    }
+
+    /**
      * alt + q
      */
     public void event_alt_Q(@NonNull Runnable run) {

@@ -4,14 +4,21 @@ import com.rh.note.ao.TextPaneFileWritersAO;
 import com.rh.note.exception.UnknownBusinessSituationException;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.FileBeanPath;
-import com.rh.note.view.*;
+import com.rh.note.view.AdocTextPaneView;
+import com.rh.note.view.RootTitleNodeView;
+import com.rh.note.view.TabbedPaneView;
+import com.rh.note.view.TextScrollPaneView;
+import com.rh.note.view.TitleTreeView;
+import com.rh.note.view.TreeModelView;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.io.Reader;
 import java.io.Writer;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -66,7 +73,7 @@ public class WorkViewApi {
      * 保存编辑区内容,通过文件路径
      */
     public void saveTextPaneFileByFilePaths(TextPaneFileWritersAO ao) {
-        if (ao == null || ao.checkRequiredParamsError()) {
+        if (ao == null || ao.checkMissRequiredParams()) {
             return;
         }
         ao.forEach((String filePath, Writer writer) -> {
@@ -149,5 +156,21 @@ public class WorkViewApi {
             }
             textPaneView.close();
         });
+    }
+
+    /**
+     * 获得没有被选择的编辑区
+     */
+    public @NotNull List<String> getFilePathsOfTextPaneNotSelected() {
+        TabbedPaneView tabbedPaneView = new TabbedPaneView().init();
+        return tabbedPaneView != null ? tabbedPaneView.getFilePathOfTextPaneNotSelected() : Collections.emptyList();
+    }
+
+    /**
+     * 判断存在没有被选择的编辑区
+     */
+    public boolean hasTextPaneNotSelected() {
+        TabbedPaneView tabbedPaneView = new TabbedPaneView().init();
+        return tabbedPaneView != null && tabbedPaneView.existNotSelected();
     }
 }

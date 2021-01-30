@@ -59,6 +59,20 @@ public class WorkAction {
     }
 
     /**
+     * 关闭没有被选择的编辑区
+     */
+    public void closeTextPaneNotSelected() {
+        // 获得没有被选择的编辑区
+        List<String> filePaths = workViewApi.getFilePathsOfTextPaneNotSelected();
+        // 保存编辑区内容
+        SaveTextPaneFileByFilePathAO ao = new SaveTextPaneFileByFilePathAO(filePaths);
+        TextPaneFileWritersAO writerAO = fileApi.getWriterByFilePath(ao);
+        workViewApi.saveTextPaneFileByFilePaths(writerAO);
+        // 关闭编辑区
+        workViewApi.closeTextPaneByFilePaths(filePaths);
+    }
+
+    /**
      * 打开文件, 通过标题节点
      */
     public void openFileByTitleNode(@NonNull OpenAdocFileByTitleNodeAO ao) {

@@ -52,4 +52,14 @@ public class WorkFrameEvent {
     public void close_frame() {
         workAction.closeContext();
     }
+
+    /**
+     * 关闭其他编辑区
+     */
+    public void closeOtherTextPane() {
+        boolean hasNotSelected = operationAction.hasTextPaneNotSelected();
+        if (hasNotSelected) {
+            workAction.closeTextPaneNotSelected();
+        }
+    }
 }

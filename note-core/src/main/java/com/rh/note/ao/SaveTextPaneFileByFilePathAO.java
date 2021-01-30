@@ -24,7 +24,7 @@ public class SaveTextPaneFileByFilePathAO extends BaseFileConfig implements Base
     private List<String> filePaths;
 
     @Override
-    public boolean checkRequiredParamsError() {
+    public boolean checkMissRequiredParams() {
         return CollectionUtils.isEmpty(filePaths);
     }
 

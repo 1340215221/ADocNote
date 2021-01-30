@@ -72,4 +72,11 @@ public class OperationAction {
         List<String> list = workViewApi.getFilePathsOfTextPaneByTabbedPane();
         return CollectionUtils.isNotEmpty(list) ? new SaveTextPaneFileByFilePathAO(list) : null;
     }
+
+    /**
+     * 判断存在没有被选择的编辑区
+     */
+    public boolean hasTextPaneNotSelected() {
+        return workViewApi.hasTextPaneNotSelected();
+    }
 }

@@ -11,7 +11,7 @@ public interface BaseAO extends Serializable {
     /**
      * 检查请求参数错误
      */
-    default boolean checkRequiredParamsError() { return false; }
+    default boolean checkMissRequiredParams() { return false; }
     /**
      * 检查参数是否完整
      */
