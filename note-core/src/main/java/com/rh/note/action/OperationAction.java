@@ -2,7 +2,7 @@ package com.rh.note.action;
 
 import com.rh.note.ao.CheckIsAdocProjectAO;
 import com.rh.note.ao.ClickedProjectListAO;
-import com.rh.note.ao.OpenAdocFileByTitleNodeAO;
+import com.rh.note.ao.OpenAdocFileByFilePathAO;
 import com.rh.note.ao.SaveTextPaneFileByFilePathAO;
 import com.rh.note.api.FileApi;
 import com.rh.note.api.ProManageViewApi;
@@ -53,7 +53,7 @@ public class OperationAction {
     /**
      * 判断存在文件, 通过被选中的节点
      */
-    public @Nullable OpenAdocFileByTitleNodeAO isExistFileBySelectedNode() {
+    public @Nullable OpenAdocFileByFilePathAO isExistFileBySelectedNode() {
         TitleLine titleLine = workViewApi.getTitleLineBySelectedNode();
         if (titleLine == null || titleLine.getBeanPath() == null) {
             return null;
@@ -62,7 +62,9 @@ public class OperationAction {
         if (!isAdocFile) {
             return null;
         }
-        return OpenAdocFileByTitleNodeAO.copy(titleLine);
+        OpenAdocFileByFilePathAO ao = new OpenAdocFileByFilePathAO();
+        ao.copy(titleLine);
+        return ao;
     }
 
     /**

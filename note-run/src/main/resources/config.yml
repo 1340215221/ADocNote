@@ -8,6 +8,6 @@ pro-path:
 # 字体配置
 font:
   linux:
-  win: Consola
+  win: Consolas
   size: 17
-
+  lineSpacing:

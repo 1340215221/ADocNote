@@ -1,6 +1,6 @@
 package com.rh.note.action;
 
-import com.rh.note.ao.OpenAdocFileByTitleNodeAO;
+import com.rh.note.ao.OpenAdocFileByFilePathAO;
 import com.rh.note.ao.SaveTextPaneFileByFilePathAO;
 import com.rh.note.ao.TextPaneFileWritersAO;
 import com.rh.note.api.FileApi;
@@ -8,6 +8,7 @@ import com.rh.note.api.FrameContextApi;
 import com.rh.note.api.WorkViewApi;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.FileBeanPath;
+import com.rh.note.vo.FindIncludePathInSelectedTextPaneVO;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -73,9 +74,22 @@ public class WorkAction {
     }
 
     /**
+     * 打开include行指向的adoc文件, 通过被选择的编辑区
+     */
+    public void openIncludePointingAdocFileInSelectedTextPane() {
+        FindIncludePathInSelectedTextPaneVO vo = workViewApi.getIncludePathInSelectedTextPane();
+        if (vo == null) {
+            return;
+        }
+        OpenAdocFileByFilePathAO ao = new OpenAdocFileByFilePathAO();
+        ao.copy(vo);
+        this.openAdocFileByFilePath(ao);
+    }
+
+    /**
      * 打开文件, 通过标题节点
      */
-    public void openFileByTitleNode(@NonNull OpenAdocFileByTitleNodeAO ao) {
+    public void openAdocFileByFilePath(@NonNull OpenAdocFileByFilePathAO ao) {
         // 显示已打开文件
         workViewApi.showOpenedFileByFilePath(ao.getFilePath());
         // 打开文件, 加载内容, 并显示
@@ -91,7 +105,7 @@ public class WorkAction {
             return;
         }
         // 读取文件内容
-        Reader reader = fileApi.readFileContent(beanPath.getAbsolutePath());
+        Reader reader = fileApi.readAdocFileContent(beanPath.getAbsolutePath());
         // 生成编辑区
         workViewApi.createAdocTextPane(beanPath, reader);
     }

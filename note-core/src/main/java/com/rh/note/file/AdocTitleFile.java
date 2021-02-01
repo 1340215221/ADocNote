@@ -91,8 +91,8 @@ public class AdocTitleFile extends BaseFileConfig {
                         .setLineNumber(lineNumber.get())
                         .setChildTitles(childTitles);
                 titleLines.add(proxyTitleLine);
-                String includePath = FilePathEnum.coverProPath(filePath, includeSyntax.getIncludePath());
-                childFiles.add(new AdocTitleFile(includePath, childTitles));
+                String includeToPath = FilePathEnum.includePath2ProPath(filePath, includeSyntax.getIncludePath());
+                childFiles.add(new AdocTitleFile(includeToPath, childTitles));
             }
         };
         FileUtil.readUtf8Lines(new File(getAbsolutePath()), handler);

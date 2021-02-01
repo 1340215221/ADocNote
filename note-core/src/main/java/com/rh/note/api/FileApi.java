@@ -72,8 +72,10 @@ public class FileApi {
     /**
      * 读取文件内容
      */
-    public @Nullable Reader readFileContent(String absolutePath) {
-        if (StringUtils.isBlank(absolutePath) || !FileUtil.isFile(absolutePath)) {
+    public @Nullable Reader readAdocFileContent(String absolutePath) {
+        if (StringUtils.isBlank(absolutePath) || !FileUtil.isFile(absolutePath)
+                || !"adoc".equalsIgnoreCase(FileUtil.extName(absolutePath))
+        ) {
             return null;
         }
         return FileUtil.getReader(absolutePath, CharsetUtil.CHARSET_UTF_8);

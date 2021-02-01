@@ -1,12 +1,27 @@
 package com.rh.note.event;
 
+import com.rh.note.action.OperationAction;
+import com.rh.note.action.WorkAction;
 import com.rh.note.annotation.ComponentBean;
 import com.rh.note.ao.TextPaneKeyStrokeAO;
 import com.rh.note.constants.FrameCategoryEnum;
 import lombok.NonNull;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @ComponentBean(FrameCategoryEnum.WORK)
 public class AdocTextPaneEvent {
+
+    @Autowired
+    private OperationAction operationAction;
+    @Autowired
+    private WorkAction workAction;
+
+    /**
+     * ctrl左键点击
+     */
+    public void enter_include_file() {
+        workAction.openIncludePointingAdocFileInSelectedTextPane();
+    }
 
     /**
      * 回车操作

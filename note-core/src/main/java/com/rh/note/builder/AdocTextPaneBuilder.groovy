@@ -1,6 +1,6 @@
 package com.rh.note.builder
 
-import cn.hutool.core.util.ReflectUtil
+
 import cn.hutool.core.util.StrUtil
 import com.rh.note.annotation.ComponentBean
 import com.rh.note.app.config.UserFontConfig
@@ -20,10 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
 import javax.swing.*
-import javax.swing.text.AbstractDocument
-import javax.swing.text.DefaultStyledDocument
-import javax.swing.text.SimpleAttributeSet
-import javax.swing.text.StyleConstants
 import java.awt.*
 
 /**
@@ -43,9 +39,9 @@ class AdocTextPaneBuilder implements BaseBuilder {
     @Autowired
     private AdocTextPaneEvent event
     @Autowired
-    private AdocTextPaneFactory textFactory
+    private AdocTextPaneFactory textPaneF
     @Autowired
-    private AdocScrollPaneFactory scrollFactory
+    private AdocScrollPaneFactory tScrollPaneF
     private FileBeanPath beanPath
 
     AdocTextPaneBuilder(FileBeanPath beanPath) {
@@ -68,7 +64,7 @@ class AdocTextPaneBuilder implements BaseBuilder {
 //                        event.open_input_prompt(it)
                     },
                     mouseClicked: {
-//                        event.enter_include_file(it)
+                        event.enter_include_file()
 //                        event.enter_include_java_file(it)
                     },
                     caretUpdate: {
@@ -77,7 +73,6 @@ class AdocTextPaneBuilder implements BaseBuilder {
                     beanPath: beanPath,
             ) {
                 addKeymap()
-                setLineSpacing()
             }
         }
 
@@ -102,30 +97,6 @@ class AdocTextPaneBuilder implements BaseBuilder {
         // 从swingBuilder中删除
         swingBuilder.variables.remove(textPaneId())
         swingBuilder.variables.remove(scrollPaneId())
-    }
-
-    /**
-     * 设置行间距
-     */
-    private void setLineSpacing() {
-        SimpleAttributeSet set = new SimpleAttributeSet()
-        StyleConstants.setLineSpacing(set, 10f)
-        swingBuilder."${textPaneId()}".setParagraphAttributes(set, true)
-    }
-
-    /**
-     * 初始化样式
-     */
-    private DefaultStyledDocument getStyledDocument() {
-        def styledDocument = new DefaultStyledDocument()
-        AbstractDocument.BranchElement set = styledDocument.getRootElements()[0].getElement(0).getAttributes()
-        def method = AbstractDocument.getDeclaredMethod('getAttributeContext')
-        method.setAccessible(true)
-        def context = method.invoke(styledDocument)
-        def attributes = ReflectUtil.getFieldValue(set, 'attributes')
-        attributes = context.addAttribute(attributes, StyleConstants.LineSpacing, 0.9f)
-        ReflectUtil.setFieldValue(set, 'attributes', attributes)
-        return styledDocument
     }
 
     /**

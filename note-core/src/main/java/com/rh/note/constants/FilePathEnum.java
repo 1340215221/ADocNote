@@ -25,14 +25,18 @@ public enum FilePathEnum {
     ;
 
     /**
-     * 相对路径 转 项目路径<br/>
+     * include指向路径 转 项目路径<br/>
      * 只用于文件间的路径转换
+     * 如果includePath为绝对路径, 则返回null
      */
-    public static @Nullable String coverProPath(String currentFileProPath, String relativePath) {
-        if (StringUtils.isBlank(currentFileProPath) || StringUtils.isBlank(relativePath)
+    public static @Nullable String includePath2ProPath(String currentFileProPath, String includePath) {
+        if (StringUtils.isBlank(currentFileProPath) || StringUtils.isBlank(includePath)
                 || !currentFileProPath.matches(RegexConstants.file_path_regex)
-                || !relativePath.matches(RegexConstants.file_path_regex)
+                || !includePath.matches(RegexConstants.file_path_regex)
         ) {
+            return null;
+        }
+        if (FileUtil.isAbsolutePath(includePath)) {
             return null;
         }
         // 获得当前目录
@@ -42,7 +46,6 @@ public enum FilePathEnum {
                 .filter(StringUtils::isNotBlank)
                 .map(path -> path + "/")
                 .orElse("");
-        return FileUtil.normalize(parentPath + relativePath);
+        return FileUtil.normalize(parentPath + includePath);
     }
-
 }

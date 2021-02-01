@@ -4,12 +4,9 @@ import com.rh.note.ao.TextPaneFileWritersAO;
 import com.rh.note.exception.UnknownBusinessSituationException;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.FileBeanPath;
-import com.rh.note.view.AdocTextPaneView;
-import com.rh.note.view.RootTitleNodeView;
-import com.rh.note.view.TabbedPaneView;
-import com.rh.note.view.TextScrollPaneView;
-import com.rh.note.view.TitleTreeView;
-import com.rh.note.view.TreeModelView;
+import com.rh.note.syntax.IncludeSyntax;
+import com.rh.note.view.*;
+import com.rh.note.vo.FindIncludePathInSelectedTextPaneVO;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -156,6 +153,27 @@ public class WorkViewApi {
             }
             textPaneView.close();
         });
+    }
+
+    /**
+     * 获得include行指向的adoc文件路径, 通过被选择的编辑区
+     */
+    public @Nullable FindIncludePathInSelectedTextPaneVO getIncludePathInSelectedTextPane() {
+        TabbedPaneView tabbedPaneView = new TabbedPaneView().init();
+        String filePath = tabbedPaneView.getFilePathOfTextPaneSelected();
+        AdocTextPaneView textPaneView = new AdocTextPaneView().init(filePath);
+        if (textPaneView == null) {
+            return null;
+        }
+        String lineContent = textPaneView.getCaretLineContent();
+        IncludeSyntax includeSyntax = new IncludeSyntax().init(lineContent);
+        if (includeSyntax == null) {
+            return null;
+        }
+        FindIncludePathInSelectedTextPaneVO vo = new FindIncludePathInSelectedTextPaneVO();
+        vo.copy(includeSyntax);
+        vo.setCurrentFilePath(filePath);
+        return vo;
     }
 
     /**

@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.swing.text.Element;
 import java.io.Reader;
 import java.io.Writer;
 
@@ -65,6 +66,30 @@ public class AdocTextPaneView extends BaseView<AdocTextPaneBuilder, AdocTextPane
             throw new AdocTextPaneInitContentException(e);
         } finally {
             IoUtil.close(reader);
+        }
+    }
+
+    /**
+     * 获得光标行的内容
+     */
+    public String getCaretLineContent() {
+        int dot = textPane().getCaret().getDot();
+        if (dot < 0) {
+            return null;
+        }
+        Element rootElement = textPane().getDocument().getDefaultRootElement();
+        int index = rootElement.getElementIndex(dot);
+        if (index < 0) {
+            return null;
+        }
+        Element element = rootElement.getElement(index);
+        if (element == null) {
+            return null;
+        }
+        try {
+            return textPane().getText(element.getStartOffset(), element.getEndOffset() - element.getStartOffset());
+        } catch (Exception e) {
+            throw new ApplicationException(ErrorCodeEnum.FAILED_TO_GET_THE_CONTENT_OF_THE_EDIT_AREA, e);
         }
     }
 
