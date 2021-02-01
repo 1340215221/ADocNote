@@ -3,6 +3,7 @@ package com.rh.note.builder
 import cn.hutool.core.util.ReflectUtil
 import cn.hutool.core.util.StrUtil
 import com.rh.note.annotation.ComponentBean
+import com.rh.note.app.config.UserFontConfig
 import com.rh.note.common.BaseBuilder
 import com.rh.note.component.AdocTextPane
 import com.rh.note.component.TextScrollPane
@@ -36,6 +37,8 @@ class AdocTextPaneBuilder implements BaseBuilder {
     @Autowired
     private Font textFont
     @Autowired
+    private UserFontConfig fontConfig
+    @Autowired
     private SwingBuilder swingBuilder
     @Autowired
     private AdocTextPaneEvent event
@@ -53,8 +56,8 @@ class AdocTextPaneBuilder implements BaseBuilder {
     void init() {
         def textPane = {
             swingBuilder.textPane(id: textPaneId(),
-                    styledDocument: getStyledDocument(),
                     font: textFont,
+                    lineSpacing: fontConfig.getLineSpacing(),
                     keyPressed: {
 //                        event.rename_include(it)
 //                        event.sink_title(it)

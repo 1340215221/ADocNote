@@ -8,6 +8,10 @@ import lombok.Data;
 @Data
 public class UserFontConfig {
     /**
+     * 行间距
+     */
+    private Float lineSpacing = 0.2f;
+    /**
      * linux字体名
      */
     private String linux;

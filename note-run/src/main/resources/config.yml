@@ -2,11 +2,12 @@
 pro-path:
   list:
     - proName: 测试笔记
-      proPath: /home/hang/Documents/adoc-test
+      proPath: /download/adoc-temp
     - proName: Java笔记
-      proPath: /home/hang/Documents/Java-not
+      proPath: /my_code/InterviewNote
 # 字体配置
 font:
-#  linux: Ubuntu Mono
+  linux:
   win: Consola
   size: 17
+
