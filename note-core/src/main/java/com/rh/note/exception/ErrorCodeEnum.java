@@ -22,9 +22,12 @@ public enum ErrorCodeEnum {
     FAILED_TO_SET_TEXT_PANE_LINE_NUMBER(1005, "设置textPane行号失败"),
     // 语法
     THE_READ_ME_FILE_DOES_NOT_HAVE_A_FIRST_LEVEL_TITLE(2000, "该ReadMe文件没有一级标题"),
+    IS_NOT_SYNTAX_SUGAR_LINE(2001, "不是快捷语法行"),
     // 编辑区
     FAILED_TO_WRITE_THE_CONTENT_OF_THE_EDIT_AREA_TO_THE_FILE(3000, "编辑区内容写入文件失败"),
     FAILED_TO_GET_THE_CONTENT_OF_THE_EDIT_AREA(3001, "获得编辑区行内容失败"),
+    // 文件
+    FAILED_TO_CREATE_ADOC_FILE(4000, "创建adoc文件失败"),
     ;
     @NonNull
     private Integer code;

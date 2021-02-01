@@ -4,7 +4,10 @@ import com.rh.note.ao.TextPaneFileWritersAO;
 import com.rh.note.exception.UnknownBusinessSituationException;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.FileBeanPath;
+import com.rh.note.sugar.AdocIncludeSyntaxSugar;
+import com.rh.note.sugar.TitleSyntaxSugar;
 import com.rh.note.syntax.IncludeSyntax;
+import com.rh.note.syntax.TitleSyntax;
 import com.rh.note.view.*;
 import com.rh.note.vo.FindIncludePathInSelectedTextPaneVO;
 import org.apache.commons.collections4.CollectionUtils;
@@ -177,6 +180,32 @@ public class WorkViewApi {
     }
 
     /**
+     * 生成标题语法, 通过被选择的编辑区光标行内容
+     */
+    public void generateTitleSyntaxByCaretLineOfSelectedTextPane() {
+        // 获取光标行内容
+        TabbedPaneView tabbedPaneView = new TabbedPaneView().init();
+        String filePath = tabbedPaneView.getFilePathOfTextPaneSelected();
+        AdocTextPaneView textPaneView = new AdocTextPaneView().init(filePath);
+        if (textPaneView == null) {
+            return;
+        }
+        String lineContent = textPaneView.getCaretLineContent();
+        // 判断行内容是否为标题语法
+        TitleSyntaxSugar syntaxSugar = new TitleSyntaxSugar().init(lineContent);
+        if (syntaxSugar == null) {
+            return;
+        }
+        // 选择当前行
+        textPaneView.selectCaretLine();
+        // 生成标题语句
+        TitleSyntax syntax = new TitleSyntax().init(syntaxSugar);
+        String newContent = syntax.toString();
+        // 替换选择内容
+        textPaneView.replaceSelectedContent(newContent);
+    }
+
+    /**
      * 获得没有被选择的编辑区
      */
     public @NotNull List<String> getFilePathsOfTextPaneNotSelected() {
@@ -190,5 +219,44 @@ public class WorkViewApi {
     public boolean hasTextPaneNotSelected() {
         TabbedPaneView tabbedPaneView = new TabbedPaneView().init();
         return tabbedPaneView != null && tabbedPaneView.existNotSelected();
+    }
+
+    /**
+     * 判断是快捷语法行, 通过被选择编辑区的光标行内容
+     */
+    public boolean checkIsSyntaxSugarByCaretLineOfSelectedTextPane() {
+        TabbedPaneView tabbedPaneView = new TabbedPaneView().init();
+        String filePath = tabbedPaneView.getFilePathOfTextPaneSelected();
+        AdocTextPaneView textPaneView = new AdocTextPaneView().init(filePath);
+        if (textPaneView == null) {
+            return false;
+        }
+        String lineContent = textPaneView.getCaretLineContent();
+        return new TitleSyntaxSugar().init(lineContent) != null || new AdocIncludeSyntaxSugar().init(lineContent) != null;
+    }
+
+    /**
+     * 生成include语句, 通过被选择的编辑区的光标行内容
+     */
+    public @Nullable IncludeSyntax generateIncludeSyntaxByCaretLineOfSelectedTextPane() {
+        TabbedPaneView tabbedPaneView = new TabbedPaneView().init();
+        String filePath = tabbedPaneView.getFilePathOfTextPaneSelected();
+        AdocTextPaneView textPaneView = new AdocTextPaneView().init(filePath);
+        if (textPaneView == null) {
+            return null;
+        }
+        String lineContent = textPaneView.getCaretLineContent();
+        AdocIncludeSyntaxSugar syntaxSugar = new AdocIncludeSyntaxSugar().init(lineContent);
+        if (syntaxSugar == null) {
+            return null;
+        }
+        textPaneView.selectCaretLine();
+        IncludeSyntax syntax = new IncludeSyntax().init(syntaxSugar, filePath);
+        if (syntax == null) {
+            return null;
+        }
+        String newContent = syntax.toString();
+        textPaneView.replaceSelectedContent(newContent);
+        return syntax;
     }
 }

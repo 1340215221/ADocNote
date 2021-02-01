@@ -2,7 +2,7 @@ package com.rh.note.line;
 
 import com.rh.note.common.IArgsConstructorBean;
 import com.rh.note.common.ReadTitleLineImpl;
-import com.rh.note.constants.FilePathEnum;
+import com.rh.note.constants.AdocFilePathEnum;
 import com.rh.note.path.TitleBeanPath;
 import com.rh.note.syntax.TitleSyntax;
 import com.rh.note.view.RootTitleNodeView;
@@ -118,20 +118,20 @@ public class TitleLine implements IArgsConstructorBean, ReadTitleLineImpl {
      * 判断是readme文件中的标题
      */
     public boolean declareInReadMe() {
-        return beanPath != null && FilePathEnum.README.matchByFilePath(beanPath.getFilePath());
+        return beanPath != null && AdocFilePathEnum.README.matchByFilePath(beanPath.getFilePath());
     }
 
     /**
      * 判断是在twoLevel文件中的标题
      */
     public boolean declareInTwoLevel() {
-        return beanPath != null && FilePathEnum.TWO_LEVEL.matchByFilePath(beanPath.getFilePath());
+        return beanPath != null && AdocFilePathEnum.TWO_LEVEL.matchByFilePath(beanPath.getFilePath());
     }
 
     /**
      * 判断是在twoLevel文件中的标题
      */
     public boolean declareInContent() {
-        return beanPath != null && FilePathEnum.CONTENT.matchByFilePath(beanPath.getFilePath());
+        return beanPath != null && AdocFilePathEnum.CONTENT.matchByFilePath(beanPath.getFilePath());
     }
 }

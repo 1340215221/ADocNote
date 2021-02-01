@@ -1,13 +1,16 @@
 package com.rh.note.action;
 
+import com.rh.note.ao.CreateAdocFileAO;
 import com.rh.note.ao.OpenAdocFileByFilePathAO;
 import com.rh.note.ao.SaveTextPaneFileByFilePathAO;
 import com.rh.note.ao.TextPaneFileWritersAO;
 import com.rh.note.api.FileApi;
 import com.rh.note.api.FrameContextApi;
 import com.rh.note.api.WorkViewApi;
+import com.rh.note.exception.IsNotSyntaxSugarLineException;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.FileBeanPath;
+import com.rh.note.syntax.IncludeSyntax;
 import com.rh.note.vo.FindIncludePathInSelectedTextPaneVO;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -84,6 +87,35 @@ public class WorkAction {
         OpenAdocFileByFilePathAO ao = new OpenAdocFileByFilePathAO();
         ao.copy(vo);
         this.openAdocFileByFilePath(ao);
+    }
+
+    /**
+     * 处理快捷语法, 通过被选择的编辑区光标行内容
+     */
+    public void handleSyntaxSugarByCaretLineOfSelectedTextPane() {
+        if (!workViewApi.checkIsSyntaxSugarByCaretLineOfSelectedTextPane()) {
+            throw new IsNotSyntaxSugarLineException();
+        }
+        workViewApi.generateTitleSyntaxByCaretLineOfSelectedTextPane();
+        handleIncludeSyntaxSugarByCaretLineOfSelectedTextPane();
+    }
+
+    /**
+     * 生成include语句, 通过被选择的编辑区的光标行内容
+     */
+    private void handleIncludeSyntaxSugarByCaretLineOfSelectedTextPane() {
+        // include快捷语法 转 include语句
+        IncludeSyntax syntax = workViewApi.generateIncludeSyntaxByCaretLineOfSelectedTextPane();
+        // 创建adoc文件
+        CreateAdocFileAO createAdocFileAO = new CreateAdocFileAO();
+        createAdocFileAO.copy(syntax);
+        fileApi.createAdocFile(createAdocFileAO);
+        // 打开新文件, 并初始化内容
+        this.openNewFileByFilePath();
+        // 保存
+        SaveTextPaneFileByFilePathAO saveTextPaneFileByFilePathAO = new SaveTextPaneFileByFilePathAO();
+        saveTextPaneFileByFilePathAO.copy(syntax);
+        this.saveTextPaneFileByFilePaths(saveTextPaneFileByFilePathAO);
     }
 
     /**

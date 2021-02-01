@@ -9,6 +9,7 @@ import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.exception.TextPaneWriterToFileException;
 import com.rh.note.path.FileBeanPath;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -20,6 +21,7 @@ import java.io.Writer;
 /**
  * adoc编辑区 视图
  */
+@Slf4j
 public class AdocTextPaneView extends BaseView<AdocTextPaneBuilder, AdocTextPane> {
 
     public @Nullable AdocTextPaneView init(String filePath) {
@@ -71,18 +73,10 @@ public class AdocTextPaneView extends BaseView<AdocTextPaneBuilder, AdocTextPane
 
     /**
      * 获得光标行的内容
+     * tip 如果不是最后一行, 也包含换行符
      */
-    public String getCaretLineContent() {
-        int dot = textPane().getCaret().getDot();
-        if (dot < 0) {
-            return null;
-        }
-        Element rootElement = textPane().getDocument().getDefaultRootElement();
-        int index = rootElement.getElementIndex(dot);
-        if (index < 0) {
-            return null;
-        }
-        Element element = rootElement.getElement(index);
+    public @Nullable String getCaretLineContent() {
+        Element element = getCaretLineElement();
         if (element == null) {
             return null;
         }
@@ -98,5 +92,53 @@ public class AdocTextPaneView extends BaseView<AdocTextPaneBuilder, AdocTextPane
      */
     public void close() {
         super.destroy();
+    }
+
+    /**
+     * 选择光标行
+     * tip 不包括换行符
+     */
+    public void selectCaretLine() {
+        Element element = getCaretLineElement();
+        if (element == null) {
+            return;
+        }
+        String lineContent = null;
+        try {
+            lineContent = textPane().getText(element.getStartOffset(), element.getEndOffset() - element.getStartOffset());
+        } catch (Exception e) {
+            log.error("[选择光标行]-[判断行是否以换行符结尾] error", e);
+        }
+        if (lineContent == null) {
+            return;
+        }
+        int selectionEnd = lineContent.endsWith("\\n") ? element.getEndOffset() - 1 : element.getEndOffset();
+        textPane().select(element.getStartOffset(), selectionEnd);
+    }
+
+    /**
+     * 获得光标行元素
+     */
+    private @Nullable Element getCaretLineElement() {
+        int dot = textPane().getCaret().getDot();
+        if (dot < 0) {
+            return null;
+        }
+        Element rootElement = textPane().getDocument().getDefaultRootElement();
+        int index = rootElement.getElementIndex(dot);
+        if (index < 0) {
+            return null;
+        }
+        return rootElement.getElement(index);
+    }
+
+    /**
+     * 替换被选择的内容
+     */
+    public void replaceSelectedContent(String newContent) {
+        if (newContent == null) {
+            return;
+        }
+        textPane().replaceSelection(newContent);
     }
 }

@@ -7,7 +7,7 @@ import com.rh.note.collection.ReadTitleLineList;
 import com.rh.note.common.BaseFileConfig;
 import com.rh.note.common.IReadTitleLine;
 import com.rh.note.common.ReadTitleLineImpl;
-import com.rh.note.constants.FilePathEnum;
+import com.rh.note.constants.AdocFilePathEnum;
 import com.rh.note.line.EmptyReadTitleLine;
 import com.rh.note.line.ProxyTitleLine;
 import com.rh.note.line.TitleLine;
@@ -91,7 +91,7 @@ public class AdocTitleFile extends BaseFileConfig {
                         .setLineNumber(lineNumber.get())
                         .setChildTitles(childTitles);
                 titleLines.add(proxyTitleLine);
-                String includeToPath = FilePathEnum.includePath2ProPath(filePath, includeSyntax.getIncludePath());
+                String includeToPath = AdocFilePathEnum.includePath2ProPath(filePath, includeSyntax.getIncludePath());
                 childFiles.add(new AdocTitleFile(includeToPath, childTitles));
             }
         };

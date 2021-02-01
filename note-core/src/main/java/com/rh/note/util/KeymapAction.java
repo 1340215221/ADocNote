@@ -1,8 +1,10 @@
 package com.rh.note.util;
 
 import com.rh.note.ao.TextPaneKeyStrokeAO;
+import com.rh.note.exception.IsNotSyntaxSugarLineException;
 import lombok.NonNull;
 import lombok.experimental.Delegate;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import javax.swing.text.DefaultEditorKit;
@@ -16,6 +18,7 @@ import java.util.function.Consumer;
 /**
  * textPane快捷键活动 工具
  */
+@Slf4j
 public class KeymapAction implements Keymap {
     /**
      * 新生成的keymap
@@ -36,7 +39,7 @@ public class KeymapAction implements Keymap {
             public void actionPerformed(ActionEvent event) {
                 try {
                     consumer.accept(new TextPaneKeyStrokeAO(event));
-                } catch (Exception e) {
+                } catch (IsNotSyntaxSugarLineException e) {
                     new DefaultEditorKit.InsertBreakAction().actionPerformed(event);
                 }
             }
@@ -54,6 +57,7 @@ public class KeymapAction implements Keymap {
                 try {
                     consumer.accept(new TextPaneKeyStrokeAO(event));
                 } catch (Exception e) {
+                    log.error("[添加上键事件] error", e);
                     DefaultEditorKitUtil.upAction(event);
                 }
             }
@@ -71,6 +75,7 @@ public class KeymapAction implements Keymap {
                 try {
                     consumer.accept(new TextPaneKeyStrokeAO(event));
                 } catch (Exception e) {
+                    log.error("[添加下键事件] error", e);
                     DefaultEditorKitUtil.downAction(event);
                 }
             }

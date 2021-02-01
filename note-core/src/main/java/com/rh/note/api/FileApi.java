@@ -2,10 +2,10 @@ package com.rh.note.api;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.CharsetUtil;
-import com.rh.note.ao.CheckIsAdocProjectAO;
-import com.rh.note.ao.ClickedProjectListAO;
-import com.rh.note.ao.SaveTextPaneFileByFilePathAO;
-import com.rh.note.ao.TextPaneFileWritersAO;
+import com.rh.note.ao.*;
+import com.rh.note.exception.ApplicationException;
+import com.rh.note.exception.CreateDuplicateAdocFileNameException;
+import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.file.ReadMeTitleFile;
 import com.rh.note.line.TitleLine;
 import org.apache.commons.lang3.StringUtils;
@@ -87,5 +87,30 @@ public class FileApi {
     public boolean checkIsAdocFile(String absolutePath) {
         return StringUtils.isNotBlank(absolutePath) && FileUtil.isFile(absolutePath)
                 && "adoc".equalsIgnoreCase(FileUtil.extName(absolutePath));
+    }
+
+    /**
+     * 创建adoc文件
+     */
+    public void createAdocFile(CreateAdocFileAO ao) {
+        if (ao == null || ao.checkMissRequiredParams()) {
+            return;
+        }
+        File file = new File(ao.getAbsolutePath());
+        if (file.exists()) {
+            throw new CreateDuplicateAdocFileNameException();
+        }
+        File parent = file.getParentFile();
+        if (parent.exists() && !parent.isDirectory()) {
+            throw new ApplicationException(ErrorCodeEnum.FAILED_TO_CREATE_ADOC_FILE);
+        }
+        if (!parent.exists()) {
+            parent.mkdirs();
+        }
+        try {
+            file.createNewFile();
+        } catch (Exception e) {
+            throw new ApplicationException(ErrorCodeEnum.FAILED_TO_CREATE_ADOC_FILE);
+        }
     }
 }

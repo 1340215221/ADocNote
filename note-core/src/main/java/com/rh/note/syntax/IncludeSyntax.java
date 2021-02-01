@@ -1,10 +1,12 @@
 package com.rh.note.syntax;
 
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.NumberUtil;
 import com.rh.note.constants.RegexConstants;
+import com.rh.note.sugar.AdocIncludeSyntaxSugar;
 import lombok.Getter;
+import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.regex.Matcher;
@@ -23,18 +25,22 @@ public class IncludeSyntax {
     /**
      * 缩进
      */
+    @NonNull
     private String indent;
     /**
      * 引用文件路径
      */
+    @NonNull
     private String includePath;
     /**
      * 文件名
      */
+    @NonNull
     private String fileName;
     /**
      * 文件后缀
      */
+    @NonNull
     private String extName;
     /**
      * 引用行号1
@@ -44,6 +50,11 @@ public class IncludeSyntax {
      * 引用行号2
      */
     private Integer lineNum2;
+    /**
+     * 指向文件绝对路径
+     * 1. 指向adoc文件路径, 为绝对路径
+     */
+    private String targetFilePath;
 
     public @Nullable IncludeSyntax init(String lineContent) {
         Matcher matcher = Pattern.compile(regex).matcher(lineContent);
@@ -67,5 +78,46 @@ public class IncludeSyntax {
             return null;
         }
         return Integer.parseInt(numStr);
+    }
+
+    public @Nullable IncludeSyntax init(AdocIncludeSyntaxSugar syntaxSugar, String currentFilePath) {
+        if (syntaxSugar == null || StringUtils.isBlank(currentFilePath)) {
+            return null;
+        }
+        indent = syntaxSugar.getIndent();
+        includePath = syntaxSugar.generateIncludePath(currentFilePath);
+        fileName = syntaxSugar.getTargetTitleName();
+        extName = syntaxSugar.getExtName();
+        return StringUtils.isNotBlank(includePath) ? this : null;
+    }
+
+    @Override
+    public @NotNull String toString() {
+        StringBuilder result = new StringBuilder()
+                .append(indent)
+                .append("include::")
+                .append(includePath)
+                .append("[");
+        if (lineNum1 != null && lineNum2 != null) {
+            result.append("lines=")
+                    .append(lineNum1)
+                    .append("..")
+                    .append(lineNum2);
+        }
+        if (lineNum1 != null) {
+            result.append("lines=").append(lineNum1);
+        }
+        if (lineNum2 != null) {
+            result.append("lines=").append(lineNum2);
+        }
+        result.append("]");
+        return result.toString();
+    }
+
+    /**
+     * 指向文件是否为adoc文件
+     */
+    public boolean isAdocFile() {
+        return "adoc".equalsIgnoreCase(extName);
     }
 }

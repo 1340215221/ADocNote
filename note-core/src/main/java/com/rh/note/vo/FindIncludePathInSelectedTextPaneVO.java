@@ -1,6 +1,6 @@
 package com.rh.note.vo;
 
-import com.rh.note.constants.FilePathEnum;
+import com.rh.note.constants.AdocFilePathEnum;
 import com.rh.note.syntax.IncludeSyntax;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,6 +33,6 @@ public class FindIncludePathInSelectedTextPaneVO {
      * 获得include指向文件的项目路径
      */
     public @Nullable String getFilePath() {
-        return FilePathEnum.includePath2ProPath(currentFilePath, includePath);
+        return AdocFilePathEnum.includePath2ProPath(currentFilePath, includePath);
     }
 }

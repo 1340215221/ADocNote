@@ -32,7 +32,7 @@ public class AdocTextPaneEvent {
      * 回车操作
      */
     public void enter_operation(@NonNull TextPaneKeyStrokeAO ao) {
-        throw new RuntimeException();
+        workAction.handleSyntaxSugarByCaretLineOfSelectedTextPane();
     }
 
     /**

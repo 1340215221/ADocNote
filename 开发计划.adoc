@@ -1,11 +1,13 @@
 == 记录现有bug
 
+- include快捷语法生成的文件, 可能会出现文件名重复的情况 +
+需要给文件加前缀处理
+
 
 == 待开发使用功能
 
 - [ ] 回车生成include语句
-- [ ] 修改标题树图标
-- [ ] `ctrl + k` (全局)  git add, commit, fetch, pull, push
+- [ ] `ctrl + k` (全局)  ctrl S, git add, commit, fetch, pull, push
 - [ ] `shirft + F6` 修改include指向文件名
 - [ ] `alt + del` (在include块使用) 安全删除include
 - [ ] `ctrl + alt + m` (在非根标题上使用) 标题沉入新文件中, 内容替换为include行

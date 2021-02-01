@@ -2,12 +2,14 @@ package com.rh.note.ao;
 
 import com.rh.note.common.BaseAO;
 import com.rh.note.common.BaseFileConfig;
+import com.rh.note.constants.AdocFilePathEnum;
+import com.rh.note.syntax.IncludeSyntax;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
 import java.io.Writer;
 import java.util.List;
 import java.util.function.Function;
@@ -15,12 +17,10 @@ import java.util.function.Function;
 /**
  * 保存编辑区内容,通过文件路径 参数
  */
-@RequiredArgsConstructor
 public class SaveTextPaneFileByFilePathAO extends BaseFileConfig implements BaseAO {
     /**
      * 文件项目路径
      */
-    @NonNull
     private List<String> filePaths;
 
     @Override
@@ -56,5 +56,28 @@ public class SaveTextPaneFileByFilePathAO extends BaseFileConfig implements Base
             return null;
         }
         return getProPath() + filePath;
+    }
+
+    /**
+     *
+     */
+    public void copy(List<String> filPaths) {
+        if (CollectionUtils.isEmpty(filPaths)) {
+            return;
+        }
+        this.filePaths = filPaths;
+    }
+
+    public void copy(IncludeSyntax syntax) {
+        if (syntax == null || !syntax.isAdocFile()) {
+            return;
+        }
+        String includePath = syntax.getIncludePath();
+        AdocFilePathEnum adocFilePathEnum = AdocFilePathEnum.findTargetByIncludePath(includePath);
+        if (adocFilePathEnum == null) {
+            return;
+        }
+        String directory = adocFilePathEnum.getDirectory();
+        return directory + syntax.getFileName() + ".adoc";
     }
 }

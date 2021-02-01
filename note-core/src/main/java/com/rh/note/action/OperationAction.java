@@ -72,7 +72,12 @@ public class OperationAction {
      */
     public @Nullable SaveTextPaneFileByFilePathAO hasTextPaneOpened() {
         List<String> list = workViewApi.getFilePathsOfTextPaneByTabbedPane();
-        return CollectionUtils.isNotEmpty(list) ? new SaveTextPaneFileByFilePathAO(list) : null;
+        if (CollectionUtils.isEmpty(list)) {
+            return null;
+        }
+        SaveTextPaneFileByFilePathAO ao = new SaveTextPaneFileByFilePathAO();
+        ao.copy(list);
+        return ao;
     }
 
     /**
