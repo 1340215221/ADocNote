@@ -1,25 +1,14 @@
 == 记录现有bug
 
-- [*] `shift + F6` (在include行上) 重命名操作, 如果指向文件没有打开过, 会报错
-- [ ] 一个java文件在一个被一个文件多次引用时, 只会修改第一个include语句的标记行
-
-
 
 == 待开发使用功能
 
-- [ ] `ctrl + shift + k` (全局) 推到远程分支
-- [ ] `ctrl + k` (全局) 提交修改内容. 默认信息为"update"
-- [*] `alt + del` (在include块使用) 安全删除include
+- [ ] 回车生成include语句
+- [ ] `ctrl + k` (全局)  git add, commit, fetch, pull, push
+- [ ] `shirft + F6` 修改include指向文件名
+- [ ] `alt + del` (在include块使用) 安全删除include
 - [ ] `ctrl + alt + m` (在非根标题上使用) 标题沉入新文件中, 内容替换为include行
 - [ ] `ctrl + alt + n` (在include行使用) 取消include引用, 上升内容
-- [ ] `ctrl + alt + <-` 退回上个鼠标位置
-- [ ] `ctrl + alt + ->` 回到前个鼠标位置
-- [ ] ``
-
-
-== 关键功能缺失
-
-- [ ] `alt + F4` 不保存退出程序
+- [ ] `ctrl + F4` 不保存退出程序
 - [ ] include选择列表, 选择未过的引用文件
 - [ ] `ctrl + 左键` (在文件根标题上使用) 跳转到引用当前文件的include语句行
-- [ ] 关闭已打开文件
