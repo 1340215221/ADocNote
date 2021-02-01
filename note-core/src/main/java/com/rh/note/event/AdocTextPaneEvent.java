@@ -8,6 +8,8 @@ import com.rh.note.constants.FrameCategoryEnum;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.awt.event.MouseEvent;
+
 @ComponentBean(FrameCategoryEnum.WORK)
 public class AdocTextPaneEvent {
 
@@ -19,8 +21,11 @@ public class AdocTextPaneEvent {
     /**
      * ctrl左键点击
      */
-    public void enter_include_file() {
-        workAction.openIncludePointingAdocFileInSelectedTextPane();
+    public void enter_include_file(MouseEvent event) {
+        boolean isCtrlLeftClick = operationAction.isCtrlLeftClick(event);
+        if (isCtrlLeftClick) {
+            workAction.openIncludePointingAdocFileInSelectedTextPane();
+        }
     }
 
     /**

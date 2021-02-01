@@ -51,4 +51,11 @@ public class KeymapConfig {
     public boolean doubleClick(@NonNull MouseEvent event) {
         return event.getClickCount() > 1;
     }
+
+    /**
+     * ctrl + 鼠标左键
+     */
+    public boolean ctrlLeftClick(@NonNull MouseEvent event) {
+        return event.getModifiers() == 18;
+    }
 }

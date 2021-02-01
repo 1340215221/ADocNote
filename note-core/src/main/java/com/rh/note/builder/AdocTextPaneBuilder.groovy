@@ -64,7 +64,7 @@ class AdocTextPaneBuilder implements BaseBuilder {
 //                        event.open_input_prompt(it)
                     },
                     mouseClicked: {
-                        event.enter_include_file()
+                        event.enter_include_file(it)
 //                        event.enter_include_java_file(it)
                     },
                     caretUpdate: {
