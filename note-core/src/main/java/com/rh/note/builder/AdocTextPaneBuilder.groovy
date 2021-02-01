@@ -1,5 +1,6 @@
 package com.rh.note.builder
 
+import cn.hutool.core.util.ReflectUtil
 import cn.hutool.core.util.StrUtil
 import com.rh.note.annotation.ComponentBean
 import com.rh.note.common.BaseBuilder
@@ -18,7 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
 import javax.swing.*
+import javax.swing.text.AbstractDocument
 import javax.swing.text.DefaultStyledDocument
+import javax.swing.text.SimpleAttributeSet
+import javax.swing.text.StyleConstants
 import java.awt.*
 
 /**
@@ -29,6 +33,8 @@ class AdocTextPaneBuilder implements BaseBuilder {
 
     public static final String text_pane_id = 'adoc_text_pane_{}'
     public static final String scroll_pane_id = 'scroll_pane_{}'
+    @Autowired
+    private Font textFont
     @Autowired
     private SwingBuilder swingBuilder
     @Autowired
@@ -47,8 +53,8 @@ class AdocTextPaneBuilder implements BaseBuilder {
     void init() {
         def textPane = {
             swingBuilder.textPane(id: textPaneId(),
-                    styledDocument: new DefaultStyledDocument(),
-                    font: new Font(null, 0, 17),
+                    styledDocument: getStyledDocument(),
+                    font: textFont,
                     keyPressed: {
 //                        event.rename_include(it)
 //                        event.sink_title(it)
@@ -68,6 +74,7 @@ class AdocTextPaneBuilder implements BaseBuilder {
                     beanPath: beanPath,
             ) {
                 addKeymap()
+                setLineSpacing()
             }
         }
 
@@ -95,10 +102,34 @@ class AdocTextPaneBuilder implements BaseBuilder {
     }
 
     /**
+     * 设置行间距
+     */
+    private void setLineSpacing() {
+        SimpleAttributeSet set = new SimpleAttributeSet()
+        StyleConstants.setLineSpacing(set, 10f)
+        swingBuilder."${textPaneId()}".setParagraphAttributes(set, true)
+    }
+
+    /**
+     * 初始化样式
+     */
+    private DefaultStyledDocument getStyledDocument() {
+        def styledDocument = new DefaultStyledDocument()
+        AbstractDocument.BranchElement set = styledDocument.getRootElements()[0].getElement(0).getAttributes()
+        def method = AbstractDocument.getDeclaredMethod('getAttributeContext')
+        method.setAccessible(true)
+        def context = method.invoke(styledDocument)
+        def attributes = ReflectUtil.getFieldValue(set, 'attributes')
+        attributes = context.addAttribute(attributes, StyleConstants.LineSpacing, 0.9f)
+        ReflectUtil.setFieldValue(set, 'attributes', attributes)
+        return styledDocument
+    }
+
+    /**
      * 添加keymap
      * 替换已有按键操作
      */
-    void addKeymap() {
+    private void addKeymap() {
         def textPane = swingBuilder."${textPaneId()}" as AdocTextPane
         def keymap = new KeymapAction("textPane", textPane.keymap)
                 .addEnterAction { event.enter_operation(it) }

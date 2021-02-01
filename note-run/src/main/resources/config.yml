@@ -1,5 +1,12 @@
 # 项目地址配置
 pro-path:
   list:
-    - proName: Java笔记
+    - proName: 测试笔记
       proPath: /home/hang/Documents/adoc-test
+    - proName: Java笔记
+      proPath: /home/hang/Documents/Java-not
+# 字体配置
+font:
+#  linux: Ubuntu Mono
+  win: Consola
+  size: 17

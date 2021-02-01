@@ -1,4 +1,4 @@
-package com.rh.note.config;
+package com.rh.note.app.config;
 
 import org.springframework.boot.env.YamlPropertySourceLoader;
 import org.springframework.core.env.PropertySource;

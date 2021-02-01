@@ -1,12 +1,9 @@
-package com.rh.note.config;
+package com.rh.note.app.config;
 
 import com.rh.note.vo.ProItemVO;
 import lombok.Data;
 import org.apache.commons.collections4.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -14,9 +11,6 @@ import java.util.List;
  * 用户的项目地址配置
  */
 @Data
-@Component
-@PropertySource(value = {"classpath:config.yml"}, factory = PropertySourceFactory.class)
-@ConfigurationProperties(prefix = "pro-path")
 public class UserProPathConfig {
     /**
      * 项目地址
