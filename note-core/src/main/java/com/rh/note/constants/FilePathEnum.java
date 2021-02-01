@@ -13,15 +13,30 @@ public enum FilePathEnum {
     /**
      * readme
      */
-    README,
+    README {
+        @Override
+        public boolean matchByFilePath(String filePath) {
+            return "README.adoc".equalsIgnoreCase(filePath);
+        }
+    },
     /**
      * twoLevel
      */
-    TWO_LEVEL,
+    TWO_LEVEL {
+        @Override
+        public boolean matchByFilePath(String filePath) {
+            return StringUtils.isNotBlank(filePath) && filePath.startsWith("adoc/twoLevel/");
+        }
+    },
     /**
      * content
      */
-    CONTENT,
+    CONTENT {
+        @Override
+        public boolean matchByFilePath(String filePath) {
+            return StringUtils.isNotBlank(filePath) && filePath.startsWith("adoc/content/");
+        }
+    },
     ;
 
     /**
@@ -48,4 +63,6 @@ public enum FilePathEnum {
                 .orElse("");
         return FileUtil.normalize(parentPath + includePath);
     }
+
+    public abstract boolean matchByFilePath(String filePath);
 }

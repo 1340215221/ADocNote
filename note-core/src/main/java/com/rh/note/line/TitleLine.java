@@ -2,6 +2,7 @@ package com.rh.note.line;
 
 import com.rh.note.common.IArgsConstructorBean;
 import com.rh.note.common.ReadTitleLineImpl;
+import com.rh.note.constants.FilePathEnum;
 import com.rh.note.path.TitleBeanPath;
 import com.rh.note.syntax.TitleSyntax;
 import com.rh.note.view.RootTitleNodeView;
@@ -14,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -102,5 +104,34 @@ public class TitleLine implements IArgsConstructorBean, ReadTitleLineImpl {
             beanPath.setTitlePath(this);
         }
         return beanPath;
+    }
+
+    /**
+     * 判断是当前文件的根标题
+     */
+    public boolean isRootTitle() {
+        return parentTitle == null || beanPath != null && parentTitle.getBeanPath() != null
+                && !Objects.equals(beanPath.getFilePath(), parentTitle.getBeanPath().getFilePath());
+    }
+
+    /**
+     * 判断是readme文件中的标题
+     */
+    public boolean declareInReadMe() {
+        return beanPath != null && FilePathEnum.README.matchByFilePath(beanPath.getFilePath());
+    }
+
+    /**
+     * 判断是在twoLevel文件中的标题
+     */
+    public boolean declareInTwoLevel() {
+        return beanPath != null && FilePathEnum.TWO_LEVEL.matchByFilePath(beanPath.getFilePath());
+    }
+
+    /**
+     * 判断是在twoLevel文件中的标题
+     */
+    public boolean declareInContent() {
+        return beanPath != null && FilePathEnum.CONTENT.matchByFilePath(beanPath.getFilePath());
     }
 }

@@ -4,6 +4,7 @@
 == 待开发使用功能
 
 - [ ] 回车生成include语句
+- [ ] 修改标题树图标
 - [ ] `ctrl + k` (全局)  git add, commit, fetch, pull, push
 - [ ] `shirft + F6` 修改include指向文件名
 - [ ] `alt + del` (在include块使用) 安全删除include

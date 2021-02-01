@@ -2,6 +2,7 @@ package com.rh.note.builder
 
 import com.rh.note.annotation.ComponentBean
 import com.rh.note.common.BaseBuilder
+import com.rh.note.component.TitleTreeNodeIconRenderer
 import com.rh.note.constants.FrameCategoryEnum
 import com.rh.note.event.TitleTreeEvent
 import com.rh.note.factory.DefaultTreeModelFactory
@@ -42,7 +43,7 @@ class TitleTreeBuilder implements BaseBuilder {
                     mouseClicked: {
                         event.clicked_title_node()
                     },
-//                    cellRenderer: new TitleTreeCellRenderer(), // 用于处理数结果的图标
+                    cellRenderer: new TitleTreeNodeIconRenderer(), // 用于处理树节点的图标
             ) {
                 event.load_root_node()
             }
