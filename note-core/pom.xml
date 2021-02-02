@@ -27,6 +27,12 @@
     </properties>
 
     <dependencies>
+        <!-- 编辑器 -->
+        <dependency>
+            <groupId>com.fifesoft</groupId>
+            <artifactId>rsyntaxtextarea</artifactId>
+            <version>3.1.2</version>
+        </dependency>
         <!-- 谷歌工具类 -->
         <dependency>
             <groupId>com.google.guava</groupId>
