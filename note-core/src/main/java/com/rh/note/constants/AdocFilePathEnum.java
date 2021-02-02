@@ -25,16 +25,6 @@ public enum AdocFilePathEnum {
         public @NotNull String getNextLevelAdocDirectory() {
             return "adoc/twoLevel/";
         }
-
-        @Override
-        protected boolean matchTargetByIncludePath(String includePath) {
-            return false;
-        }
-
-        @Override
-        public @NotNull String getDirectory() {
-            return "";
-        }
     },
     /**
      * twoLevel
@@ -49,16 +39,6 @@ public enum AdocFilePathEnum {
         public @NotNull String getNextLevelAdocDirectory() {
             return "adoc/content/";
         }
-
-        @Override
-        protected boolean matchTargetByIncludePath(String includePath) {
-            return StringUtils.isNotBlank(includePath) && includePath.startsWith("adoc/twoLevel/"); // todo 应该为正则
-        }
-
-        @Override
-        public @NotNull String getDirectory() {
-            return "adoc/twoLevel/";
-        }
     },
     /**
      * content
@@ -72,16 +52,6 @@ public enum AdocFilePathEnum {
         @Override
         public @Nullable String getNextLevelAdocDirectory() {
             return null;
-        }
-
-        @Override
-        protected boolean matchTargetByIncludePath(String includePath) {
-            return StringUtils.isNotBlank(includePath) && includePath.startsWith("../content/"); // todo 应该为正则
-        }
-
-        @Override
-        public @NotNull String getDirectory() {
-            return "adoc/content/";
         }
     },
     ;
@@ -125,24 +95,6 @@ public enum AdocFilePathEnum {
     }
 
     /**
-     * 匹配指向文件类型, 通过指向文件路径
-     */
-    public static @Nullable AdocFilePathEnum findTargetByIncludePath(String includePath) {
-        if (StringUtils.isBlank(includePath) || isNotAdocFilePath(includePath)) {
-            return null;
-        }
-        return Arrays.stream(values())
-                .filter(e -> e.matchTargetByIncludePath(includePath))
-                .findFirst()
-                .orElse(null);
-    }
-
-    /**
-     * 匹配指向文件类型, 通过指向文件路径
-     */
-    protected abstract boolean matchTargetByIncludePath(String includePath);
-
-    /**
      * 匹配文件类型, 通过文件路径
      */
     public abstract boolean matchByFilePath(String filePath);
@@ -159,10 +111,4 @@ public enum AdocFilePathEnum {
     public static boolean isNotAdocFilePath(String filePath) {
         return StringUtils.isBlank(filePath) || !filePath.endsWith(".adoc");
     }
-
-    /**
-     * 获得目录
-     * tip 返回路径以 / 结尾
-     */
-    public abstract @NotNull String getDirectory();
 }

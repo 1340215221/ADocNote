@@ -3,13 +3,12 @@ package com.rh.note.ao;
 import com.rh.note.common.BaseAO;
 import com.rh.note.common.BaseFileConfig;
 import com.rh.note.constants.AdocFilePathEnum;
-import com.rh.note.syntax.IncludeSyntax;
+import com.rh.note.vo.GenerateIncludeSyntaxVO;
 import lombok.NonNull;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
 import java.io.Writer;
 import java.util.Collections;
 import java.util.List;
@@ -59,9 +58,6 @@ public class SaveTextPaneFileByFilePathAO extends BaseFileConfig implements Base
         return getProPath() + filePath;
     }
 
-    /**
-     *
-     */
     public void copy(List<String> filPaths) {
         if (CollectionUtils.isEmpty(filPaths)) {
             return;
@@ -69,16 +65,14 @@ public class SaveTextPaneFileByFilePathAO extends BaseFileConfig implements Base
         this.filePaths = filPaths;
     }
 
-    public void copy(IncludeSyntax syntax) {
-        if (syntax == null || !syntax.isAdocFile()) {
+    public void copy(GenerateIncludeSyntaxVO vo) {
+        if (vo == null) {
             return;
         }
-        String includePath = syntax.getIncludePath();
-        AdocFilePathEnum adocFilePathEnum = AdocFilePathEnum.findTargetByIncludePath(includePath);
-        if (adocFilePathEnum == null) {
+        String targetFilePath = vo.getTargetFilePath();
+        if (StringUtils.isBlank(targetFilePath)) {
             return;
         }
-        String directory = adocFilePathEnum.getDirectory();
-        filePaths = Collections.singletonList(directory + syntax.getFileName() + ".adoc");
+        filePaths = Collections.singletonList(targetFilePath);
     }
 }

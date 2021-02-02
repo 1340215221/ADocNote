@@ -112,7 +112,7 @@ public class AdocTextPaneView extends BaseView<AdocTextPaneBuilder, AdocTextPane
         if (lineContent == null) {
             return;
         }
-        int selectionEnd = lineContent.endsWith("\\n") ? element.getEndOffset() - 1 : element.getEndOffset();
+        int selectionEnd = lineContent.endsWith("\n") ? element.getEndOffset() - 1 : element.getEndOffset();
         textPane().select(element.getStartOffset(), selectionEnd);
     }
 

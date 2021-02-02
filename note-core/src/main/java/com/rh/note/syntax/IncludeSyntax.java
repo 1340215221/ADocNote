@@ -50,11 +50,6 @@ public class IncludeSyntax {
      * 引用行号2
      */
     private Integer lineNum2;
-    /**
-     * 指向文件绝对路径
-     * 1. 指向adoc文件路径, 为绝对路径
-     */
-    private String targetFilePath;
 
     public @Nullable IncludeSyntax init(String lineContent) {
         Matcher matcher = Pattern.compile(regex).matcher(lineContent);

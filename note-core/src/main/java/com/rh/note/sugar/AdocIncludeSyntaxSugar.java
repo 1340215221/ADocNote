@@ -19,7 +19,7 @@ public class AdocIncludeSyntaxSugar {
     /**
      * 行内容匹配正则
      */
-    private final static String regex = "^(\\s)=>([0-9]+)\\s+(" + RegexConstants.title_name_regex + ")\\s*$";
+    private final static String regex = "^(\\s*)=>([0-9]+)\\s+(" + RegexConstants.title_name_regex + ")\\s*$";
     /**
      * 缩进
      */
@@ -44,7 +44,7 @@ public class AdocIncludeSyntaxSugar {
         if (!matcher.find()) {
             return null;
         }
-        indent = matcher.group(2);
+        indent = matcher.group(1);
         targetLevel = Integer.parseInt(matcher.group(2));
         targetTitleName = matcher.group(3);
         return this;

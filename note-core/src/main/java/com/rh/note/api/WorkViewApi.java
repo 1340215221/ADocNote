@@ -10,6 +10,7 @@ import com.rh.note.syntax.IncludeSyntax;
 import com.rh.note.syntax.TitleSyntax;
 import com.rh.note.view.*;
 import com.rh.note.vo.FindIncludePathInSelectedTextPaneVO;
+import com.rh.note.vo.GenerateIncludeSyntaxVO;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -238,7 +239,7 @@ public class WorkViewApi {
     /**
      * 生成include语句, 通过被选择的编辑区的光标行内容
      */
-    public @Nullable IncludeSyntax generateIncludeSyntaxByCaretLineOfSelectedTextPane() {
+    public @Nullable GenerateIncludeSyntaxVO generateIncludeSyntaxByCaretLineOfSelectedTextPane() {
         TabbedPaneView tabbedPaneView = new TabbedPaneView().init();
         String filePath = tabbedPaneView.getFilePathOfTextPaneSelected();
         AdocTextPaneView textPaneView = new AdocTextPaneView().init(filePath);
@@ -257,6 +258,6 @@ public class WorkViewApi {
         }
         String newContent = syntax.toString();
         textPaneView.replaceSelectedContent(newContent);
-        return syntax;
+        return new GenerateIncludeSyntaxVO(syntax, filePath);
     }
 }

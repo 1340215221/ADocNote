@@ -2,7 +2,10 @@ package com.rh.note.api;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.CharsetUtil;
-import com.rh.note.ao.*;
+import com.rh.note.ao.CheckIsAdocProjectAO;
+import com.rh.note.ao.ClickedProjectListAO;
+import com.rh.note.ao.SaveTextPaneFileByFilePathAO;
+import com.rh.note.ao.TextPaneFileWritersAO;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.CreateDuplicateAdocFileNameException;
 import com.rh.note.exception.ErrorCodeEnum;
@@ -92,11 +95,11 @@ public class FileApi {
     /**
      * 创建adoc文件
      */
-    public void createAdocFile(CreateAdocFileAO ao) {
-        if (ao == null || ao.checkMissRequiredParams()) {
+    public void createAdocFile(String absolutePath) {
+        if (StringUtils.isBlank(absolutePath)) {
             return;
         }
-        File file = new File(ao.getAbsolutePath());
+        File file = new File(absolutePath);
         if (file.exists()) {
             throw new CreateDuplicateAdocFileNameException();
         }

@@ -1,7 +1,7 @@
 package com.rh.note.action;
 
-import com.rh.note.ao.CreateAdocFileAO;
 import com.rh.note.ao.OpenAdocFileByFilePathAO;
+import com.rh.note.ao.OpenNewFileByFilePathAO;
 import com.rh.note.ao.SaveTextPaneFileByFilePathAO;
 import com.rh.note.ao.TextPaneFileWritersAO;
 import com.rh.note.api.FileApi;
@@ -9,9 +9,8 @@ import com.rh.note.api.FrameContextApi;
 import com.rh.note.api.WorkViewApi;
 import com.rh.note.exception.IsNotSyntaxSugarLineException;
 import com.rh.note.line.TitleLine;
-import com.rh.note.path.FileBeanPath;
-import com.rh.note.syntax.IncludeSyntax;
 import com.rh.note.vo.FindIncludePathInSelectedTextPaneVO;
+import com.rh.note.vo.GenerateIncludeSyntaxVO;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -55,7 +54,8 @@ public class WorkAction {
         }
         // 保存编辑区内容
         List<String> filePaths = Collections.singletonList(filePath);
-        SaveTextPaneFileByFilePathAO ao = new SaveTextPaneFileByFilePathAO(filePaths);
+        SaveTextPaneFileByFilePathAO ao = new SaveTextPaneFileByFilePathAO();
+        ao.copy(filePaths);
         TextPaneFileWritersAO writerAO = fileApi.getWriterByFilePath(ao);
         workViewApi.saveTextPaneFileByFilePaths(writerAO);
         // 关闭编辑区
@@ -69,7 +69,8 @@ public class WorkAction {
         // 获得没有被选择的编辑区
         List<String> filePaths = workViewApi.getFilePathsOfTextPaneNotSelected();
         // 保存编辑区内容
-        SaveTextPaneFileByFilePathAO ao = new SaveTextPaneFileByFilePathAO(filePaths);
+        SaveTextPaneFileByFilePathAO ao = new SaveTextPaneFileByFilePathAO();
+        ao.copy(filePaths);
         TextPaneFileWritersAO writerAO = fileApi.getWriterByFilePath(ao);
         workViewApi.saveTextPaneFileByFilePaths(writerAO);
         // 关闭编辑区
@@ -105,16 +106,19 @@ public class WorkAction {
      */
     private void handleIncludeSyntaxSugarByCaretLineOfSelectedTextPane() {
         // include快捷语法 转 include语句
-        IncludeSyntax syntax = workViewApi.generateIncludeSyntaxByCaretLineOfSelectedTextPane();
+        GenerateIncludeSyntaxVO syntaxVO = workViewApi.generateIncludeSyntaxByCaretLineOfSelectedTextPane();
+        if (syntaxVO == null) {
+            return;
+        }
         // 创建adoc文件
-        CreateAdocFileAO createAdocFileAO = new CreateAdocFileAO();
-        createAdocFileAO.copy(syntax);
-        fileApi.createAdocFile(createAdocFileAO);
+        fileApi.createAdocFile(syntaxVO.getTargetAbsolutePath());
         // 打开新文件, 并初始化内容
-        this.openNewFileByFilePath();
+        OpenNewFileByFilePathAO ao = new OpenNewFileByFilePathAO();
+        ao.copy(syntaxVO);
+        this.openNewFileByFilePath(ao);
         // 保存
         SaveTextPaneFileByFilePathAO saveTextPaneFileByFilePathAO = new SaveTextPaneFileByFilePathAO();
-        saveTextPaneFileByFilePathAO.copy(syntax);
+        saveTextPaneFileByFilePathAO.copy(syntaxVO);
         this.saveTextPaneFileByFilePaths(saveTextPaneFileByFilePathAO);
     }
 
@@ -125,21 +129,23 @@ public class WorkAction {
         // 显示已打开文件
         workViewApi.showOpenedFileByFilePath(ao.getFilePath());
         // 打开文件, 加载内容, 并显示
-        openNewFileByFilePath(ao.getBeanPath());
+        OpenNewFileByFilePathAO openNewFileByFilePathAO = new OpenNewFileByFilePathAO();
+        openNewFileByFilePathAO.copy(ao);
+        openNewFileByFilePath(openNewFileByFilePathAO);
     }
 
     /**
      * 打开文件, 加载内容, 并显示
      */
-    private void openNewFileByFilePath(FileBeanPath beanPath) {
+    private void openNewFileByFilePath(OpenNewFileByFilePathAO ao) {
         // 判断adoc文件已打开
-        if (beanPath == null || StringUtils.isBlank(beanPath.getFilePath()) || workViewApi.checkIsOpenedFile(beanPath.getFilePath())) {
+        if (ao == null || ao.checkMissRequiredParams() || workViewApi.checkIsOpenedFile(ao.getFilePath())) {
             return;
         }
         // 读取文件内容
-        Reader reader = fileApi.readAdocFileContent(beanPath.getAbsolutePath());
+        Reader reader = fileApi.readAdocFileContent(ao.getAbsolutePath());
         // 生成编辑区
-        workViewApi.createAdocTextPane(beanPath, reader);
+        workViewApi.createAdocTextPane(ao.getBeanPath(), reader);
     }
 
     /**
