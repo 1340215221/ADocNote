@@ -1,9 +1,6 @@
 package com.rh.note.action;
 
-import com.rh.note.ao.OpenAdocFileByFilePathAO;
-import com.rh.note.ao.OpenNewFileByFilePathAO;
-import com.rh.note.ao.SaveTextPaneFileByFilePathAO;
-import com.rh.note.ao.TextPaneFileWritersAO;
+import com.rh.note.ao.*;
 import com.rh.note.api.FileApi;
 import com.rh.note.api.FrameContextApi;
 import com.rh.note.api.WorkViewApi;
@@ -112,10 +109,14 @@ public class WorkAction {
         }
         // 创建adoc文件
         fileApi.createAdocFile(syntaxVO.getTargetAbsolutePath());
-        // 打开新文件, 并初始化内容
-        OpenNewFileByFilePathAO ao = new OpenNewFileByFilePathAO();
-        ao.copy(syntaxVO);
-        this.openNewFileByFilePath(ao);
+        // 打开新文件
+        OpenNewFileByFilePathAO openNewFileAO = new OpenNewFileByFilePathAO();
+        openNewFileAO.copy(syntaxVO);
+        this.openNewFileByFilePath(openNewFileAO);
+        // 初始化新文件内容
+        InitAdocTextPaneContentAO initAdocTextPaneContentAO = new InitAdocTextPaneContentAO();
+        initAdocTextPaneContentAO.copy(syntaxVO);
+        workViewApi.initOpenedAdocTextPaneContent(initAdocTextPaneContentAO);
         // 保存
         SaveTextPaneFileByFilePathAO saveTextPaneFileByFilePathAO = new SaveTextPaneFileByFilePathAO();
         saveTextPaneFileByFilePathAO.copy(syntaxVO);

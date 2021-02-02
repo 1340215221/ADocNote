@@ -1,5 +1,6 @@
 package com.rh.note.path;
 
+import cn.hutool.core.io.FileUtil;
 import com.rh.note.common.IArgsConstructorBean;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -20,5 +21,13 @@ public class FileBeanPath implements IArgsConstructorBean {
     @Override
     public @NotNull String[] getBeanNameArgs() {
         return new String[]{filePath};
+    }
+
+    /**
+     * 获得文件名
+     * todo 需要控制不为空, 尽量
+     */
+    public @NotNull String getFileName() {
+        return FileUtil.getName(filePath);
     }
 }

@@ -1,5 +1,6 @@
 package com.rh.note.api;
 
+import com.rh.note.ao.InitAdocTextPaneContentAO;
 import com.rh.note.ao.TextPaneFileWritersAO;
 import com.rh.note.exception.UnknownBusinessSituationException;
 import com.rh.note.line.TitleLine;
@@ -97,14 +98,6 @@ public class WorkViewApi {
         AdocTextPaneView textPaneView = new AdocTextPaneView().create(beanPath);
         // 加载编辑区内容
         textPaneView.initContent(reader);
-        // 添加到选项卡
-        TextScrollPaneView scrollPaneView = new TextScrollPaneView().init(beanPath.getFilePath());
-        if (scrollPaneView == null) {
-            throw new UnknownBusinessSituationException();
-        }
-        TabbedPaneView tabbedPaneView = new TabbedPaneView().init();
-        tabbedPaneView.add(scrollPaneView);
-        tabbedPaneView.show(scrollPaneView);
     }
 
     /**
@@ -258,6 +251,20 @@ public class WorkViewApi {
         }
         String newContent = syntax.toString();
         textPaneView.replaceSelectedContent(newContent);
-        return new GenerateIncludeSyntaxVO(syntax, filePath);
+        return new GenerateIncludeSyntaxVO(syntax, filePath, syntaxSugar.getTargetLevel());
+    }
+
+    /**
+     * 初始化adoc编辑区的内容
+     */
+    public void initOpenedAdocTextPaneContent(InitAdocTextPaneContentAO ao) {
+        if (ao == null || ao.checkMissRequiredParams()) {
+            return;
+        }
+        AdocTextPaneView textPaneView = new AdocTextPaneView().init(ao.getFilePath());
+        if (textPaneView == null) {
+            return;
+        }
+        textPaneView.initContent(ao.getInitContent());
     }
 }

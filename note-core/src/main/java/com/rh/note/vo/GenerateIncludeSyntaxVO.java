@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -25,6 +26,11 @@ public class GenerateIncludeSyntaxVO extends BaseFileConfig {
     @NonNull
     @Getter
     private String filePath;
+    /**
+     * 指向文件的根标题级别
+     */
+    @NonNull
+    private int targetRootTitleLevel;
 
     /**
      * 获得绝对路径
@@ -46,5 +52,20 @@ public class GenerateIncludeSyntaxVO extends BaseFileConfig {
      */
     public @Nullable String getTargetFilePath() {
         return AdocFilePathEnum.includePath2ProPath(filePath, syntax.getIncludePath());
+    }
+
+    /**
+     * include生成的adoc文件的初始化内容
+     */
+    public @NotNull String getInitAdocFileContent() {
+        StringBuilder result = new StringBuilder()
+                .append("\n\n");
+        for (int i = 0; i < targetRootTitleLevel; i++) {
+            result.append("=");
+        }
+        result.append(" ")
+                .append(syntax.getFileName())
+                .append("\n\n");
+        return result.toString();
     }
 }

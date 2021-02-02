@@ -60,6 +60,6 @@ public class OpenNewFileByFilePathAO extends BaseFileConfig implements BaseAO {
         if (vo == null) {
             return;
         }
-        filePath = vo.getFilePath();
+        filePath = vo.getTargetFilePath();
     }
 }

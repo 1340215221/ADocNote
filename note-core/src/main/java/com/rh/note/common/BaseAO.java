@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 /**
  * 基础参数
+ * 保证ao中的取值方法不为空
  */
 public interface BaseAO extends Serializable {
     /**

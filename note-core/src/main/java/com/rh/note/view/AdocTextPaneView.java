@@ -141,4 +141,14 @@ public class AdocTextPaneView extends BaseView<AdocTextPaneBuilder, AdocTextPane
         }
         textPane().replaceSelection(newContent);
     }
+
+    /**
+     * 初始化文件内容
+     */
+    public void initContent(String initContent) {
+        if (StringUtils.isBlank(initContent)) {
+            return;
+        }
+        textPane().setText(initContent);
+    }
 }

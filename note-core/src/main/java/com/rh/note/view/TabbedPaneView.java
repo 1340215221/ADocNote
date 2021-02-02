@@ -38,17 +38,6 @@ public class TabbedPaneView extends BaseView<TabbedPaneBuilder, JTabbedPane> {
     }
 
     /**
-     * 添加打开文件
-     */
-    public void add(TextScrollPaneView scrollPaneView) {
-        if (scrollPaneView == null) {
-            return;
-        }
-        String fileName = scrollPaneView.scrollPane().getFileName();
-        tabbedPane().add(scrollPaneView.scrollPane(), fileName);
-    }
-
-    /**
      * 获得没有被选择的编辑区
      */
     public @NotNull List<String> getFilePathOfTextPaneNotSelected() {

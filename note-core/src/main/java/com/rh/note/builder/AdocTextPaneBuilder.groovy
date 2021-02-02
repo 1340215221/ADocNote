@@ -81,6 +81,8 @@ class AdocTextPaneBuilder implements BaseBuilder {
         ) {
             textPane()
         }
+
+        addToTabbedPane()
     }
 
     /**
@@ -126,5 +128,15 @@ class AdocTextPaneBuilder implements BaseBuilder {
 
     AdocTextPane getTextPane() {
         return swingBuilder."${textPaneId()}"
+    }
+
+    /**
+     * 添加到选项卡面板
+     */
+    void addToTabbedPane() {
+        def tabbedPane = swingBuilder."${TabbedPaneBuilder.id}" as JTabbedPane
+        def scrollPane = getScrollPane()
+        tabbedPane.add(scrollPane, beanPath.getFileName())
+        tabbedPane.setSelectedComponent(scrollPane)
     }
 }

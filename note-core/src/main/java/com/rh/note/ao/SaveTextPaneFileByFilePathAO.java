@@ -2,7 +2,6 @@ package com.rh.note.ao;
 
 import com.rh.note.common.BaseAO;
 import com.rh.note.common.BaseFileConfig;
-import com.rh.note.constants.AdocFilePathEnum;
 import com.rh.note.vo.GenerateIncludeSyntaxVO;
 import lombok.NonNull;
 import org.apache.commons.collections4.CollectionUtils;
@@ -10,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Writer;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
@@ -69,10 +68,13 @@ public class SaveTextPaneFileByFilePathAO extends BaseFileConfig implements Base
         if (vo == null) {
             return;
         }
-        String targetFilePath = vo.getTargetFilePath();
-        if (StringUtils.isBlank(targetFilePath)) {
-            return;
+        filePaths = new ArrayList<>();
+        if (StringUtils.isNotBlank(vo.getFilePath())) {
+            filePaths.add(vo.getFilePath());
         }
-        filePaths = Collections.singletonList(targetFilePath);
+        String targetFilePath = vo.getTargetFilePath();
+        if (StringUtils.isNotBlank(targetFilePath)) {
+            filePaths.add(targetFilePath);
+        }
     }
 }
