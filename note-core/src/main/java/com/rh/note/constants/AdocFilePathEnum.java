@@ -30,6 +30,11 @@ public enum AdocFilePathEnum {
         protected boolean matchTargetByIncludePath(String includePath) {
             return false;
         }
+
+        @Override
+        public @NotNull String getDirectory() {
+            return "";
+        }
     },
     /**
      * twoLevel
@@ -47,7 +52,12 @@ public enum AdocFilePathEnum {
 
         @Override
         protected boolean matchTargetByIncludePath(String includePath) {
-            return ;
+            return StringUtils.isNotBlank(includePath) && includePath.startsWith("adoc/twoLevel/"); // todo 应该为正则
+        }
+
+        @Override
+        public @NotNull String getDirectory() {
+            return "adoc/twoLevel/";
         }
     },
     /**
@@ -62,6 +72,16 @@ public enum AdocFilePathEnum {
         @Override
         public @Nullable String getNextLevelAdocDirectory() {
             return null;
+        }
+
+        @Override
+        protected boolean matchTargetByIncludePath(String includePath) {
+            return StringUtils.isNotBlank(includePath) && includePath.startsWith("../content/"); // todo 应该为正则
+        }
+
+        @Override
+        public @NotNull String getDirectory() {
+            return "adoc/content/";
         }
     },
     ;
@@ -139,4 +159,10 @@ public enum AdocFilePathEnum {
     public static boolean isNotAdocFilePath(String filePath) {
         return StringUtils.isBlank(filePath) || !filePath.endsWith(".adoc");
     }
+
+    /**
+     * 获得目录
+     * tip 返回路径以 / 结尾
+     */
+    public abstract @NotNull String getDirectory();
 }

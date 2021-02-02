@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.Writer;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -78,6 +79,6 @@ public class SaveTextPaneFileByFilePathAO extends BaseFileConfig implements Base
             return;
         }
         String directory = adocFilePathEnum.getDirectory();
-        return directory + syntax.getFileName() + ".adoc";
+        filePaths = Collections.singletonList(directory + syntax.getFileName() + ".adoc");
     }
 }
