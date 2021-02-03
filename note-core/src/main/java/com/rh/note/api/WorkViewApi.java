@@ -9,7 +9,12 @@ import com.rh.note.sugar.AdocIncludeSyntaxSugar;
 import com.rh.note.sugar.TitleSyntaxSugar;
 import com.rh.note.syntax.IncludeSyntax;
 import com.rh.note.syntax.TitleSyntax;
-import com.rh.note.view.*;
+import com.rh.note.view.AdocTextPaneView;
+import com.rh.note.view.RootTitleNodeView;
+import com.rh.note.view.TabbedPaneView;
+import com.rh.note.view.TextScrollPaneView;
+import com.rh.note.view.TitleTreeView;
+import com.rh.note.view.TreeModelView;
 import com.rh.note.vo.FindIncludePathInSelectedTextPaneVO;
 import com.rh.note.vo.FindTitleNodeSelectedVO;
 import com.rh.note.vo.GenerateIncludeSyntaxVO;
@@ -130,14 +135,6 @@ public class WorkViewApi {
             return null;
         }
         return tabbedPaneView.getFilePathsOfTextPane();
-    }
-
-    /**
-     * 判断是否有被选中的编辑区
-     */
-    public boolean hasTextPaneSelected() {
-        TabbedPaneView tabbedPaneView = new TabbedPaneView().init();
-        return tabbedPaneView != null && tabbedPaneView.existSelected();
     }
 
     /**

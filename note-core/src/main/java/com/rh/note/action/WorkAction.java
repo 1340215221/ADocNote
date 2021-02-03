@@ -37,9 +37,19 @@ public class WorkAction {
     private FileApi fileApi;
 
     /**
+     * 保存所有编辑区内容
+     */
+    public void saveAllTextPaneFile() {
+        List<String> list = workViewApi.getFilePathsOfTextPaneByTabbedPane();
+        SaveTextPaneFileByFilePathAO ao = new SaveTextPaneFileByFilePathAO();
+        ao.copy(list);
+        this.saveTextPaneFileByFilePaths(ao);
+    }
+
+    /**
      * 保存编辑区内容,通过文件路径
      */
-    public void saveTextPaneFileByFilePaths(@NonNull SaveTextPaneFileByFilePathAO ao) {
+    private void saveTextPaneFileByFilePaths(@NonNull SaveTextPaneFileByFilePathAO ao) {
         TextPaneFileWritersAO writerAO = fileApi.getWriterByFilePath(ao);
         workViewApi.saveTextPaneFileByFilePaths(writerAO);
     }
