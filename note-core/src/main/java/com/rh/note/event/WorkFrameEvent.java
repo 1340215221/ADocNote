@@ -37,6 +37,8 @@ public class WorkFrameEvent {
             return;
         }
         workAction.saveTextPaneFileByFilePaths(ao);
+        // 更新标题树
+        workAction.loadRootNode();
     }
 
     /**
