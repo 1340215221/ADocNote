@@ -29,7 +29,7 @@ public class ThreadContextAspect {
     @Pointcut("execution(* com.rh.note.event.*Event.*(..))")
     public void executionEvent() {}
 
-    @Around(value = "executionEvent()")
+    @Around("executionEvent()")
     public Object handleThreadContext(ProceedingJoinPoint joinPoint) throws Throwable {
         ThreadContextBean bean = beforeProceed();
         try {

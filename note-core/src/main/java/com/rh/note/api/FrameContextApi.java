@@ -1,6 +1,7 @@
 package com.rh.note.api;
 
 import com.rh.note.annotation.ComponentBean;
+import com.rh.note.annotation.SwingAsync;
 import com.rh.note.ao.LoadContextAO;
 import com.rh.note.common.ViewThreadContext;
 import com.rh.note.constants.FrameCategoryEnum;
@@ -20,7 +21,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.context.annotation.ScannedGenericBeanDefinition;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -39,7 +39,7 @@ public class FrameContextApi {
     /**
      * 加载一个窗口容器
      */
-    @Async
+    @SwingAsync
     public void loadContext(LoadContextAO ao) {
         if (ao == null || ao.getFrameCategoryEnum() == null) {
             return;

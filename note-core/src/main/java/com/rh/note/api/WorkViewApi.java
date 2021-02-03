@@ -91,7 +91,7 @@ public class WorkViewApi {
      * 生成编辑区
      */
     public void createAdocTextPane(FileBeanPath beanPath, Reader reader) {
-        if (beanPath == null) {
+        if (beanPath == null || reader == null) {
             return;
         }
         // 创建编辑区
