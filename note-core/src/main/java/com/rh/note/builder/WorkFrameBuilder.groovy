@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired
 
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
-import javax.swing.*
-import java.awt.*
-import java.awt.event.AWTEventListener
+import javax.swing.JFrame
+import javax.swing.WindowConstants
+import java.awt.BorderLayout
 
 /**
  * 工作窗口 构建者

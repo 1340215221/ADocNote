@@ -9,8 +9,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.JTextPane;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.EditorKit;
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.Method;
@@ -37,8 +44,18 @@ public class AdocTextPane extends JTextPane implements IFileBeanPath {
 
     @Override
     public void read(Reader reader, Object desc) throws IOException {
-        super.read(reader, desc);
-        initLineSpacing();
+        EditorKit kit = getUI().getEditorKit(this);
+        Document doc = kit.createDefaultDocument();
+        initLineSpacing(doc); // 设置行间距样式
+        if (desc != null) {
+            doc.putProperty(Document.StreamDescriptionProperty, desc);
+        }
+        try {
+            kit.read(reader, doc, 0);
+            setDocument(doc);
+        } catch (BadLocationException e) {
+            throw new IOException(e.getMessage());
+        }
     }
 
     public void setLineSpacing(Float lineSpacing) {
@@ -50,11 +67,17 @@ public class AdocTextPane extends JTextPane implements IFileBeanPath {
      * 设置行间距样式
      */
     private void initLineSpacing() {
-        if (lineSpacing == null || lineSpacing == 0f) {
+        initLineSpacing(getStyledDocument());
+    }
+
+    /**
+     * 设置行间距样式
+     */
+    private void initLineSpacing(Document document) {
+        if (lineSpacing == null || lineSpacing == 0f || document == null) {
             return;
         }
         try {
-            StyledDocument document = getStyledDocument();
             MutableAttributeSet set = (MutableAttributeSet) document.getDefaultRootElement().getAttributes();
             Method method = AbstractDocument.class.getDeclaredMethod("getAttributeContext");
             method.setAccessible(true);

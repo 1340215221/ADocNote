@@ -29,7 +29,7 @@ public class UserAppConfig {
         if (osInfo.isWindows() && StringUtils.isNotBlank(fontConfig.getWin())) {
             return new Font(fontConfig.getWin(), Font.PLAIN, fontConfig.getSize());
         }
-        return new Font(null, Font.PLAIN, 17);
+        return new Font(null, Font.PLAIN, fontConfig.getSize());
     }
 
     /**
