@@ -3,12 +3,12 @@ package com.rh.note.api;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.CharsetUtil;
 import com.rh.note.ao.CheckIsAdocProjectAO;
-import com.rh.note.ao.ClickedProjectListAO;
 import com.rh.note.ao.SaveTextPaneFileByFilePathAO;
 import com.rh.note.ao.TextPaneFileWritersAO;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.CreateDuplicateAdocFileNameException;
 import com.rh.note.exception.ErrorCodeEnum;
+import com.rh.note.exception.StopFindRootTitleException;
 import com.rh.note.file.ReadMeTitleFile;
 import com.rh.note.line.TitleLine;
 import org.apache.commons.lang3.StringUtils;
@@ -27,20 +27,19 @@ public class FileApi {
     /**
      * 校验是否为adoc项目
      */
-    public @Nullable ClickedProjectListAO checkIsAdocProject(CheckIsAdocProjectAO ao) {
-        if (ao == null) {
-            return null;
-        }
-        File file = new File(ao.getProPath());
-        if (!file.exists() || !file.isDirectory()) {
-            return null;
+    public boolean checkIsAdocProject(CheckIsAdocProjectAO ao) {
+        if (ao == null || ao.checkMissRequiredParams() || !FileUtil.isDirectory(ao.getProPath())) {
+            return false;
         }
         File readMeFile = new File(ao.getReadMeFilePath());
         if (!readMeFile.exists() || !readMeFile.isFile()) {
-            return null;
+            return false;
         }
-        FileUtil.readUtf8Lines(readMeFile, ao.getLineHandler());
-        return ao.copyTo();
+        try {
+            FileUtil.readUtf8Lines(readMeFile, ao.getLineHandler());
+        } catch (StopFindRootTitleException e) {
+        }
+        return ao.isFind();
     }
 
     /**

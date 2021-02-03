@@ -1,7 +1,5 @@
 package com.rh.note.action;
 
-import com.rh.note.ao.CheckIsAdocProjectAO;
-import com.rh.note.ao.ClickedProjectListAO;
 import com.rh.note.ao.OpenAdocFileByFilePathAO;
 import com.rh.note.ao.SaveTextPaneFileByFilePathAO;
 import com.rh.note.api.FileApi;
@@ -9,7 +7,6 @@ import com.rh.note.api.ProManageViewApi;
 import com.rh.note.api.WorkViewApi;
 import com.rh.note.config.KeymapConfig;
 import com.rh.note.line.TitleLine;
-import lombok.NonNull;
 import org.apache.commons.collections4.CollectionUtils;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,19 +32,6 @@ public class OperationAction {
      */
     public boolean hasTextPaneSelected() {
         return workViewApi.hasTextPaneSelected();
-    }
-
-    /**
-     * 点击项目列表
-     */
-    public ClickedProjectListAO clickedProjectList(@NonNull MouseEvent mouseEvent) {
-        if (!keymap.doubleClick(mouseEvent)) {
-            return null;
-        }
-        // 获得被选择的项
-        String proPath = proManageViewApi.getSelectedProPathInProList();
-        CheckIsAdocProjectAO ao = new CheckIsAdocProjectAO(proPath);
-        return fileApi.checkIsAdocProject(ao);
     }
 
     /**
@@ -92,5 +76,12 @@ public class OperationAction {
      */
     public boolean isCtrlLeftClick(MouseEvent event) {
         return keymap.ctrlLeftClick(event);
+    }
+
+    /**
+     * 判断是双击
+     */
+    public boolean isDoubleClick(MouseEvent mouseEvent) {
+        return keymap.doubleClick(mouseEvent);
     }
 }

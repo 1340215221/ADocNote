@@ -1,12 +1,14 @@
 package com.rh.note.action;
 
-import com.rh.note.ao.ClickedProjectListAO;
+import com.rh.note.ao.CheckIsAdocProjectAO;
 import com.rh.note.ao.LoadContextAO;
+import com.rh.note.api.FileApi;
 import com.rh.note.api.FrameContextApi;
+import com.rh.note.api.ProManageViewApi;
 import com.rh.note.app.config.UserProPathConfig;
 import com.rh.note.constants.FrameCategoryEnum;
+import com.rh.note.vo.FindSelectedProPathVO;
 import com.rh.note.vo.ProItemVO;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,19 +25,34 @@ public class ProManageAction {
     private FrameContextApi frameContextApi;
     @Autowired
     private UserProPathConfig userProPathConfig;
+    @Autowired
+    private ProManageViewApi proManageViewApi;
+    @Autowired
+    private FileApi fileApi;
 
     /**
      * 打开项目管理窗口
      */
     public void openProMangeFrame() {
-        frameContextApi.loadContext(new LoadContextAO(FrameCategoryEnum.PRO_MANAGE));
+        LoadContextAO ao = new LoadContextAO();
+        ao.setFrameCategoryEnum(FrameCategoryEnum.PRO_MANAGE);
+        frameContextApi.loadContext(ao);
     }
 
     /**
-     * 在项目列表中打开一个项目
+     * 打开被选择的adoc项目
      */
-    public void openAdocProject(@NonNull ClickedProjectListAO ao) {
-        LoadContextAO loadContextAO = ao.copyToLoadContextAO();
+    public void openAdocProjectSelected() {
+        FindSelectedProPathVO findSelectedProPathVO = proManageViewApi.getSelectedProPathInProList();
+        CheckIsAdocProjectAO checkIsAdocProjectAO = findSelectedProPathVO.copyToCheckIsAdocProjectAO();
+        boolean isAdocProPath = fileApi.checkIsAdocProject(checkIsAdocProjectAO);
+        if (!isAdocProPath) {
+            return;
+        }
+        LoadContextAO loadContextAO = findSelectedProPathVO.copyToLoadContextAO();
+        if (loadContextAO == null) {
+            return;
+        }
         frameContextApi.loadContext(loadContextAO);
         frameContextApi.closeContext();
     }

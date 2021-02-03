@@ -1,6 +1,8 @@
 package com.rh.note.api;
 
 import com.rh.note.view.ProListView;
+import com.rh.note.vo.FindSelectedProPathVO;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
 
@@ -12,8 +14,10 @@ public class ProManageViewApi {
     /**
      * 获得项目列表中被选择的项
      */
-    public @Nullable String getSelectedProPathInProList() {
+    public @NotNull FindSelectedProPathVO getSelectedProPathInProList() {
         ProListView view = new ProListView().init();
-        return view.getSelectProPath();
+        FindSelectedProPathVO vo = new FindSelectedProPathVO();
+        vo.copy(view);
+        return vo;
     }
 }

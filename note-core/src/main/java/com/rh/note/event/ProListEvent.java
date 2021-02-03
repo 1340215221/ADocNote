@@ -3,7 +3,6 @@ package com.rh.note.event;
 import com.rh.note.action.OperationAction;
 import com.rh.note.action.ProManageAction;
 import com.rh.note.annotation.ComponentBean;
-import com.rh.note.ao.ClickedProjectListAO;
 import com.rh.note.constants.FrameCategoryEnum;
 import com.rh.note.vo.ProItemVO;
 import lombok.NonNull;
@@ -27,11 +26,10 @@ public class ProListEvent {
      * 点击项目列表
      */
     public void clicked_project_list(@NonNull MouseEvent mouseEvent) {
-        ClickedProjectListAO ao = operationAction.clickedProjectList(mouseEvent);
-        if (ao == null) {
-            return;
+        boolean isDoubleClick = operationAction.isDoubleClick(mouseEvent);
+        if (isDoubleClick) {
+            proManageAction.openAdocProjectSelected();
         }
-        proManageAction.openAdocProject(ao);
     }
 
     /**

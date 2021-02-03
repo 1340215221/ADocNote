@@ -1,9 +1,8 @@
 package com.rh.note.ao;
 
+import com.rh.note.common.BaseAO;
 import com.rh.note.constants.FrameCategoryEnum;
 import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**
@@ -11,15 +10,18 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
-@RequiredArgsConstructor
-public class LoadContextAO {
+public class LoadContextAO implements BaseAO {
     /**
      * 窗口类型
      */
-    @NonNull
-    private final FrameCategoryEnum frameCategoryEnum;
+    private FrameCategoryEnum frameCategoryEnum;
     /**
      * 容器配置对象
      */
     private Object contextConfig;
+
+    @Override
+    public boolean checkMissRequiredParams() {
+        return frameCategoryEnum == null;
+    }
 }

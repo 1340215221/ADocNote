@@ -21,7 +21,7 @@ public enum ErrorCodeEnum {
     NOT_ALLOWED_TO_OPERATE_TWO_CONTAINER_CONTROLS_IN_ONE_THREAD(1004, "不允许在一个线程内操作两个容器的控件"),
     FAILED_TO_SET_TEXT_PANE_LINE_NUMBER(1005, "设置textPane行号失败"),
     // 语法
-    THE_READ_ME_FILE_DOES_NOT_HAVE_A_FIRST_LEVEL_TITLE(2000, "该ReadMe文件没有一级标题"),
+    STOP_FIND_ROOT_TITLE(2000, "停止查找根标题"),
     IS_NOT_SYNTAX_SUGAR_LINE(2001, "不是快捷语法行"),
     // 编辑区
     FAILED_TO_WRITE_THE_CONTENT_OF_THE_EDIT_AREA_TO_THE_FILE(3000, "编辑区内容写入文件失败"),

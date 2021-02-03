@@ -41,7 +41,7 @@ public class FrameContextApi {
      */
     @SwingAsync
     public void loadContext(LoadContextAO ao) {
-        if (ao == null || ao.getFrameCategoryEnum() == null) {
+        if (ao == null || ao.checkMissRequiredParams()) {
             return;
         }
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
