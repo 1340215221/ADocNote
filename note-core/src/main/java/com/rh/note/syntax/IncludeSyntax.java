@@ -1,6 +1,7 @@
 package com.rh.note.syntax;
 
 import cn.hutool.core.io.FileUtil;
+import com.rh.note.constants.AdocFilePathEnum;
 import com.rh.note.constants.RegexConstants;
 import com.rh.note.sugar.AdocIncludeSyntaxSugar;
 import lombok.Getter;
@@ -114,5 +115,18 @@ public class IncludeSyntax {
      */
     public boolean isAdocFile() {
         return "adoc".equalsIgnoreCase(extName);
+    }
+
+    /**
+     * 在adoc项目结构中
+     */
+    public boolean isInProStructure(String filePath, String proPath) {
+        // 引用路径为绝对路径
+        if (FileUtil.isAbsolutePath(includePath)) {
+            return StringUtils.isNotBlank(proPath) && includePath.startsWith(proPath);
+        }
+        // 引用路径为相对路径
+        String targetFilePath = AdocFilePathEnum.includePath2ProPath(filePath, includePath);
+        return AdocFilePathEnum.isInProStructure(targetFilePath);
     }
 }

@@ -95,6 +95,13 @@ public enum AdocFilePathEnum {
     }
 
     /**
+     * 判断项目路径是否在项目结构中
+     */
+    public static boolean isInProStructure(String filePath) {
+        return findByFilePath(filePath) != null;
+    }
+
+    /**
      * 匹配文件类型, 通过文件路径
      */
     public abstract boolean matchByFilePath(String filePath);

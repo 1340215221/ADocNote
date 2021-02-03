@@ -1,6 +1,5 @@
 package com.rh.note.builder
 
-
 import cn.hutool.core.util.StrUtil
 import com.rh.note.annotation.ComponentBean
 import com.rh.note.app.config.UserFontConfig
@@ -19,8 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired
 
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
-import javax.swing.*
-import java.awt.*
+import javax.swing.JTabbedPane
+import java.awt.Font
 
 /**
  * adoc编辑区
@@ -108,7 +107,7 @@ class AdocTextPaneBuilder implements BaseBuilder {
     private void addKeymap() {
         def textPane = swingBuilder."${textPaneId()}" as AdocTextPane
         def keymap = new KeymapAction("textPane", textPane.keymap)
-                .addEnterAction { event.enter_operation(it) }
+                .addEnterAction { event.enter_operation() }
                 .addUpAction { event.select_previous_on_prompt(it) }
                 .addDownAction { event.select_next_on_prompt(it) }
         textPane.setKeymap(keymap)

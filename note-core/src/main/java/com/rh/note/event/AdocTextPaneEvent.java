@@ -31,8 +31,9 @@ public class AdocTextPaneEvent {
     /**
      * 回车操作
      */
-    public void enter_operation(@NonNull TextPaneKeyStrokeAO ao) {
+    public void enter_operation() {
         workAction.handleSyntaxSugarByCaretLineOfSelectedTextPane();
+        workAction.loadRootNode();
     }
 
     /**

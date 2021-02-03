@@ -85,7 +85,7 @@ public class AdocTitleFile extends BaseFileConfig {
                 return;
             }
             IncludeSyntax includeSyntax = new IncludeSyntax().init(line);
-            if (includeSyntax != null) {
+            if (includeSyntax != null && includeSyntax.isAdocFile() && includeSyntax.isInProStructure(filePath, getProPath())) {
                 ReadTitleLineList childTitles = new ReadTitleLineList();
                 ProxyTitleLine proxyTitleLine = new ProxyTitleLine()
                         .setLineNumber(lineNumber.get())
