@@ -22,13 +22,6 @@ public class OperationAction {
     private FileApi fileApi;
 
     /**
-     * 判断存在没有被选择的编辑区
-     */
-    public boolean hasTextPaneNotSelected() {
-        return workViewApi.hasTextPaneNotSelected();
-    }
-
-    /**
      * 判断是ctrl + 鼠标左键
      */
     public boolean isCtrlLeftClick(MouseEvent event) {

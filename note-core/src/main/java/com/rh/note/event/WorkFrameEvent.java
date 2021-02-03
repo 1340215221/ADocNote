@@ -1,6 +1,5 @@
 package com.rh.note.event;
 
-import com.rh.note.action.OperationAction;
 import com.rh.note.action.WorkAction;
 import com.rh.note.annotation.ComponentBean;
 import com.rh.note.constants.FrameCategoryEnum;
@@ -12,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 @ComponentBean(FrameCategoryEnum.WORK)
 public class WorkFrameEvent {
 
-    @Autowired
-    private OperationAction operationAction;
     @Autowired
     private WorkAction workAction;
 
@@ -52,9 +49,6 @@ public class WorkFrameEvent {
      * 关闭其他编辑区
      */
     public void closeOtherTextPane() {
-        boolean hasNotSelected = operationAction.hasTextPaneNotSelected();
-        if (hasNotSelected) {
-            workAction.closeTextPaneNotSelected();
-        }
+        workAction.closeTextPaneNotSelected();
     }
 }

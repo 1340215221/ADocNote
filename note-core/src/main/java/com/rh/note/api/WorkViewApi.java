@@ -209,14 +209,6 @@ public class WorkViewApi {
     }
 
     /**
-     * 判断存在没有被选择的编辑区
-     */
-    public boolean hasTextPaneNotSelected() {
-        TabbedPaneView tabbedPaneView = new TabbedPaneView().init();
-        return tabbedPaneView != null && tabbedPaneView.existNotSelected();
-    }
-
-    /**
      * 判断是快捷语法行, 通过被选择编辑区的光标行内容
      */
     public boolean checkIsSyntaxSugarByCaretLineOfSelectedTextPane() {

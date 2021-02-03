@@ -12,7 +12,6 @@ import com.rh.note.line.TitleLine;
 import com.rh.note.vo.FindIncludePathInSelectedTextPaneVO;
 import com.rh.note.vo.FindTitleNodeSelectedVO;
 import com.rh.note.vo.GenerateIncludeSyntaxVO;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,13 +42,6 @@ public class WorkAction {
         List<String> list = workViewApi.getFilePathsOfTextPaneByTabbedPane();
         SaveTextPaneFileByFilePathAO ao = new SaveTextPaneFileByFilePathAO();
         ao.copy(list);
-        this.saveTextPaneFileByFilePaths(ao);
-    }
-
-    /**
-     * 保存编辑区内容,通过文件路径
-     */
-    private void saveTextPaneFileByFilePaths(@NonNull SaveTextPaneFileByFilePathAO ao) {
         TextPaneFileWritersAO writerAO = fileApi.getWriterByFilePath(ao);
         workViewApi.saveTextPaneFileByFilePaths(writerAO);
     }
@@ -136,7 +128,8 @@ public class WorkAction {
         // 保存
         SaveTextPaneFileByFilePathAO saveTextPaneFileByFilePathAO = new SaveTextPaneFileByFilePathAO();
         saveTextPaneFileByFilePathAO.copy(syntaxVO);
-        this.saveTextPaneFileByFilePaths(saveTextPaneFileByFilePathAO);
+        TextPaneFileWritersAO writerAO = fileApi.getWriterByFilePath(saveTextPaneFileByFilePathAO);
+        workViewApi.saveTextPaneFileByFilePaths(writerAO);
     }
 
     /**
