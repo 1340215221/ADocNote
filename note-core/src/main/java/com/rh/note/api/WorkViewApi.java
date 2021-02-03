@@ -11,6 +11,7 @@ import com.rh.note.syntax.IncludeSyntax;
 import com.rh.note.syntax.TitleSyntax;
 import com.rh.note.view.*;
 import com.rh.note.vo.FindIncludePathInSelectedTextPaneVO;
+import com.rh.note.vo.FindTitleNodeSelectedVO;
 import com.rh.note.vo.GenerateIncludeSyntaxVO;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -103,9 +104,12 @@ public class WorkViewApi {
     /**
      * 获得被选择节点的标题对象
      */
-    public @Nullable TitleLine getTitleLineBySelectedNode() {
+    public @NotNull FindTitleNodeSelectedVO getTitleLineBySelectedNode() {
         TitleTreeView treeView = new TitleTreeView().init();
-        return treeView.getTitleLineBySelectedNode();
+        TitleLine titleLine = treeView.getTitleLineBySelectedNode();
+        FindTitleNodeSelectedVO vo = new FindTitleNodeSelectedVO();
+        vo.copy(titleLine);
+        return vo;
     }
 
     /**

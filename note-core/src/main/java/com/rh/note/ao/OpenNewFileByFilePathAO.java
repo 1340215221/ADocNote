@@ -4,6 +4,7 @@ import com.rh.note.common.BaseAO;
 import com.rh.note.common.BaseFileConfig;
 import com.rh.note.path.FileBeanPath;
 import com.rh.note.vo.GenerateIncludeSyntaxVO;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,6 +15,7 @@ public class OpenNewFileByFilePathAO extends BaseFileConfig implements BaseAO {
     /**
      * 文件项目路径
      */
+    @Setter
     private String filePath;
 
     @Override
@@ -47,13 +49,6 @@ public class OpenNewFileByFilePathAO extends BaseFileConfig implements BaseAO {
             return null;
         }
         return new FileBeanPath().setFilePath(filePath);
-    }
-
-    public void copy(OpenAdocFileByFilePathAO ao) {
-        if (ao == null) {
-            return;
-        }
-        filePath = ao.getFilePath();
     }
 
     public void copy(GenerateIncludeSyntaxVO vo) {

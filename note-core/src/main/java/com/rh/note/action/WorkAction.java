@@ -1,12 +1,16 @@
 package com.rh.note.action;
 
-import com.rh.note.ao.*;
+import com.rh.note.ao.InitAdocTextPaneContentAO;
+import com.rh.note.ao.OpenNewFileByFilePathAO;
+import com.rh.note.ao.SaveTextPaneFileByFilePathAO;
+import com.rh.note.ao.TextPaneFileWritersAO;
 import com.rh.note.api.FileApi;
 import com.rh.note.api.FrameContextApi;
 import com.rh.note.api.WorkViewApi;
 import com.rh.note.exception.IsNotSyntaxSugarLineException;
 import com.rh.note.line.TitleLine;
 import com.rh.note.vo.FindIncludePathInSelectedTextPaneVO;
+import com.rh.note.vo.FindTitleNodeSelectedVO;
 import com.rh.note.vo.GenerateIncludeSyntaxVO;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -82,9 +86,11 @@ public class WorkAction {
         if (vo == null) {
             return;
         }
-        OpenAdocFileByFilePathAO ao = new OpenAdocFileByFilePathAO();
-        ao.copy(vo);
-        this.openAdocFileByFilePath(ao);
+        // 显示已打开文件
+        workViewApi.showOpenedFileByFilePath(vo.getFilePath());
+        // 打开文件, 加载内容, 并显示
+        OpenNewFileByFilePathAO openNewFileByFilePathAO = vo.copyTo();
+        openNewFileByFilePath(openNewFileByFilePathAO);
     }
 
     /**
@@ -126,12 +132,13 @@ public class WorkAction {
     /**
      * 打开文件, 通过标题节点
      */
-    public void openAdocFileByFilePath(@NonNull OpenAdocFileByFilePathAO ao) {
+    public void openAdocFileByFilePath() {
+        // 获得选择标题节点文件路径
+        FindTitleNodeSelectedVO findTitleNodeSelectedVO = workViewApi.getTitleLineBySelectedNode();
         // 显示已打开文件
-        workViewApi.showOpenedFileByFilePath(ao.getFilePath());
+        workViewApi.showOpenedFileByFilePath(findTitleNodeSelectedVO.getFilePath());
         // 打开文件, 加载内容, 并显示
-        OpenNewFileByFilePathAO openNewFileByFilePathAO = new OpenNewFileByFilePathAO();
-        openNewFileByFilePathAO.copy(ao);
+        OpenNewFileByFilePathAO openNewFileByFilePathAO = findTitleNodeSelectedVO.copyTo();
         openNewFileByFilePath(openNewFileByFilePathAO);
     }
 

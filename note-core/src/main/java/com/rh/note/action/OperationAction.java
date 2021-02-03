@@ -1,12 +1,10 @@
 package com.rh.note.action;
 
-import com.rh.note.ao.OpenAdocFileByFilePathAO;
 import com.rh.note.ao.SaveTextPaneFileByFilePathAO;
 import com.rh.note.api.FileApi;
 import com.rh.note.api.ProManageViewApi;
 import com.rh.note.api.WorkViewApi;
 import com.rh.note.config.KeymapConfig;
-import com.rh.note.line.TitleLine;
 import org.apache.commons.collections4.CollectionUtils;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,23 +30,6 @@ public class OperationAction {
      */
     public boolean hasTextPaneSelected() {
         return workViewApi.hasTextPaneSelected();
-    }
-
-    /**
-     * 判断存在文件, 通过被选中的节点
-     */
-    public @Nullable OpenAdocFileByFilePathAO isExistFileBySelectedNode() {
-        TitleLine titleLine = workViewApi.getTitleLineBySelectedNode();
-        if (titleLine == null || titleLine.getBeanPath() == null) {
-            return null;
-        }
-        boolean isAdocFile = fileApi.checkIsAdocFile(titleLine.getBeanPath().getAbsolutePath());
-        if (!isAdocFile) {
-            return null;
-        }
-        OpenAdocFileByFilePathAO ao = new OpenAdocFileByFilePathAO();
-        ao.copy(titleLine);
-        return ao;
     }
 
     /**

@@ -84,14 +84,6 @@ public class FileApi {
     }
 
     /**
-     * 判断是adoc文件
-     */
-    public boolean checkIsAdocFile(String absolutePath) {
-        return StringUtils.isNotBlank(absolutePath) && FileUtil.isFile(absolutePath)
-                && "adoc".equalsIgnoreCase(FileUtil.extName(absolutePath));
-    }
-
-    /**
      * 创建adoc文件
      */
     public void createAdocFile(String absolutePath) {

@@ -1,10 +1,12 @@
 package com.rh.note.vo;
 
+import com.rh.note.ao.OpenNewFileByFilePathAO;
 import com.rh.note.constants.AdocFilePathEnum;
 import com.rh.note.syntax.IncludeSyntax;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -34,5 +36,11 @@ public class FindIncludePathInSelectedTextPaneVO {
      */
     public @Nullable String getFilePath() {
         return AdocFilePathEnum.includePath2ProPath(currentFilePath, includePath);
+    }
+
+    public @NotNull OpenNewFileByFilePathAO copyTo() {
+        OpenNewFileByFilePathAO ao = new OpenNewFileByFilePathAO();
+        ao.setFilePath(getFilePath());
+        return ao;
     }
 }
