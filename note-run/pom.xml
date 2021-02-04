@@ -63,9 +63,6 @@
             <resource>
                 <filtering>false</filtering>
                 <directory>src/main/resources</directory>
-                <excludes>
-                    <exclude>config.yml</exclude>
-                </excludes>
             </resource>
         </resources>
     </build>

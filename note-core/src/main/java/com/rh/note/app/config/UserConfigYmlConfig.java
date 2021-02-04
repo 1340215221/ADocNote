@@ -38,7 +38,6 @@ public class UserConfigYmlConfig {
             return new UserAppConfig();
         }
         BufferedReader reader = FileUtil.getReader(configFile, CharsetUtil.UTF_8);
-        log.error("reader={}", reader != null);
         Map configMap = new Yaml().loadAs(reader, Map.class);
         if (MapUtils.isEmpty(configMap)) {
             return new UserAppConfig();
