@@ -58,11 +58,11 @@ public class AdocIncludeSyntaxSugar {
         if (filePathEnum == null) {
             return null;
         }
-        String nextLevelAdocDirectory = filePathEnum.getNextLevelAdocDirectory();
-        if (StringUtils.isBlank(nextLevelAdocDirectory)) {
+        String targetRelativePath = filePathEnum.getRelativePathOfNextLevelAdocDirectory();
+        if (StringUtils.isBlank(targetRelativePath)) {
             return null;
         }
-        return nextLevelAdocDirectory + targetTitleName + ".adoc";
+        return targetRelativePath + targetTitleName + ".adoc";
     }
 
     /**

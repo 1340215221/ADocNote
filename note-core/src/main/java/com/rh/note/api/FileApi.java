@@ -5,10 +5,12 @@ import cn.hutool.core.util.CharsetUtil;
 import com.rh.note.ao.CheckIsAdocProjectAO;
 import com.rh.note.ao.SaveTextPaneFileByFilePathAO;
 import com.rh.note.ao.TextPaneFileWritersAO;
+import com.rh.note.collection.ReadTitleLineList;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.CreateDuplicateAdocFileNameException;
 import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.exception.StopFindRootTitleException;
+import com.rh.note.file.AdocTitleFile;
 import com.rh.note.file.ReadMeTitleFile;
 import com.rh.note.line.TitleLine;
 import org.apache.commons.lang3.StringUtils;
@@ -46,7 +48,8 @@ public class FileApi {
      * 读取项目的根标题
      */
     public @Nullable TitleLine readProjectRootTitle() {
-        ReadMeTitleFile readMe = new ReadMeTitleFile().init();
+//        ReadMeTitleFile readMe = new ReadMeTitleFile().init();
+        AdocTitleFile readMe = new AdocTitleFile("adoc/twoLevel/haha.adoc", new ReadTitleLineList());
         if (readMe == null) {
             return null;
         }

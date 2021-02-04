@@ -22,7 +22,7 @@ public enum AdocFilePathEnum {
         }
 
         @Override
-        public @NotNull String getNextLevelAdocDirectory() {
+        public @NotNull String getRelativePathOfNextLevelAdocDirectory() {
             return "adoc/twoLevel/";
         }
     },
@@ -36,8 +36,8 @@ public enum AdocFilePathEnum {
         }
 
         @Override
-        public @NotNull String getNextLevelAdocDirectory() {
-            return "adoc/content/";
+        public @NotNull String getRelativePathOfNextLevelAdocDirectory() {
+            return "../content/";
         }
     },
     /**
@@ -50,7 +50,7 @@ public enum AdocFilePathEnum {
         }
 
         @Override
-        public @Nullable String getNextLevelAdocDirectory() {
+        public @Nullable String getRelativePathOfNextLevelAdocDirectory() {
             return null;
         }
     },
@@ -107,10 +107,10 @@ public enum AdocFilePathEnum {
     public abstract boolean matchByFilePath(String filePath);
 
     /**
-     * 获得当前文件类型的, 获得下一级别adoc文件目录
+     * 获得当前文件类型的, 获得下一级别adoc文件目录的相对路径
      * tip 返回路径以 / 结尾
      */
-    public abstract @Nullable String getNextLevelAdocDirectory();
+    public abstract @Nullable String getRelativePathOfNextLevelAdocDirectory();
 
     /**
      * 判断不是adoc文件路径
