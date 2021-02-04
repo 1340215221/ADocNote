@@ -8,7 +8,8 @@ public interface RegexConstants {
     /**
      * 支持文件路径
      */
-    String file_path_regex = "[0-9a-zA-Z\\u4e00-\\u9fa5_,\\.\\-+<>/]+";
+    String file_path_regex = "[0-9a-zA-Z\\u4e00-\\u9fa5_,\\.\\\\\\-+<>/]+"
+            + "|[a-zA-Z]:[0-9a-zA-Z\\u4e00-\\u9fa5_,\\.\\\\\\-+<>]+";
     /**
      * 支持的文件名
      */

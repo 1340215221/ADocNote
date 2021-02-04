@@ -26,9 +26,9 @@ public class FilePathUtil {
         }
         String tempStr = filePath;
         // win路径转linux
-        Matcher matcherDriveLetter = Pattern.compile("^[a-zA-Z]:(.*)$").matcher(tempStr);
+        Matcher matcherDriveLetter = Pattern.compile("[a-zA-Z]:").matcher(tempStr);
         if (matcherDriveLetter.find()) {
-            tempStr = matcherDriveLetter.group(1);
+            tempStr = matcherDriveLetter.replaceAll("");
         }
         // win分隔符和重复分隔符替换
         tempStr = tempStr.replaceAll("\\\\", "/");
