@@ -2,7 +2,7 @@ package com.rh.note.config;
 
 import com.rh.note.annotation.ComponentBean;
 import com.rh.note.constants.FrameCategoryEnum;
-import com.rh.note.event.WorkFrameEvent;
+import com.rh.note.event.TabbedPaneEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -21,7 +21,7 @@ public class SwingGlobalKeymapConfig {
     private static final Toolkit toolkit = Toolkit.getDefaultToolkit();
     private final List<AWTEventListener> list = new ArrayList<>(3);
     @Autowired
-    private WorkFrameEvent event;
+    private TabbedPaneEvent event;
 
     /**
      * 设置快捷键监听事件
