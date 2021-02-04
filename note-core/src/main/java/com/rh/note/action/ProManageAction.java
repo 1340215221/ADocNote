@@ -63,4 +63,12 @@ public class ProManageAction {
     public @NotNull ProItemVO[] getProPathList() {
         return userProPathConfig.getProPathList();
     }
+
+    /**
+     * 退出程序
+     */
+    public void exitApp() {
+        frameContextApi.closeContext();
+        frameContextApi.exitApp();
+    }
 }

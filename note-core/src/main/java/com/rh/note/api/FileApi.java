@@ -48,8 +48,7 @@ public class FileApi {
      * 读取项目的根标题
      */
     public @Nullable TitleLine readProjectRootTitle() {
-//        ReadMeTitleFile readMe = new ReadMeTitleFile().init();
-        AdocTitleFile readMe = new AdocTitleFile("adoc/twoLevel/haha.adoc", new ReadTitleLineList());
+        ReadMeTitleFile readMe = new ReadMeTitleFile().init();
         if (readMe == null) {
             return null;
         }

@@ -10,9 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired
 
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
-import javax.swing.JFrame
-import javax.swing.WindowConstants
-import java.awt.BorderLayout
+import javax.swing.*
+import java.awt.*
 
 /**
  * 工作窗口 构建者
@@ -65,15 +64,15 @@ class WorkFrameBuilder implements BaseBuilder {
 
         swingBuilder.frame(id: id,
                 title: 'adoc笔记',
+                extendedState: JFrame.MAXIMIZED_BOTH,
                 pack: true,
                 defaultCloseOperation: WindowConstants.DO_NOTHING_ON_CLOSE,
                 windowClosing: {
                     // 主线程不能阻塞, 阻塞时无法渲染页面
                     swingBuilder.doOutside {
-                        event.save_all_text_pane()
                         event.close_frame()
                     }
-                }
+                },
         ) {
             panel()
             globalKeymap()

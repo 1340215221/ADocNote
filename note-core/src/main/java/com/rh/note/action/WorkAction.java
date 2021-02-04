@@ -1,12 +1,10 @@
 package com.rh.note.action;
 
-import com.rh.note.ao.InitAdocTextPaneContentAO;
-import com.rh.note.ao.OpenNewFileByFilePathAO;
-import com.rh.note.ao.SaveTextPaneFileByFilePathAO;
-import com.rh.note.ao.TextPaneFileWritersAO;
+import com.rh.note.ao.*;
 import com.rh.note.api.FileApi;
 import com.rh.note.api.FrameContextApi;
 import com.rh.note.api.WorkViewApi;
+import com.rh.note.constants.FrameCategoryEnum;
 import com.rh.note.exception.IsNotSyntaxSugarLineException;
 import com.rh.note.line.TitleLine;
 import com.rh.note.vo.FindIncludePathInSelectedTextPaneVO;
@@ -164,6 +162,9 @@ public class WorkAction {
      */
     public void closeContext() {
         frameContextApi.closeContext();
+        LoadContextAO loadContextAO = new LoadContextAO();
+        loadContextAO.setFrameCategoryEnum(FrameCategoryEnum.PRO_MANAGE);
+        frameContextApi.loadContext(loadContextAO);
     }
 
     /**

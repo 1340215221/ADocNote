@@ -103,4 +103,11 @@ public class FrameContextApi {
         }
         currentContext.close();
     }
+
+    /**
+     * 退出应用
+     */
+    public void exitApp() {
+        System.exit(0);
+    }
 }

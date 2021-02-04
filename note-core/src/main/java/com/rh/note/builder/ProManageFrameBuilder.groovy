@@ -2,6 +2,7 @@ package com.rh.note.builder
 
 import com.rh.note.annotation.ComponentBean
 import com.rh.note.constants.FrameCategoryEnum
+import com.rh.note.event.ProManageEvent
 import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -23,6 +24,8 @@ class ProManageFrameBuilder {
     private ProMenuPanelBuilder panelBuilder
     @Autowired
     private ProListBuilder proListBuilder
+    @Autowired
+    private ProManageEvent event
 
     @PostConstruct
     void init() {
@@ -39,8 +42,13 @@ class ProManageFrameBuilder {
         swingBuilder.frame(id: id,
                 pack: true,
                 resizable: false,
-                defaultCloseOperation: WindowConstants.EXIT_ON_CLOSE,
+                defaultCloseOperation: WindowConstants.DO_NOTHING_ON_CLOSE,
                 title: '打开项目',
+                windowClosing: {
+                    swingBuilder.doOutside {
+                        event.exit_app()
+                    }
+                }
         ) {
             panel()
         }

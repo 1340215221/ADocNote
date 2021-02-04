@@ -32,16 +32,10 @@ public class WorkFrameEvent {
     }
 
     /**
-     * 保存所有的编辑区
-     */
-    public void save_all_text_pane() {
-        // todo
-    }
-
-    /**
      * 关闭窗口
      */
     public void close_frame() {
+        workAction.saveAllTextPaneFile();
         workAction.closeContext();
     }
 
