@@ -32,7 +32,8 @@ public enum AdocFilePathEnum {
     TWO_LEVEL {
         @Override
         public boolean matchByFilePath(String filePath) {
-            return StringUtils.isNotBlank(filePath) && filePath.startsWith("adoc/twoLevel/");
+            String regex = "^adoc/twoLevel/" + RegexConstants.file_name_regex + "\\.adoc$";
+            return StringUtils.isNotBlank(filePath) && filePath.matches(regex);
         }
 
         @Override
@@ -46,7 +47,8 @@ public enum AdocFilePathEnum {
     CONTENT {
         @Override
         public boolean matchByFilePath(String filePath) {
-            return StringUtils.isNotBlank(filePath) && filePath.startsWith("adoc/content/");
+            String regex = "^adoc/content/" + RegexConstants.file_name_regex + "\\.adoc$";
+            return StringUtils.isNotBlank(filePath) && filePath.matches(regex);
         }
 
         @Override
