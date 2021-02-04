@@ -1,15 +1,19 @@
 package com.rh.note.app.config;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.system.OsInfo;
 import cn.hutool.system.SystemUtil;
+import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.yaml.snakeyaml.Yaml;
 
 import java.awt.*;
+import java.util.Map;
 
 /**
  * 用户yml配置文件配置
@@ -29,7 +33,11 @@ public class UserConfigYmlConfig {
         if (!FileUtil.isFile(configFilePath)) {
             return new UserAppConfig();
         }
-        UserAppConfig config = new Yaml().loadAs(FileUtil.getReader(configFilePath, CharsetUtil.UTF_8), UserAppConfig.class);
+        Map configMap = new Yaml().loadAs(FileUtil.getReader(configFilePath, CharsetUtil.UTF_8), Map.class);
+        if (MapUtils.isEmpty(configMap)) {
+            return new UserAppConfig();
+        }
+        UserAppConfig config = BeanUtil.mapToBean(configMap, UserAppConfig.class, true);
         return config != null ? config : new UserAppConfig();
     }
 
@@ -46,7 +54,7 @@ public class UserConfigYmlConfig {
      */
     @Bean
     public UserProPathConfig newUserProPathConfig(UserAppConfig appConfig) {
-        return appConfig.getProPath() != null ? appConfig.getProPath() : new UserProPathConfig();
+        return appConfig.getPro() != null ? appConfig.getPro() : new UserProPathConfig();
     }
 
     /**

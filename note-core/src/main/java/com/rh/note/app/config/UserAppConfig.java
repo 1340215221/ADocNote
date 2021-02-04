@@ -12,7 +12,7 @@ public class UserAppConfig {
     /**
      * adoc项目配置
      */
-    private UserProPathConfig proPath;
+    private UserProPathConfig pro;
     /**
      * 编辑区字体配置
      */
