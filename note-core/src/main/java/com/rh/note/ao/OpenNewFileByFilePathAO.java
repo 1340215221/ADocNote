@@ -48,7 +48,7 @@ public class OpenNewFileByFilePathAO implements BaseAO {
         if (StringUtils.isBlank(filePath)) {
             return null;
         }
-        return new FileBeanPath().setFilePath(filePath);
+        return FileBeanPath.getInstance(filePath);
     }
 
     public void copy(GenerateIncludeSyntaxVO vo) {

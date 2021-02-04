@@ -2,21 +2,32 @@ package com.rh.note.path;
 
 import cn.hutool.core.io.FileUtil;
 import com.rh.note.common.IArgsConstructorBean;
-import lombok.Data;
-import lombok.experimental.Accessors;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * 文件对象路径
  */
-@Data
-@Accessors(chain = true)
+@Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FileBeanPath implements IArgsConstructorBean {
     /**
      * 文件项目路径
-     * todo 应该校验他是非空的
      */
     private String filePath;
+
+    public static @Nullable FileBeanPath getInstance(String filePath) {
+        if (StringUtils.isBlank(filePath)) {
+            return null;
+        }
+        FileBeanPath beanPath = new FileBeanPath();
+        beanPath.filePath = filePath;
+        return beanPath;
+    }
 
     @Override
     public @NotNull String[] getBeanNameArgs() {
@@ -25,7 +36,6 @@ public class FileBeanPath implements IArgsConstructorBean {
 
     /**
      * 获得文件名
-     * todo 需要控制不为空, 尽量
      */
     public @NotNull String getFileName() {
         return FileUtil.getName(filePath);
