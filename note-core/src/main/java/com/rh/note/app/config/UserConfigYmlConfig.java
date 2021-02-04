@@ -6,6 +6,7 @@ import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.system.OsInfo;
 import cn.hutool.system.SystemUtil;
 import com.alibaba.fastjson.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Bean;
@@ -13,27 +14,32 @@ import org.springframework.context.annotation.Configuration;
 import org.yaml.snakeyaml.Yaml;
 
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.File;
 import java.util.Map;
 
 /**
  * 用户yml配置文件配置
  */
+@Slf4j
 @Configuration
 public class UserConfigYmlConfig {
     /**
      * yml配置文件地址
      */
-    private static final String configFilePath = "config.yml";
+    private static final File configFile = new File("config.yml");
 
     /**
      * 应用配置
      */
     @Bean
     public UserAppConfig newUserAppConfig() {
-        if (!FileUtil.isFile(configFilePath)) {
+        if (!FileUtil.isFile(configFile)) {
             return new UserAppConfig();
         }
-        Map configMap = new Yaml().loadAs(FileUtil.getReader(configFilePath, CharsetUtil.UTF_8), Map.class);
+        BufferedReader reader = FileUtil.getReader(configFile, CharsetUtil.UTF_8);
+        log.error("reader={}", reader != null);
+        Map configMap = new Yaml().loadAs(reader, Map.class);
         if (MapUtils.isEmpty(configMap)) {
             return new UserAppConfig();
         }
