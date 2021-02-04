@@ -26,9 +26,16 @@ public class ThreadContextAspect {
     @Autowired
     private ConfigurableApplicationContext context;
 
+    /**
+     * 执行event方法 切点
+     */
     @Pointcut("execution(* com.rh.note.event.*Event.*(..))")
     public void executionEvent() {}
 
+    /**
+     * 进入Event对象时, 设置当前线程操作的容器
+     * 退出Event对象时, 清除当前线程的容器
+     */
     @Around("executionEvent()")
     public Object handleThreadContext(ProceedingJoinPoint joinPoint) throws Throwable {
         ThreadContextBean bean = beforeProceed();
@@ -54,11 +61,11 @@ public class ThreadContextAspect {
     private @NotNull ThreadContextBean beforeProceed() {
         ThreadContextBean bean = ViewThreadContext.getThreadContextBean();
         if (bean == null) {
-            ThreadContextBean newBean = new ThreadContextBean(this.context);
+            ThreadContextBean newBean = new ThreadContextBean(context);
             ViewThreadContext.setThreadContextBean(newBean);
             return newBean;
         }
-        if (bean.getContext() != this.context) {
+        if (bean.getContext() != context) {
             throw new ApplicationException(ErrorCodeEnum.NOT_ALLOWED_TO_OPERATE_TWO_CONTAINER_CONTROLS_IN_ONE_THREAD);
         }
         bean.increment();

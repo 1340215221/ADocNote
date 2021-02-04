@@ -4,6 +4,7 @@ import cn.hutool.core.io.FileUtil;
 import com.rh.note.constants.AdocFilePathEnum;
 import com.rh.note.constants.RegexConstants;
 import com.rh.note.sugar.AdocIncludeSyntaxSugar;
+import com.rh.note.util.FilePathUtil;
 import lombok.Getter;
 import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;
@@ -126,7 +127,7 @@ public class IncludeSyntax {
             return StringUtils.isNotBlank(proPath) && includePath.startsWith(proPath);
         }
         // 引用路径为相对路径
-        String targetFilePath = AdocFilePathEnum.includePath2ProPath(filePath, includePath);
+        String targetFilePath = FilePathUtil.includePath2ProFilePath(filePath, includePath);
         return AdocFilePathEnum.isInProStructure(targetFilePath);
     }
 }

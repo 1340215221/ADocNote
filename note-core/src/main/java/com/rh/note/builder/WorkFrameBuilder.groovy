@@ -4,7 +4,6 @@ import com.rh.note.annotation.ComponentBean
 import com.rh.note.common.BaseBuilder
 import com.rh.note.constants.FrameCategoryEnum
 import com.rh.note.event.WorkFrameEvent
-import com.rh.note.util.GlobalKeymapUtil
 import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -75,7 +74,6 @@ class WorkFrameBuilder implements BaseBuilder {
                 },
         ) {
             panel()
-            globalKeymap()
         }
         windowCentered()
         showFrame()
@@ -103,24 +101,5 @@ class WorkFrameBuilder implements BaseBuilder {
 
     JFrame getFrame() {
         return swingBuilder."${id}"
-    }
-
-    /**
-     * 全局快捷键
-     */
-    void globalKeymap() {
-        def keymap = new GlobalKeymapUtil()
-        // ctrl + s 保存
-        keymap.event_ctrl_S {
-            event.save_all_edit_text()
-        }
-        // alt + q 关闭当前文件
-        keymap.event_alt_Q {
-            event.closeCurrentTextPane()
-        }
-        // alt + w 关闭其它文件
-        keymap.event_alt_W {
-            event.closeOtherTextPane()
-        }
     }
 }

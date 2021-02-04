@@ -34,7 +34,7 @@ import java.util.Set;
 public class FrameContextApi {
 
     @Autowired
-    private ApplicationContext currentContext;
+    private ApplicationContext mainContext;
 
     /**
      * 加载一个窗口容器
@@ -89,7 +89,7 @@ public class FrameContextApi {
             context.registerBeanDefinition(AopConfigUtils.AUTO_PROXY_CREATOR_BEAN_NAME, aopBeanDefinition);
         }
         // 关联父容器
-        context.setParent(currentContext);
+        context.setParent(mainContext);
         context.refresh();
     }
 

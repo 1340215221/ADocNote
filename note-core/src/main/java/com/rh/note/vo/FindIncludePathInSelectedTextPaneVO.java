@@ -1,8 +1,10 @@
 package com.rh.note.vo;
 
+import cn.hutool.core.io.FileUtil;
 import com.rh.note.ao.OpenNewFileByFilePathAO;
-import com.rh.note.constants.AdocFilePathEnum;
 import com.rh.note.syntax.IncludeSyntax;
+import com.rh.note.util.CurrentAdocProConfigUtil;
+import com.rh.note.util.FilePathUtil;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -14,6 +16,10 @@ import org.jetbrains.annotations.Nullable;
  */
 @NoArgsConstructor
 public class FindIncludePathInSelectedTextPaneVO {
+    /**
+     * 当前adoc项目绝对路径
+     */
+    private final String proPath = CurrentAdocProConfigUtil.getProPath();
     /**
      * include路径
      */
@@ -35,7 +41,10 @@ public class FindIncludePathInSelectedTextPaneVO {
      * 获得include指向文件的项目路径
      */
     public @Nullable String getFilePath() {
-        return AdocFilePathEnum.includePath2ProPath(currentFilePath, includePath);
+        if (FileUtil.isAbsolutePath(includePath)) {
+            return FilePathUtil.absolutePath2ProFilePath(includePath, proPath);
+        }
+        return FilePathUtil.includePath2ProFilePath(currentFilePath, includePath);
     }
 
     public @NotNull OpenNewFileByFilePathAO copyTo() {

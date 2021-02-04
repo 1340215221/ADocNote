@@ -1,8 +1,8 @@
 package com.rh.note.vo;
 
-import com.rh.note.constants.AdocFilePathEnum;
 import com.rh.note.syntax.IncludeSyntax;
 import com.rh.note.util.CurrentAdocProConfigUtil;
+import com.rh.note.util.FilePathUtil;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +51,7 @@ public class GenerateIncludeSyntaxVO {
      * 获得include指向文件的项目路径
      */
     public @Nullable String getTargetFilePath() {
-        return AdocFilePathEnum.includePath2ProPath(filePath, syntax.getIncludePath());
+        return FilePathUtil.includePath2ProFilePath(filePath, syntax.getIncludePath());
     }
 
     /**

@@ -9,12 +9,7 @@ import com.rh.note.sugar.AdocIncludeSyntaxSugar;
 import com.rh.note.sugar.TitleSyntaxSugar;
 import com.rh.note.syntax.IncludeSyntax;
 import com.rh.note.syntax.TitleSyntax;
-import com.rh.note.view.AdocTextPaneView;
-import com.rh.note.view.RootTitleNodeView;
-import com.rh.note.view.TabbedPaneView;
-import com.rh.note.view.TextScrollPaneView;
-import com.rh.note.view.TitleTreeView;
-import com.rh.note.view.TreeModelView;
+import com.rh.note.view.*;
 import com.rh.note.vo.FindIncludePathInSelectedTextPaneVO;
 import com.rh.note.vo.FindTitleNodeSelectedVO;
 import com.rh.note.vo.GenerateIncludeSyntaxVO;
@@ -121,20 +116,14 @@ public class WorkViewApi {
      * 获得被选择的编辑区对应的文件地址
      */
     public @Nullable String getFilePathOfTextPaneSelected() {
-        TabbedPaneView tabbedPaneView = new TabbedPaneView().init();
-        return tabbedPaneView != null ? tabbedPaneView.getFilePathOfTextPaneSelected() : null;
+        return new TabbedPaneView().init().getFilePathOfTextPaneSelected();
     }
 
     /**
      * 获得选项卡中的编辑控件对应的文件地址
      */
     public @Nullable List<String> getFilePathsOfTextPaneByTabbedPane() {
-        TabbedPaneView tabbedPaneView = new TabbedPaneView().init();
-        // 在非编辑窗口使用ctrl + s 时, 编辑区选项卡会为空
-        if (tabbedPaneView == null) {
-            return null;
-        }
-        return tabbedPaneView.getFilePathsOfTextPane();
+        return new TabbedPaneView().init().getFilePathsOfTextPane();
     }
 
     /**

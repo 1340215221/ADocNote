@@ -13,6 +13,7 @@ public class CurrentAdocProConfigUtil {
 
     /**
      * 获得项目绝对路径
+     * tip 返回目录以 / 结尾
      */
     public static @Nullable String getProPath() {
         ConfigurableApplicationContext app = ViewThreadContext.getThreadContextOrNull();

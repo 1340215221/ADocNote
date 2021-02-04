@@ -6,7 +6,6 @@ import cn.hutool.core.lang.mutable.MutableInt;
 import com.rh.note.collection.ReadTitleLineList;
 import com.rh.note.common.IReadTitleLine;
 import com.rh.note.common.ReadTitleLineImpl;
-import com.rh.note.constants.AdocFilePathEnum;
 import com.rh.note.line.EmptyReadTitleLine;
 import com.rh.note.line.ProxyTitleLine;
 import com.rh.note.line.TitleLine;
@@ -14,6 +13,7 @@ import com.rh.note.path.TitleBeanPath;
 import com.rh.note.syntax.IncludeSyntax;
 import com.rh.note.syntax.TitleSyntax;
 import com.rh.note.util.CurrentAdocProConfigUtil;
+import com.rh.note.util.FilePathUtil;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
@@ -97,7 +97,7 @@ public class AdocTitleFile {
                         .setLineNumber(lineNumber.get())
                         .setChildTitles(childTitles);
                 titleLines.add(proxyTitleLine);
-                String includeToPath = AdocFilePathEnum.includePath2ProPath(filePath, includeSyntax.getIncludePath());
+                String includeToPath = FilePathUtil.includePath2ProFilePath(filePath, includeSyntax.getIncludePath());
                 childFiles.add(new AdocTitleFile(includeToPath, childTitles));
             }
         };
