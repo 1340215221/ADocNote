@@ -1,7 +1,7 @@
 package com.rh.note.ao;
 
 import com.rh.note.common.BaseAO;
-import com.rh.note.common.BaseFileConfig;
+import com.rh.note.util.CurrentAdocProConfigUtil;
 import com.rh.note.vo.GenerateIncludeSyntaxVO;
 import lombok.NonNull;
 import org.apache.commons.collections4.CollectionUtils;
@@ -16,7 +16,11 @@ import java.util.function.Function;
 /**
  * 保存编辑区内容,通过文件路径 参数
  */
-public class SaveTextPaneFileByFilePathAO extends BaseFileConfig implements BaseAO {
+public class SaveTextPaneFileByFilePathAO implements BaseAO {
+    /**
+     * 当前adoc项目绝对路径
+     */
+    private final String proPath = CurrentAdocProConfigUtil.getProPath();
     /**
      * 文件项目路径
      */
@@ -50,11 +54,10 @@ public class SaveTextPaneFileByFilePathAO extends BaseFileConfig implements Base
         if (StringUtils.isBlank(filePath)) {
             return null;
         }
-        String proPath = getProPath();
         if (StringUtils.isBlank(proPath)) {
             return null;
         }
-        return getProPath() + filePath;
+        return proPath + filePath;
     }
 
     public void copy(List<String> filPaths) {

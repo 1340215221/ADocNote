@@ -1,8 +1,8 @@
 package com.rh.note.ao;
 
 import com.rh.note.common.BaseAO;
-import com.rh.note.common.BaseFileConfig;
 import com.rh.note.path.FileBeanPath;
+import com.rh.note.util.CurrentAdocProConfigUtil;
 import com.rh.note.vo.GenerateIncludeSyntaxVO;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * 打开新adoc文件编辑区,通过文件路径 参数
  */
-public class OpenNewFileByFilePathAO extends BaseFileConfig implements BaseAO {
+public class OpenNewFileByFilePathAO implements BaseAO {
     /**
      * 文件项目路径
      */
@@ -34,7 +34,7 @@ public class OpenNewFileByFilePathAO extends BaseFileConfig implements BaseAO {
         if (StringUtils.isBlank(filePath)) {
             return null;
         }
-        String proPath = getProPath();
+        String proPath = CurrentAdocProConfigUtil.getProPath();
         if (StringUtils.isBlank(proPath)) {
             return null;
         }

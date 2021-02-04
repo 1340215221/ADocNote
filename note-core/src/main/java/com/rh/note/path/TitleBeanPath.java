@@ -1,13 +1,11 @@
 package com.rh.note.path;
 
-import com.rh.note.common.BaseFileConfig;
 import com.rh.note.line.TitleLine;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -16,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class TitleBeanPath extends BaseFileConfig {
+public class TitleBeanPath {
     /**
      * 文件相对路径
      */
@@ -69,13 +67,5 @@ public class TitleBeanPath extends BaseFileConfig {
             result += titlePath;
         }
         return result;
-    }
-
-    /**
-     * 获得绝对路径
-     * todo 有没有办法控制下这个类的生成呢, 部分属性必定不为空
-     */
-    public @NotNull String getAbsolutePath() {
-        return getProPath() + filePath;
     }
 }

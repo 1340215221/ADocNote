@@ -4,7 +4,6 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.LineHandler;
 import cn.hutool.core.lang.mutable.MutableInt;
 import com.rh.note.collection.ReadTitleLineList;
-import com.rh.note.common.BaseFileConfig;
 import com.rh.note.common.IReadTitleLine;
 import com.rh.note.common.ReadTitleLineImpl;
 import com.rh.note.constants.AdocFilePathEnum;
@@ -14,11 +13,11 @@ import com.rh.note.line.TitleLine;
 import com.rh.note.path.TitleBeanPath;
 import com.rh.note.syntax.IncludeSyntax;
 import com.rh.note.syntax.TitleSyntax;
+import com.rh.note.util.CurrentAdocProConfigUtil;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -30,7 +29,11 @@ import java.util.List;
  * adoc标题文件
  */
 @RequiredArgsConstructor
-public class AdocTitleFile extends BaseFileConfig {
+public class AdocTitleFile {
+    /**
+     * 当前adoc项目路径
+     */
+    private final String proPath = CurrentAdocProConfigUtil.getProPath();
     /**
      * 文件相对路径
      */
@@ -56,11 +59,10 @@ public class AdocTitleFile extends BaseFileConfig {
     /**
      * 获得文件绝对路径
      */
-    public @NotNull String getAbsolutePath() {
+    public @Nullable String getAbsolutePath() {
         if (StringUtils.isBlank(filePath)) {
             return null;
         }
-        String proPath = getProPath();
         if (StringUtils.isBlank(proPath)) {
             return null;
         }
@@ -71,6 +73,10 @@ public class AdocTitleFile extends BaseFileConfig {
      * 读取标题
      */
     public void readTitle() {
+        String absolutePath = getAbsolutePath();
+        if (StringUtils.isBlank(absolutePath)) {
+            return;
+        }
         MutableInt lineNumber = new MutableInt(0);
         LineHandler handler = (String line) -> {
             TitleSyntax titleSyntax = new TitleSyntax().init(line);
@@ -85,7 +91,7 @@ public class AdocTitleFile extends BaseFileConfig {
                 return;
             }
             IncludeSyntax includeSyntax = new IncludeSyntax().init(line);
-            if (includeSyntax != null && includeSyntax.isAdocFile() && includeSyntax.isInProStructure(filePath, getProPath())) {
+            if (includeSyntax != null && includeSyntax.isAdocFile() && includeSyntax.isInProStructure(filePath, proPath)) {
                 ReadTitleLineList childTitles = new ReadTitleLineList();
                 ProxyTitleLine proxyTitleLine = new ProxyTitleLine()
                         .setLineNumber(lineNumber.get())
@@ -95,7 +101,7 @@ public class AdocTitleFile extends BaseFileConfig {
                 childFiles.add(new AdocTitleFile(includeToPath, childTitles));
             }
         };
-        FileUtil.readUtf8Lines(new File(getAbsolutePath()), handler);
+        FileUtil.readUtf8Lines(new File(absolutePath), handler);
     }
 
     /**

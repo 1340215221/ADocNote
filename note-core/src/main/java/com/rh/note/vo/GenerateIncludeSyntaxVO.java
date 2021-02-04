@@ -1,8 +1,8 @@
 package com.rh.note.vo;
 
-import com.rh.note.common.BaseFileConfig;
 import com.rh.note.constants.AdocFilePathEnum;
 import com.rh.note.syntax.IncludeSyntax;
+import com.rh.note.util.CurrentAdocProConfigUtil;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
  * include语法 结果
  */
 @RequiredArgsConstructor
-public class GenerateIncludeSyntaxVO extends BaseFileConfig {
+public class GenerateIncludeSyntaxVO {
     /**
      * include语法信息
      */
@@ -36,7 +36,7 @@ public class GenerateIncludeSyntaxVO extends BaseFileConfig {
      * 获得绝对路径
      */
     public @Nullable String getTargetAbsolutePath() {
-        String proPath = getProPath();
+        String proPath = CurrentAdocProConfigUtil.getProPath();
         if (StringUtils.isBlank(proPath)) {
             return null;
         }
