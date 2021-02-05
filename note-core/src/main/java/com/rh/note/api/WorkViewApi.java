@@ -226,6 +226,7 @@ public class WorkViewApi {
         if (textPaneView == null) {
             return;
         }
+        // 可以考虑两个方法一起执行, 一行一行刷新语法样式
         textPaneView.clearAllFontStyle(syntaxHighlightConfig);
         textPaneView.refreshSyntaxHighlight(syntaxHighlightConfig);
     }
