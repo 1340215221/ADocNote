@@ -1,11 +1,13 @@
 package com.rh.note.app.config;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import cn.hutool.system.OsInfo;
 import cn.hutool.system.SystemUtil;
-import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -13,7 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.yaml.snakeyaml.Yaml;
 
-import java.awt.*;
+import java.awt.Font;
 import java.io.BufferedReader;
 import java.io.File;
 import java.util.Map;
@@ -42,7 +44,8 @@ public class UserConfigYmlConfig {
         if (MapUtils.isEmpty(configMap)) {
             return new UserAppConfig();
         }
-        UserAppConfig config = BeanUtil.mapToBean(configMap, UserAppConfig.class, true);
+        JSONObject json = JSONUtil.parseObj(configMap, true);
+        UserAppConfig config = JSONUtil.toBean(json, UserAppConfig.class, true);
         return config != null ? config : new UserAppConfig();
     }
 
