@@ -187,6 +187,7 @@ public class WorkAction {
 
     /**
      * 处理字体风格, 在换行后
+     * 不将前一行的语法高亮样式带到下一行
      */
     public void clearFontStyleAfterEnter() {
         workViewApi.clearLinefeedOfFontStyleBeforeCaretLine();
