@@ -1,8 +1,7 @@
 package com.rh.note.style;
 
-import com.rh.note.constants.AdocLineSyntaxEnum;
-import com.rh.note.constants.AdocWordSyntaxEnum;
-import org.apache.commons.collections4.CollectionUtils;
+import com.rh.note.constants.AdocLineSyntaxStyleEnum;
+import com.rh.note.constants.AdocWordSyntaxStyleEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,11 +39,10 @@ public class AdocFontStyle {
             return null;
         }
         // 识别行语法
-        StyleList lineStyles = AdocLineSyntaxEnum.generateStyle(lineContent);
+        StyleList lineStyles = AdocLineSyntaxStyleEnum.generateStyle(lineContent);
         if (lineStyles != null && !lineStyles.isEmpty()) {
             return lineStyles;
         }
-        StyleList wordStyles = AdocWordSyntaxEnum.generateStyle(lineContent);
-        return wordStyles;
+        return AdocWordSyntaxStyleEnum.generateStyle(lineContent);
     }
 }

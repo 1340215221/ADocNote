@@ -1,6 +1,5 @@
 package com.rh.note.style;
 
-import com.rh.note.constants.RegexConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -12,18 +11,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * include语句样式
+ * 标签 行样式
  */
-public class IncludeLineStyle {
+public class LabelLineStyle {
     /**
-     * include::
-     * []
+     * [source,java] 中 [,]
      */
     private static final Color color = Color.decode("#CC7832");
     /**
      * 正则
      */
-    private static final String regex = "^\\s*(include::)(?:" + RegexConstants.file_path_regex + ")(\\[)(?:lines=[0-9]+(?:..[0-9]+)?)?(\\])$";
+    private static final String regex = "^(\\[)[^\\[\\],]*(,?)[^\\[\\],]*(\\])\\s*$";
     /**
      * 匹配器
      */
@@ -33,7 +31,7 @@ public class IncludeLineStyle {
      */
     private boolean isFind;
 
-    public IncludeLineStyle(String lineContent) {
+    public LabelLineStyle(String lineContent) {
         if (StringUtils.isNotBlank(lineContent)) {
             matcher = Pattern.compile(regex).matcher(lineContent);
             isFind = matcher.find();
@@ -42,62 +40,63 @@ public class IncludeLineStyle {
 
     public @NotNull StyleList getStyle() {
         StyleList list = new StyleList();
-        list.add(getHeadStyle());
-        list.add(getRangePre());
-        list.add(getRangeSub());
+        list.add(getBracketsStylePre());
+        list.add(getCommaStyle());
+        list.add(getBracketsStyleSub());
         return list;
     }
 
     /**
-     * include::
+     * [source,java]
+     * [
      */
-    private @Nullable StyleItem getHeadStyle() {
+    private @Nullable StyleItem getBracketsStylePre() {
         if (matcher == null || !isFind) {
             return null;
         }
-        String head = matcher.group(1);
-        if (StringUtils.isBlank(head)) {
+        String brackets = matcher.group(1);
+        if (StringUtils.isBlank(brackets)) {
             return null;
         }
         int startOffset = matcher.start(1);
         SimpleAttributeSet style = new SimpleAttributeSet();
         StyleConstants.setForeground(style, color);
-        return StyleItem.getInstance(style, startOffset, head.length());
+        return StyleItem.getInstance(style, startOffset, brackets.length());
     }
 
     /**
-     * [lines=1..2]
-     * [
+     * `code`
+     * code
      */
-    private @Nullable StyleItem getRangePre() {
+    private @Nullable StyleItem getCommaStyle() {
         if (matcher == null || !isFind) {
             return null;
         }
-        String rangePre = matcher.group(2);
-        if (StringUtils.isBlank(rangePre)) {
+        String comma = matcher.group(2);
+        if (StringUtils.isBlank(comma)) {
             return null;
         }
         int startOffset = matcher.start(2);
         SimpleAttributeSet style = new SimpleAttributeSet();
         StyleConstants.setForeground(style, color);
-        return StyleItem.getInstance(style, startOffset, rangePre.length());
+        return StyleItem.getInstance(style, startOffset, comma.length());
     }
 
     /**
-     * [lines=1..2]
-     * ]
+     * `code`
+     *      `
      */
-    private @Nullable StyleItem getRangeSub() {
+    private @Nullable StyleItem getBracketsStyleSub() {
         if (matcher == null || !isFind) {
             return null;
         }
-        String rangeSub = matcher.group(3);
-        if (StringUtils.isBlank(rangeSub)) {
+        String brackets = matcher.group(3);
+        if (StringUtils.isBlank(brackets)) {
             return null;
         }
         int startOffset = matcher.start(3);
         SimpleAttributeSet style = new SimpleAttributeSet();
         StyleConstants.setForeground(style, color);
-        return StyleItem.getInstance(style, startOffset, rangeSub.length());
+        return StyleItem.getInstance(style, startOffset, brackets.length());
     }
 }

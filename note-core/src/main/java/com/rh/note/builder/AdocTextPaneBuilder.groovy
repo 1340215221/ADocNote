@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
 import javax.swing.JTabbedPane
+import java.awt.Color
 import java.awt.Font
 
 /**
@@ -53,6 +54,8 @@ class AdocTextPaneBuilder implements BaseBuilder {
             swingBuilder.textPane(id: textPaneId(),
                     font: textFont,
                     lineSpacing: fontConfig.getLineSpacing(),
+                    background: Color.decode('#2B2B2B'),
+                    foreground: Color.decode('#A9B7C6'),
                     keyPressed: {
 //                        event.rename_include(it)
 //                        event.sink_title(it)

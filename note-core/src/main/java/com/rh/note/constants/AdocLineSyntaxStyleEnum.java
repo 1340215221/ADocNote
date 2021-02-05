@@ -1,8 +1,11 @@
 package com.rh.note.constants;
 
+import com.rh.note.style.BlockTitleLineStyle;
 import com.rh.note.style.IncludeLineStyle;
+import com.rh.note.style.LabelLineStyle;
 import com.rh.note.style.StyleList;
 import com.rh.note.style.TitleLineStyle;
+import com.rh.note.style.VariableLineStyle;
 import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
@@ -13,7 +16,7 @@ import java.util.Objects;
 /**
  * adoc行语法 枚举
  */
-public enum AdocLineSyntaxEnum {
+public enum AdocLineSyntaxStyleEnum {
     /**
      * include
      */
@@ -35,8 +38,35 @@ public enum AdocLineSyntaxEnum {
         }
     },
     /**
+     * 标签
+     */
+    LABEL {
+        @Override
+        public @Nullable StyleList match(String lineContent) {
+            StyleList style = new LabelLineStyle(lineContent).getStyle();
+            return style.isEmpty() ? null : style;
+        }
+    },
+    /**
+     * 变量
+     */
+    VARIABLE {
+        @Override
+        public @Nullable StyleList match(String lineContent) {
+            StyleList style = new VariableLineStyle(lineContent).getStyle();
+            return style.isEmpty() ? null : style;
+        }
+    },
+    /**
      * 块标题
      */
+    BLOCK_TITLE {
+        @Override
+        public @Nullable StyleList match(@NonNull String lineContent) {
+            StyleList style = new BlockTitleLineStyle(lineContent).getStyle();
+            return style.isEmpty() ? null : style;
+        }
+    }
     /**
      * 代码块
      */

@@ -1,6 +1,5 @@
 package com.rh.note.style;
 
-import com.rh.note.constants.RegexConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -12,92 +11,89 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * include语句样式
+ * adoc斜体 单词样式
  */
-public class IncludeLineStyle {
+public class ItalicWordStyle {
     /**
-     * include::
-     * []
+     * _word_ 中 _
      */
     private static final Color color = Color.decode("#CC7832");
     /**
      * 正则
      */
-    private static final String regex = "^\\s*(include::)(?:" + RegexConstants.file_path_regex + ")(\\[)(?:lines=[0-9]+(?:..[0-9]+)?)?(\\])$";
+    private static final String regex = "[^_]*(_)([^_]+)(_)[^_]*";
     /**
      * 匹配器
      */
     private Matcher matcher;
-    /**
-     * 是否查找到
-     */
-    private boolean isFind;
 
-    public IncludeLineStyle(String lineContent) {
+    public ItalicWordStyle(String lineContent) {
         if (StringUtils.isNotBlank(lineContent)) {
             matcher = Pattern.compile(regex).matcher(lineContent);
-            isFind = matcher.find();
         }
     }
 
     public @NotNull StyleList getStyle() {
         StyleList list = new StyleList();
-        list.add(getHeadStyle());
-        list.add(getRangePre());
-        list.add(getRangeSub());
+        while (matcher.find()) {
+            list.add(getMarkStylePre());
+            list.add(getWordStyle());
+            list.add(getMarkStyleSub());
+        }
         return list;
     }
 
     /**
-     * include::
+     * _word_
+     * _
      */
-    private @Nullable StyleItem getHeadStyle() {
-        if (matcher == null || !isFind) {
+    private @Nullable StyleItem getMarkStylePre() {
+        if (matcher == null) {
             return null;
         }
-        String head = matcher.group(1);
-        if (StringUtils.isBlank(head)) {
+        String mark = matcher.group(1);
+        if (StringUtils.isBlank(mark)) {
             return null;
         }
         int startOffset = matcher.start(1);
         SimpleAttributeSet style = new SimpleAttributeSet();
         StyleConstants.setForeground(style, color);
-        return StyleItem.getInstance(style, startOffset, head.length());
+        return StyleItem.getInstance(style, startOffset, mark.length());
     }
 
     /**
-     * [lines=1..2]
-     * [
+     * _word_
+     * word
      */
-    private @Nullable StyleItem getRangePre() {
-        if (matcher == null || !isFind) {
+    private @Nullable StyleItem getWordStyle() {
+        if (matcher == null) {
             return null;
         }
-        String rangePre = matcher.group(2);
-        if (StringUtils.isBlank(rangePre)) {
+        String head = matcher.group(2);
+        if (StringUtils.isBlank(head)) {
             return null;
         }
         int startOffset = matcher.start(2);
         SimpleAttributeSet style = new SimpleAttributeSet();
-        StyleConstants.setForeground(style, color);
-        return StyleItem.getInstance(style, startOffset, rangePre.length());
+        StyleConstants.setItalic(style, true);
+        return StyleItem.getInstance(style, startOffset, head.length());
     }
 
     /**
-     * [lines=1..2]
-     * ]
+     * _word_
+     *      _
      */
-    private @Nullable StyleItem getRangeSub() {
-        if (matcher == null || !isFind) {
+    private @Nullable StyleItem getMarkStyleSub() {
+        if (matcher == null) {
             return null;
         }
-        String rangeSub = matcher.group(3);
-        if (StringUtils.isBlank(rangeSub)) {
+        String mark = matcher.group(3);
+        if (StringUtils.isBlank(mark)) {
             return null;
         }
         int startOffset = matcher.start(3);
         SimpleAttributeSet style = new SimpleAttributeSet();
         StyleConstants.setForeground(style, color);
-        return StyleItem.getInstance(style, startOffset, rangeSub.length());
+        return StyleItem.getInstance(style, startOffset, mark.length());
     }
 }
