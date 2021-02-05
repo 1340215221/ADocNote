@@ -3,7 +3,7 @@ package com.rh.note.config;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
 
-import java.awt.AWTEvent;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
@@ -57,5 +57,12 @@ public class KeymapConfig {
      */
     public boolean ctrlLeftClick(@NonNull MouseEvent event) {
         return event.getModifiers() == 18;
+    }
+
+    /**
+     * 回车
+     */
+    public boolean isEnter(@NonNull KeyEvent event) {
+        return event.getModifiers() == 0 && event.getKeyCode() == 0 && '\n' == event.getKeyChar();
     }
 }

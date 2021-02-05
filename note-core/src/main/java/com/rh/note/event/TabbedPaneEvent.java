@@ -12,6 +12,13 @@ public class TabbedPaneEvent {
     private WorkAction workAction;
 
     /**
+     * 刷新被选择编辑区语法高亮
+     */
+    public void refresh_syntax_highlight() {
+        workAction.refreshSyntaxHighlightOfTextPaneSelected();
+    }
+
+    /**
      * 加载标题导航, 通过被选择的标签
      */
     public void load_title_navigate_on_selected_tab() {

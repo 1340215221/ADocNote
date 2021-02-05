@@ -46,6 +46,7 @@ public class SwingGlobalKeymapConfig {
         AWTEventListener ctrlSListener = e -> {
             if (KeymapConfig.ctrlS(e)) {
                 event.save_all_edit_text();
+                event.refresh_syntax_highlight();
             }
         };
         toolkit.addAWTEventListener(ctrlSListener, AWTEvent.KEY_EVENT_MASK);

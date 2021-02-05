@@ -2,12 +2,13 @@ package com.rh.note.constants;
 
 import com.rh.note.style.IncludeLineStyle;
 import com.rh.note.style.StyleList;
-import com.rh.note.syntax.IncludeSyntax;
+import com.rh.note.style.TitleLineStyle;
 import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * adoc行语法 枚举
@@ -19,18 +20,20 @@ public enum AdocLineSyntaxEnum {
     INCLUDE {
         @Override
         public @Nullable StyleList match(@NonNull String lineContent) {
-            IncludeSyntax syntax = new IncludeSyntax().init(lineContent);
-            if (syntax == null) {
-                return null;
-            }
-            IncludeLineStyle style = new IncludeLineStyle(syntax);
-            return style.getStyle();
+            StyleList style = new IncludeLineStyle(lineContent).getStyle();
+            return style.isEmpty() ? null : style;
         }
     },
     /**
      * 标题
      */
-    TITLE,
+    TITLE {
+        @Override
+        public @Nullable StyleList match(@NonNull String lineContent) {
+            StyleList style = new TitleLineStyle(lineContent).getStyle();
+            return style.isEmpty() ? null : style;
+        }
+    },
     /**
      * 块标题
      */
@@ -48,6 +51,7 @@ public enum AdocLineSyntaxEnum {
         }
         return Arrays.stream(values())
                 .map(e -> e.match(lineContent))
+                .filter(Objects::nonNull)
                 .findFirst()
                 .orElse(null);
     }

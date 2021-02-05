@@ -59,6 +59,9 @@ class AdocTextPaneBuilder implements BaseBuilder {
 //                        event.inline_title(it)
 //                        event.delete_include(it)
                     },
+                    keyTyped: {
+                        event.enter_listener(it)
+                    },
                     keyReleased: {
 //                        event.open_input_prompt(it)
                     },
@@ -107,7 +110,7 @@ class AdocTextPaneBuilder implements BaseBuilder {
     private void addKeymap() {
         def textPane = swingBuilder."${textPaneId()}" as AdocTextPane
         def keymap = new KeymapAction("textPane", textPane.keymap)
-                .addEnterAction { event.enter_operation() }
+                .addEnterAction { event.enter_input() }
                 .addUpAction { event.select_previous_on_prompt(it) }
                 .addDownAction { event.select_next_on_prompt(it) }
         textPane.setKeymap(keymap)

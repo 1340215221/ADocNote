@@ -184,4 +184,11 @@ public class WorkAction {
         }
         workViewApi.updateRootNode(rooTitle);
     }
+
+    /**
+     * 处理字体风格, 在换行后
+     */
+    public void clearFontStyleAfterEnter() {
+        workViewApi.clearFontStyleOnCaretLine();
+    }
 }

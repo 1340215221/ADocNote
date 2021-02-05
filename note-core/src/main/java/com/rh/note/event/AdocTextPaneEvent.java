@@ -8,6 +8,7 @@ import com.rh.note.constants.FrameCategoryEnum;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 @ComponentBean(FrameCategoryEnum.WORK)
@@ -17,13 +18,6 @@ public class AdocTextPaneEvent {
     private OperationAction operationAction;
     @Autowired
     private WorkAction workAction;
-
-    /**
-     * 刷新被选择编辑区语法高亮
-     */
-    public void refresh_syntax_highlight() {
-        workAction.refreshSyntaxHighlightOfTextPaneSelected();
-    }
 
     /**
      * ctrl左键点击
@@ -36,11 +30,20 @@ public class AdocTextPaneEvent {
     }
 
     /**
-     * 回车操作
+     * 回车输入 替换
      */
-    public void enter_operation() {
+    public void enter_input() {
         workAction.handleSyntaxSugarByCaretLineOfSelectedTextPane();
         workAction.loadRootNode();
+    }
+
+    /**
+     * 回车 监听
+     */
+    public void enter_listener(KeyEvent event) {
+        if (operationAction.isEnter(event)) {
+            workAction.clearFontStyleAfterEnter();
+        }
     }
 
     /**

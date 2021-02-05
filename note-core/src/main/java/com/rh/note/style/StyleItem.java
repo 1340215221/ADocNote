@@ -3,6 +3,7 @@ package com.rh.note.style;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.text.SimpleAttributeSet;
@@ -16,24 +17,27 @@ public class StyleItem {
     /**
      * 样式
      */
+    @NonNull
     private SimpleAttributeSet style;
     /**
-     * 起始索引
+     * 当前行偏移量
      */
-    private int startOffset;
+    @NonNull
+    private int offset;
     /**
-     * 结束索引
+     * 长度
      */
-    private int endOffset;
+    @NonNull
+    private int length;
 
-    public static @Nullable StyleItem getInstance(SimpleAttributeSet style, int startOffset, int endOffset) {
-        if (style == null || startOffset < 0 || endOffset <= startOffset) {
+    public static @Nullable StyleItem getInstance(SimpleAttributeSet style, int offset, int length) {
+        if (style == null || offset < 0 || length < 1) {
             return null;
         }
         StyleItem item = new StyleItem();
         item.style = style;
-        item.startOffset = startOffset;
-        item.endOffset = endOffset;
+        item.offset = offset;
+        item.length = length;
         return item;
     }
 }

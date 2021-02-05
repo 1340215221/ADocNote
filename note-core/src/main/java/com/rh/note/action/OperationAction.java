@@ -7,6 +7,7 @@ import com.rh.note.config.KeymapConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 @Component
@@ -33,5 +34,12 @@ public class OperationAction {
      */
     public boolean isDoubleClick(MouseEvent mouseEvent) {
         return keymap.doubleClick(mouseEvent);
+    }
+
+    /**
+     * enter
+     */
+    public boolean isEnter(KeyEvent event) {
+        return keymap.isEnter(event);
     }
 }
