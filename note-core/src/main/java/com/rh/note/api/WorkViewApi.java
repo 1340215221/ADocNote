@@ -271,13 +271,13 @@ public class WorkViewApi {
     /**
      * 光标行字体恢复为默认风格
      */
-    public void clearFontStyleOnCaretLine() {
+    public void clearLinefeedOfFontStyleBeforeCaretLine() {
         TabbedPaneView tabbedPaneView = new TabbedPaneView().init();
         String filePath = tabbedPaneView.getFilePathOfTextPaneSelected();
         AdocTextPaneView textPaneView = new AdocTextPaneView().init(filePath);
         if (textPaneView == null) {
             return;
         }
-        textPaneView.clearFontStyleBeforeCaretLine(syntaxHighlightConfig);
+        textPaneView.clearLinefeedOfFontStyleBeforeCaretLine(syntaxHighlightConfig);
     }
 }

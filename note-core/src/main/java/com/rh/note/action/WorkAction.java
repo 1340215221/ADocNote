@@ -189,6 +189,6 @@ public class WorkAction {
      * 处理字体风格, 在换行后
      */
     public void clearFontStyleAfterEnter() {
-        workViewApi.clearFontStyleOnCaretLine();
+        workViewApi.clearLinefeedOfFontStyleBeforeCaretLine();
     }
 }

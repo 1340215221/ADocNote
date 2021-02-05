@@ -192,7 +192,7 @@ public class AdocTextPaneView extends BaseView<AdocTextPaneBuilder, AdocTextPane
      * 光标行前一行的换行符恢复为默认风格
      * for 不将前一行的语法高亮样式带到下一行
      */
-    public void clearFontStyleBeforeCaretLine(SyntaxHighlightConfig syntaxHighlightConfig) {
+    public void clearLinefeedOfFontStyleBeforeCaretLine(SyntaxHighlightConfig syntaxHighlightConfig) {
         // 获取光标前一行元素
         int dot = textPane().getCaret().getDot();
         if (dot < 0) {
