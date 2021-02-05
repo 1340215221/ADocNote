@@ -4,17 +4,22 @@ import cn.hutool.core.io.IoUtil;
 import com.rh.note.builder.AdocTextPaneBuilder;
 import com.rh.note.common.BaseView;
 import com.rh.note.component.AdocTextPane;
+import com.rh.note.config.SyntaxHighlightConfig;
 import com.rh.note.exception.AdocTextPaneInitContentException;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.exception.TextPaneWriterToFileException;
 import com.rh.note.path.FileBeanPath;
+import com.rh.note.style.AdocFontStyle;
+import com.rh.note.style.StyleList;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.text.Element;
+import javax.swing.text.StyledDocument;
 import java.io.Reader;
 import java.io.Writer;
 
@@ -150,5 +155,36 @@ public class AdocTextPaneView extends BaseView<AdocTextPaneBuilder, AdocTextPane
             return;
         }
         textPane().setText(initContent);
+    }
+
+    /**
+     * 刷新语法高亮
+     */
+    public void refreshSyntaxHighlight(SyntaxHighlightConfig syntaxHighlightConfig) {
+        if (syntaxHighlightConfig == null) {
+            return;
+        }
+        AdocFontStyle adocFontStyle = syntaxHighlightConfig.getAdocFontStyle();
+        if (adocFontStyle == null) {
+            return;
+        }
+        StyledDocument styledDocument = textPane().getStyledDocument();
+        Element rootElement = textPane().getDocument().getDefaultRootElement();
+        for (int i = 0; i < rootElement.getElementCount(); i++) {
+            Element element = rootElement.getElement(i);
+            String lineContent;
+            try {
+                lineContent = textPane().getText(element.getStartOffset(), element.getEndOffset());
+            } catch (Exception e) {
+                throw new ApplicationException(ErrorCodeEnum.FAILED_TO_GET_THE_CONTENT_OF_THE_EDIT_AREA);
+            }
+            StyleList list = adocFontStyle.generateStyle(lineContent);
+            if (list == null || list.isEmpty()) {
+                continue;
+            }
+            list.forEach(item ->
+                    styledDocument.setCharacterAttributes(item.getStartOffset(), item.getEndOffset(), item.getStyle(), false)
+            );
+        }
     }
 }

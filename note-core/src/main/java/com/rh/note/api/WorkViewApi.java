@@ -2,6 +2,7 @@ package com.rh.note.api;
 
 import com.rh.note.ao.InitAdocTextPaneContentAO;
 import com.rh.note.ao.TextPaneFileWritersAO;
+import com.rh.note.config.SyntaxHighlightConfig;
 import com.rh.note.exception.UnknownBusinessSituationException;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.FileBeanPath;
@@ -17,6 +18,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.Reader;
@@ -29,6 +31,9 @@ import java.util.List;
  */
 @Component
 public class WorkViewApi {
+
+    @Autowired
+    private SyntaxHighlightConfig syntaxHighlightConfig;
 
     /**
      * 更新根标题
@@ -209,6 +214,19 @@ public class WorkViewApi {
         }
         String lineContent = textPaneView.getCaretLineContent();
         return new TitleSyntaxSugar().init(lineContent) != null || new AdocIncludeSyntaxSugar().init(lineContent) != null;
+    }
+
+    /**
+     * 刷新被选择编辑区语法高亮
+     */
+    public void refreshSyntaxHighlightOfTextPaneSelected() {
+        TabbedPaneView tabbedPaneView = new TabbedPaneView().init();
+        String filePath = tabbedPaneView.getFilePathOfTextPaneSelected();
+        AdocTextPaneView textPaneView = new AdocTextPaneView().init(filePath);
+        if (textPaneView == null) {
+            return;
+        }
+        textPaneView.refreshSyntaxHighlight(syntaxHighlightConfig);
     }
 
     /**

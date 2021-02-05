@@ -19,6 +19,13 @@ public class AdocTextPaneEvent {
     private WorkAction workAction;
 
     /**
+     * 刷新被选择编辑区语法高亮
+     */
+    public void refresh_syntax_highlight() {
+        workAction.refreshSyntaxHighlightOfTextPaneSelected();
+    }
+
+    /**
      * ctrl左键点击
      */
     public void enter_include_file(MouseEvent event) {

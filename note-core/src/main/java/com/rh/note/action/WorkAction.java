@@ -158,6 +158,13 @@ public class WorkAction {
     }
 
     /**
+     * 刷新被选择编辑区语法高亮
+     */
+    public void refreshSyntaxHighlightOfTextPaneSelected() {
+        workViewApi.refreshSyntaxHighlightOfTextPaneSelected();
+    }
+
+    /**
      * 关闭窗口
      */
     public void closeContext() {

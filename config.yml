@@ -1,5 +1,5 @@
 # 项目地址配置
-pro-path:
+pro:
   list:
     - proName: 测试笔记
       proPath: /download/adoc-temp
