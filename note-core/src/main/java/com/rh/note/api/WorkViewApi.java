@@ -226,6 +226,7 @@ public class WorkViewApi {
         if (textPaneView == null) {
             return;
         }
+        textPaneView.clearAllFontStyle(syntaxHighlightConfig);
         textPaneView.refreshSyntaxHighlight(syntaxHighlightConfig);
     }
 

@@ -5,6 +5,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 import javax.swing.*
+import javax.swing.text.Element
 import javax.swing.text.SimpleAttributeSet
 import javax.swing.text.StyleConstants
 import java.awt.*
@@ -23,7 +24,7 @@ class TestDemo {
             ) {
                 builder.textPane(id: 'textPane',
                         font: new Font('Consolas', 0, 17),
-                        text: '1\n'
+                        text: '1\nadsfasf'
                 )
             }
         }
@@ -35,12 +36,8 @@ class TestDemo {
 
         builder.frame.visible = true
 
-        builder.doOutside {
-            Thread.sleep(3000)
-            def clear = new SimpleAttributeSet()
-            StyleConstants.setFontSize(clear, 24)
-            StyleConstants.setFontFamily(clear, 'Consolas')
-            textPane.getStyledDocument().setCharacterAttributes(0, 1, clear, true)
-        }
+        def rootElement = textPane.getDocument().getDefaultRootElement()
+        println rootElement.getStartOffset()
+        println rootElement.getEndOffset()
     }
 }

@@ -17,9 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.text.Element;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyledDocument;
+import javax.swing.text.*;
 import java.io.Reader;
 import java.io.Writer;
 
@@ -224,5 +222,18 @@ public class AdocTextPaneView extends BaseView<AdocTextPaneBuilder, AdocTextPane
         StyledDocument document = textPane().getStyledDocument();
         SimpleAttributeSet defaultStyle = syntaxHighlightConfig.getDefaultStyle();
         document.setCharacterAttributes(element.getEndOffset() - 1, element.getEndOffset(), defaultStyle, true);
+    }
+
+    /**
+     * 清除所有字体样式
+     */
+    public void clearAllFontStyle(SyntaxHighlightConfig syntaxHighlightConfig) {
+        if (syntaxHighlightConfig == null) {
+            return;
+        }
+        SimpleAttributeSet defaultStyle = syntaxHighlightConfig.getDefaultStyle();
+        StyledDocument document = textPane().getStyledDocument();
+        Element rootElement = document.getDefaultRootElement();
+        document.setCharacterAttributes(rootElement.getStartOffset(), rootElement.getEndOffset() - rootElement.getStartOffset(), defaultStyle, true);
     }
 }
