@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
-import java.awt.Color;
+import java.awt.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,7 +19,7 @@ public class CodeWordStyle {
      */
     private static final Color markColor = Color.decode("#CC7832");
     /**
-     *
+     * code 背景色
      */
     private static final Color codeColor = Color.decode("#3C3F41");
     /**

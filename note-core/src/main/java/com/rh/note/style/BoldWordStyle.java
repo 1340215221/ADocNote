@@ -11,23 +11,23 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * adoc斜体 单词样式
+ * 粗体 单词样式
  */
-public class ItalicWordStyle {
+public class BoldWordStyle {
     /**
-     * _word_ 中 _
+     * *word* 中 *
      */
     private static final Color color = Color.decode("#CC7832");
     /**
      * 正则
      */
-    private static final String regex = "[^_]*(_)([^_]+)(_)[^_]*";
+    private static final String regex = "[^*]*(\\*)([^*]+)(\\*)[^*]*";
     /**
      * 匹配器
      */
     private Matcher matcher;
 
-    public ItalicWordStyle(String lineContent) {
+    public BoldWordStyle(String lineContent) {
         if (StringUtils.isNotBlank(lineContent)) {
             matcher = Pattern.compile(regex).matcher(lineContent);
         }
@@ -44,8 +44,8 @@ public class ItalicWordStyle {
     }
 
     /**
-     * _word_
-     * _
+     * *word*
+     * *
      */
     private @Nullable StyleItem getMarkStylePre() {
         if (matcher == null) {
@@ -62,7 +62,7 @@ public class ItalicWordStyle {
     }
 
     /**
-     * _word_
+     * *word*
      * word
      */
     private @Nullable StyleItem getWordStyle() {
@@ -75,13 +75,13 @@ public class ItalicWordStyle {
         }
         int startOffset = matcher.start(2);
         SimpleAttributeSet style = new SimpleAttributeSet();
-        StyleConstants.setItalic(style, true);
+        StyleConstants.setBold(style, true);
         return StyleItem.getInstance(style, startOffset, head.length());
     }
 
     /**
-     * _word_
-     *      _
+     * *word*
+     *      *
      */
     private @Nullable StyleItem getMarkStyleSub() {
         if (matcher == null) {

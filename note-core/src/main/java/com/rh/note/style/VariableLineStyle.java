@@ -17,7 +17,11 @@ public class VariableLineStyle {
     /**
      * :java-path: 中 :
      */
-    private static final Color color = Color.decode("#CC7832");
+    private static final Color varColor = Color.decode("#CC7832");
+    /**
+     * :java-path: maven/src/main/java 中 maven/src/main/java
+     */
+    private static final Color valueColor = Color.decode("#6A8759");
     /**
      * 变量正则
      */
@@ -29,7 +33,7 @@ public class VariableLineStyle {
     /**
      * 正则
      */
-    private static final String regex = "^(:)(?:" + varRegex + ")(:)\\s(?:" + valueRegex + ")\\s*$";
+    private static final String regex = "^(:)(?:" + varRegex + ")(:)\\s(" + valueRegex + ")\\s*$";
     /**
      * 匹配器
      */
@@ -48,42 +52,60 @@ public class VariableLineStyle {
 
     public @NotNull StyleList getStyle() {
         StyleList list = new StyleList();
-        list.add(getMarkStylePre());
-        list.add(getMarkStyleSub());
+        list.add(getVarStylePre());
+        list.add(getVarStyleSub());
+        list.add(getValueStyle());
         return list;
     }
 
     /**
-     * include::
+     * :java-path: 中 :
      */
-    private @Nullable StyleItem getMarkStylePre() {
+    private @Nullable StyleItem getVarStylePre() {
         if (matcher == null || !isFind) {
             return null;
         }
-        String mark = matcher.group(1);
-        if (StringUtils.isBlank(mark)) {
+        String var = matcher.group(1);
+        if (StringUtils.isBlank(var)) {
             return null;
         }
         int startOffset = matcher.start(1);
         SimpleAttributeSet style = new SimpleAttributeSet();
-        StyleConstants.setForeground(style, color);
-        return StyleItem.getInstance(style, startOffset, mark.length());
+        StyleConstants.setForeground(style, varColor);
+        return StyleItem.getInstance(style, startOffset, var.length());
     }
 
     /**
-     * include::
+     * :java-path: 中 :
      */
-    private @Nullable StyleItem getMarkStyleSub() {
+    private @Nullable StyleItem getVarStyleSub() {
         if (matcher == null || !isFind) {
             return null;
         }
-        String mark = matcher.group(2);
-        if (StringUtils.isBlank(mark)) {
+        String var = matcher.group(2);
+        if (StringUtils.isBlank(var)) {
             return null;
         }
         int startOffset = matcher.start(2);
         SimpleAttributeSet style = new SimpleAttributeSet();
-        StyleConstants.setForeground(style, color);
-        return StyleItem.getInstance(style, startOffset, mark.length());
+        StyleConstants.setForeground(style, varColor);
+        return StyleItem.getInstance(style, startOffset, var.length());
+    }
+
+    /**
+     * :java-path: maven/src/main/java 中 maven/src/main/java
+     */
+    private @Nullable StyleItem getValueStyle() {
+        if (matcher == null || !isFind) {
+            return null;
+        }
+        String value = matcher.group(3);
+        if (StringUtils.isBlank(value)) {
+            return null;
+        }
+        int startOffset = matcher.start(3);
+        SimpleAttributeSet style = new SimpleAttributeSet();
+        StyleConstants.setForeground(style, valueColor);
+        return StyleItem.getInstance(style, startOffset, value.length());
     }
 }

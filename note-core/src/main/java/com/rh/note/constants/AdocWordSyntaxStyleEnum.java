@@ -1,9 +1,6 @@
 package com.rh.note.constants;
 
-import com.rh.note.style.CodeWordStyle;
-import com.rh.note.style.ItalicWordStyle;
-import com.rh.note.style.ListWordStyle;
-import com.rh.note.style.StyleList;
+import com.rh.note.style.*;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -16,6 +13,13 @@ public enum AdocWordSyntaxStyleEnum {
     /**
      * 加粗
      */
+    BOLD {
+        @Override
+        public @Nullable StyleList match(String lineContent) {
+            StyleList style = new BoldWordStyle(lineContent).getStyle();
+            return style.isEmpty() ? null : style;
+        }
+    },
     /**
      * 斜体
      */
