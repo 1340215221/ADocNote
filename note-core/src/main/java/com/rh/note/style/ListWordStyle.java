@@ -26,7 +26,7 @@ public class ListWordStyle {
     /**
      * 正则
      */
-    private static final String regex = "^\\s*(" + markRegex + ")\\s+[\\S]+\\s*$";
+    private static final String regex = "^\\s*(" + markRegex + ")\\s+(?:[\\S]+|[\\S].+[\\S])\\s*$";
     /**
      * 匹配器
      */
