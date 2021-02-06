@@ -60,6 +60,16 @@ public enum AdocWordSyntaxStyleEnum {
             return style.isEmpty() ? null : style;
         }
     },
+    /**
+     * 顿号引用
+     */
+    PAUSE {
+        @Override
+        public @Nullable StyleList match(String lineContent) {
+            StyleList style = new PauseWordStyle(lineContent).getStyle();
+            return style.isEmpty() ? null : style;
+        }
+    },
     ;
 
     public static StyleList generateStyle(String lineContent) {
