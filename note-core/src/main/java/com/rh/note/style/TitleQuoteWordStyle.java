@@ -1,6 +1,5 @@
 package com.rh.note.style;
 
-import com.rh.note.constants.RegexConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -12,13 +11,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * adoc斜体 单词样式
+ * adoc标题引用 单词样式
  */
-public class ItalicWordStyle {
+public class TitleQuoteWordStyle {
     /**
-     * _word_ 中 _
+     * <<title>> 中 <<
      */
-    private static final Color color = Color.decode("#CC7832");
+    private static final Color color = Color.decode("#287BDE");
     /**
      * 边界字符正则
      */
@@ -36,7 +35,7 @@ public class ItalicWordStyle {
      */
     private Matcher matcher;
 
-    public ItalicWordStyle(String lineContent) {
+    public TitleQuoteWordStyle(String lineContent) {
         if (StringUtils.isNotBlank(lineContent)) {
             matcher = Pattern.compile(regex).matcher(lineContent);
         }

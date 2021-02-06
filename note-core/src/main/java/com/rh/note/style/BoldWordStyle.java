@@ -25,11 +25,11 @@ public class BoldWordStyle {
     /**
      * 代码内容正则
      */
-    private static final String contentRegex = ".*[^*].*";
+    private static final String contentRegex = ".*[^*].*?";
     /**
      * 正则
      */
-    private static final String regex = "(?:^|" + boundaryRegex + ")(\\*)(" + contentRegex + ")(\\*)(?=$|" + boundaryRegex + ")";
+    private static final String regex = "(?:^|\\s)" + boundaryRegex + "(\\*)(" + contentRegex + ")(\\*)" + boundaryRegex + "(?=$|\\s)";
     /**
      * 匹配器
      */

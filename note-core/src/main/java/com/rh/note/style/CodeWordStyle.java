@@ -25,15 +25,15 @@ public class CodeWordStyle {
     /**
      * 边界字符正则
      */
-    private static final String boundaryRegex = "[^0-9a-zA-Z\\u4e00-\\u9fa5`]";
+    private static final String boundaryRegex = "[^0-9a-zA-Z\\u4e00-\\u9fa5`]*";
     /**
      * 代码内容正则
      */
-    private static final String codeRegex = ".*[^`].*";
+    private static final String codeRegex = ".*[^`].*?";
     /**
      * 正则
      */
-    private static final String regex = "(?:^|" + boundaryRegex + ")(`)(" + codeRegex + ")(`)(?=$|" + boundaryRegex + ")";
+    private static final String regex = "(?:^|\\s)" + boundaryRegex + "(`)(" + codeRegex + ")(`)" + boundaryRegex + "(?=$|\\s)";
     /**
      * 匹配器
      */
