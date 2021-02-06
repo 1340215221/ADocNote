@@ -42,4 +42,11 @@ public class OperationAction {
     public boolean isEnter(KeyEvent event) {
         return keymap.isEnter(event);
     }
+
+    /**
+     * 是重命名快捷键
+     */
+    public boolean isShiftF6(KeyEvent event) {
+        return keymap.isShiftF6(event);
+    }
 }

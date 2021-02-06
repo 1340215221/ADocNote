@@ -192,4 +192,37 @@ public class WorkAction {
     public void clearFontStyleAfterEnter() {
         workViewApi.clearLinefeedOfFontStyleBeforeCaretLine();
     }
+
+    /**
+     * 重命名include指向标题名
+     */
+    public void renameInclude() {
+        // 获得被选择文件 vo--filePath
+        String filePath = workViewApi.getFilePathOfTextPaneSelected();
+        // 获得旧标题名 ao--filePath
+        // 请求新标题名 ao--targetFileName
+        RequestNewNameOfIncludeOnCaretLineVO requestNewNameVO = workViewApi.requestNewNameOfIncludeOnCaretLine(filePath);
+        if (requestNewNameVO == null) {
+            return;
+        }
+        // 保存对应文件内容 ao--filePath
+        SaveTextPaneFileByFilePathAO saveTextPaneFileByFilePathAO = requestNewNameVO.copyToSaveTextPaneFile();
+        TextPaneFileWritersAO textPaneFileWritersAO = fileApi.getWriterByFilePath(saveTextPaneFileByFilePathAO);
+        workViewApi.saveTextPaneFileByFilePaths(textPaneFileWritersAO);
+        // 关闭对应的textpane ao--filePath
+        List<String> targetFilePaths = requestNewNameVO.copyToTargetFilePath();
+        workViewApi.closeTextPaneByFilePaths(targetFilePaths);
+        // 修改对应文件文件名 -file ao--filePath,newFileName vo--newFilePath
+        RenameAdocFileAO renameAdocFileAO = requestNewNameVO.copyToRenameFile();
+        RenameAdocFileVO renameAdocFileVO = fileApi.renameAdocFile(renameAdocFileAO);
+        // 打开对应textpane ao--newFilePath
+        OpenNewFileByFilePathAO openNewFileByFilePathAO = renameAdocFileVO.copyToOpenNewFile();
+        this.openNewFileByFilePath(openNewFileByFilePathAO);
+        // 修改对应textpane内容中的根标题 ao--newFilePath,newTitleName
+        UpdateRootNodeOfTextPaneAO updateRootNodeOfTextPaneAO = renameAdocFileAO.copyToUpdateRootNode();
+        workViewApi.updateRootNodeOfTextPane(updateRootNodeOfTextPaneAO);
+        // 保存对应文件内容 -file ao--newFilePath
+        // 修改当前文件include行内容 ao--currentFilePath,newIncludeLineContent
+        // 保存当前文件 -file ao--currentFilePath
+    }
 }

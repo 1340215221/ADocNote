@@ -65,4 +65,13 @@ public class KeymapConfig {
     public boolean isEnter(@NonNull KeyEvent event) {
         return event.getModifiers() == 0 && event.getKeyCode() == 0 && '\n' == event.getKeyChar();
     }
+
+    /**
+     * 是重命名快捷键
+     */
+    public boolean isShiftF6(@NonNull KeyEvent event) {
+        System.out.println(event.getModifiers());
+        System.out.println(event.getKeyCode());
+        return false;
+    }
 }

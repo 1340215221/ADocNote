@@ -57,10 +57,10 @@ class AdocTextPaneBuilder implements BaseBuilder {
                     background: Color.decode('#2B2B2B'),
                     foreground: Color.decode('#A9B7C6'),
                     keyPressed: {
-//                        event.rename_include(it)
+                        event.rename_include(it)
 //                        event.sink_title(it)
 //                        event.inline_title(it)
-//                        event.delete_include(it)
+                        event.delete_include(it)
                     },
                     keyTyped: {
                         event.enter_listener(it)
@@ -70,7 +70,7 @@ class AdocTextPaneBuilder implements BaseBuilder {
                     },
                     mouseClicked: {
                         event.enter_include_file(it)
-//                        event.enter_include_java_file(it)
+                        event.enter_include_java_file(it)
                     },
                     caretUpdate: {
 //                        event.move_caret()

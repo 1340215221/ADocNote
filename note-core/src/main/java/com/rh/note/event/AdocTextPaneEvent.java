@@ -59,4 +59,13 @@ public class AdocTextPaneEvent {
     public void select_next_on_prompt(@NonNull TextPaneKeyStrokeAO ao) {
         throw new RuntimeException();
     }
+
+    /**
+     * 重命名include指向标题名
+     */
+    public void rename_include(KeyEvent event) {
+        if (operationAction.isShiftF6(event)) {
+            workAction.renameInclude();
+        }
+    }
 }
