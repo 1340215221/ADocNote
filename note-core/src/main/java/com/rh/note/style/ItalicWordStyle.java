@@ -26,7 +26,7 @@ public class ItalicWordStyle {
     /**
      * 代码内容正则
      */
-    private static final String contentRegex = "[^_]+|[^_].+[^_]";
+    private static final String contentRegex = ".*[^_].*";
     /**
      * 正则
      */

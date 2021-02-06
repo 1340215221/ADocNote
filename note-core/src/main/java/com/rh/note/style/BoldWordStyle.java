@@ -25,7 +25,7 @@ public class BoldWordStyle {
     /**
      * 代码内容正则
      */
-    private static final String contentRegex = "[^*]+|[^*].+[^*]";
+    private static final String contentRegex = ".*[^*].*";
     /**
      * 正则
      */

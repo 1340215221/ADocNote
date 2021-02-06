@@ -29,7 +29,7 @@ public class CodeWordStyle {
     /**
      * 代码内容正则
      */
-    private static final String codeRegex = "[^`]+|[^`].+[^`]";
+    private static final String codeRegex = ".*[^`].*";
     /**
      * 正则
      */
