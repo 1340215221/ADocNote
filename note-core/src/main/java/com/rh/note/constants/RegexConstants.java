@@ -4,7 +4,6 @@ package com.rh.note.constants;
  * 正则常量
  */
 public interface RegexConstants {
-
     /**
      * 支持文件路径
      */

@@ -23,9 +23,17 @@ public class CodeWordStyle {
      */
     private static final Color codeColor = Color.decode("#3C3F41");
     /**
+     * 边界字符正则
+     */
+    private static final String boundaryRegex = "[^0-9a-zA-Z\\u4e00-\\u9fa5`]";
+    /**
+     * 代码内容正则
+     */
+    private static final String codeRegex = "[^`]+|[^`].+[^`]";
+    /**
      * 正则
      */
-    private static final String regex = "[^`]*(`)([^`]+)(`)[^`]*";
+    private static final String regex = "(?:^|" + boundaryRegex + ")(`)(" + codeRegex + ")(`)(?=$|" + boundaryRegex + ")";
     /**
      * 匹配器
      */
