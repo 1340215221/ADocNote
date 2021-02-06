@@ -50,6 +50,16 @@ public enum AdocWordSyntaxStyleEnum {
             return style.isEmpty() ? null : style;
         }
     },
+    /**
+     * 标题引用
+     */
+    TITLE_QUOTE {
+        @Override
+        public @Nullable StyleList match(String lineContent) {
+            StyleList style = new TitleQuoteWordStyle(lineContent).getStyle();
+            return style.isEmpty() ? null : style;
+        }
+    },
     ;
 
     public static StyleList generateStyle(String lineContent) {

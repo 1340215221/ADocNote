@@ -1,5 +1,6 @@
 package com.rh.note.style;
 
+import com.rh.note.constants.RegexConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -19,17 +20,9 @@ public class TitleQuoteWordStyle {
      */
     private static final Color color = Color.decode("#287BDE");
     /**
-     * 边界字符正则
-     */
-    private static final String boundaryRegex = "[^0-9a-zA-Z\\u4e00-\\u9fa5_]";
-    /**
-     * 代码内容正则
-     */
-    private static final String contentRegex = ".*[^_].*";
-    /**
      * 正则
      */
-    private static final String regex = "(?:^|\\s)" + boundaryRegex + "(_)(" + contentRegex + ")(_)" + boundaryRegex + "(?=$|\\s)";
+    private static final String regex = "(<<(?:" + RegexConstants.title_name_regex + ")>>)";
     /**
      * 匹配器
      */
@@ -44,18 +37,15 @@ public class TitleQuoteWordStyle {
     public @NotNull StyleList getStyle() {
         StyleList list = new StyleList();
         while (matcher.find()) {
-            list.add(getMarkStylePre());
-            list.add(getWordStyle());
-            list.add(getMarkStyleSub());
+            list.add(getMarkStyle());
         }
         return list;
     }
 
     /**
-     * _word_
-     * _
+     * <<title>>
      */
-    private @Nullable StyleItem getMarkStylePre() {
+    private @Nullable StyleItem getMarkStyle() {
         if (matcher == null) {
             return null;
         }
@@ -65,43 +55,9 @@ public class TitleQuoteWordStyle {
         }
         int startOffset = matcher.start(1);
         SimpleAttributeSet style = new SimpleAttributeSet();
+        StyleConstants.setUnderline(style, true);
         StyleConstants.setForeground(style, color);
         return StyleItem.getInstance(style, startOffset, mark.length());
     }
 
-    /**
-     * _word_
-     * word
-     */
-    private @Nullable StyleItem getWordStyle() {
-        if (matcher == null) {
-            return null;
-        }
-        String head = matcher.group(2);
-        if (StringUtils.isBlank(head)) {
-            return null;
-        }
-        int startOffset = matcher.start(2);
-        SimpleAttributeSet style = new SimpleAttributeSet();
-        StyleConstants.setItalic(style, true);
-        return StyleItem.getInstance(style, startOffset, head.length());
-    }
-
-    /**
-     * _word_
-     *      _
-     */
-    private @Nullable StyleItem getMarkStyleSub() {
-        if (matcher == null) {
-            return null;
-        }
-        String mark = matcher.group(3);
-        if (StringUtils.isBlank(mark)) {
-            return null;
-        }
-        int startOffset = matcher.start(3);
-        SimpleAttributeSet style = new SimpleAttributeSet();
-        StyleConstants.setForeground(style, color);
-        return StyleItem.getInstance(style, startOffset, mark.length());
-    }
 }

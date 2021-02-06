@@ -19,17 +19,9 @@ public class BoldWordStyle {
      */
     private static final Color color = Color.decode("#CC7832");
     /**
-     * 边界字符正则
-     */
-    private static final String boundaryRegex = "[^0-9a-zA-Z\\u4e00-\\u9fa5*]";
-    /**
-     * 代码内容正则
-     */
-    private static final String contentRegex = ".*[^*].*?";
-    /**
      * 正则
      */
-    private static final String regex = "(?:^|\\s)" + boundaryRegex + "(\\*)(" + contentRegex + ")(\\*)" + boundaryRegex + "(?=$|\\s)";
+    private static final String regex = "(?:^|[^*])(\\*)([^*]+)(\\*)(?=$|[^*])";
     /**
      * 匹配器
      */
