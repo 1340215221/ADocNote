@@ -130,12 +130,6 @@ public class RequestNewNameOfIncludeOnCaretLineVO {
         return ao;
     }
 
-    public @NotNull OpenNewFileByFilePathAO copyToOpenOldFile() {
-        OpenNewFileByFilePathAO ao = new OpenNewFileByFilePathAO();
-        ao.setFilePath(targetFilePath);
-        return ao;
-    }
-
     public @NotNull OpenNewFileByFilePathAO copyToOpenNewFile() {
         OpenNewFileByFilePathAO ao = new OpenNewFileByFilePathAO();
         ao.setFilePath(getNewTargetFilePath());

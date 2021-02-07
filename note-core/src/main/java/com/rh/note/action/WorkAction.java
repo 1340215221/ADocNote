@@ -194,17 +194,17 @@ public class WorkAction {
         if (requestNewNameVO == null) {
             return;
         }
-        // 保存对应文件内容 ao--filePath
-        workViewApi.showOpenedFileByFilePath(requestNewNameVO.getTargetFilePath());
-        OpenNewFileByFilePathAO openOldFileAO = requestNewNameVO.copyToOpenOldFile();
-        this.openNewFileByFilePath(openOldFileAO);
         SaveTextPaneFileByFilePathAO saveTargetFileAO = new SaveTextPaneFileByFilePathAO();
         saveTargetFileAO.copyTarget(requestNewNameVO);
-        TextPaneFileWritersAO targetFileWritersAO = fileApi.getWriterByFilePath(saveTargetFileAO);
-        workViewApi.saveTextPaneFileByFilePaths(targetFileWritersAO);
-        // 关闭对应的textpane ao--filePath
-        List<String> targetFilePaths = requestNewNameVO.copyToTargetFilePath();
-        workViewApi.closeTextPaneByFilePaths(targetFilePaths);
+        if (workViewApi.checkIsOpenedFile(requestNewNameVO.getTargetFilePath())) {
+            // todo 现在这种两步， 先获得文件流， 再获得控件，方式非常危险。 获得流时就已经把文件内容清空了。 应该在前面先进行判断
+            // 保存对应文件内容 ao--filePath
+            TextPaneFileWritersAO targetFileWritersAO = fileApi.getWriterByFilePath(saveTargetFileAO);
+            workViewApi.saveTextPaneFileByFilePaths(targetFileWritersAO);
+            // 关闭对应的textpane ao--filePath
+            List<String> targetFilePaths = requestNewNameVO.copyToTargetFilePath();
+            workViewApi.closeTextPaneByFilePaths(targetFilePaths);
+        }
         // 修改对应文件文件名 -file ao--filePath,newFileName vo--newFilePath
         RenameAdocFileAO renameAdocFileAO = requestNewNameVO.copyToRenameFile();
         boolean renameFile = fileApi.renameAdocFile(renameAdocFileAO);
