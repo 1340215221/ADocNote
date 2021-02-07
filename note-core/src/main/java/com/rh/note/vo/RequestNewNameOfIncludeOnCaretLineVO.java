@@ -3,6 +3,7 @@ package com.rh.note.vo;
 import com.rh.note.ao.OpenNewFileByFilePathAO;
 import com.rh.note.ao.RenameAdocFileAO;
 import com.rh.note.ao.UpdateCaretLineAO;
+import com.rh.note.ao.UpdateRootTitleOfTextPaneAO;
 import com.rh.note.syntax.IncludeSyntax;
 import com.rh.note.util.FilePathUtil;
 import lombok.AccessLevel;
@@ -129,12 +130,33 @@ public class RequestNewNameOfIncludeOnCaretLineVO {
         return ao;
     }
 
-    public @Nullable OpenNewFileByFilePathAO copyToOpenNewFile() {
-        if (StringUtils.isBlank(targetFilePath)) {
-            return null;
-        }
+    public @NotNull OpenNewFileByFilePathAO copyToOpenOldFile() {
         OpenNewFileByFilePathAO ao = new OpenNewFileByFilePathAO();
         ao.setFilePath(targetFilePath);
         return ao;
+    }
+
+    public @NotNull OpenNewFileByFilePathAO copyToOpenNewFile() {
+        OpenNewFileByFilePathAO ao = new OpenNewFileByFilePathAO();
+        ao.setFilePath(getNewTargetFilePath());
+        return ao;
+    }
+
+    public @NotNull UpdateRootTitleOfTextPaneAO copyToUpdateRootNode() {
+        UpdateRootTitleOfTextPaneAO ao = new UpdateRootTitleOfTextPaneAO();
+        ao.setFilePath(getNewTargetFilePath());
+        ao.setNewTitleName(newName);
+        return ao;
+    }
+
+    /**
+     * 获得指向文件项目路径
+     */
+    private @Nullable String getNewTargetFilePath() {
+        String parent = FilePathUtil.getParent(targetFilePath);
+        if (StringUtils.isBlank(parent)) {
+            return null;
+        }
+        return parent + newName + ".adoc";
     }
 }

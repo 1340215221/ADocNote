@@ -256,7 +256,7 @@ public class AdocTextPaneView extends BaseView<AdocTextPaneBuilder, AdocTextPane
         }
         int selectionEnd = StringUtils.isNotBlank(lineContent) && lineContent.endsWith("\n") ?
                 element.getEndOffset() - 1 : element.getEndOffset();
-        textPane().select(element.getStartOffset(), selectionEnd - element.getStartOffset());
+        textPane().select(element.getStartOffset(), selectionEnd);
         textPane().replaceSelection(newLineContent);
     }
 
@@ -287,7 +287,7 @@ public class AdocTextPaneView extends BaseView<AdocTextPaneBuilder, AdocTextPane
             // 更新根标题名
             int selectionStart = element.getStartOffset() + syntax.getLevel() + 1;
             int selectionEnd = lineContent.endsWith("\n") ? element.getEndOffset() - 1 : element.getEndOffset();
-            textPane().select(selectionStart, selectionEnd - selectionStart);
+            textPane().select(selectionStart, selectionEnd);
             textPane().replaceSelection(newTitleName);
             return;
         }

@@ -5,7 +5,6 @@ import com.rh.note.util.CurrentAdocProConfigUtil;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -43,12 +42,5 @@ public class RenameAdocFileAO implements BaseAO {
             return null;
         }
         return proPath + filePath;
-    }
-
-    public @NotNull UpdateRootTitleOfTextPaneAO copyToUpdateRootNode() {
-        UpdateRootTitleOfTextPaneAO ao = new UpdateRootTitleOfTextPaneAO();
-        ao.setFilePath(filePath);
-        ao.setNewTitleName(newName);
-        return ao;
     }
 }

@@ -1,13 +1,23 @@
 package com.rh.note.action;
 
-import com.rh.note.ao.*;
+import com.rh.note.ao.InitAdocTextPaneContentAO;
+import com.rh.note.ao.LoadContextAO;
+import com.rh.note.ao.OpenNewFileByFilePathAO;
+import com.rh.note.ao.RenameAdocFileAO;
+import com.rh.note.ao.SaveTextPaneFileByFilePathAO;
+import com.rh.note.ao.TextPaneFileWritersAO;
+import com.rh.note.ao.UpdateCaretLineAO;
+import com.rh.note.ao.UpdateRootTitleOfTextPaneAO;
 import com.rh.note.api.FileApi;
 import com.rh.note.api.FrameContextApi;
 import com.rh.note.api.WorkViewApi;
 import com.rh.note.constants.FrameCategoryEnum;
 import com.rh.note.exception.IsNotSyntaxSugarLineException;
 import com.rh.note.line.TitleLine;
-import com.rh.note.vo.*;
+import com.rh.note.vo.FindIncludePathInSelectedTextPaneVO;
+import com.rh.note.vo.FindTitleNodeSelectedVO;
+import com.rh.note.vo.GenerateIncludeSyntaxVO;
+import com.rh.note.vo.RequestNewNameOfIncludeOnCaretLineVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -185,6 +195,9 @@ public class WorkAction {
             return;
         }
         // 保存对应文件内容 ao--filePath
+        workViewApi.showOpenedFileByFilePath(requestNewNameVO.getTargetFilePath());
+        OpenNewFileByFilePathAO openOldFileAO = requestNewNameVO.copyToOpenOldFile();
+        this.openNewFileByFilePath(openOldFileAO);
         SaveTextPaneFileByFilePathAO saveTargetFileAO = new SaveTextPaneFileByFilePathAO();
         saveTargetFileAO.copyTarget(requestNewNameVO);
         TextPaneFileWritersAO targetFileWritersAO = fileApi.getWriterByFilePath(saveTargetFileAO);
@@ -194,16 +207,15 @@ public class WorkAction {
         workViewApi.closeTextPaneByFilePaths(targetFilePaths);
         // 修改对应文件文件名 -file ao--filePath,newFileName vo--newFilePath
         RenameAdocFileAO renameAdocFileAO = requestNewNameVO.copyToRenameFile();
-        RenameAdocFileVO renameAdocFileVO = fileApi.renameAdocFile(renameAdocFileAO);
-        if (renameAdocFileVO == null) {
+        boolean renameFile = fileApi.renameAdocFile(renameAdocFileAO);
+        if (!renameFile) {
             return;
         }
         // 打开对应textpane ao--newFilePath
         OpenNewFileByFilePathAO openNewFileByFilePathAO = requestNewNameVO.copyToOpenNewFile();
-        OpenNewFileByFilePathAO openNewFileByFilePathAO = renameAdocFileVO.copyToOpenNewFile();
         this.openNewFileByFilePath(openNewFileByFilePathAO);
         // 修改对应textpane内容中的根标题 ao--newFilePath,newTitleName
-        UpdateRootTitleOfTextPaneAO updateRootTitleOfTextPaneAO = renameAdocFileAO.copyToUpdateRootNode();
+        UpdateRootTitleOfTextPaneAO updateRootTitleOfTextPaneAO = requestNewNameVO.copyToUpdateRootNode();
         workViewApi.updateRootTitleOfTextPane(updateRootTitleOfTextPaneAO);
         // 保存对应文件内容 -file ao--newFilePath
         TextPaneFileWritersAO targetFileWritersAO2 = fileApi.getWriterByFilePath(saveTargetFileAO);
