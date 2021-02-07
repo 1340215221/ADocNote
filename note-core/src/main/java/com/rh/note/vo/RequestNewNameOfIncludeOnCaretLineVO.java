@@ -1,5 +1,6 @@
 package com.rh.note.vo;
 
+import com.rh.note.ao.OpenNewFileByFilePathAO;
 import com.rh.note.ao.RenameAdocFileAO;
 import com.rh.note.ao.UpdateCaretLineAO;
 import com.rh.note.syntax.IncludeSyntax;
@@ -91,7 +92,7 @@ public class RequestNewNameOfIncludeOnCaretLineVO {
                 .append(parentPath)
                 .append(newName);
         if (StringUtils.isNotBlank(syntax.getExtName())) {
-            result.append(syntax.getExtName());
+            result.append(".").append(syntax.getExtName());
         }
         result.append("[");
         if (syntax.getLineNum1() != null && syntax.getLineNum2() != null) {
@@ -125,6 +126,15 @@ public class RequestNewNameOfIncludeOnCaretLineVO {
         UpdateCaretLineAO ao = new UpdateCaretLineAO();
         ao.setFilePath(currentFilePath);
         ao.setNewLineContent(newLineContent);
+        return ao;
+    }
+
+    public @Nullable OpenNewFileByFilePathAO copyToOpenNewFile() {
+        if (StringUtils.isBlank(targetFilePath)) {
+            return null;
+        }
+        OpenNewFileByFilePathAO ao = new OpenNewFileByFilePathAO();
+        ao.setFilePath(targetFilePath);
         return ao;
     }
 }

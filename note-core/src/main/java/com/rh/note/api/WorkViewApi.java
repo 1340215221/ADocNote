@@ -1,5 +1,6 @@
 package com.rh.note.api;
 
+import cn.hutool.core.io.FileUtil;
 import com.rh.note.ao.InitAdocTextPaneContentAO;
 import com.rh.note.ao.TextPaneFileWritersAO;
 import com.rh.note.ao.UpdateCaretLineAO;
@@ -279,7 +280,8 @@ public class WorkViewApi {
             return null;
         }
         // 请求新名字
-        InputDialogView dialogView = new InputDialogView().init(syntax.getFileName(), PromptMessageEnum.rename_include_message);
+        String fileName = FileUtil.mainName(syntax.getIncludePath());
+        InputDialogView dialogView = new InputDialogView().init(fileName, PromptMessageEnum.rename_include_message);
         String newName = dialogView.getInputText();
         return RequestNewNameOfIncludeOnCaretLineVO.getInstance(filePath, syntax, newName);
     }

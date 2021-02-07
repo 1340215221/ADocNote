@@ -199,6 +199,7 @@ public class WorkAction {
             return;
         }
         // 打开对应textpane ao--newFilePath
+        OpenNewFileByFilePathAO openNewFileByFilePathAO = requestNewNameVO.copyToOpenNewFile();
         OpenNewFileByFilePathAO openNewFileByFilePathAO = renameAdocFileVO.copyToOpenNewFile();
         this.openNewFileByFilePath(openNewFileByFilePathAO);
         // 修改对应textpane内容中的根标题 ao--newFilePath,newTitleName

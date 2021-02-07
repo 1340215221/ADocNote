@@ -1,11 +1,8 @@
 package com.rh.note.vo;
 
-import cn.hutool.core.io.FileUtil;
-import com.rh.note.ao.OpenNewFileByFilePathAO;
 import com.rh.note.util.CurrentAdocProConfigUtil;
 import com.rh.note.util.FilePathUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 
@@ -27,14 +24,5 @@ public class RenameAdocFileVO {
             return;
         }
         filePath = FilePathUtil.absolutePath2ProFilePath(file.getAbsolutePath(), proPath);
-    }
-
-    public @Nullable OpenNewFileByFilePathAO copyToOpenNewFile() {
-        if (StringUtils.isBlank(filePath)) {
-            return null;
-        }
-        OpenNewFileByFilePathAO ao = new OpenNewFileByFilePathAO();
-        ao.setFilePath(filePath);
-        return ao;
     }
 }

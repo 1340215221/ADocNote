@@ -252,11 +252,11 @@ public class AdocTextPaneView extends BaseView<AdocTextPaneBuilder, AdocTextPane
         try {
             lineContent = textPane().getText(element.getStartOffset(), element.getEndOffset());
         } catch (Exception e) {
-            throw new ApplicationException(ErrorCodeEnum.FAILED_TO_GET_THE_CONTENT_OF_THE_EDIT_AREA);
+            throw new ApplicationException(ErrorCodeEnum.FAILED_TO_GET_THE_CONTENT_OF_THE_EDIT_AREA, e);
         }
         int selectionEnd = StringUtils.isNotBlank(lineContent) && lineContent.endsWith("\n") ?
                 element.getEndOffset() - 1 : element.getEndOffset();
-        textPane().select(element.getStartOffset(), selectionEnd);
+        textPane().select(element.getStartOffset(), selectionEnd - element.getStartOffset());
         textPane().replaceSelection(newLineContent);
     }
 
@@ -287,7 +287,7 @@ public class AdocTextPaneView extends BaseView<AdocTextPaneBuilder, AdocTextPane
             // 更新根标题名
             int selectionStart = element.getStartOffset() + syntax.getLevel() + 1;
             int selectionEnd = lineContent.endsWith("\n") ? element.getEndOffset() - 1 : element.getEndOffset();
-            textPane().select(selectionStart, selectionEnd);
+            textPane().select(selectionStart, selectionEnd - selectionStart);
             textPane().replaceSelection(newTitleName);
             return;
         }
