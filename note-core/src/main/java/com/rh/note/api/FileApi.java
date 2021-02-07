@@ -3,6 +3,7 @@ package com.rh.note.api;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.CharsetUtil;
 import com.rh.note.ao.CheckIsAdocProjectAO;
+import com.rh.note.ao.RenameAdocFileAO;
 import com.rh.note.ao.SaveTextPaneFileByFilePathAO;
 import com.rh.note.ao.TextPaneFileWritersAO;
 import com.rh.note.collection.ReadTitleLineList;
@@ -13,6 +14,7 @@ import com.rh.note.exception.StopFindRootTitleException;
 import com.rh.note.file.AdocTitleFile;
 import com.rh.note.file.ReadMeTitleFile;
 import com.rh.note.line.TitleLine;
+import com.rh.note.vo.RenameAdocFileVO;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Component;
@@ -83,6 +85,27 @@ public class FileApi {
             return null;
         }
         return FileUtil.getReader(absolutePath, CharsetUtil.CHARSET_UTF_8);
+    }
+
+    /**
+     * 重命名adoc文件
+     */
+    public @Nullable RenameAdocFileVO renameAdocFile(RenameAdocFileAO ao) {
+        if (ao == null || ao.checkMissRequiredParams()) {
+            return null;
+        }
+        String absolutePath = ao.getAbsolutePath();
+        if (!FileUtil.isAbsolutePath(absolutePath)) {
+            return null;
+        }
+        File file = new File(absolutePath);
+        if (!FileUtil.isFile(file) || !absolutePath.endsWith(".adoc")) {
+            return null;
+        }
+        File newFile = FileUtil.rename(file, ao.getNewName(), true, false);
+        RenameAdocFileVO vo = new RenameAdocFileVO();
+        vo.copy(newFile);
+        return vo;
     }
 
     /**

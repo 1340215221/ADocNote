@@ -2,7 +2,10 @@ package com.rh.note.api;
 
 import com.rh.note.ao.InitAdocTextPaneContentAO;
 import com.rh.note.ao.TextPaneFileWritersAO;
+import com.rh.note.ao.UpdateCaretLineAO;
+import com.rh.note.ao.UpdateRootTitleOfTextPaneAO;
 import com.rh.note.config.SyntaxHighlightConfig;
+import com.rh.note.constants.PromptMessageEnum;
 import com.rh.note.exception.UnknownBusinessSituationException;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.FileBeanPath;
@@ -14,6 +17,7 @@ import com.rh.note.view.*;
 import com.rh.note.vo.FindIncludePathInSelectedTextPaneVO;
 import com.rh.note.vo.FindTitleNodeSelectedVO;
 import com.rh.note.vo.GenerateIncludeSyntaxVO;
+import com.rh.note.vo.RequestNewNameOfIncludeOnCaretLineVO;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -84,13 +88,17 @@ public class WorkViewApi {
         if (ao == null || ao.checkMissRequiredParams()) {
             return;
         }
-        ao.forEach((String filePath, Writer writer) -> {
-            AdocTextPaneView textPaneView = new AdocTextPaneView().init(filePath);
-            if (textPaneView == null) {
-                return;
-            }
-            textPaneView.writerToFile(writer);
-        });
+        try {
+            ao.forEach((String filePath, Writer writer) -> {
+                AdocTextPaneView textPaneView = new AdocTextPaneView().init(filePath);
+                if (textPaneView == null) {
+                    return;
+                }
+                textPaneView.writerToFile(writer);
+            });
+        }finally {
+            ao.closeAllWriter();
+        }
     }
 
     /**
@@ -254,6 +262,54 @@ public class WorkViewApi {
         String newContent = syntax.toString();
         textPaneView.replaceSelectedContent(newContent);
         return new GenerateIncludeSyntaxVO(syntax, filePath, syntaxSugar.getTargetLevel());
+    }
+
+    /**
+     * 请求光标行include文件新名字
+     */
+    public @Nullable RequestNewNameOfIncludeOnCaretLineVO requestNewNameOfIncludeOnCaretLine(String filePath) {
+        // 获得include指向文件的名字
+        AdocTextPaneView textPaneView = new AdocTextPaneView().init(filePath);
+        if (textPaneView == null) {
+            return null;
+        }
+        String lineContent = textPaneView.getCaretLineContent();
+        IncludeSyntax syntax = new IncludeSyntax().init(lineContent);
+        if (syntax == null) {
+            return null;
+        }
+        // 请求新名字
+        InputDialogView dialogView = new InputDialogView().init(syntax.getFileName(), PromptMessageEnum.rename_include_message);
+        String newName = dialogView.getInputText();
+        return RequestNewNameOfIncludeOnCaretLineVO.getInstance(filePath, syntax, newName);
+    }
+
+    /**
+     * 更新adoc编辑区根标题名字
+     */
+    public void updateRootTitleOfTextPane(UpdateRootTitleOfTextPaneAO ao) {
+        if (ao == null || ao.checkMissRequiredParams()) {
+            return;
+        }
+        AdocTextPaneView textPaneView = new AdocTextPaneView().init(ao.getFilePath());
+        if (textPaneView == null) {
+            return;
+        }
+        textPaneView.updateRootTitleName(ao.getNewTitleName());
+    }
+
+    /**
+     * 更新include行内容
+     */
+    public void updateCaretLineContent(UpdateCaretLineAO ao) {
+        if (ao == null || ao.checkMissRequiredParams()) {
+            return;
+        }
+        AdocTextPaneView textPaneView = new AdocTextPaneView().init(ao.getFilePath());
+        if (textPaneView == null) {
+            return;
+        }
+        textPaneView.updateCaretLineContent(ao.getNewLineContent());
     }
 
     /**

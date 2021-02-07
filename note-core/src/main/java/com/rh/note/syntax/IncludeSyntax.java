@@ -42,15 +42,17 @@ public class IncludeSyntax {
     /**
      * 文件后缀
      */
-    @NonNull
+    @Getter(onMethod = @__({@Nullable}))
     private String extName;
     /**
      * 引用行号1
      */
+    @Getter(onMethod = @__({@Nullable}))
     private Integer lineNum1;
     /**
      * 引用行号2
      */
+    @Getter(onMethod = @__({@Nullable}))
     private Integer lineNum2;
 
     public @Nullable IncludeSyntax init(String lineContent) {

@@ -25,6 +25,7 @@ public enum ErrorCodeEnum {
     // 编辑区
     FAILED_TO_WRITE_THE_CONTENT_OF_THE_EDIT_AREA_TO_THE_FILE(3000, "编辑区内容写入文件失败"),
     FAILED_TO_GET_THE_CONTENT_OF_THE_EDIT_AREA(3001, "获得编辑区行内容失败"),
+    FAILED_TO_UPDATE_FILE_ROOT_TITLE_NAME(3002, "更新文件根标题名字失败"),
     // 文件
     FAILED_TO_CREATE_ADOC_FILE(4000, "创建adoc文件失败"),
     ;

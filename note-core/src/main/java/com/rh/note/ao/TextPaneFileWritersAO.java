@@ -42,6 +42,16 @@ public class TextPaneFileWritersAO implements BaseAO {
         IoUtil.close(writer);
     }
 
+    /**
+     * 关闭所有的流
+     */
+    public void closeAllWriter() {
+        if (CollectionUtils.isEmpty(items)) {
+            return;
+        }
+        items.forEach(item -> IoUtil.close(item.writer));
+    }
+
     @RequiredArgsConstructor
     private static class Item {
         /**

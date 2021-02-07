@@ -12,12 +12,15 @@ import com.rh.note.exception.TextPaneWriterToFileException;
 import com.rh.note.path.FileBeanPath;
 import com.rh.note.style.AdocFontStyle;
 import com.rh.note.style.StyleList;
+import com.rh.note.syntax.TitleSyntax;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.text.*;
+import javax.swing.text.Element;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyledDocument;
 import java.io.Reader;
 import java.io.Writer;
 
@@ -235,5 +238,59 @@ public class AdocTextPaneView extends BaseView<AdocTextPaneBuilder, AdocTextPane
         StyledDocument document = textPane().getStyledDocument();
         Element rootElement = document.getDefaultRootElement();
         document.setCharacterAttributes(rootElement.getStartOffset(), rootElement.getEndOffset() - rootElement.getStartOffset(), defaultStyle, true);
+    }
+
+    public void updateCaretLineContent(String newLineContent) {
+        if (StringUtils.isBlank(newLineContent)) {
+            return;
+        }
+        Element element = getCaretLineElement();
+        if (element == null) {
+            return;
+        }
+        String lineContent;
+        try {
+            lineContent = textPane().getText(element.getStartOffset(), element.getEndOffset());
+        } catch (Exception e) {
+            throw new ApplicationException(ErrorCodeEnum.FAILED_TO_GET_THE_CONTENT_OF_THE_EDIT_AREA);
+        }
+        int selectionEnd = StringUtils.isNotBlank(lineContent) && lineContent.endsWith("\n") ?
+                element.getEndOffset() - 1 : element.getEndOffset();
+        textPane().select(element.getStartOffset(), selectionEnd);
+        textPane().replaceSelection(newLineContent);
+    }
+
+    /**
+     * 更新adoc编辑区根标题名字
+     */
+    public void updateRootTitleName(String newTitleName) {
+        if (StringUtils.isBlank(newTitleName)) {
+            return;
+        }
+        // 找到根标题行
+        Element rootElement = textPane().getDocument().getDefaultRootElement();
+        for (int i = 1; i < rootElement.getElementCount() + 1; i++) {
+            Element element = rootElement.getElement(i);
+            if (element == null) {
+                continue;
+            }
+            String lineContent;
+            try {
+                lineContent = textPane().getText(element.getStartOffset(), element.getEndOffset() - element.getStartOffset());
+            } catch (Exception e) {
+                throw new ApplicationException(ErrorCodeEnum.FAILED_TO_GET_THE_CONTENT_OF_THE_EDIT_AREA, e);
+            }
+            TitleSyntax syntax = new TitleSyntax().init(lineContent);
+            if (syntax == null) {
+                continue;
+            }
+            // 更新根标题名
+            int selectionStart = element.getStartOffset() + syntax.getLevel() + 1;
+            int selectionEnd = lineContent.endsWith("\n") ? element.getEndOffset() - 1 : element.getEndOffset();
+            textPane().select(selectionStart, selectionEnd);
+            textPane().replaceSelection(newTitleName);
+            return;
+        }
+        throw new ApplicationException(ErrorCodeEnum.FAILED_TO_UPDATE_FILE_ROOT_TITLE_NAME);
     }
 }

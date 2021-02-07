@@ -70,8 +70,6 @@ public class KeymapConfig {
      * 是重命名快捷键
      */
     public boolean isShiftF6(@NonNull KeyEvent event) {
-        System.out.println(event.getModifiers());
-        System.out.println(event.getKeyCode());
-        return false;
+        return event.getKeyCode() == 117 && event.getModifiers() == 1;
     }
 }

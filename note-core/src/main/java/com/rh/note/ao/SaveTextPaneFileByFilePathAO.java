@@ -3,6 +3,7 @@ package com.rh.note.ao;
 import com.rh.note.common.BaseAO;
 import com.rh.note.util.CurrentAdocProConfigUtil;
 import com.rh.note.vo.GenerateIncludeSyntaxVO;
+import com.rh.note.vo.RequestNewNameOfIncludeOnCaretLineVO;
 import lombok.NonNull;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -10,6 +11,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -79,5 +82,27 @@ public class SaveTextPaneFileByFilePathAO implements BaseAO {
         if (StringUtils.isNotBlank(targetFilePath)) {
             filePaths.add(targetFilePath);
         }
+    }
+
+    public void copyTarget(RequestNewNameOfIncludeOnCaretLineVO vo) {
+        if (vo == null) {
+            return;
+        }
+        String targetFilePath = vo.getTargetFilePath();
+        if (StringUtils.isBlank(targetFilePath)) {
+            return;
+        }
+        filePaths = Collections.singletonList(targetFilePath);
+    }
+
+    public void copyCurrent(RequestNewNameOfIncludeOnCaretLineVO vo) {
+        if (vo == null) {
+            return;
+        }
+        String currentFilePath = vo.getCurrentFilePath();
+        if (StringUtils.isBlank(currentFilePath)) {
+            return;
+        }
+        filePaths = Collections.singletonList(currentFilePath);
     }
 }

@@ -50,6 +50,23 @@ public class FilePathUtil {
     }
 
     /**
+     * 获得父文件路径
+     * tip 以 / 结尾, 只支持/路径
+     */
+    public static @Nullable String getParent(String includePath) {
+        // 格式化地址
+        String normalize = normalize(includePath);
+        if (StringUtils.isBlank(normalize)) {
+            return null;
+        }
+        int index = includePath.lastIndexOf("/");
+        if (index < 0 || "/".equals(normalize)) {
+            return null;
+        }
+        return normalize.substring(0, index + 1);
+    }
+
+    /**
      * include指向路径 转 项目路径<br/>
      * 只用于文件间的路径转换
      * 如果includePath为绝对路径, 则返回null
