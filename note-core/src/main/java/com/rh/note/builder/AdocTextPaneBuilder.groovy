@@ -55,7 +55,7 @@ class AdocTextPaneBuilder implements BaseBuilder {
                     lineSpacing: fontConfig.getLineSpacing(),
                     background: Color.decode('#2B2B2B'),
                     foreground: Color.decode('#A9B7C6'),
-                    contentInitialized: {filePath ->
+                    contentChanged: {filePath ->
                         event.refresh_syntax_highlight_by_timer(filePath)
                     },
                     keyPressed: {

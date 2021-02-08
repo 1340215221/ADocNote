@@ -1,7 +1,7 @@
 package com.rh.note.component;
 
 import com.rh.note.common.IFileBeanPath;
-import com.rh.note.common.InitContextListener;
+import com.rh.note.common.ChangeContextListener;
 import com.rh.note.path.FileBeanPath;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,7 +43,7 @@ public class AdocTextPane extends JTextPane implements IFileBeanPath {
     /**
      * 写入内容监听
      */
-    private InitContextListener contentInitialized;
+    private ChangeContextListener contentChanged;
 
     public AdocTextPane(StyledDocument doc) {
         super(doc);
@@ -63,8 +63,8 @@ public class AdocTextPane extends JTextPane implements IFileBeanPath {
         } catch (BadLocationException e) {
             throw new IOException(e.getMessage());
         }
-        if (contentInitialized != null) {
-            contentInitialized.run(beanPath.getFilePath());
+        if (contentChanged != null) {
+            contentChanged.run(beanPath.getFilePath());
         }
     }
 
@@ -99,5 +99,21 @@ public class AdocTextPane extends JTextPane implements IFileBeanPath {
         StyleConstants.setLineSpacing(set, lineSpacing);
         Element element = document.getDefaultRootElement();
         document.setParagraphAttributes(element.getStartOffset(), element.getEndOffset(), set, false);
+    }
+
+    @Override
+    public void replaceSelection(String content) {
+        super.replaceSelection(content);
+        if (contentChanged != null) {
+            contentChanged.run(beanPath.getFilePath());
+        }
+    }
+
+    @Override
+    public void setText(String t) {
+        super.setText(t);
+        if (contentChanged != null) {
+            contentChanged.run(beanPath.getFilePath());
+        }
     }
 }
