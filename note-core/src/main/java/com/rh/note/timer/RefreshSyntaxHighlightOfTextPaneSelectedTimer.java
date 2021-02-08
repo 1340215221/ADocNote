@@ -42,6 +42,14 @@ public class RefreshSyntaxHighlightOfTextPaneSelectedTimer implements Applicatio
         }
     }
 
+    /**
+     * 立即执行
+     */
+    public void cancelOnceRun() {
+        timer.setInitialDelay(2000);
+        timer.restart();
+    }
+
     @PreDestroy
     public void destroy() {
         timer.stop();

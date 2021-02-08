@@ -14,7 +14,13 @@ import com.rh.note.sugar.AdocIncludeSyntaxSugar;
 import com.rh.note.sugar.TitleSyntaxSugar;
 import com.rh.note.syntax.IncludeSyntax;
 import com.rh.note.syntax.TitleSyntax;
-import com.rh.note.view.*;
+import com.rh.note.view.AdocTextPaneView;
+import com.rh.note.view.InputDialogView;
+import com.rh.note.view.RootTitleNodeView;
+import com.rh.note.view.TabbedPaneView;
+import com.rh.note.view.TextScrollPaneView;
+import com.rh.note.view.TitleTreeView;
+import com.rh.note.view.TreeModelView;
 import com.rh.note.vo.FindIncludePathInSelectedTextPaneVO;
 import com.rh.note.vo.FindTitleNodeSelectedVO;
 import com.rh.note.vo.GenerateIncludeSyntaxVO;
@@ -228,9 +234,7 @@ public class WorkViewApi {
     /**
      * 刷新被选择编辑区语法高亮
      */
-    public void refreshSyntaxHighlightOfTextPaneSelected() {
-        TabbedPaneView tabbedPaneView = new TabbedPaneView().init();
-        String filePath = tabbedPaneView.getFilePathOfTextPaneSelected();
+    public void refreshSyntaxHighlightOfTextPaneByFilePath(String filePath) {
         AdocTextPaneView textPaneView = new AdocTextPaneView().init(filePath);
         if (textPaneView == null) {
             return;
@@ -238,6 +242,15 @@ public class WorkViewApi {
         // 可以考虑两个方法一起执行, 一行一行刷新语法样式
         textPaneView.clearAllFontStyle(syntaxHighlightConfig);
         textPaneView.refreshSyntaxHighlight(syntaxHighlightConfig);
+    }
+
+    /**
+     * 刷新被选择编辑区语法高亮
+     */
+    public void refreshSyntaxHighlightOfTextPaneSelected() {
+        TabbedPaneView tabbedPaneView = new TabbedPaneView().init();
+        String filePath = tabbedPaneView.getFilePathOfTextPaneSelected();
+        refreshSyntaxHighlightOfTextPaneByFilePath(filePath);
     }
 
     /**
@@ -326,18 +339,5 @@ public class WorkViewApi {
             return;
         }
         textPaneView.initContent(ao.getInitContent());
-    }
-
-    /**
-     * 光标行字体恢复为默认风格
-     */
-    public void clearLinefeedOfFontStyleBeforeCaretLine() {
-        TabbedPaneView tabbedPaneView = new TabbedPaneView().init();
-        String filePath = tabbedPaneView.getFilePathOfTextPaneSelected();
-        AdocTextPaneView textPaneView = new AdocTextPaneView().init(filePath);
-        if (textPaneView == null) {
-            return;
-        }
-        textPaneView.clearLinefeedOfFontStyleBeforeCaretLine(syntaxHighlightConfig);
     }
 }

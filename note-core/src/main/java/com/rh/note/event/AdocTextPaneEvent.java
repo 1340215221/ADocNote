@@ -5,6 +5,7 @@ import com.rh.note.action.WorkAction;
 import com.rh.note.annotation.ComponentBean;
 import com.rh.note.ao.TextPaneKeyStrokeAO;
 import com.rh.note.constants.FrameCategoryEnum;
+import com.rh.note.timer.RefreshSyntaxHighlightOfTextPaneSelectedTimer;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,9 +16,19 @@ import java.awt.event.MouseEvent;
 public class AdocTextPaneEvent {
 
     @Autowired
+    RefreshSyntaxHighlightOfTextPaneSelectedTimer timer;
+    @Autowired
     private OperationAction operationAction;
     @Autowired
     private WorkAction workAction;
+
+    /**
+     * 立即执行一个语法高亮定时任务
+     */
+    public void refresh_syntax_highlight_by_timer(String filePath) {
+        timer.cancelOnceRun();
+        workAction.refreshSyntaxHighlightOfTextPaneByFilePath(filePath);
+    }
 
     /**
      * ctrl左键点击
@@ -35,15 +46,6 @@ public class AdocTextPaneEvent {
     public void enter_input() {
         workAction.handleSyntaxSugarByCaretLineOfSelectedTextPane();
         workAction.loadRootNode();
-    }
-
-    /**
-     * 回车 监听
-     */
-    public void enter_listener(KeyEvent event) {
-        if (operationAction.isEnter(event)) {
-            workAction.clearFontStyleAfterEnter();
-        }
     }
 
     /**

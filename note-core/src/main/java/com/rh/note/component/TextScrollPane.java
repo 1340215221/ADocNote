@@ -3,6 +3,7 @@ package com.rh.note.component;
 import cn.hutool.core.io.FileUtil;
 import com.rh.note.path.FileBeanPath;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,6 +18,7 @@ public class TextScrollPane extends JScrollPane {
     /**
      * 对象地址
      */
+    @NonNull
     private FileBeanPath beanPath;
 
     /**

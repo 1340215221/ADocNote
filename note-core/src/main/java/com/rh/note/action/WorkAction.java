@@ -166,6 +166,13 @@ public class WorkAction {
     }
 
     /**
+     * 刷新指定编辑区语法高亮
+     */
+    public void refreshSyntaxHighlightOfTextPaneByFilePath(String filePath) {
+        workViewApi.refreshSyntaxHighlightOfTextPaneByFilePath(filePath);
+    }
+
+    /**
      * 刷新被选择编辑区语法高亮
      */
     public void refreshSyntaxHighlightOfTextPaneSelected() {
@@ -239,13 +246,5 @@ public class WorkAction {
             return;
         }
         workViewApi.updateRootNode(rooTitle);
-    }
-
-    /**
-     * 处理字体风格, 在换行后
-     * 不将前一行的语法高亮样式带到下一行
-     */
-    public void clearFontStyleAfterEnter() {
-        workViewApi.clearLinefeedOfFontStyleBeforeCaretLine();
     }
 }

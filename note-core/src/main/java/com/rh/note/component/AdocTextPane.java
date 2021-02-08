@@ -1,13 +1,22 @@
 package com.rh.note.component;
 
 import com.rh.note.common.IFileBeanPath;
+import com.rh.note.common.InitContextListener;
 import com.rh.note.path.FileBeanPath;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.EditorKit;
+import javax.swing.text.Element;
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import java.io.IOException;
 import java.io.Reader;
 
@@ -19,6 +28,11 @@ import java.io.Reader;
 @NoArgsConstructor
 public class AdocTextPane extends JTextPane implements IFileBeanPath {
     /**
+     * 固定的输入样式
+     * 输入样式不继承前一个字符
+     */
+    private FixedInputAttributeSet inputStyle;
+    /**
      * 对象地址
      */
     private FileBeanPath beanPath;
@@ -26,6 +40,10 @@ public class AdocTextPane extends JTextPane implements IFileBeanPath {
      * 行间距
      */
     private Float lineSpacing;
+    /**
+     * 写入内容监听
+     */
+    private InitContextListener contentInitialized;
 
     public AdocTextPane(StyledDocument doc) {
         super(doc);
@@ -45,11 +63,22 @@ public class AdocTextPane extends JTextPane implements IFileBeanPath {
         } catch (BadLocationException e) {
             throw new IOException(e.getMessage());
         }
+        if (contentInitialized != null) {
+            contentInitialized.run(beanPath.getFilePath());
+        }
     }
 
     public void setLineSpacing(Float lineSpacing) {
         this.lineSpacing = lineSpacing;
         initLineSpacing();
+    }
+
+    @Override
+    public @NotNull MutableAttributeSet getInputAttributes() {
+        if (inputStyle == null) {
+            inputStyle = new FixedInputAttributeSet(this);
+        }
+        return inputStyle;
     }
 
     /**

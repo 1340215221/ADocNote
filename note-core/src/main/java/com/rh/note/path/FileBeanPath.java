@@ -5,6 +5,7 @@ import com.rh.note.common.IArgsConstructorBean;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -18,6 +19,7 @@ public class FileBeanPath implements IArgsConstructorBean {
     /**
      * 文件项目路径
      */
+    @NonNull
     private String filePath;
 
     public static @Nullable FileBeanPath getInstance(String filePath) {

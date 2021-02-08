@@ -190,44 +190,6 @@ public class AdocTextPaneView extends BaseView<AdocTextPaneBuilder, AdocTextPane
     }
 
     /**
-     * 光标行前一行的换行符恢复为默认风格
-     * for 不将前一行的语法高亮样式带到下一行
-     */
-    public void clearLinefeedOfFontStyleBeforeCaretLine(SyntaxHighlightConfig syntaxHighlightConfig) {
-        // 获取光标前一行元素
-        int dot = textPane().getCaret().getDot();
-        if (dot < 0) {
-            return;
-        }
-        Element rootElement = textPane().getDocument().getDefaultRootElement();
-        int index = rootElement.getElementIndex(dot) - 1;
-        if (index < 0) {
-            return;
-        }
-        Element element = rootElement.getElement(index);
-        if (element == null) {
-            return;
-        }
-        // 判断行内容是以\n结尾的
-        if (element.getEndOffset() - element.getStartOffset() <= 0) {
-            return;
-        }
-        String lineContext = null;
-        try {
-            lineContext = textPane().getText(element.getStartOffset(), element.getEndOffset() - element.getStartOffset());
-        } catch (Exception e) {
-            log.error("[光标行前一行的换行符恢复为默认风格]-[获得编辑区行内容失败] error", e);
-        }
-        if (StringUtils.isBlank(lineContext) || !lineContext.endsWith("\n")) {
-            return;
-        }
-        // 设置为默认样式
-        StyledDocument document = textPane().getStyledDocument();
-        SimpleAttributeSet defaultStyle = syntaxHighlightConfig.getDefaultStyle();
-        document.setCharacterAttributes(element.getEndOffset() - 1, element.getEndOffset(), defaultStyle, true);
-    }
-
-    /**
      * 清除所有字体样式
      */
     public void clearAllFontStyle(SyntaxHighlightConfig syntaxHighlightConfig) {
@@ -240,6 +202,7 @@ public class AdocTextPaneView extends BaseView<AdocTextPaneBuilder, AdocTextPane
         document.setCharacterAttributes(rootElement.getStartOffset(), rootElement.getEndOffset() - rootElement.getStartOffset(), defaultStyle, true);
     }
 
+
     public void updateCaretLineContent(String newLineContent) {
         if (StringUtils.isBlank(newLineContent)) {
             return;
@@ -250,7 +213,7 @@ public class AdocTextPaneView extends BaseView<AdocTextPaneBuilder, AdocTextPane
         }
         String lineContent;
         try {
-            lineContent = textPane().getText(element.getStartOffset(), element.getEndOffset());
+            lineContent = textPane().getText(element.getStartOffset(), element.getEndOffset() - element.getStartOffset());
         } catch (Exception e) {
             throw new ApplicationException(ErrorCodeEnum.FAILED_TO_GET_THE_CONTENT_OF_THE_EDIT_AREA, e);
         }

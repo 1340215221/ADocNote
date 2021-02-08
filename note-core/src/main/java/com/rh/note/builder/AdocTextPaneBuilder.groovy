@@ -18,9 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired
 
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
-import javax.swing.JTabbedPane
-import java.awt.Color
-import java.awt.Font
+import javax.swing.*
+import java.awt.*
 
 /**
  * adoc编辑区
@@ -56,14 +55,16 @@ class AdocTextPaneBuilder implements BaseBuilder {
                     lineSpacing: fontConfig.getLineSpacing(),
                     background: Color.decode('#2B2B2B'),
                     foreground: Color.decode('#A9B7C6'),
+                    contentInitialized: {filePath ->
+                        event.refresh_syntax_highlight_by_timer(filePath)
+                    },
                     keyPressed: {
                         event.rename_include(it)
 //                        event.sink_title(it)
 //                        event.inline_title(it)
 //                        event.delete_include(it)
                     },
-                    keyTyped: {
-                        event.enter_listener(it)
+                    keyTyped: { // 键入后执行
                     },
                     keyReleased: {
 //                        event.open_input_prompt(it)
@@ -142,6 +143,7 @@ class AdocTextPaneBuilder implements BaseBuilder {
         def tabbedPane = swingBuilder."${TabbedPaneBuilder.id}" as JTabbedPane
         def scrollPane = getScrollPane()
         tabbedPane.add(scrollPane, beanPath.getFileName())
+        event.refresh_syntax_highlight_by_timer(beanPath.getFilePath())
         tabbedPane.setSelectedComponent(scrollPane)
     }
 }
