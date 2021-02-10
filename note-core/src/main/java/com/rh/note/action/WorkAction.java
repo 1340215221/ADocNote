@@ -1,5 +1,6 @@
 package com.rh.note.action;
 
+import com.rh.note.ao.DeleteAdocFileAO;
 import com.rh.note.ao.InitAdocTextPaneContentAO;
 import com.rh.note.ao.LoadContextAO;
 import com.rh.note.ao.OpenNewFileByFilePathAO;
@@ -14,6 +15,7 @@ import com.rh.note.api.WorkViewApi;
 import com.rh.note.constants.FrameCategoryEnum;
 import com.rh.note.exception.IsNotSyntaxSugarLineException;
 import com.rh.note.line.TitleLine;
+import com.rh.note.vo.ConfirmDeleteIncludeVO;
 import com.rh.note.vo.FindIncludePathInSelectedTextPaneVO;
 import com.rh.note.vo.FindTitleNodeSelectedVO;
 import com.rh.note.vo.GenerateIncludeSyntaxVO;
@@ -190,9 +192,33 @@ public class WorkAction {
     }
 
     /**
+     * 安全删除include
+     */
+    public void deleteIncludeOnCaretLineOfTextPaneSelected() {
+        // 弹窗确认
+        ConfirmDeleteIncludeVO confirmDeleteIncludeVO = workViewApi.confirmDeleteIncludeOnCaretLineOfTextPaneSelected();
+        if (confirmDeleteIncludeVO == null) {
+            return;
+        }
+        // 关闭指向textpane ao--targetFilePath
+        List<String> targetFilePaths = confirmDeleteIncludeVO.copyToTargetFilePath();
+        workViewApi.closeTextPaneByFilePaths(targetFilePaths);
+        // 删除指向文件 ao--targetAbsolutePath
+        DeleteAdocFileAO deleteAdocFileAO = confirmDeleteIncludeVO.copyToDeleteAdocFile();
+        fileApi.deleteAdocFile(deleteAdocFileAO);
+        // 删除当前行 ao--filePath
+        workViewApi.deleteCaretLine(confirmDeleteIncludeVO.getFilePath());
+        // 保存当前文件 ao--filePath
+        SaveTextPaneFileByFilePathAO saveTextPaneFileAO = new SaveTextPaneFileByFilePathAO();
+        saveTextPaneFileAO.copy(confirmDeleteIncludeVO);
+        TextPaneFileWritersAO textPaneFileWritersAO = fileApi.getWriterByFilePath(saveTextPaneFileAO);
+        workViewApi.saveTextPaneFileByFilePaths(textPaneFileWritersAO);
+    }
+
+    /**
      * 重命名include指向标题名
      */
-    public void renameInclude() {
+    public void renameIncludeOnCaretLineOfTextPaneSelected() {
         // 获得被选择文件 vo--filePath
         String filePath = workViewApi.getFilePathOfTextPaneSelected();
         // 获得旧标题名 ao--filePath

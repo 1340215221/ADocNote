@@ -1,9 +1,8 @@
 package com.rh.note.view;
 
 import com.rh.note.constants.PromptMessageEnum;
-import org.apache.commons.lang3.StringUtils;
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.util.Optional;
@@ -24,7 +23,8 @@ public class InputDialogView {
     /**
      * 输入文本
      */
-    private String inputText;
+    @Getter(lazy = true)
+    private final String inputText = showInputDialog();
 
     public @NotNull InputDialogView init(String defaultValue) {
         this.defaultValue = defaultValue;
@@ -41,21 +41,9 @@ public class InputDialogView {
      * 弹窗获取用户输入值
      * 不重复请求值
      */
-    private void showInputDialog() {
-        if (StringUtils.isBlank(inputText)) {
-            String msg = Optional.ofNullable(this.msg).map(PromptMessageEnum::getValue).orElse(null);
-            inputText = JOptionPane.showInputDialog(msg, defaultValue);
-        }
-    }
-
-    /**
-     * 获得输入信息
-     */
-    public @Nullable String getInputText() {
-        if (StringUtils.isBlank(inputText)) {
-            showInputDialog();
-        }
-        return inputText;
+    private String showInputDialog() {
+        String msg = Optional.ofNullable(this.msg).map(PromptMessageEnum::getValue).orElse(null);
+        return JOptionPane.showInputDialog(msg, defaultValue);
     }
 
 }

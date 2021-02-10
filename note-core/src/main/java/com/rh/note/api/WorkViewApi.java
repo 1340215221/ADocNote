@@ -15,12 +15,14 @@ import com.rh.note.sugar.TitleSyntaxSugar;
 import com.rh.note.syntax.IncludeSyntax;
 import com.rh.note.syntax.TitleSyntax;
 import com.rh.note.view.AdocTextPaneView;
+import com.rh.note.view.ConfirmDialogView;
 import com.rh.note.view.InputDialogView;
 import com.rh.note.view.RootTitleNodeView;
 import com.rh.note.view.TabbedPaneView;
 import com.rh.note.view.TextScrollPaneView;
 import com.rh.note.view.TitleTreeView;
 import com.rh.note.view.TreeModelView;
+import com.rh.note.vo.ConfirmDeleteIncludeVO;
 import com.rh.note.vo.FindIncludePathInSelectedTextPaneVO;
 import com.rh.note.vo.FindTitleNodeSelectedVO;
 import com.rh.note.vo.GenerateIncludeSyntaxVO;
@@ -339,5 +341,43 @@ public class WorkViewApi {
             return;
         }
         textPaneView.initContent(ao.getInitContent());
+    }
+
+    /**
+     * 确认删除include语句, 通过被选择的编辑区的光标行内容
+     */
+    public @Nullable ConfirmDeleteIncludeVO confirmDeleteIncludeOnCaretLineOfTextPaneSelected() {
+        // 判断是否为include语法
+        String filePath = this.getFilePathOfTextPaneSelected();
+        AdocTextPaneView textPaneView = new AdocTextPaneView().init(filePath);
+        if (textPaneView == null) {
+            return null;
+        }
+        String lineContent = textPaneView.getCaretLineContent();
+        IncludeSyntax syntax = new IncludeSyntax().init(lineContent);
+        if (syntax == null) {
+            return null;
+        }
+        // 弹窗确认
+        ConfirmDialogView confirmDialogView = new ConfirmDialogView().init(PromptMessageEnum.make_sure_to_delete_the_include_statement);
+        if (!confirmDialogView.isConfirm()) {
+            return null;
+        }
+        // 返回值
+        ConfirmDeleteIncludeVO vo = new ConfirmDeleteIncludeVO();
+        vo.copy(syntax);
+        vo.setFilePath(filePath);
+        return vo;
+    }
+
+    /**
+     * 删除光标行内容
+     */
+    public void deleteCaretLine(String filePath) {
+        AdocTextPaneView textPaneView = new AdocTextPaneView().init(filePath);
+        if (textPaneView == null) {
+            return;
+        }
+        textPaneView.deleteCaretLine();
     }
 }

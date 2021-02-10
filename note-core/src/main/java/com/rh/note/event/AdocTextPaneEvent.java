@@ -67,7 +67,17 @@ public class AdocTextPaneEvent {
      */
     public void rename_include(KeyEvent event) {
         if (operationAction.isShiftF6(event)) {
-            workAction.renameInclude();
+            workAction.renameIncludeOnCaretLineOfTextPaneSelected();
+        }
+    }
+
+    /**
+     * 删除include语法
+     */
+    public void delete_include(KeyEvent event) {
+        if (operationAction.isAltDel(event)) {
+            workAction.deleteIncludeOnCaretLineOfTextPaneSelected();
+            workAction.loadRootNode();
         }
     }
 }

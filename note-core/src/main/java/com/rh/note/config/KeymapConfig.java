@@ -72,4 +72,11 @@ public class KeymapConfig {
     public boolean isShiftF6(@NonNull KeyEvent event) {
         return event.getKeyCode() == 117 && event.getModifiers() == 1;
     }
+
+    /**
+     * 是安全删除
+     */
+    public boolean isAltDel(@NonNull KeyEvent event) {
+        return event.getKeyCode() == 127 && event.getModifiers() == 8;
+    }
 }

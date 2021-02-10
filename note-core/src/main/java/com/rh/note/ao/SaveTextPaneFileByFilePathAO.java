@@ -2,6 +2,7 @@ package com.rh.note.ao;
 
 import com.rh.note.common.BaseAO;
 import com.rh.note.util.CurrentAdocProConfigUtil;
+import com.rh.note.vo.ConfirmDeleteIncludeVO;
 import com.rh.note.vo.GenerateIncludeSyntaxVO;
 import com.rh.note.vo.RequestNewNameOfIncludeOnCaretLineVO;
 import lombok.NonNull;
@@ -11,7 +12,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
@@ -54,10 +54,7 @@ public class SaveTextPaneFileByFilePathAO implements BaseAO {
      * 文件项目路径 转 绝对路径
      */
     public @Nullable String coverAbsolutePath(String filePath) {
-        if (StringUtils.isBlank(filePath)) {
-            return null;
-        }
-        if (StringUtils.isBlank(proPath)) {
+        if (StringUtils.isBlank(filePath) || StringUtils.isBlank(proPath)) {
             return null;
         }
         return proPath + filePath;
@@ -85,24 +82,23 @@ public class SaveTextPaneFileByFilePathAO implements BaseAO {
     }
 
     public void copyTarget(RequestNewNameOfIncludeOnCaretLineVO vo) {
-        if (vo == null) {
+        if (vo == null || StringUtils.isBlank(vo.getTargetFilePath())) {
             return;
         }
-        String targetFilePath = vo.getTargetFilePath();
-        if (StringUtils.isBlank(targetFilePath)) {
-            return;
-        }
-        filePaths = Collections.singletonList(targetFilePath);
+        filePaths = Collections.singletonList(vo.getTargetFilePath());
     }
 
     public void copyCurrent(RequestNewNameOfIncludeOnCaretLineVO vo) {
-        if (vo == null) {
+        if (vo == null || StringUtils.isBlank(vo.getCurrentFilePath())) {
             return;
         }
-        String currentFilePath = vo.getCurrentFilePath();
-        if (StringUtils.isBlank(currentFilePath)) {
+        filePaths = Collections.singletonList(vo.getCurrentFilePath());
+    }
+
+    public void copy(ConfirmDeleteIncludeVO vo) {
+        if (vo == null || StringUtils.isBlank(vo.getFilePath())) {
             return;
         }
-        filePaths = Collections.singletonList(currentFilePath);
+        filePaths = Collections.singletonList(vo.getFilePath());
     }
 }

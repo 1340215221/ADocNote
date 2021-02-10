@@ -49,4 +49,11 @@ public class OperationAction {
     public boolean isShiftF6(KeyEvent event) {
         return keymap.isShiftF6(event);
     }
+
+    /**
+     * 是安全删除
+     */
+    public boolean isAltDel(KeyEvent event) {
+        return keymap.isAltDel(event);
+    }
 }

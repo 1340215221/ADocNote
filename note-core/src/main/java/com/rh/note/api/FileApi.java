@@ -3,6 +3,7 @@ package com.rh.note.api;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.CharsetUtil;
 import com.rh.note.ao.CheckIsAdocProjectAO;
+import com.rh.note.ao.DeleteAdocFileAO;
 import com.rh.note.ao.RenameAdocFileAO;
 import com.rh.note.ao.SaveTextPaneFileByFilePathAO;
 import com.rh.note.ao.TextPaneFileWritersAO;
@@ -127,5 +128,18 @@ public class FileApi {
         } catch (Exception e) {
             throw new ApplicationException(ErrorCodeEnum.FAILED_TO_CREATE_ADOC_FILE);
         }
+    }
+
+    /**
+     * 删除adoc文件
+     * todo 可以改为,将文件移动到垃圾箱,从git中删除文件
+     */
+    public void deleteAdocFile(DeleteAdocFileAO ao) {
+        if (ao == null || ao.checkMissRequiredParams() || !FileUtil.isFile(ao.getAbsolutePath())
+                || !ao.getAbsolutePath().endsWith("adoc")
+        ) {
+            return;
+        }
+        FileUtil.del(ao.getAbsolutePath());
     }
 }

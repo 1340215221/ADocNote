@@ -41,7 +41,7 @@ public class AdocTextPane extends JTextPane implements IFileBeanPath {
      */
     private Float lineSpacing;
     /**
-     * 写入内容监听
+     * 内容变更监听
      */
     private ChangeContextListener contentChanged;
 

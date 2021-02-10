@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.rh.note</groupId>
     <artifactId>note-run</artifactId>
-    <version>1.4.0</version>
+    <version>1.5.0</version>
     <name>note-run</name>
     <packaging>jar</packaging>
 
@@ -47,7 +47,7 @@
         <dependency>
             <groupId>com.rh.note</groupId>
             <artifactId>note-core</artifactId>
-            <version>1.4.0</version>
+            <version>1.5.0</version>
         </dependency>
     </dependencies>
 

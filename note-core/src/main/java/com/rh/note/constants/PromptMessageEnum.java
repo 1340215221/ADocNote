@@ -10,8 +10,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum PromptMessageEnum {
-
     rename_include_message("请输入新的标签名"),
+    make_sure_to_delete_the_include_statement("确定删除include语句"),
     ;
     @NonNull
     private String value;

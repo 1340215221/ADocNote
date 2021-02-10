@@ -256,4 +256,16 @@ public class AdocTextPaneView extends BaseView<AdocTextPaneBuilder, AdocTextPane
         }
         throw new ApplicationException(ErrorCodeEnum.FAILED_TO_UPDATE_FILE_ROOT_TITLE_NAME);
     }
+
+    /**
+     * 删除光标行内容
+     */
+    public void deleteCaretLine() {
+        Element element = this.getCaretLineElement();
+        if (element == null) {
+            return;
+        }
+        textPane().select(element.getStartOffset(), element.getEndOffset());
+        textPane().replaceSelection("");
+    }
 }

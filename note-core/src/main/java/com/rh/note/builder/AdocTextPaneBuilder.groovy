@@ -60,9 +60,9 @@ class AdocTextPaneBuilder implements BaseBuilder {
                     },
                     keyPressed: {
                         event.rename_include(it)
+                        event.delete_include(it)
 //                        event.sink_title(it)
 //                        event.inline_title(it)
-//                        event.delete_include(it)
                     },
                     keyTyped: { // 键入后执行
                     },
