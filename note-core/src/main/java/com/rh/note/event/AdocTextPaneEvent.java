@@ -3,6 +3,9 @@ package com.rh.note.event;
 import com.rh.note.action.OperationAction;
 import com.rh.note.action.WorkAction;
 import com.rh.note.annotation.ComponentBean;
+import com.rh.note.ao.OpenIncludePointingAdocFileAO;
+import com.rh.note.ao.OpenIncludePointingFileBaseAO;
+import com.rh.note.ao.OpenIncludePointingJavaFileAO;
 import com.rh.note.ao.TextPaneKeyStrokeAO;
 import com.rh.note.constants.FrameCategoryEnum;
 import com.rh.note.timer.RefreshSyntaxHighlightOfTextPaneSelectedTimer;
@@ -34,9 +37,17 @@ public class AdocTextPaneEvent {
      * ctrl左键点击
      */
     public void enter_include_file(MouseEvent event) {
-        boolean isCtrlLeftClick = operationAction.isCtrlLeftClick(event);
-        if (isCtrlLeftClick) {
-            workAction.openIncludePointingAdocFileInSelectedTextPane();
+        if (operationAction.isCtrlLeftClick(event)) {
+            workAction.openIncludePointingFileInSelectedTextPane(new OpenIncludePointingAdocFileAO());
+        }
+    }
+
+    /**
+     * 进入java文件
+     */
+    public void enter_include_java_file(MouseEvent event) {
+        if (operationAction.isCtrlLeftClick(event)) {
+            workAction.openIncludePointingFileInSelectedTextPane(new OpenIncludePointingJavaFileAO());
         }
     }
 

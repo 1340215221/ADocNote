@@ -66,7 +66,7 @@ public class FileApi {
             return null;
         }
         return ao.forEach((String absolutePath) -> {
-            if (!FileUtil.isFile(absolutePath)) {
+            if (!FileUtil.isFile(absolutePath) || !absolutePath.endsWith("adoc")) {
                 return null;
             }
             return FileUtil.getWriter(absolutePath, CharsetUtil.UTF_8, false);
@@ -76,10 +76,8 @@ public class FileApi {
     /**
      * 读取文件内容
      */
-    public @Nullable Reader readAdocFileContent(String absolutePath) {
-        if (StringUtils.isBlank(absolutePath) || !FileUtil.isFile(absolutePath)
-                || !"adoc".equalsIgnoreCase(FileUtil.extName(absolutePath))
-        ) {
+    public @Nullable Reader getFileReader(String absolutePath) {
+        if (StringUtils.isBlank(absolutePath) || !FileUtil.isFile(absolutePath)) {
             return null;
         }
         return FileUtil.getReader(absolutePath, CharsetUtil.CHARSET_UTF_8);

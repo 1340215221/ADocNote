@@ -7,7 +7,6 @@ import com.rh.note.ao.UpdateCaretLineAO;
 import com.rh.note.ao.UpdateRootTitleOfTextPaneAO;
 import com.rh.note.config.SyntaxHighlightConfig;
 import com.rh.note.constants.PromptMessageEnum;
-import com.rh.note.exception.UnknownBusinessSituationException;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.FileBeanPath;
 import com.rh.note.sugar.AdocIncludeSyntaxSugar;
@@ -17,6 +16,7 @@ import com.rh.note.syntax.TitleSyntax;
 import com.rh.note.view.AdocTextPaneView;
 import com.rh.note.view.ConfirmDialogView;
 import com.rh.note.view.InputDialogView;
+import com.rh.note.view.JavaTextPaneView;
 import com.rh.note.view.RootTitleNodeView;
 import com.rh.note.view.TabbedPaneView;
 import com.rh.note.view.TextScrollPaneView;
@@ -28,7 +28,6 @@ import com.rh.note.vo.FindTitleNodeSelectedVO;
 import com.rh.note.vo.GenerateIncludeSyntaxVO;
 import com.rh.note.vo.RequestNewNameOfIncludeOnCaretLineVO;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,23 +70,19 @@ public class WorkViewApi {
      * 显示已打开文件
      */
     public void showOpenedFileByFilePath(String filePath) {
-        AdocTextPaneView textPaneView = new AdocTextPaneView().init(filePath);
-        if (textPaneView == null) {
-            return;
-        }
         TextScrollPaneView scrollPaneView = new TextScrollPaneView().init(filePath);
         if (scrollPaneView == null) {
-            throw new UnknownBusinessSituationException();
+            return;
         }
         TabbedPaneView tabbedPaneView = new TabbedPaneView().init();
         tabbedPaneView.show(scrollPaneView);
     }
 
     /**
-     * 判断adoc文件已打开
+     * 判断文件在编辑区已打开
      */
     public boolean checkIsOpenedFile(String filePath) {
-        return StringUtils.isNotBlank(filePath) && new AdocTextPaneView().init(filePath) != null;
+        return new TextScrollPaneView().init(filePath) != null;
     }
 
     /**
@@ -111,7 +106,7 @@ public class WorkViewApi {
     }
 
     /**
-     * 生成编辑区
+     * 生成adoc编辑区
      */
     public void createAdocTextPane(FileBeanPath beanPath, Reader reader) {
         if (beanPath == null || reader == null) {
@@ -119,6 +114,19 @@ public class WorkViewApi {
         }
         // 创建编辑区
         AdocTextPaneView textPaneView = new AdocTextPaneView().create(beanPath);
+        // 加载编辑区内容
+        textPaneView.initContent(reader);
+    }
+
+    /**
+     * 生成java编辑区
+     */
+    public void createJavaTextPane(FileBeanPath beanPath, Reader reader) {
+        if (beanPath == null || reader == null) {
+            return;
+        }
+        // 创建编辑区
+        JavaTextPaneView textPaneView = new JavaTextPaneView().create(beanPath);
         // 加载编辑区内容
         textPaneView.initContent(reader);
     }
@@ -157,10 +165,14 @@ public class WorkViewApi {
         }
         filePaths.forEach(filePath -> {
             AdocTextPaneView textPaneView = new AdocTextPaneView().init(filePath);
-            if (textPaneView == null) {
+            if (textPaneView != null) {
+                textPaneView.close();
                 return;
             }
-            textPaneView.close();
+            JavaTextPaneView javaTextPaneView = new JavaTextPaneView().init(filePath);
+            if (javaTextPaneView != null) {
+                javaTextPaneView.close();
+            }
         });
     }
 

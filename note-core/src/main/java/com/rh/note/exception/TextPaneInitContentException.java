@@ -5,9 +5,9 @@ package com.rh.note.exception;
  * 需要的处理操作:<br/>
  * 销毁AdocTextPaneBuilder
  */
-public class AdocTextPaneInitContentException extends ApplicationException {
+public class TextPaneInitContentException extends ApplicationException {
 
-    public AdocTextPaneInitContentException(Exception e) {
+    public TextPaneInitContentException(Exception e) {
         super(ErrorCodeEnum.FAILED_TO_INITIALIZE_EDIT_AREA_CONTENT, e);
     }
 }

@@ -9,9 +9,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * 打开新adoc文件编辑区,通过文件路径 参数
+ * 打开新文件编辑区,通过文件路径 参数
  */
-public class OpenNewFileByFilePathAO implements BaseAO {
+public abstract class OpenNewFileByFilePathBaseAO implements BaseAO {
     /**
      * 文件项目路径
      */

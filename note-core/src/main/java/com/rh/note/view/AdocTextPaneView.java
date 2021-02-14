@@ -5,7 +5,7 @@ import com.rh.note.builder.AdocTextPaneBuilder;
 import com.rh.note.common.BaseView;
 import com.rh.note.component.AdocTextPane;
 import com.rh.note.config.SyntaxHighlightConfig;
-import com.rh.note.exception.AdocTextPaneInitContentException;
+import com.rh.note.exception.TextPaneInitContentException;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.exception.TextPaneWriterToFileException;
@@ -71,7 +71,7 @@ public class AdocTextPaneView extends BaseView<AdocTextPaneBuilder, AdocTextPane
         try {
             textPane().read(reader, null);
         } catch (Exception e) {
-            throw new AdocTextPaneInitContentException(e);
+            throw new TextPaneInitContentException(e);
         } finally {
             IoUtil.close(reader);
         }

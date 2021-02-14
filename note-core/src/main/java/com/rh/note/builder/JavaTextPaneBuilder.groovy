@@ -4,15 +4,14 @@ import cn.hutool.core.util.StrUtil
 import com.rh.note.annotation.ComponentBean
 import com.rh.note.app.config.UserFontConfig
 import com.rh.note.common.BaseBuilder
-import com.rh.note.component.AdocTextPane
+import com.rh.note.component.JavaTextPane
 import com.rh.note.component.TextScrollPane
 import com.rh.note.constants.FrameCategoryEnum
 import com.rh.note.constants.ScopeEnum
-import com.rh.note.event.AdocTextPaneEvent
+import com.rh.note.event.JavaTextPaneEvent
+import com.rh.note.factory.JavaTextPaneFactory
 import com.rh.note.factory.TextScrollPaneFactory
-import com.rh.note.factory.AdocTextPaneFactory
 import com.rh.note.path.FileBeanPath
-import com.rh.note.util.KeymapAction
 import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -22,13 +21,13 @@ import javax.swing.*
 import java.awt.*
 
 /**
- * adoc编辑区
+ * java编辑区
  */
-@ComponentBean(frame = FrameCategoryEnum.WORK, scope = ScopeEnum.PROTOTYPE, name = AdocTextPaneBuilder.text_pane_id)
-class AdocTextPaneBuilder implements BaseBuilder {
+@ComponentBean(frame = FrameCategoryEnum.WORK, scope = ScopeEnum.PROTOTYPE, name = JavaTextPaneBuilder.text_pane_id)
+class JavaTextPaneBuilder implements BaseBuilder {
 
-    public static final String text_pane_id = 'adoc_text_pane_{}'
-    public static final String scroll_pane_id = 'scroll_pane_{}'
+    public static final String text_pane_id = 'java_text_pane_{}'
+    public static final String scroll_pane_id = AdocTextPaneBuilder.scroll_pane_id
     @Autowired
     private Font textFont
     @Autowired
@@ -36,49 +35,30 @@ class AdocTextPaneBuilder implements BaseBuilder {
     @Autowired
     private SwingBuilder swingBuilder
     @Autowired
-    private AdocTextPaneEvent event
+    private JavaTextPaneEvent event
     @Autowired
-    private AdocTextPaneFactory textPaneF
+    private JavaTextPaneFactory jTextPaneF
     @Autowired
     private TextScrollPaneFactory tScrollPaneF
     private FileBeanPath beanPath
 
-    AdocTextPaneBuilder(FileBeanPath beanPath) {
+    JavaTextPaneBuilder(FileBeanPath beanPath) {
         this.beanPath = beanPath
     }
 
     @PostConstruct
     void init() {
         def textPane = {
-            swingBuilder.textPane(id: textPaneId(),
+            swingBuilder.jTextPane(id: textPaneId(),
                     font: textFont,
                     lineSpacing: fontConfig.getLineSpacing(),
                     background: Color.decode('#2B2B2B'),
                     foreground: Color.decode('#A9B7C6'),
+                    beanPath: beanPath,
                     contentChanged: {filePath ->
                         event.refresh_syntax_highlight_by_timer(filePath)
                     },
-                    keyPressed: {
-                        event.rename_include(it)
-                        event.delete_include(it)
-//                        event.sink_title(it)
-//                        event.inline_title(it)
-                    },
-                    keyTyped: { // 键入后执行
-                    },
-                    keyReleased: {
-//                        event.open_input_prompt(it)
-                    },
-                    mouseClicked: {
-                        event.enter_include_file(it)
-                        event.enter_include_java_file(it)
-                    },
-                    caretUpdate: {
-//                        event.move_caret()
-                    },
-                    beanPath: beanPath,
             ) {
-                addKeymap()
             }
         }
 
@@ -107,19 +87,6 @@ class AdocTextPaneBuilder implements BaseBuilder {
         swingBuilder.variables.remove(scrollPaneId())
     }
 
-    /**
-     * 添加keymap
-     * 替换已有按键操作
-     */
-    private void addKeymap() {
-        def textPane = swingBuilder."${textPaneId()}" as AdocTextPane
-        def keymap = new KeymapAction("textPane", textPane.keymap)
-                .addEnterAction { event.enter_input() }
-                .addUpAction { event.select_previous_on_prompt(it) }
-                .addDownAction { event.select_next_on_prompt(it) }
-        textPane.setKeymap(keymap)
-    };
-
     String textPaneId() {
         return StrUtil.format(text_pane_id, beanPath.getFilePath())
     }
@@ -128,11 +95,12 @@ class AdocTextPaneBuilder implements BaseBuilder {
         return StrUtil.format(scroll_pane_id, beanPath.getFilePath())
     }
 
+    // todo 可以分出来一个 textScrollPaneBuilder
     TextScrollPane getScrollPane() {
         return swingBuilder."${scrollPaneId()}"
     }
 
-    AdocTextPane getTextPane() {
+    JavaTextPane getTextPane() {
         return swingBuilder."${textPaneId()}"
     }
 
@@ -143,7 +111,6 @@ class AdocTextPaneBuilder implements BaseBuilder {
         def tabbedPane = swingBuilder."${TabbedPaneBuilder.id}" as JTabbedPane
         def scrollPane = getScrollPane()
         tabbedPane.add(scrollPane, beanPath.getFileName())
-        event.refresh_syntax_highlight_by_timer(beanPath.getFilePath())
         tabbedPane.setSelectedComponent(scrollPane)
     }
 }

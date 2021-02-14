@@ -1,35 +1,26 @@
 package com.rh.note.component;
 
 import com.rh.note.common.ChangeContextListener;
-import com.rh.note.common.IFileBeanPath;
 import com.rh.note.plug.ILineSpacingTextPane;
+import com.rh.note.plug.IReadOnlyTextPane;
 import com.rh.note.path.FileBeanPath;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
-import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.StyledDocument;
 import java.io.IOException;
 import java.io.Reader;
 
 /**
- * 编辑面板
+ * java编辑区
  */
-@Getter
 @Setter
-@NoArgsConstructor
-public class AdocTextPane extends JTextPane implements IFileBeanPath, ILineSpacingTextPane {
-    /**
-     * 固定的输入样式
-     * 输入样式不继承前一个字符
-     */
-    private FixedInputAttributeSet inputStyle;
+@Getter
+public class JavaTextPane extends JTextPane implements IReadOnlyTextPane, ILineSpacingTextPane {
     /**
      * 对象地址
      */
@@ -43,8 +34,14 @@ public class AdocTextPane extends JTextPane implements IFileBeanPath, ILineSpaci
      */
     private ChangeContextListener contentChanged;
 
-    public AdocTextPane(StyledDocument doc) {
+    public JavaTextPane() {
+        super();
+        this.setReadOnly();
+    }
+
+    public JavaTextPane(StyledDocument doc) {
         super(doc);
+        this.setReadOnly();
     }
 
     @Override
@@ -69,29 +66,5 @@ public class AdocTextPane extends JTextPane implements IFileBeanPath, ILineSpaci
     public void setLineSpacing(Float lineSpacing) {
         this.lineSpacing = lineSpacing;
         this.initLineSpacing();
-    }
-
-    @Override
-    public @NotNull MutableAttributeSet getInputAttributes() {
-        if (inputStyle == null) {
-            inputStyle = new FixedInputAttributeSet(this);
-        }
-        return inputStyle;
-    }
-
-    @Override
-    public void replaceSelection(String content) {
-        super.replaceSelection(content);
-        if (contentChanged != null) {
-            contentChanged.run(beanPath.getFilePath());
-        }
-    }
-
-    @Override
-    public void setText(String t) {
-        super.setText(t);
-        if (contentChanged != null) {
-            contentChanged.run(beanPath.getFilePath());
-        }
     }
 }

@@ -1,6 +1,7 @@
 package com.rh.note.vo;
 
-import com.rh.note.ao.OpenNewFileByFilePathAO;
+import com.rh.note.ao.OpenNewAdocFileByFilePathAO;
+import com.rh.note.ao.OpenNewFileByFilePathBaseAO;
 import com.rh.note.line.TitleLine;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,8 +26,8 @@ public class FindTitleNodeSelectedVO {
         filePath = titleLine.getBeanPath().getFilePath();
     }
 
-    public @NotNull OpenNewFileByFilePathAO copyTo() {
-        OpenNewFileByFilePathAO ao = new OpenNewFileByFilePathAO();
+    public @NotNull OpenNewFileByFilePathBaseAO copyTo() {
+        OpenNewFileByFilePathBaseAO ao = new OpenNewAdocFileByFilePathAO();
         ao.setFilePath(filePath);
         return ao;
     }

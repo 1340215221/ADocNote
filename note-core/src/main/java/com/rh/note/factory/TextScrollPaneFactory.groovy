@@ -12,12 +12,12 @@ import javax.swing.*
 import java.awt.*
 
 @ComponentBean(FrameCategoryEnum.WORK)
-class AdocScrollPaneFactory extends BeanFactory {
+class TextScrollPaneFactory extends BeanFactory {
 
     @Autowired
     private SwingBuilder swingBuilder
 
-    AdocScrollPaneFactory() {
+    TextScrollPaneFactory() {
         super(TextScrollPane, false)
     }
 

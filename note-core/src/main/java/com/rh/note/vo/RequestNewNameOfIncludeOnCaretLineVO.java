@@ -1,6 +1,7 @@
 package com.rh.note.vo;
 
-import com.rh.note.ao.OpenNewFileByFilePathAO;
+import com.rh.note.ao.OpenNewAdocFileByFilePathAO;
+import com.rh.note.ao.OpenNewFileByFilePathBaseAO;
 import com.rh.note.ao.RenameAdocFileAO;
 import com.rh.note.ao.UpdateCaretLineAO;
 import com.rh.note.ao.UpdateRootTitleOfTextPaneAO;
@@ -130,8 +131,8 @@ public class RequestNewNameOfIncludeOnCaretLineVO {
         return ao;
     }
 
-    public @NotNull OpenNewFileByFilePathAO copyToOpenNewFile() {
-        OpenNewFileByFilePathAO ao = new OpenNewFileByFilePathAO();
+    public @NotNull OpenNewFileByFilePathBaseAO copyToOpenNewFile() {
+        OpenNewFileByFilePathBaseAO ao = new OpenNewAdocFileByFilePathAO();
         ao.setFilePath(getNewTargetFilePath());
         return ao;
     }

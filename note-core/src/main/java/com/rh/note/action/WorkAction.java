@@ -3,7 +3,10 @@ package com.rh.note.action;
 import com.rh.note.ao.DeleteAdocFileAO;
 import com.rh.note.ao.InitAdocTextPaneContentAO;
 import com.rh.note.ao.LoadContextAO;
-import com.rh.note.ao.OpenNewFileByFilePathAO;
+import com.rh.note.ao.OpenIncludePointingFileBaseAO;
+import com.rh.note.ao.OpenNewAdocFileByFilePathAO;
+import com.rh.note.ao.OpenNewFileByFilePathBaseAO;
+import com.rh.note.ao.OpenNewJavaFileByFilePathAO;
 import com.rh.note.ao.RenameAdocFileAO;
 import com.rh.note.ao.SaveTextPaneFileByFilePathAO;
 import com.rh.note.ao.TextPaneFileWritersAO;
@@ -20,6 +23,7 @@ import com.rh.note.vo.FindIncludePathInSelectedTextPaneVO;
 import com.rh.note.vo.FindTitleNodeSelectedVO;
 import com.rh.note.vo.GenerateIncludeSyntaxVO;
 import com.rh.note.vo.RequestNewNameOfIncludeOnCaretLineVO;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,18 +93,19 @@ public class WorkAction {
     }
 
     /**
-     * 打开include行指向的adoc文件, 通过被选择的编辑区
+     * 打开include行指向的文件, 通过被选择的编辑区
      */
-    public void openIncludePointingAdocFileInSelectedTextPane() {
+    public void openIncludePointingFileInSelectedTextPane(@NonNull OpenIncludePointingFileBaseAO ao) {
         FindIncludePathInSelectedTextPaneVO vo = workViewApi.getIncludePathInSelectedTextPane();
-        if (vo == null) {
+        ao.setVo(vo);
+        if (ao.checkParamError()) {
             return;
         }
         // 显示已打开文件
-        workViewApi.showOpenedFileByFilePath(vo.getFilePath());
+        workViewApi.showOpenedFileByFilePath(ao.getTargetFilePath());
         // 打开文件, 加载内容, 并显示
-        OpenNewFileByFilePathAO openNewFileByFilePathAO = vo.copyTo();
-        openNewFileByFilePath(openNewFileByFilePathAO);
+        OpenNewFileByFilePathBaseAO openNewFileAO = ao.copyTo();
+        openNewFileByFilePath(openNewFileAO);
     }
 
     /**
@@ -126,7 +131,7 @@ public class WorkAction {
         // 创建adoc文件
         fileApi.createAdocFile(syntaxVO.getTargetAbsolutePath());
         // 打开新文件
-        OpenNewFileByFilePathAO openNewFileAO = new OpenNewFileByFilePathAO();
+        OpenNewFileByFilePathBaseAO openNewFileAO = new OpenNewAdocFileByFilePathAO();
         openNewFileAO.copy(syntaxVO);
         this.openNewFileByFilePath(openNewFileAO);
         // 初始化新文件内容
@@ -149,22 +154,30 @@ public class WorkAction {
         // 显示已打开文件
         workViewApi.showOpenedFileByFilePath(findTitleNodeSelectedVO.getFilePath());
         // 打开文件, 加载内容, 并显示
-        OpenNewFileByFilePathAO openNewFileByFilePathAO = findTitleNodeSelectedVO.copyTo();
+        OpenNewFileByFilePathBaseAO openNewFileByFilePathAO = findTitleNodeSelectedVO.copyTo();
         openNewFileByFilePath(openNewFileByFilePathAO);
     }
 
     /**
      * 打开文件, 加载内容, 并显示
      */
-    private void openNewFileByFilePath(OpenNewFileByFilePathAO ao) {
+    private void openNewFileByFilePath(OpenNewFileByFilePathBaseAO ao) {
         // 判断adoc文件已打开
         if (ao == null || ao.checkMissRequiredParams() || workViewApi.checkIsOpenedFile(ao.getFilePath())) {
             return;
         }
-        // 读取文件内容
-        Reader reader = fileApi.readAdocFileContent(ao.getAbsolutePath());
-        // 生成编辑区
-        workViewApi.createAdocTextPane(ao.getBeanPath(), reader);
+        if (ao instanceof OpenNewAdocFileByFilePathAO) {
+            // 读取文件内容
+            Reader reader = fileApi.getFileReader(ao.getAbsolutePath());
+            // 生成编辑区
+            workViewApi.createAdocTextPane(ao.getBeanPath(), reader);
+        }
+        if (ao instanceof OpenNewJavaFileByFilePathAO) {
+            // 读取文件内容
+            Reader reader = fileApi.getFileReader(ao.getAbsolutePath());
+            // 生成编辑区
+            workViewApi.createJavaTextPane(ao.getBeanPath(), reader);
+        }
     }
 
     /**
@@ -245,7 +258,7 @@ public class WorkAction {
             return;
         }
         // 打开对应textpane ao--newFilePath
-        OpenNewFileByFilePathAO openNewFileByFilePathAO = requestNewNameVO.copyToOpenNewFile();
+        OpenNewFileByFilePathBaseAO openNewFileByFilePathAO = requestNewNameVO.copyToOpenNewFile();
         this.openNewFileByFilePath(openNewFileByFilePathAO);
         // 修改对应textpane内容中的根标题 ao--newFilePath,newTitleName
         UpdateRootTitleOfTextPaneAO updateRootTitleOfTextPaneAO = requestNewNameVO.copyToUpdateRootNode();
