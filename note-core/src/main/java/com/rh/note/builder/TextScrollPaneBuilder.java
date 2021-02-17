@@ -12,5 +12,5 @@ public interface TextScrollPaneBuilder extends BaseBuilder {
 
     String scroll_pane_id = "scroll_pane_{}";
 
-    default TextScrollPane getScrollPane() { return null; }
+    TextScrollPane getScrollPane();
 }
