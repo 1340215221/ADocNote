@@ -17,10 +17,15 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * 基础视图
@@ -97,6 +102,13 @@ public abstract class BaseView<B extends BaseBuilder, C> {
         }
         // 从容器中获得builder
         if (!context.containsBean(beanName)) {
+            List<String> beanNames = getBeanNameByBuilders(clazz, args);
+            beanName = beanNames.stream()
+                    .filter(context::containsBean)
+                    .findFirst()
+                    .orElse(null);
+        }
+        if (beanName == null) {
             return null;
         }
         builder = (B) context.getBean(beanName);
@@ -109,6 +121,38 @@ public abstract class BaseView<B extends BaseBuilder, C> {
      */
     protected @NotNull C getComponent(@NonNull Function<B, C> function) {
         return function.apply(builder);
+    }
+
+    /**
+     * 获得builders中的对象名
+     */
+    private @NotNull List<String> getBeanNameByBuilders(Class<B> clazz, String[] args) {
+        if (clazz == null) {
+            return Collections.emptyList();
+        }
+        ComponentBean annotation = AnnotationUtils.findAnnotation(clazz, ComponentBean.class);
+        if (annotation == null) {
+            return Collections.emptyList();
+        }
+        Map<String, Object> attributeMap = AnnotationUtils.getAnnotationAttributes(annotation);
+        if (MapUtils.isEmpty(attributeMap)) {
+            return Collections.emptyList();
+        }
+        // 从builders中获得对象名
+        Object builders = attributeMap.get("builders");
+        if (ArrayUtil.isEmpty(builders)) {
+            return Collections.emptyList();
+        }
+        return Arrays.stream(((Object[]) builders))
+                .filter(e -> e instanceof Class)
+                .map(bClass -> AnnotationUtils.findAnnotation((Class) bClass, ComponentBean.class))
+                .filter(Objects::nonNull)
+                .map(AnnotationUtils::getAnnotationAttributes)
+                .filter(MapUtils::isNotEmpty)
+                .map(map -> (String) map.get("name"))
+                .filter(StringUtils::isNotBlank)
+                .map(e -> replaceBeanNameParam(e, args))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -128,16 +172,12 @@ public abstract class BaseView<B extends BaseBuilder, C> {
         }
         // 从name中获得对象名
         Object beanName = attributeMap.get("name");
-        if (StringUtils.isNotBlank((CharSequence) beanName)) {
-            // 替换对象名参数
-            return replaceBeanNameParam(((String) beanName), args);
+        if (StringUtils.isBlank((CharSequence) beanName)) {
+            // 类名作为对象名
+            return clazz.getSimpleName();
         }
-        // 从builders中获得对象名
-        Object builders = attributeMap.get("builders");
-        if (ArrayUtil.isNotEmpty(builders)) {
-        }
-        // 类名作为对象名
-        return clazz.getSimpleName();
+        // 替换对象名参数
+        return replaceBeanNameParam(((String) beanName), args);
     }
 
     /**
