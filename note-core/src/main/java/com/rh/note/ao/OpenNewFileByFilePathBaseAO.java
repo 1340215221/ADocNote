@@ -45,9 +45,6 @@ public abstract class OpenNewFileByFilePathBaseAO implements BaseAO {
      * 获得对象路径
      */
     public @Nullable FileBeanPath getBeanPath() {
-        if (StringUtils.isBlank(filePath)) {
-            return null;
-        }
         return FileBeanPath.getInstance(filePath);
     }
 

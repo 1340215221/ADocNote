@@ -1,5 +1,6 @@
 package com.rh.note.style;
 
+import com.rh.note.common.ISyntaxStyleHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -14,7 +15,7 @@ import java.util.regex.Pattern;
  * 列表 单词样式
  * todo 应该是段落样式的
  */
-public class ListWordStyle {
+public class ListWordStyle implements ISyntaxStyleHandler {
     /**
      * . - *
      */

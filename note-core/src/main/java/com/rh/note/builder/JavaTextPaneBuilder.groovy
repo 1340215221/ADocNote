@@ -24,10 +24,9 @@ import java.awt.*
  * java编辑区
  */
 @ComponentBean(frame = FrameCategoryEnum.WORK, scope = ScopeEnum.PROTOTYPE, name = JavaTextPaneBuilder.text_pane_id)
-class JavaTextPaneBuilder implements BaseBuilder {
+class JavaTextPaneBuilder implements BaseBuilder, TextScrollPaneBuilder {
 
     public static final String text_pane_id = 'java_text_pane_{}'
-    public static final String scroll_pane_id = AdocTextPaneBuilder.scroll_pane_id
     @Autowired
     private Font textFont
     @Autowired
@@ -95,7 +94,6 @@ class JavaTextPaneBuilder implements BaseBuilder {
         return StrUtil.format(scroll_pane_id, beanPath.getFilePath())
     }
 
-    // todo 可以分出来一个 textScrollPaneBuilder
     TextScrollPane getScrollPane() {
         return swingBuilder."${scrollPaneId()}"
     }

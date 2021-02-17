@@ -1,5 +1,6 @@
 package com.rh.note.style;
 
+import com.rh.note.common.ISyntaxStyleHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -13,7 +14,7 @@ import java.util.regex.Pattern;
 /**
  * 标签 行样式
  */
-public class LabelLineStyle {
+public class LabelLineStyle implements ISyntaxStyleHandler {
     /**
      * [source,java] 中 [,]
      */

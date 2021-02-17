@@ -5,8 +5,10 @@ import com.rh.note.ao.InitAdocTextPaneContentAO;
 import com.rh.note.ao.TextPaneFileWritersAO;
 import com.rh.note.ao.UpdateCaretLineAO;
 import com.rh.note.ao.UpdateRootTitleOfTextPaneAO;
+import com.rh.note.bean.SyntaxStyleContext;
 import com.rh.note.config.SyntaxHighlightConfig;
 import com.rh.note.constants.PromptMessageEnum;
+import com.rh.note.constants.SyntaxTypeEnum;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.FileBeanPath;
 import com.rh.note.sugar.AdocIncludeSyntaxSugar;
@@ -253,9 +255,7 @@ public class WorkViewApi {
         if (textPaneView == null) {
             return;
         }
-        // 可以考虑两个方法一起执行, 一行一行刷新语法样式
-        textPaneView.clearAllFontStyle(syntaxHighlightConfig);
-        textPaneView.refreshSyntaxHighlight(syntaxHighlightConfig);
+        textPaneView.forEachLine(new SyntaxStyleContext(SyntaxTypeEnum.ADOC, syntaxHighlightConfig.getDefaultStyle()));
     }
 
     /**

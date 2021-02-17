@@ -1,11 +1,16 @@
 package com.rh.note.annotation;
 
+import com.rh.note.common.BaseBuilder;
 import com.rh.note.constants.FrameCategoryEnum;
 import com.rh.note.constants.ScopeEnum;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Indexed;
 
-import java.lang.annotation.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * 自定义注入注解
@@ -33,4 +38,8 @@ public @interface ComponentBean {
      */
     @AliasFor("frame")
     FrameCategoryEnum value() default FrameCategoryEnum.ABANDONED;
+    /**
+     * 多对象名所在builder
+     */
+    Class<? extends BaseBuilder>[] builders() default {};
 }

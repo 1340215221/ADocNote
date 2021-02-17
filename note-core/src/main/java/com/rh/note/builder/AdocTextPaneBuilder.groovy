@@ -9,8 +9,8 @@ import com.rh.note.component.TextScrollPane
 import com.rh.note.constants.FrameCategoryEnum
 import com.rh.note.constants.ScopeEnum
 import com.rh.note.event.AdocTextPaneEvent
-import com.rh.note.factory.TextScrollPaneFactory
 import com.rh.note.factory.AdocTextPaneFactory
+import com.rh.note.factory.TextScrollPaneFactory
 import com.rh.note.path.FileBeanPath
 import com.rh.note.util.KeymapAction
 import groovy.swing.SwingBuilder
@@ -25,10 +25,9 @@ import java.awt.*
  * adoc编辑区
  */
 @ComponentBean(frame = FrameCategoryEnum.WORK, scope = ScopeEnum.PROTOTYPE, name = AdocTextPaneBuilder.text_pane_id)
-class AdocTextPaneBuilder implements BaseBuilder {
+class AdocTextPaneBuilder implements BaseBuilder, TextScrollPaneBuilder {
 
     public static final String text_pane_id = 'adoc_text_pane_{}'
-    public static final String scroll_pane_id = 'scroll_pane_{}'
     @Autowired
     private Font textFont
     @Autowired

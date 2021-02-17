@@ -1,5 +1,6 @@
 package com.rh.note.common;
 
+import cn.hutool.core.util.ArrayUtil;
 import com.rh.note.annotation.ComponentBean;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
@@ -125,13 +126,18 @@ public abstract class BaseView<B extends BaseBuilder, C> {
         if (MapUtils.isEmpty(attributeMap)) {
             return null;
         }
+        // 从name中获得对象名
         Object beanName = attributeMap.get("name");
-        // 类名作为对象名
-        if (!(beanName instanceof String) || StringUtils.isBlank((String) beanName)) {
-            return clazz.getSimpleName();
+        if (StringUtils.isNotBlank((CharSequence) beanName)) {
+            // 替换对象名参数
+            return replaceBeanNameParam(((String) beanName), args);
         }
-        // 替换对象名参数
-        return replaceBeanNameParam(((String) beanName), args);
+        // 从builders中获得对象名
+        Object builders = attributeMap.get("builders");
+        if (ArrayUtil.isNotEmpty(builders)) {
+        }
+        // 类名作为对象名
+        return clazz.getSimpleName();
     }
 
     /**

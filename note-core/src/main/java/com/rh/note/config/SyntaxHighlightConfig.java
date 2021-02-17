@@ -1,11 +1,11 @@
 package com.rh.note.config;
 
-import com.rh.note.style.AdocFontStyle;
 import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import java.awt.*;
@@ -15,21 +15,24 @@ import java.awt.*;
  */
 @Component
 public class SyntaxHighlightConfig {
-    /**
-     * adoc样式
-     */
-    @Getter
-    private final AdocFontStyle adocFontStyle = new AdocFontStyle();
+
     @Autowired
     private Font font;
+    /**
+     * 默认编辑区样式
+     */
+    @Getter
+    @NonNull
+    private SimpleAttributeSet defaultStyle;
 
     /**
      * 获得默认样式
      */
-    public @NotNull SimpleAttributeSet getDefaultStyle() {
+    @PostConstruct
+    private void initDefaultStyle() {
         SimpleAttributeSet style = new SimpleAttributeSet();
         StyleConstants.setFontSize(style, font.getSize());
         StyleConstants.setFontFamily(style, font.getFamily());
-        return style;
+        defaultStyle = style;
     }
 }

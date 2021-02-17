@@ -1,5 +1,6 @@
 package com.rh.note.style;
 
+import com.rh.note.common.ISyntaxStyleHandler;
 import com.rh.note.constants.RegexConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -14,7 +15,7 @@ import java.util.regex.Pattern;
 /**
  * 标题行样式
  */
-public class TitleLineStyle {
+public class TitleLineStyle implements ISyntaxStyleHandler {
     /**
      * === Java笔记
      */

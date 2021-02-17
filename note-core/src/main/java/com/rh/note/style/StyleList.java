@@ -34,15 +34,23 @@ public class StyleList {
         }
     }
 
-    public @NotNull StyleList addAll(StyleList list) {
+    public void addAll(StyleList list) {
         if (list == null || list.isEmpty()) {
-            return this;
-        }
-        if (isEmpty()) {
-            return list;
+            return;
         }
         this.list.addAll(list.list);
-        return this;
     }
 
+    /**
+     * 获得启用的样式
+     * todo
+     */
+    public @NotNull StyleList getEnableStyle() {
+        // 过滤启用的集合
+        StyleList styleList = new StyleList();
+        styleList.list.addAll(list);
+        // 删除启用的
+        list.clear();
+        return styleList;
+    }
 }

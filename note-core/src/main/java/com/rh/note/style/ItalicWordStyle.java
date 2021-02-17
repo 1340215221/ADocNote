@@ -1,5 +1,6 @@
 package com.rh.note.style;
 
+import com.rh.note.common.ISyntaxStyleHandler;
 import com.rh.note.constants.RegexConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -14,7 +15,7 @@ import java.util.regex.Pattern;
 /**
  * adoc斜体 单词样式
  */
-public class ItalicWordStyle {
+public class ItalicWordStyle implements ISyntaxStyleHandler {
     /**
      * _word_ 中 _
      */
