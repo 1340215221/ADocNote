@@ -30,7 +30,6 @@ public interface ILineSpacingTextPane {
             return;
         }
         SimpleAttributeSet set = new SimpleAttributeSet();
-//        StyleConstants.setLineSpacing(set, getLineSpacing());
         StyleConstants.setSpaceBelow(set, getLineSpacing());
         Element element = document.getDefaultRootElement();
         document.setParagraphAttributes(element.getStartOffset(), element.getEndOffset(), set, false);

@@ -10,7 +10,7 @@ public class UserFontConfig {
     /**
      * 行间距
      */
-    private Float lineSpacing = 0.2f;
+    private Float lineSpacing = 4f;
     /**
      * linux字体名
      */
