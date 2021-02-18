@@ -1,22 +1,36 @@
 package com.rh.note
 
-import com.rh.note.style.MethodNameLineStyle
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
-import java.util.regex.Pattern
+import groovy.swing.SwingBuilder
+
+import javax.swing.*
+import javax.swing.text.SimpleAttributeSet
+import javax.swing.text.StyleConstants
+import java.awt.BorderLayout
 
 class TestDemo {
 
-    static Logger log = LoggerFactory.getLogger(TestDemo)
-
     static main(args) {
-        String str = "    public static void main(args) {";
-        def matcher = Pattern.compile(MethodNameLineStyle.regex).matcher(str)
-        if (!matcher.find()) {
-            println 'not find'
-            return
+        def builder = new SwingBuilder()
+        builder.frame(id: 'frame',
+                defaultCloseOperation: JFrame.EXIT_ON_CLOSE,
+                size: [900, 500],
+                locationRelativeTo: null,
+        ){
+            builder.panel(layout: new BorderLayout()){
+                builder.scrollPane(){
+                    builder.textPane(id: 'textPane'){
+                    }
+                }
+            }
         }
-        println matcher.group(1)
+
+        builder.frame.visible = true
+
+        def textPane = builder.textPane as JTextPane
+        def set = new SimpleAttributeSet()
+        StyleConstants.setSpaceBelow(set, 2)
+//        StyleConstants.setSpaceAbove(set, 20)
+        textPane.getStyledDocument().setParagraphAttributes(0, 1, set, true)
     }
 }

@@ -56,6 +56,7 @@ public class BlockCommentLineStyle implements ISyntaxStyleHandler {
         int startOffset = matcher.start(1);
         SimpleAttributeSet style = new SimpleAttributeSet();
         StyleConstants.setForeground(style, color);
+        StyleConstants.setItalic(style, true);
         return StyleItem.getInstance(style, startOffset, comment.length());
     }
 }
