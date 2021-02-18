@@ -117,7 +117,7 @@ class AdocTextPaneBuilder implements BaseBuilder, TextScrollPaneBuilder {
                 .addUpAction { event.select_previous_on_prompt(it) }
                 .addDownAction { event.select_next_on_prompt(it) }
         textPane.setKeymap(keymap)
-    };
+    }
 
     String textPaneId() {
         return StrUtil.format(text_pane_id, beanPath.getFilePath())
