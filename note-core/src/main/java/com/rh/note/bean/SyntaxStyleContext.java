@@ -43,17 +43,24 @@ public class SyntaxStyleContext {
         if (StringUtils.isBlank(lineContent)) {
             return;
         }
-        Stream.of(AdocSyntaxStyleEnum.values(), JavaSyntaxStyleEnum.values())
-                .flatMap(Arrays::stream)
-                .filter((ISyntaxStyle e) -> { // 判断是否结束对当前行的解析
-                    StyleList list = e.match(lineContent, this);
-                    if (list == null || list.isEmpty()) {
-                        return false;
-                    }
-                    styleList.addAll(list);
-                    return e.isEnd();
-                })
-                .findFirst();
+        Stream<ISyntaxStyle> stream = null;
+        if (SyntaxTypeEnum.ADOC.equals(styleType)) {
+            stream = Arrays.stream(AdocSyntaxStyleEnum.values());
+        }
+        if (SyntaxTypeEnum.JAVA.equals(styleType)) {
+            stream = Arrays.stream(JavaSyntaxStyleEnum.values());
+        }
+        if (stream == null) {
+            return;
+        }
+        stream.filter((ISyntaxStyle e) -> { // 判断是否结束对当前行的解析
+            StyleList list = e.match(lineContent, this);
+            if (list == null || list.isEmpty()) {
+                return false;
+            }
+            styleList.addAll(list);
+            return e.isEnd();
+        }).findFirst();
     }
 
     /**

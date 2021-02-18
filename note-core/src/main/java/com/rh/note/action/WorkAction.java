@@ -181,10 +181,17 @@ public class WorkAction {
     }
 
     /**
-     * 刷新指定编辑区语法高亮
+     * 刷新指定adoc编辑区语法高亮
      */
-    public void refreshSyntaxHighlightOfTextPaneByFilePath(String filePath) {
-        workViewApi.refreshSyntaxHighlightOfTextPaneByFilePath(filePath);
+    public void refreshSyntaxHighlightOfAdocTextPaneByFilePath(String filePath) {
+        workViewApi.refreshSyntaxHighlightOfAdocTextPaneByFilePath(filePath);
+    }
+
+    /**
+     * 刷新指定java编辑区语法高亮
+     */
+    public void refreshSyntaxHighlightOfJavaTextPaneByFilePath(String filePath) {
+        workViewApi.refreshSyntaxHighlightOfJavaTextPaneByFilePath(filePath);
     }
 
     /**

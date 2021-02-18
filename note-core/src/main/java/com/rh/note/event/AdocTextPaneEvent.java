@@ -4,7 +4,6 @@ import com.rh.note.action.OperationAction;
 import com.rh.note.action.WorkAction;
 import com.rh.note.annotation.ComponentBean;
 import com.rh.note.ao.OpenIncludePointingAdocFileAO;
-import com.rh.note.ao.OpenIncludePointingFileBaseAO;
 import com.rh.note.ao.OpenIncludePointingJavaFileAO;
 import com.rh.note.ao.TextPaneKeyStrokeAO;
 import com.rh.note.constants.FrameCategoryEnum;
@@ -30,7 +29,7 @@ public class AdocTextPaneEvent {
      */
     public void refresh_syntax_highlight_by_timer(String filePath) {
         timer.cancelOnceRun();
-        workAction.refreshSyntaxHighlightOfTextPaneByFilePath(filePath);
+        workAction.refreshSyntaxHighlightOfAdocTextPaneByFilePath(filePath);
     }
 
     /**

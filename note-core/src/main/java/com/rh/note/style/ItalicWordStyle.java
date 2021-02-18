@@ -37,7 +37,7 @@ public class ItalicWordStyle implements ISyntaxStyleHandler {
 
     public @NotNull StyleList getStyle() {
         StyleList list = new StyleList();
-        while (matcher.find()) {
+        while (matcher != null && matcher.find()) {
             list.add(getMarkStylePre());
             list.add(getWordStyle());
             list.add(getMarkStyleSub());

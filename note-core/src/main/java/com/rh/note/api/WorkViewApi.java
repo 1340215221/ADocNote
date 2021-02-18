@@ -15,20 +15,8 @@ import com.rh.note.sugar.AdocIncludeSyntaxSugar;
 import com.rh.note.sugar.TitleSyntaxSugar;
 import com.rh.note.syntax.IncludeSyntax;
 import com.rh.note.syntax.TitleSyntax;
-import com.rh.note.view.AdocTextPaneView;
-import com.rh.note.view.ConfirmDialogView;
-import com.rh.note.view.InputDialogView;
-import com.rh.note.view.JavaTextPaneView;
-import com.rh.note.view.RootTitleNodeView;
-import com.rh.note.view.TabbedPaneView;
-import com.rh.note.view.TextScrollPaneView;
-import com.rh.note.view.TitleTreeView;
-import com.rh.note.view.TreeModelView;
-import com.rh.note.vo.ConfirmDeleteIncludeVO;
-import com.rh.note.vo.FindIncludePathInSelectedTextPaneVO;
-import com.rh.note.vo.FindTitleNodeSelectedVO;
-import com.rh.note.vo.GenerateIncludeSyntaxVO;
-import com.rh.note.vo.RequestNewNameOfIncludeOnCaretLineVO;
+import com.rh.note.view.*;
+import com.rh.note.vo.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -250,7 +238,7 @@ public class WorkViewApi {
     /**
      * 刷新被选择编辑区语法高亮
      */
-    public void refreshSyntaxHighlightOfTextPaneByFilePath(String filePath) {
+    public void refreshSyntaxHighlightOfAdocTextPaneByFilePath(String filePath) {
         AdocTextPaneView textPaneView = new AdocTextPaneView().init(filePath);
         if (textPaneView == null) {
             return;
@@ -261,10 +249,21 @@ public class WorkViewApi {
     /**
      * 刷新被选择编辑区语法高亮
      */
+    public void refreshSyntaxHighlightOfJavaTextPaneByFilePath(String filePath) {
+        JavaTextPaneView textPaneView = new JavaTextPaneView().init(filePath);
+        if (textPaneView == null) {
+            return;
+        }
+        textPaneView.forEachLine(new SyntaxStyleContext(SyntaxTypeEnum.JAVA, syntaxHighlightConfig.getDefaultStyle()));
+    }
+
+    /**
+     * 刷新被选择编辑区语法高亮
+     */
     public void refreshSyntaxHighlightOfTextPaneSelected() {
         TabbedPaneView tabbedPaneView = new TabbedPaneView().init();
         String filePath = tabbedPaneView.getFilePathOfTextPaneSelected();
-        refreshSyntaxHighlightOfTextPaneByFilePath(filePath);
+        refreshSyntaxHighlightOfAdocTextPaneByFilePath(filePath);
     }
 
     /**
