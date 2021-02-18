@@ -4,8 +4,10 @@ import com.rh.note.common.ChangeContextListener;
 import com.rh.note.plug.ILineSpacingTextPane;
 import com.rh.note.plug.IReadOnlyTextPane;
 import com.rh.note.path.FileBeanPath;
+import com.rh.note.plug.NoLineWrapTextPanePlug;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Delegate;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
@@ -21,6 +23,11 @@ import java.io.Reader;
 @Setter
 @Getter
 public class JavaTextPane extends JTextPane implements IReadOnlyTextPane, ILineSpacingTextPane {
+    /**
+     * 不自动换行插件
+     */
+    @Delegate
+    private NoLineWrapTextPanePlug plug = new NoLineWrapTextPanePlug(this);
     /**
      * 对象地址
      */
