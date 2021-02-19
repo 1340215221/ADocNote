@@ -28,7 +28,7 @@ public class ProListEvent {
     public void clicked_project_list(@NonNull MouseEvent mouseEvent) {
         boolean isDoubleClick = operationAction.isDoubleClick(mouseEvent);
         if (isDoubleClick) {
-//            proManageAction.syncProject();
+            proManageAction.syncProject();
             proManageAction.openAdocProjectSelected();
         }
     }

@@ -6,11 +6,11 @@ import com.rh.note.common.BaseBuilder;
 import com.rh.note.config.FrameLaunchConfig;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
-import lombok.NoArgsConstructor;
 import org.eclipse.jgit.api.AddCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.EmptyCommitException;
 import org.eclipse.jgit.merge.MergeStrategy;
+import org.eclipse.jgit.transport.FetchResult;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -19,7 +19,6 @@ import java.io.File;
 /**
  * git工具对象
  */
-@NoArgsConstructor
 public class GitUtil implements BaseBuilder {
 
     private FrameLaunchConfig config;
@@ -74,7 +73,7 @@ public class GitUtil implements BaseBuilder {
 
     public void pull() throws ApplicationException {
         try {
-            // 不带密码提交
+            // 不带密码更新
             git.pull().setStrategy(MergeStrategy.SIMPLE_TWO_WAY_IN_CORE).call();
         } catch (Exception e) {
             throw new ApplicationException(ErrorCodeEnum.PULL_OPERATION_FAILED, e);
@@ -83,5 +82,27 @@ public class GitUtil implements BaseBuilder {
 
     public void close() {
         git.close();
+    }
+
+    public void fetch() {
+        try {
+            FetchResult call = git.fetch().call();
+            System.out.println("msg: " + call.getMessages());
+            call.submoduleResults().forEach((str, result) -> {
+                System.out.println(str);
+                System.out.println(result.getMessages());
+                System.out.println("------------------");
+            });
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void reset() {
+        try {
+            git.reset().call();
+        } catch (Exception e) {
+            throw new ApplicationException(ErrorCodeEnum.GIT_MERGE_RECOVERY_FAILED, e);
+        }
     }
 }

@@ -22,7 +22,12 @@ public class GitApi {
             git.init();
             git.add();
             git.commit();
-            git.pull();
+            try {
+                git.pull();
+            } catch (Exception e) {
+                git.reset(); // 合并失败时, 删除合并信息, 方便手动合并
+                throw e;
+            }
         } finally {
             git.close();
         }

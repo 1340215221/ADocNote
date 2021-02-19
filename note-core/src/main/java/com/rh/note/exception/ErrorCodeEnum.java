@@ -34,6 +34,7 @@ public enum ErrorCodeEnum {
     COMMIT_OPERATION_FAILED(5002, "commit 操作失败"),
     PULL_OPERATION_FAILED(5003, "pull 操作失败"),
     CANCEL_OPEN_PROJECT(5004, "git同步失败, 取消打开项目"),
+    GIT_MERGE_RECOVERY_FAILED(5005, "git合并恢复失败, 取消打开项目"),
     ;
     @NonNull
     private Integer code;
