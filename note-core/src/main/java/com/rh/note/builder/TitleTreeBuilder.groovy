@@ -6,13 +6,14 @@ import com.rh.note.component.TitleTreeNodeIconRenderer
 import com.rh.note.constants.FrameCategoryEnum
 import com.rh.note.event.TitleTreeEvent
 import com.rh.note.factory.DefaultTreeModelFactory
+import com.rh.note.util.GitUtil
 import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
 import javax.annotation.PostConstruct
-import javax.swing.JTree
+import javax.swing.*
 import javax.swing.tree.DefaultTreeModel
-import java.awt.BorderLayout
+import java.awt.*
 
 /**
  * 标题树
@@ -28,6 +29,8 @@ class TitleTreeBuilder implements BaseBuilder {
     private TitleTreeEvent event
     @Autowired
     private DefaultTreeModelFactory factory
+    @Autowired
+    private GitUtil gitUtil
 
     @PostConstruct
     void init() {
@@ -45,6 +48,7 @@ class TitleTreeBuilder implements BaseBuilder {
                     },
                     cellRenderer: new TitleTreeNodeIconRenderer(), // 用于处理树节点的图标
             ) {
+                event.sync_project()
                 event.load_root_node()
             }
         }

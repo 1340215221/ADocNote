@@ -28,6 +28,11 @@ public enum ErrorCodeEnum {
     FAILED_TO_UPDATE_FILE_ROOT_TITLE_NAME(3002, "更新文件根标题名字失败"),
     // 文件
     FAILED_TO_CREATE_ADOC_FILE(4000, "创建adoc文件失败"),
+    // git
+    GIT_OPERATION_OBJECT_CREATION_FAILED(5000, "git操作对象创建失败"),
+    GIT_ADD_OPERATION_FAILED(5001, "git add 操作失败"),
+    COMMIT_OPERATION_FAILED(5002, "commit 操作失败"),
+    PULL_OPERATION_FAILED(5003, "pull 操作失败"),
     ;
     @NonNull
     private Integer code;

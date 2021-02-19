@@ -107,7 +107,7 @@ public class FrameContextApi {
     /**
      * 退出应用
      */
-    public void exitApp() {
+    public void forceExitApp() {
         System.exit(0);
     }
 }

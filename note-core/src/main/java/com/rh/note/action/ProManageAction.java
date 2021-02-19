@@ -4,6 +4,7 @@ import com.rh.note.ao.CheckIsAdocProjectAO;
 import com.rh.note.ao.LoadContextAO;
 import com.rh.note.api.FileApi;
 import com.rh.note.api.FrameContextApi;
+import com.rh.note.api.GitApi;
 import com.rh.note.api.ProManageViewApi;
 import com.rh.note.app.config.UserProPathConfig;
 import com.rh.note.constants.FrameCategoryEnum;
@@ -69,6 +70,6 @@ public class ProManageAction {
      */
     public void exitApp() {
         frameContextApi.closeContext();
-        frameContextApi.exitApp();
+        frameContextApi.forceExitApp();
     }
 }

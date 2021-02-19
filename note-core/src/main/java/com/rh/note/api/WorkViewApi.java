@@ -391,4 +391,12 @@ public class WorkViewApi {
         }
         textPaneView.deleteCaretLine();
     }
+
+    /**
+     * 弹窗提示git操作失败
+     */
+    public void promptGitOperationFailed() {
+        ErrorMsgDialogView errorMsgDialogView = new ErrorMsgDialogView().init(PromptMessageEnum.GIT_OPERATION_FAILED);
+        errorMsgDialogView.showConfirmDialog();
+    }
 }
