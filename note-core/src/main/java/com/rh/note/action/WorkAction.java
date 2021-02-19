@@ -6,8 +6,6 @@ import com.rh.note.api.FrameContextApi;
 import com.rh.note.api.GitApi;
 import com.rh.note.api.WorkViewApi;
 import com.rh.note.constants.FrameCategoryEnum;
-import com.rh.note.exception.ApplicationException;
-import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.exception.IsNotSyntaxSugarLineException;
 import com.rh.note.line.TitleLine;
 import com.rh.note.util.CurrentAdocProConfigUtil;
@@ -298,7 +296,8 @@ public class WorkAction {
                 log.error("[项目关闭时, 同步项目内容] error", e);
                 boolean isOk = workViewApi.promptGitOperationFailed();
                 if (!isOk) {
-                    throw new ApplicationException(ErrorCodeEnum.CANCEL_OPEN_PROJECT);
+                    log.info("[项目关闭时, 取消同步项目内容]");
+                    return;
                 }
             }
         }
