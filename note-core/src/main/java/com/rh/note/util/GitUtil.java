@@ -1,19 +1,16 @@
 package com.rh.note.util;
 
 import cn.hutool.core.io.FileUtil;
-import com.rh.note.annotation.ComponentBean;
 import com.rh.note.app.config.UserGitConfig;
 import com.rh.note.common.BaseBuilder;
 import com.rh.note.config.FrameLaunchConfig;
-import com.rh.note.constants.FrameCategoryEnum;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
+import lombok.NoArgsConstructor;
 import org.eclipse.jgit.api.AddCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.EmptyCommitException;
 import org.eclipse.jgit.merge.MergeStrategy;
-import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -22,13 +19,16 @@ import java.io.File;
 /**
  * git工具对象
  */
-@ComponentBean(FrameCategoryEnum.WORK)
+@NoArgsConstructor
 public class GitUtil implements BaseBuilder {
 
-    @Autowired
     private FrameLaunchConfig config;
     private UserGitConfig gitConfig = new UserGitConfig();
     private Git git;
+
+    public GitUtil(String absolutePath) {
+        config = FrameLaunchConfig.getInstance(absolutePath);
+    }
 
     @PostConstruct
     public void init() {
@@ -47,10 +47,6 @@ public class GitUtil implements BaseBuilder {
         if (git != null) {
             git.close();
         }
-    }
-
-    public @NotNull GitUtil getUtil() {
-        return this;
     }
 
     /**
@@ -83,5 +79,9 @@ public class GitUtil implements BaseBuilder {
         } catch (Exception e) {
             throw new ApplicationException(ErrorCodeEnum.PULL_OPERATION_FAILED, e);
         }
+    }
+
+    public void close() {
+        git.close();
     }
 }

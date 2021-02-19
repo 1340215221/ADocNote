@@ -33,6 +33,7 @@ public enum ErrorCodeEnum {
     GIT_ADD_OPERATION_FAILED(5001, "git add 操作失败"),
     COMMIT_OPERATION_FAILED(5002, "commit 操作失败"),
     PULL_OPERATION_FAILED(5003, "pull 操作失败"),
+    CANCEL_OPEN_PROJECT(5004, "git同步失败, 取消打开项目"),
     ;
     @NonNull
     private Integer code;

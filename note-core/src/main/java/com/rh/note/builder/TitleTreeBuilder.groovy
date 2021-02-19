@@ -11,9 +11,9 @@ import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
 import javax.annotation.PostConstruct
-import javax.swing.*
+import javax.swing.JTree
 import javax.swing.tree.DefaultTreeModel
-import java.awt.*
+import java.awt.BorderLayout
 
 /**
  * 标题树
@@ -48,7 +48,6 @@ class TitleTreeBuilder implements BaseBuilder {
                     },
                     cellRenderer: new TitleTreeNodeIconRenderer(), // 用于处理树节点的图标
             ) {
-                event.sync_project()
                 event.load_root_node()
             }
         }

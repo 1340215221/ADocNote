@@ -1,7 +1,8 @@
 package com.rh.note.api;
 
+import cn.hutool.core.io.FileUtil;
 import com.rh.note.exception.ApplicationException;
-import com.rh.note.view.GitView;
+import com.rh.note.util.GitUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -12,11 +13,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class GitApi {
 
-    /**
-     * 更新代码
-     */
-    public void pull() throws ApplicationException {
-        GitView git = new GitView().init();
-        git.pull();
+    public void pull(String absolutePath) throws ApplicationException {
+        if (!FileUtil.isAbsolutePath(absolutePath) || !FileUtil.isDirectory(absolutePath)) {
+            return;
+        }
+        GitUtil git = new GitUtil(absolutePath);
+        try {
+            git.init();
+            git.add();
+            git.commit();
+            git.pull();
+        } finally {
+            git.close();
+        }
     }
 }

@@ -1,14 +1,28 @@
 package com.rh.note.action;
 
-import com.rh.note.ao.*;
+import com.rh.note.ao.DeleteAdocFileAO;
+import com.rh.note.ao.InitAdocTextPaneContentAO;
+import com.rh.note.ao.LoadContextAO;
+import com.rh.note.ao.OpenIncludePointingFileBaseAO;
+import com.rh.note.ao.OpenNewAdocFileByFilePathAO;
+import com.rh.note.ao.OpenNewFileByFilePathBaseAO;
+import com.rh.note.ao.OpenNewJavaFileByFilePathAO;
+import com.rh.note.ao.RenameAdocFileAO;
+import com.rh.note.ao.SaveTextPaneFileByFilePathAO;
+import com.rh.note.ao.TextPaneFileWritersAO;
+import com.rh.note.ao.UpdateCaretLineAO;
+import com.rh.note.ao.UpdateRootTitleOfTextPaneAO;
 import com.rh.note.api.FileApi;
 import com.rh.note.api.FrameContextApi;
-import com.rh.note.api.GitApi;
 import com.rh.note.api.WorkViewApi;
 import com.rh.note.constants.FrameCategoryEnum;
 import com.rh.note.exception.IsNotSyntaxSugarLineException;
 import com.rh.note.line.TitleLine;
-import com.rh.note.vo.*;
+import com.rh.note.vo.ConfirmDeleteIncludeVO;
+import com.rh.note.vo.FindIncludePathInSelectedTextPaneVO;
+import com.rh.note.vo.FindTitleNodeSelectedVO;
+import com.rh.note.vo.GenerateIncludeSyntaxVO;
+import com.rh.note.vo.RequestNewNameOfIncludeOnCaretLineVO;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -32,23 +46,6 @@ public class WorkAction {
     private FrameContextApi frameContextApi;
     @Autowired
     private FileApi fileApi;
-    @Autowired
-    private GitApi gitApi;
-
-    /**
-     * git更新
-     */
-    public void syncProject() {
-        while (true) {
-            try {
-                gitApi.pull();
-                break;
-            } catch (Exception e) {
-                log.error("[项目启动时, 同步项目内容] error", e);
-                workViewApi.promptGitOperationFailed();
-            }
-        }
-    }
 
     /**
      * 保存所有编辑区内容

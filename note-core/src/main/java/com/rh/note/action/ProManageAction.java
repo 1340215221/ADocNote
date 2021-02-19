@@ -8,6 +8,8 @@ import com.rh.note.api.GitApi;
 import com.rh.note.api.ProManageViewApi;
 import com.rh.note.app.config.UserProPathConfig;
 import com.rh.note.constants.FrameCategoryEnum;
+import com.rh.note.exception.ApplicationException;
+import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.vo.FindSelectedProPathVO;
 import com.rh.note.vo.ProItemVO;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +32,8 @@ public class ProManageAction {
     private ProManageViewApi proManageViewApi;
     @Autowired
     private FileApi fileApi;
+    @Autowired
+    private GitApi gitApi;
 
     /**
      * 打开项目管理窗口
@@ -71,5 +75,24 @@ public class ProManageAction {
     public void exitApp() {
         frameContextApi.closeContext();
         frameContextApi.forceExitApp();
+    }
+
+    /**
+     * 同步项目
+     */
+    public void syncProject() {
+        FindSelectedProPathVO findSelectedProPathVO = proManageViewApi.getSelectedProPathInProList();
+        while (true) {
+            try {
+                gitApi.pull(findSelectedProPathVO.getProPath());
+                break;
+            } catch (Exception e) {
+                log.error("[项目启动时, 同步项目内容] error", e);
+                boolean isOk = proManageViewApi.promptGitOperationFailed();
+                if (!isOk) {
+                    throw new ApplicationException(ErrorCodeEnum.CANCEL_OPEN_PROJECT);
+                }
+            }
+        }
     }
 }

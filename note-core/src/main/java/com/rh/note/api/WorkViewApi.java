@@ -15,8 +15,20 @@ import com.rh.note.sugar.AdocIncludeSyntaxSugar;
 import com.rh.note.sugar.TitleSyntaxSugar;
 import com.rh.note.syntax.IncludeSyntax;
 import com.rh.note.syntax.TitleSyntax;
-import com.rh.note.view.*;
-import com.rh.note.vo.*;
+import com.rh.note.view.AdocTextPaneView;
+import com.rh.note.view.ConfirmDialogView;
+import com.rh.note.view.InputDialogView;
+import com.rh.note.view.JavaTextPaneView;
+import com.rh.note.view.RootTitleNodeView;
+import com.rh.note.view.TabbedPaneView;
+import com.rh.note.view.TextScrollPaneView;
+import com.rh.note.view.TitleTreeView;
+import com.rh.note.view.TreeModelView;
+import com.rh.note.vo.ConfirmDeleteIncludeVO;
+import com.rh.note.vo.FindIncludePathInSelectedTextPaneVO;
+import com.rh.note.vo.FindTitleNodeSelectedVO;
+import com.rh.note.vo.GenerateIncludeSyntaxVO;
+import com.rh.note.vo.RequestNewNameOfIncludeOnCaretLineVO;
 import org.apache.commons.collections4.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -390,13 +402,5 @@ public class WorkViewApi {
             return;
         }
         textPaneView.deleteCaretLine();
-    }
-
-    /**
-     * 弹窗提示git操作失败
-     */
-    public void promptGitOperationFailed() {
-        ErrorMsgDialogView errorMsgDialogView = new ErrorMsgDialogView().init(PromptMessageEnum.GIT_OPERATION_FAILED);
-        errorMsgDialogView.showConfirmDialog();
     }
 }

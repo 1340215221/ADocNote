@@ -27,11 +27,4 @@ public class TitleTreeEvent {
     public void load_root_node() {
         workAction.loadRootNode();
     }
-
-    /**
-     * 同步项目
-     */
-    public void sync_project() {
-        workAction.syncProject();
-    }
 }
