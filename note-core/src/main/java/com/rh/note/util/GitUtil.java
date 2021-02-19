@@ -100,6 +100,7 @@ public class GitUtil implements BaseBuilder {
                 // 添加提交密码
                 push.setCredentialsProvider(new UsernamePasswordCredentialsProvider(gitConfig.getUsername(), gitConfig.getPassword()));
             }
+            push.setTimeout(60);
             push.call();
         } catch (Exception e) {
             throw new ApplicationException(ErrorCodeEnum.GIT_PUSH_FAILED, e);
