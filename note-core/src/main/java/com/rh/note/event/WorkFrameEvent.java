@@ -19,6 +19,7 @@ public class WorkFrameEvent {
      */
     public void close_frame() {
         workAction.saveAllTextPaneFile();
+        workAction.gitPush();
         workAction.closeContext();
     }
 }

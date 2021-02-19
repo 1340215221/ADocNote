@@ -8,9 +8,10 @@ import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
 import org.eclipse.jgit.api.AddCommand;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.PushCommand;
 import org.eclipse.jgit.api.errors.EmptyCommitException;
 import org.eclipse.jgit.merge.MergeStrategy;
-import org.eclipse.jgit.transport.FetchResult;
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -84,25 +85,24 @@ public class GitUtil implements BaseBuilder {
         git.close();
     }
 
-    public void fetch() {
-        try {
-            FetchResult call = git.fetch().call();
-            System.out.println("msg: " + call.getMessages());
-            call.submoduleResults().forEach((str, result) -> {
-                System.out.println(str);
-                System.out.println(result.getMessages());
-                System.out.println("------------------");
-            });
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public void reset() {
         try {
             git.reset().call();
         } catch (Exception e) {
             throw new ApplicationException(ErrorCodeEnum.GIT_MERGE_RECOVERY_FAILED, e);
+        }
+    }
+
+    public void push() {
+        try {
+            PushCommand push = git.push();
+            if (true) {
+                // 添加提交密码
+                push.setCredentialsProvider(new UsernamePasswordCredentialsProvider(gitConfig.getUsername(), gitConfig.getPassword()));
+            }
+            push.call();
+        } catch (Exception e) {
+            throw new ApplicationException(ErrorCodeEnum.GIT_PUSH_FAILED, e);
         }
     }
 }

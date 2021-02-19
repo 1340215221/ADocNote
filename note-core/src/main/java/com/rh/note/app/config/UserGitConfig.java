@@ -14,11 +14,11 @@ public class UserGitConfig {
     /**
      * 用户名
      */
-    private String username;
+    private String username = "1340215221";
     /**
      * 密码
      */
-    private String password;
+    private String password = "rh67505509aru";
     /**
      * 提交目录
      */
