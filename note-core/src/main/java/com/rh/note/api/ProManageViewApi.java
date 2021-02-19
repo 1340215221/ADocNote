@@ -26,8 +26,6 @@ public class ProManageViewApi {
      * 弹窗提示git操作失败
      */
     public boolean promptGitOperationFailed() {
-//        ErrorMsgDialogView errorMsgDialogView = new ErrorMsgDialogView().init(PromptMessageEnum.GIT_OPERATION_FAILED);
-//        errorMsgDialogView.showConfirmDialog();
         ConfirmDialogView dialogView = new ConfirmDialogView().init(PromptMessageEnum.GIT_OPERATION_FAILED);
         return dialogView.isConfirm();
     }

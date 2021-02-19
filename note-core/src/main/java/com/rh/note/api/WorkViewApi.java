@@ -403,4 +403,12 @@ public class WorkViewApi {
         }
         textPaneView.deleteCaretLine();
     }
+
+    /**
+     * 弹窗提示git操作失败
+     */
+    public boolean promptGitOperationFailed() {
+        ConfirmDialogView dialogView = new ConfirmDialogView().init(PromptMessageEnum.GIT_OPERATION_FAILED);
+        return dialogView.isConfirm();
+    }
 }
