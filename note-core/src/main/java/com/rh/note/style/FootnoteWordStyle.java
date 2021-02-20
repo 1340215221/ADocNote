@@ -1,0 +1,93 @@
+package com.rh.note.style;
+
+import com.rh.note.common.ISyntaxStyleHandler;
+import org.apache.commons.lang3.StringUtils;
+
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import java.awt.Color;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ * 脚注 单词样式
+ */
+public class FootnoteWordStyle implements ISyntaxStyleHandler {
+    /**
+     * footnote:[ content ]
+     * footnote:[]
+     */
+    private static final Color markColor = Color.decode("#0F9795");
+    /**
+     * footnote:[ content ]
+     * content
+     */
+    private static final Color contentColor = Color.decode("#808080");
+    /**
+     * 正则
+     */
+    private static final String regex = "(footnote:\\[)(.*?)(\\])";
+    /**
+     * 匹配器
+     */
+    private Matcher matcher;
+
+    public FootnoteWordStyle(String lineContent) {
+        if (StringUtils.isNotBlank(lineContent)) {
+            matcher = Pattern.compile(regex).matcher(lineContent);
+        }
+    }
+
+    @Override
+    public StyleList getStyle() {
+        StyleList list = new StyleList();
+        while (matcher.find()) {
+            list.add(getMarkStylePre());
+            list.add(getContentStyle());
+            list.add(getMarkStyleSub());
+        }
+        return list;
+    }
+
+    private StyleItem getMarkStylePre() {
+        if (matcher == null) {
+            return null;
+        }
+        String mark = matcher.group(1);
+        if (StringUtils.isBlank(mark)) {
+            return null;
+        }
+        int startOffset = matcher.start(1);
+        SimpleAttributeSet style = new SimpleAttributeSet();
+        StyleConstants.setForeground(style, markColor);
+        return StyleItem.getInstance(style, startOffset, mark.length());
+    }
+
+    private StyleItem getContentStyle() {
+        if (matcher == null) {
+            return null;
+        }
+        String head = matcher.group(2);
+        if (StringUtils.isBlank(head)) {
+            return null;
+        }
+        int startOffset = matcher.start(2);
+        SimpleAttributeSet style = new SimpleAttributeSet();
+        StyleConstants.setForeground(style, contentColor);
+        return StyleItem.getInstance(style, startOffset, head.length());
+    }
+
+    private StyleItem getMarkStyleSub() {
+        if (matcher == null) {
+            return null;
+        }
+        String mark = matcher.group(3);
+        if (StringUtils.isBlank(mark)) {
+            return null;
+        }
+        int startOffset = matcher.start(3);
+        SimpleAttributeSet style = new SimpleAttributeSet();
+        StyleConstants.setForeground(style, markColor);
+        return StyleItem.getInstance(style, startOffset, mark.length());
+    }
+}

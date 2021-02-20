@@ -56,6 +56,7 @@ class ProgressDialogBuilder implements BaseBuilder {
         }
 
         swingBuilder.dialog(id: dialog_id,
+                title: '自动Git管理',
                 pack: true,
         ){
             panel()
