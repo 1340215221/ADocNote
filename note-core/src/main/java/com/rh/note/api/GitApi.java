@@ -45,7 +45,7 @@ public class GitApi {
             git.commit();
             try {
                 git.pull(ao.getProgressMonitor());
-                git.push();
+                git.push(ao.getProgressMonitor());
             } catch (Exception e) {
                 git.reset(); // 自动合并失败时, 删除合并信息, 方便手动合并
                 throw e;

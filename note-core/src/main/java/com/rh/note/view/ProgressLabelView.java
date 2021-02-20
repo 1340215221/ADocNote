@@ -18,4 +18,11 @@ public class ProgressLabelView extends BaseView<ProgressDialogBuilder, JLabel> {
     protected @NotNull JLabel label() {
         return super.getComponent(ProgressDialogBuilder::getLabel);
     }
+
+    /**
+     * 重置
+     */
+    public void reset() {
+        label().setText("  同步项目中:");
+    }
 }

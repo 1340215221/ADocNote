@@ -99,9 +99,12 @@ public class GitUtil implements BaseBuilder {
         }
     }
 
-    public void push() {
+    public void push(ProgressMonitor progressMonitor) {
         try {
             PushCommand push = git.push();
+            if (progressMonitor != null) {
+                push.setProgressMonitor(progressMonitor);
+            }
             if (true) {
                 // 添加提交密码
                 push.setCredentialsProvider(new UsernamePasswordCredentialsProvider(gitConfig.getUsername(), gitConfig.getPassword()));

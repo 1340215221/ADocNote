@@ -35,4 +35,11 @@ public class ProgressBarView extends BaseView<ProgressDialogBuilder, JProgressBa
             progressBar.setValue(progress);
         };
     }
+
+    /**
+     * 重置
+     */
+    public void reset() {
+        progressBar().setValue(0);
+    }
 }

@@ -36,7 +36,9 @@ public class ProManageViewApi {
      */
     public @Nullable IShowProgress openProgressDialog() {
         ProgressLabelView labelView = new ProgressLabelView().init();
+        labelView.reset();
         ProgressBarView barView = new ProgressBarView().init();
+        barView.reset();
         IShowProgress callback = barView.getCallback(labelView);
         new ProgressDialogView().init().show();
         return callback;
