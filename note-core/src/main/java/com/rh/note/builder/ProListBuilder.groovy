@@ -28,8 +28,10 @@ class ProListBuilder implements BaseBuilder {
                 fixedCellHeight: 50,
                 fixedCellWidth: 300,
                 constraints: BorderLayout.WEST,
-                mouseClicked: {
-                    event.clicked_project_list(it)
+                mouseClicked: {e ->
+                    swingBuilder.doOutside {
+                        event.clicked_project_list(e)
+                    }
                 },
                 listData: event.load_pro_list_content()
         ) {

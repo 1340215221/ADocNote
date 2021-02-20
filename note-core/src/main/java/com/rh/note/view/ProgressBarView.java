@@ -30,12 +30,9 @@ public class ProgressBarView extends BaseView<ProgressDialogBuilder, JProgressBa
         }
         JLabel label = progressLabelView.label();
         JProgressBar progressBar = progressBar();
-        return new IShowProgress() {
-            @Override
-            public void show(String text, int progress) {
-                label.setText(text);
-                progressBar.setValue(progress);
-            }
+        return (text, progress) -> {
+            label.setText("  同步项目中: " + text);
+            progressBar.setValue(progress);
         };
     }
 }

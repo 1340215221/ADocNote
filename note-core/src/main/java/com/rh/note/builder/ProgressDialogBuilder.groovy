@@ -6,6 +6,7 @@ import com.rh.note.constants.FrameCategoryEnum
 import groovy.swing.SwingBuilder
 import org.springframework.beans.factory.annotation.Autowired
 
+import javax.annotation.PostConstruct
 import javax.swing.*
 import java.awt.*
 
@@ -21,16 +22,27 @@ class ProgressDialogBuilder implements BaseBuilder {
     @Autowired
     private SwingBuilder swingBuilder
 
+    @PostConstruct
     void init() {
+        def sPanel = {
+            swingBuilder.panel(preferredSize: [500, 15],
+                    constraints: BorderLayout.SOUTH,
+            )
+        }
+
         def label = {
             swingBuilder.label(id: progress_label_id,
-                    text: '同步项目中',
+                    constraints: BorderLayout.NORTH,
+                    text: '  同步项目中:',
+                    font: new Font(null, Font.PLAIN, 17),
+                    preferredSize: [500, 40],
             )
         }
 
         def progress = {
             swingBuilder.progressBar(id: progress_bar_id,
                     preferredSize: [500, 10],
+                    constraints: BorderLayout.CENTER,
                     value: 0,
             )
         }
@@ -39,6 +51,7 @@ class ProgressDialogBuilder implements BaseBuilder {
             swingBuilder.panel(layout: new BorderLayout()){
                 label()
                 progress()
+                sPanel()
             }
         }
 
