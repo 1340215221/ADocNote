@@ -8,8 +8,10 @@ import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
 import org.eclipse.jgit.api.AddCommand;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.PullCommand;
 import org.eclipse.jgit.api.PushCommand;
 import org.eclipse.jgit.api.errors.EmptyCommitException;
+import org.eclipse.jgit.lib.ProgressMonitor;
 import org.eclipse.jgit.merge.MergeStrategy;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
@@ -72,10 +74,14 @@ public class GitUtil implements BaseBuilder {
         }
     }
 
-    public void pull() throws ApplicationException {
+    public void pull(ProgressMonitor progressMonitor) throws ApplicationException {
         try {
             // 不带密码更新
-            git.pull().setStrategy(MergeStrategy.SIMPLE_TWO_WAY_IN_CORE).call();
+            PullCommand pull = git.pull();
+            if (progressMonitor != null) {
+                pull.setProgressMonitor(progressMonitor);
+            }
+            pull.setStrategy(MergeStrategy.SIMPLE_TWO_WAY_IN_CORE).call();
         } catch (Exception e) {
             throw new ApplicationException(ErrorCodeEnum.PULL_OPERATION_FAILED, e);
         }

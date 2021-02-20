@@ -1,12 +1,14 @@
 package com.rh.note.action;
 
 import com.rh.note.ao.CheckIsAdocProjectAO;
+import com.rh.note.ao.GitPullAO;
 import com.rh.note.ao.LoadContextAO;
 import com.rh.note.api.FileApi;
 import com.rh.note.api.FrameContextApi;
 import com.rh.note.api.GitApi;
 import com.rh.note.api.ProManageViewApi;
 import com.rh.note.app.config.UserProPathConfig;
+import com.rh.note.common.IShowProgress;
 import com.rh.note.constants.FrameCategoryEnum;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
@@ -83,8 +85,11 @@ public class ProManageAction {
     public void syncProject() {
         FindSelectedProPathVO findSelectedProPathVO = proManageViewApi.getSelectedProPathInProList();
         while (true) {
+            IShowProgress showProgress = proManageViewApi.openProgressDialog();
+            GitPullAO gitPullAO = findSelectedProPathVO.copyToGitPullAO();
+            gitPullAO.copy(showProgress);
             try {
-                gitApi.pull(findSelectedProPathVO.getProPath());
+                gitApi.pull(gitPullAO);
                 break;
             } catch (Exception e) {
                 log.error("[项目启动时, 同步项目内容] error", e);
@@ -92,6 +97,8 @@ public class ProManageAction {
                 if (!isOk) {
                     throw new ApplicationException(ErrorCodeEnum.CANCEL_OPEN_PROJECT);
                 }
+            } finally {
+                proManageViewApi.closeProgressDialog();
             }
         }
     }

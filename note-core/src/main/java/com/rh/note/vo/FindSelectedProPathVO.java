@@ -1,6 +1,7 @@
 package com.rh.note.vo;
 
 import com.rh.note.ao.CheckIsAdocProjectAO;
+import com.rh.note.ao.GitPullAO;
 import com.rh.note.ao.LoadContextAO;
 import com.rh.note.config.FrameLaunchConfig;
 import com.rh.note.constants.FrameCategoryEnum;
@@ -41,6 +42,12 @@ public class FindSelectedProPathVO {
         LoadContextAO ao = new LoadContextAO();
         ao.setContextConfig(config);
         ao.setFrameCategoryEnum(FrameCategoryEnum.WORK);
+        return ao;
+    }
+
+    public @NotNull GitPullAO copyToGitPullAO() {
+        GitPullAO ao = new GitPullAO();
+        ao.setAbsolutePath(proPath);
         return ao;
     }
 }

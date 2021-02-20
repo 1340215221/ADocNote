@@ -5,6 +5,7 @@ import com.rh.note.api.FileApi;
 import com.rh.note.api.FrameContextApi;
 import com.rh.note.api.GitApi;
 import com.rh.note.api.WorkViewApi;
+import com.rh.note.common.IShowProgress;
 import com.rh.note.constants.FrameCategoryEnum;
 import com.rh.note.exception.IsNotSyntaxSugarLineException;
 import com.rh.note.line.TitleLine;
@@ -289,8 +290,12 @@ public class WorkAction {
     public void gitPush() {
         String proPath = CurrentAdocProConfigUtil.getProPath();
         while (true) {
+            IShowProgress showProgress = workViewApi.openProgressDialog();
+            GitPushAO gitPushAO = new GitPushAO();
+            gitPushAO.setAbsolutePath(proPath);
+            gitPushAO.copy(showProgress);
             try {
-                gitApi.push(proPath);
+                gitApi.push(gitPushAO);
                 break;
             } catch (Exception e) {
                 log.error("[项目关闭时, 同步项目内容] error", e);
@@ -299,6 +304,8 @@ public class WorkAction {
                     log.info("[项目关闭时, 取消同步项目内容]");
                     return;
                 }
+            } finally {
+                workViewApi.closeProgressDialog();
             }
         }
     }

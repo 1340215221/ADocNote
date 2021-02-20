@@ -6,6 +6,7 @@ import com.rh.note.ao.TextPaneFileWritersAO;
 import com.rh.note.ao.UpdateCaretLineAO;
 import com.rh.note.ao.UpdateRootTitleOfTextPaneAO;
 import com.rh.note.bean.SyntaxStyleContext;
+import com.rh.note.common.IShowProgress;
 import com.rh.note.config.SyntaxHighlightConfig;
 import com.rh.note.constants.PromptMessageEnum;
 import com.rh.note.constants.SyntaxTypeEnum;
@@ -15,15 +16,7 @@ import com.rh.note.sugar.AdocIncludeSyntaxSugar;
 import com.rh.note.sugar.TitleSyntaxSugar;
 import com.rh.note.syntax.IncludeSyntax;
 import com.rh.note.syntax.TitleSyntax;
-import com.rh.note.view.AdocTextPaneView;
-import com.rh.note.view.ConfirmDialogView;
-import com.rh.note.view.InputDialogView;
-import com.rh.note.view.JavaTextPaneView;
-import com.rh.note.view.RootTitleNodeView;
-import com.rh.note.view.TabbedPaneView;
-import com.rh.note.view.TextScrollPaneView;
-import com.rh.note.view.TitleTreeView;
-import com.rh.note.view.TreeModelView;
+import com.rh.note.view.*;
 import com.rh.note.vo.ConfirmDeleteIncludeVO;
 import com.rh.note.vo.FindIncludePathInSelectedTextPaneVO;
 import com.rh.note.vo.FindTitleNodeSelectedVO;
@@ -410,5 +403,23 @@ public class WorkViewApi {
     public boolean promptGitOperationFailed() {
         ConfirmDialogView dialogView = new ConfirmDialogView().init(PromptMessageEnum.GIT_OPERATION_FAILED);
         return dialogView.isConfirm();
+    }
+
+    /**
+     * 打开一个进度弹窗
+     */
+    public @Nullable IShowProgress openProgressDialog() {
+        ProgressLabelView labelView = new ProgressLabelView().init();
+        ProgressBarView barView = new ProgressBarView().init();
+        IShowProgress callback = barView.getCallback(labelView);
+        new ProgressDialogView().init().show();
+        return callback;
+    }
+
+    /**
+     * 关闭进度弹窗
+     */
+    public void closeProgressDialog() {
+        new ProgressDialogView().init().close();
     }
 }
