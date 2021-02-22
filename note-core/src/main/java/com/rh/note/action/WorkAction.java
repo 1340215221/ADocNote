@@ -271,6 +271,7 @@ public class WorkAction {
         saveCurrentFileAO.copyCurrent(requestNewNameVO);
         TextPaneFileWritersAO currentFileWritersAO = fileApi.getWriterByFilePath(saveCurrentFileAO);
         workViewApi.saveTextPaneFileByFilePaths(currentFileWritersAO);
+        this.loadRootNode();
     }
 
     /**
