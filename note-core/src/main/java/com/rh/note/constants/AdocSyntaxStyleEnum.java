@@ -7,7 +7,9 @@ import com.rh.note.common.ISyntaxStyleHandler;
 import com.rh.note.style.BlockTitleLineStyle;
 import com.rh.note.style.BoldWordStyle;
 import com.rh.note.style.CodeWordStyle;
+import com.rh.note.style.FootnoteWordStyle;
 import com.rh.note.style.IncludeLineStyle;
+import com.rh.note.style.InternetConnectionWordStyle;
 import com.rh.note.style.ItalicWordStyle;
 import com.rh.note.style.LabelLineStyle;
 import com.rh.note.style.ListWordStyle;
@@ -66,9 +68,17 @@ public enum AdocSyntaxStyleEnum implements ISyntaxStyle {
      */
     TITLE_QUOTE(TitleQuoteWordStyle.class),
     /**
-     * 顿号引用
+     * 顿号
      */
     PAUSE(PauseWordStyle.class),
+    /**
+     * 脚注
+     */
+    FOOTNOTE(FootnoteWordStyle.class),
+    /**
+     * 网络链接
+     */
+    INTERNET_CONNECTION(InternetConnectionWordStyle.class),
     ;
     /**
      * 解析样式类
