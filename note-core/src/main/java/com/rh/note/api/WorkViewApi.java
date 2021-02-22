@@ -9,7 +9,6 @@ import com.rh.note.bean.SyntaxStyleContext;
 import com.rh.note.common.IShowProgress;
 import com.rh.note.config.SyntaxHighlightConfig;
 import com.rh.note.constants.PromptMessageEnum;
-import com.rh.note.constants.SyntaxTypeEnum;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.FileBeanPath;
 import com.rh.note.sugar.AdocIncludeSyntaxSugar;
@@ -17,11 +16,7 @@ import com.rh.note.sugar.TitleSyntaxSugar;
 import com.rh.note.syntax.IncludeSyntax;
 import com.rh.note.syntax.TitleSyntax;
 import com.rh.note.view.*;
-import com.rh.note.vo.ConfirmDeleteIncludeVO;
-import com.rh.note.vo.FindIncludePathInSelectedTextPaneVO;
-import com.rh.note.vo.FindTitleNodeSelectedVO;
-import com.rh.note.vo.GenerateIncludeSyntaxVO;
-import com.rh.note.vo.RequestNewNameOfIncludeOnCaretLineVO;
+import com.rh.note.vo.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -121,7 +116,7 @@ public class WorkViewApi {
             return;
         }
         // 创建编辑区
-        JavaTextPaneView textPaneView = new JavaTextPaneView().create(beanPath);
+        ReadOnlyTextPaneView textPaneView = new ReadOnlyTextPaneView().create(beanPath);
         // 加载编辑区内容
         textPaneView.initContent(reader);
     }
@@ -164,9 +159,9 @@ public class WorkViewApi {
                 textPaneView.close();
                 return;
             }
-            JavaTextPaneView javaTextPaneView = new JavaTextPaneView().init(filePath);
-            if (javaTextPaneView != null) {
-                javaTextPaneView.close();
+            ReadOnlyTextPaneView readOnlyTextPaneView = new ReadOnlyTextPaneView().init(filePath);
+            if (readOnlyTextPaneView != null) {
+                readOnlyTextPaneView.close();
             }
         });
     }
@@ -248,24 +243,26 @@ public class WorkViewApi {
         if (textPaneView == null) {
             return;
         }
-        textPaneView.forEachLine(new SyntaxStyleContext(SyntaxTypeEnum.ADOC, syntaxHighlightConfig.getDefaultStyle()));
+        SyntaxStyleContext styleContext = SyntaxStyleContext.getInstance(filePath, syntaxHighlightConfig.getDefaultStyle());
+        textPaneView.forEachLine(styleContext);
     }
 
     /**
      * 刷新被选择编辑区语法高亮
      */
     public void refreshSyntaxHighlightOfJavaTextPaneByFilePath(String filePath) {
-        JavaTextPaneView textPaneView = new JavaTextPaneView().init(filePath);
+        ReadOnlyTextPaneView textPaneView = new ReadOnlyTextPaneView().init(filePath);
         if (textPaneView == null) {
             return;
         }
-        textPaneView.forEachLine(new SyntaxStyleContext(SyntaxTypeEnum.JAVA, syntaxHighlightConfig.getDefaultStyle()));
+        SyntaxStyleContext styleContext = SyntaxStyleContext.getInstance(filePath, syntaxHighlightConfig.getDefaultStyle());
+        textPaneView.forEachLine(styleContext);
     }
 
     /**
      * 刷新被选择编辑区语法高亮
      */
-    public void refreshSyntaxHighlightOfTextPaneSelected() {
+    public void refreshSyntaxHighlightOfAdocTextPaneSelected() {
         TabbedPaneView tabbedPaneView = new TabbedPaneView().init();
         String filePath = tabbedPaneView.getFilePathOfTextPaneSelected();
         refreshSyntaxHighlightOfAdocTextPaneByFilePath(filePath);

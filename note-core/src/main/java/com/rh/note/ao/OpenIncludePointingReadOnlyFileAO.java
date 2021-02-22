@@ -5,12 +5,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * 打开include指向java文件 参数
+ * 打开include指向非adoc文件 参数
  */
-public class OpenIncludePointingJavaFileAO extends OpenIncludePointingFileBaseAO {
+public class OpenIncludePointingReadOnlyFileAO extends OpenIncludePointingFileBaseAO {
     @Override
     public boolean checkParamError() {
-        return vo == null || StringUtils.isBlank(vo.getTargetFilePath()) || !vo.getTargetFilePath().endsWith("java");
+        return vo == null || StringUtils.isBlank(vo.getTargetFilePath()) || vo.getTargetFilePath().endsWith("adoc");
     }
 
     @Override
@@ -20,7 +20,7 @@ public class OpenIncludePointingJavaFileAO extends OpenIncludePointingFileBaseAO
 
     @Override
     public @NotNull OpenNewFileByFilePathBaseAO copyTo() {
-        OpenNewFileByFilePathBaseAO ao = new OpenNewJavaFileByFilePathAO();
+        OpenNewFileByFilePathBaseAO ao = new OpenNewReadOnlyFileByFilePathAO();
         ao.setFilePath(getTargetFilePath());
         return ao;
     }

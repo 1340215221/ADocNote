@@ -18,11 +18,11 @@ import java.io.IOException;
 import java.io.Reader;
 
 /**
- * java编辑区
+ * 只读编辑区
  */
 @Setter
 @Getter
-public class JavaTextPane extends JTextPane implements IReadOnlyTextPane, ILineSpacingTextPane {
+public class ReadOnlyTextPane extends JTextPane implements IReadOnlyTextPane, ILineSpacingTextPane {
     /**
      * 不自动换行插件
      */
@@ -41,12 +41,12 @@ public class JavaTextPane extends JTextPane implements IReadOnlyTextPane, ILineS
      */
     private ChangeContextListener contentChanged;
 
-    public JavaTextPane() {
+    public ReadOnlyTextPane() {
         super();
         this.setReadOnly();
     }
 
-    public JavaTextPane(StyledDocument doc) {
+    public ReadOnlyTextPane(StyledDocument doc) {
         super(doc);
         this.setReadOnly();
     }

@@ -2,9 +2,9 @@ package com.rh.note.view;
 
 import cn.hutool.core.io.IoUtil;
 import com.rh.note.bean.SyntaxStyleContext;
-import com.rh.note.builder.JavaTextPaneBuilder;
+import com.rh.note.builder.ReadOnlyTextPaneBuilder;
 import com.rh.note.common.BaseView;
-import com.rh.note.component.JavaTextPane;
+import com.rh.note.component.ReadOnlyTextPane;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.exception.TextPaneInitContentException;
@@ -20,15 +20,15 @@ import javax.swing.text.StyledDocument;
 import java.io.Reader;
 
 /**
- * java编辑区
+ * 只读编辑区
  */
-public class JavaTextPaneView extends BaseView<JavaTextPaneBuilder, JavaTextPane> {
+public class ReadOnlyTextPaneView extends BaseView<ReadOnlyTextPaneBuilder, ReadOnlyTextPane> {
 
-    public @NotNull JavaTextPaneView create(@NonNull FileBeanPath beanPath) {
+    public @NotNull ReadOnlyTextPaneView create(@NonNull FileBeanPath beanPath) {
         return super.create(beanPath);
     }
 
-    public @Nullable JavaTextPaneView init(String filePath) {
+    public @Nullable ReadOnlyTextPaneView init(String filePath) {
         if (StringUtils.isBlank(filePath)) {
             return null;
         }
@@ -51,8 +51,8 @@ public class JavaTextPaneView extends BaseView<JavaTextPaneBuilder, JavaTextPane
         }
     }
 
-    protected @NotNull JavaTextPane textPane() {
-        return super.getComponent(JavaTextPaneBuilder::getTextPane);
+    protected @NotNull ReadOnlyTextPane textPane() {
+        return super.getComponent(ReadOnlyTextPaneBuilder::getTextPane);
     }
 
     /**

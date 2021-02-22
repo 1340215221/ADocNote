@@ -14,8 +14,8 @@ public class TabbedPaneEvent {
     /**
      * 刷新被选择编辑区语法高亮
      */
-    public void refresh_syntax_highlight() {
-        workAction.refreshSyntaxHighlightOfTextPaneSelected();
+    public void refresh_adoc_syntax_highlight() {
+        workAction.refreshSyntaxHighlightOfAdocTextPaneSelected();
     }
 
     /**
