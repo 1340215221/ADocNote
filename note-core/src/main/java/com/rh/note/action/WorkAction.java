@@ -162,7 +162,7 @@ public class WorkAction {
             // 生成编辑区
             workViewApi.createAdocTextPane(ao.getBeanPath(), reader);
         }
-        if (ao instanceof OpenNewJavaFileByFilePathAO) {
+        if (ao instanceof OpenNewReadOnlyFileByFilePathAO) {
             // 读取文件内容
             Reader reader = fileApi.getFileReader(ao.getAbsolutePath());
             // 生成编辑区
@@ -187,8 +187,8 @@ public class WorkAction {
     /**
      * 刷新被选择编辑区语法高亮
      */
-    public void refreshSyntaxHighlightOfTextPaneSelected() {
-        workViewApi.refreshSyntaxHighlightOfTextPaneSelected();
+    public void refreshSyntaxHighlightOfAdocTextPaneSelected() {
+        workViewApi.refreshSyntaxHighlightOfAdocTextPaneSelected();
     }
 
     /**

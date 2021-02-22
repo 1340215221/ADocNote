@@ -18,7 +18,7 @@ import java.awt.event.ActionListener;
  * 刷新被选择编辑区的语法高亮 定时任务
  */
 @ComponentBean(FrameCategoryEnum.WORK)
-public class RefreshSyntaxHighlightOfTextPaneSelectedTimer implements ApplicationListener<ContextRefreshedEvent> {
+public class RefreshSyntaxHighlightOfAdocTextPaneSelectedTimer implements ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired
     private ApplicationContext currentContext;
@@ -58,7 +58,7 @@ public class RefreshSyntaxHighlightOfTextPaneSelectedTimer implements Applicatio
     public class ActionListenerImpl implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            event.refresh_syntax_highlight();
+            event.refresh_adoc_syntax_highlight();
         }
     }
 

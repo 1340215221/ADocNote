@@ -4,12 +4,12 @@ import cn.hutool.core.util.StrUtil
 import com.rh.note.annotation.ComponentBean
 import com.rh.note.app.config.UserFontConfig
 import com.rh.note.common.BaseBuilder
-import com.rh.note.component.JavaTextPane
+import com.rh.note.component.ReadOnlyTextPane
 import com.rh.note.component.TextScrollPane
 import com.rh.note.constants.FrameCategoryEnum
 import com.rh.note.constants.ScopeEnum
-import com.rh.note.event.JavaTextPaneEvent
-import com.rh.note.factory.JavaTextPaneFactory
+import com.rh.note.event.ReadOnlyTextPaneEvent
+import com.rh.note.factory.ReadOnlyTextPaneFactory
 import com.rh.note.factory.TextScrollPaneFactory
 import com.rh.note.path.FileBeanPath
 import groovy.swing.SwingBuilder
@@ -21,10 +21,10 @@ import javax.swing.*
 import java.awt.*
 
 /**
- * java编辑区
+ * 只读编辑区
  */
-@ComponentBean(frame = FrameCategoryEnum.WORK, scope = ScopeEnum.PROTOTYPE, name = JavaTextPaneBuilder.text_pane_id)
-class JavaTextPaneBuilder implements BaseBuilder, TextScrollPaneBuilder {
+@ComponentBean(frame = FrameCategoryEnum.WORK, scope = ScopeEnum.PROTOTYPE, name = ReadOnlyTextPaneBuilder.text_pane_id)
+class ReadOnlyTextPaneBuilder implements BaseBuilder, TextScrollPaneBuilder {
 
     public static final String text_pane_id = 'java_text_pane_{}'
     @Autowired
@@ -34,14 +34,14 @@ class JavaTextPaneBuilder implements BaseBuilder, TextScrollPaneBuilder {
     @Autowired
     private SwingBuilder swingBuilder
     @Autowired
-    private JavaTextPaneEvent event
+    private ReadOnlyTextPaneEvent event
     @Autowired
-    private JavaTextPaneFactory jTextPaneF
+    private ReadOnlyTextPaneFactory jTextPaneF
     @Autowired
     private TextScrollPaneFactory tScrollPaneF
     private FileBeanPath beanPath
 
-    JavaTextPaneBuilder(FileBeanPath beanPath) {
+    ReadOnlyTextPaneBuilder(FileBeanPath beanPath) {
         this.beanPath = beanPath
     }
 
@@ -55,7 +55,7 @@ class JavaTextPaneBuilder implements BaseBuilder, TextScrollPaneBuilder {
                     foreground: Color.decode('#A9B7C6'),
                     beanPath: beanPath,
                     contentChanged: {filePath ->
-                        event.refresh_syntax_highlight_by_timer(filePath)
+                        event.refresh_syntax_highlight(filePath)
                     },
             ) {
             }
@@ -98,7 +98,7 @@ class JavaTextPaneBuilder implements BaseBuilder, TextScrollPaneBuilder {
         return swingBuilder."${scrollPaneId()}"
     }
 
-    JavaTextPane getTextPane() {
+    ReadOnlyTextPane getTextPane() {
         return swingBuilder."${textPaneId()}"
     }
 

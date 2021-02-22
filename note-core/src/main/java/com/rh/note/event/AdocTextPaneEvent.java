@@ -4,10 +4,10 @@ import com.rh.note.action.OperationAction;
 import com.rh.note.action.WorkAction;
 import com.rh.note.annotation.ComponentBean;
 import com.rh.note.ao.OpenIncludePointingAdocFileAO;
-import com.rh.note.ao.OpenIncludePointingJavaFileAO;
+import com.rh.note.ao.OpenIncludePointingReadOnlyFileAO;
 import com.rh.note.ao.TextPaneKeyStrokeAO;
 import com.rh.note.constants.FrameCategoryEnum;
-import com.rh.note.timer.RefreshSyntaxHighlightOfTextPaneSelectedTimer;
+import com.rh.note.timer.RefreshSyntaxHighlightOfAdocTextPaneSelectedTimer;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,7 +18,7 @@ import java.awt.event.MouseEvent;
 public class AdocTextPaneEvent {
 
     @Autowired
-    RefreshSyntaxHighlightOfTextPaneSelectedTimer timer;
+    RefreshSyntaxHighlightOfAdocTextPaneSelectedTimer timer;
     @Autowired
     private OperationAction operationAction;
     @Autowired
@@ -42,11 +42,11 @@ public class AdocTextPaneEvent {
     }
 
     /**
-     * 进入java文件
+     * 进入只读文件
      */
-    public void enter_include_java_file(MouseEvent event) {
+    public void enter_include_read_only_file(MouseEvent event) {
         if (operationAction.isCtrlLeftClick(event)) {
-            workAction.openIncludePointingFileInSelectedTextPane(new OpenIncludePointingJavaFileAO());
+            workAction.openIncludePointingFileInSelectedTextPane(new OpenIncludePointingReadOnlyFileAO());
         }
     }
 

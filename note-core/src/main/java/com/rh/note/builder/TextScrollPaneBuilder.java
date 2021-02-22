@@ -7,7 +7,7 @@ import com.rh.note.component.TextScrollPane;
 /**
  * 编辑区滚动面板
  */
-@ComponentBean(builders = {AdocTextPaneBuilder.class, JavaTextPaneBuilder.class})
+@ComponentBean(builders = {AdocTextPaneBuilder.class, ReadOnlyTextPaneBuilder.class})
 public interface TextScrollPaneBuilder extends BaseBuilder {
 
     String scroll_pane_id = "scroll_pane_{}";
