@@ -6,10 +6,8 @@ import com.rh.note.common.BaseBuilder;
 import com.rh.note.config.FrameLaunchConfig;
 import com.rh.note.exception.ApplicationException;
 import com.rh.note.exception.ErrorCodeEnum;
-import org.eclipse.jgit.api.AddCommand;
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.PullCommand;
-import org.eclipse.jgit.api.PushCommand;
+import lombok.Getter;
+import org.eclipse.jgit.api.*;
 import org.eclipse.jgit.api.errors.EmptyCommitException;
 import org.eclipse.jgit.lib.ProgressMonitor;
 import org.eclipse.jgit.merge.MergeStrategy;
@@ -26,6 +24,7 @@ public class GitUtil implements BaseBuilder {
 
     private FrameLaunchConfig config;
     private UserGitConfig gitConfig = new UserGitConfig();
+    @Getter
     private Git git;
 
     public GitUtil(String absolutePath) {
@@ -95,7 +94,7 @@ public class GitUtil implements BaseBuilder {
         try {
             git.reset().call();
         } catch (Exception e) {
-            throw new ApplicationException(ErrorCodeEnum.GIT_MERGE_RECOVERY_FAILED, e);
+            throw new ApplicationException(ErrorCodeEnum.RESET_OPERATION_FAILED, e);
         }
     }
 

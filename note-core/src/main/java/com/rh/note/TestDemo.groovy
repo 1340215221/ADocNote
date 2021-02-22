@@ -2,10 +2,8 @@ package com.rh.note
 
 import com.formdev.flatlaf.FlatDarculaLaf
 import com.rh.note.api.GitApi
+import com.rh.note.util.GitUtil
 import groovy.swing.SwingBuilder
-
-import javax.swing.*
-import java.awt.*
 
 class TestDemo {
 
@@ -53,7 +51,13 @@ class TestDemo {
         builder.frame.visible = true
          */
 
-        pull()
+        reset()
+    }
+
+    static void reset() {
+        def git = new GitUtil('/my_code/test-jgit')
+        git.init()
+        git.reset()
     }
 
     static void pull() {
