@@ -9,6 +9,8 @@ import com.rh.note.bean.SyntaxStyleContext;
 import com.rh.note.common.IShowProgress;
 import com.rh.note.config.SyntaxHighlightConfig;
 import com.rh.note.constants.PromptMessageEnum;
+import com.rh.note.exception.ApplicationException;
+import com.rh.note.exception.ErrorCodeEnum;
 import com.rh.note.line.TitleLine;
 import com.rh.note.path.FileBeanPath;
 import com.rh.note.sugar.AdocIncludeSyntaxSugar;
@@ -18,13 +20,17 @@ import com.rh.note.syntax.TitleSyntax;
 import com.rh.note.view.*;
 import com.rh.note.vo.*;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.awt.*;
+import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.net.URI;
 import java.util.Collections;
 import java.util.List;
 
@@ -420,5 +426,35 @@ public class WorkViewApi {
      */
     public void closeProgressDialog() {
         new ProgressDialogView().init().close();
+    }
+
+    /**
+     * 默认浏览器打开网址
+     */
+    public void openUrlOfSelectedTextPane() {
+        // 获得光标行内容
+        String filePath = this.getFilePathOfTextPaneSelected();
+        AdocTextPaneView textPaneView = new AdocTextPaneView().init(filePath);
+        if (textPaneView == null) {
+            return;
+        }
+        String url = textPaneView.getUrlByCaret();
+        if (StringUtils.isBlank(url)) {
+            return;
+        }
+        // 用默认浏览器打开url
+        if(!Desktop.isDesktopSupported()){
+            return;
+        }
+        Desktop desktop= Desktop.getDesktop();
+        if (!desktop.isSupported(Desktop.Action.BROWSE)) {
+            return;
+        }
+        URI uri= URI.create(url);
+        try {
+            desktop.browse(uri);
+        } catch (IOException e) {
+            throw new ApplicationException(ErrorCodeEnum.FAILED_TO_OPEN_URL_WITH_BROWSER);
+        }
     }
 }

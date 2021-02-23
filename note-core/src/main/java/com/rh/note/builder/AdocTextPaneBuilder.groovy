@@ -71,6 +71,7 @@ class AdocTextPaneBuilder implements BaseBuilder, TextScrollPaneBuilder {
                     mouseClicked: {
                         event.enter_include_file(it)
                         event.enter_include_read_only_file(it)
+                        event.enter_include_url(it)
                     },
                     caretUpdate: {
 //                        event.move_caret()

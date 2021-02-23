@@ -37,6 +37,8 @@ public enum ErrorCodeEnum {
     GIT_MERGE_RECOVERY_FAILED(5005, "git合并恢复失败, 取消打开项目"),
     GIT_PUSH_FAILED(5006, "git推送失败, 取消打开项目"),
     RESET_OPERATION_FAILED(5007, "reset 操作失败"),
+    // 浏览器
+    FAILED_TO_OPEN_URL_WITH_BROWSER(6000, "用浏览器打开url失败, 没有找到默认浏览器"),
     ;
     @NonNull
     private Integer code;

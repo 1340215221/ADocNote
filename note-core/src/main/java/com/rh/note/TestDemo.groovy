@@ -1,5 +1,6 @@
 package com.rh.note
 
+
 import com.formdev.flatlaf.FlatDarculaLaf
 import com.rh.note.api.GitApi
 import com.rh.note.util.GitUtil
@@ -51,7 +52,26 @@ class TestDemo {
         builder.frame.visible = true
          */
 
-        reset()
+//        reset()
+        if(java.awt.Desktop.isDesktopSupported()){
+            try{
+                //创建一个URI实例,注意不是URL
+                java.net.URI uri=java.net.URI.create("http://www.jb51.net");
+                //获取当前系统桌面扩展
+                java.awt.Desktop dp=java.awt.Desktop.getDesktop();
+                //判断系统桌面是否支持要执行的功能
+                if(dp.isSupported(java.awt.Desktop.Action.BROWSE)){
+                    //获取系统默认浏览器打开链接
+                    dp.browse(uri);
+                }
+            }catch(java.lang.NullPointerException e){
+                //此为uri为空时抛出异常
+                println "error 1"
+            }catch(java.io.IOException e){
+                //此为无法获取系统默认浏览器
+                println "error 2"
+            }
+        }
     }
 
     static void reset() {

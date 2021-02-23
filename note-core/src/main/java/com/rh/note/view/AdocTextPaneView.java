@@ -11,6 +11,7 @@ import com.rh.note.exception.TextPaneInitContentException;
 import com.rh.note.exception.TextPaneWriterToFileException;
 import com.rh.note.path.FileBeanPath;
 import com.rh.note.style.StyleList;
+import com.rh.note.sugar.HttpUrlSugar;
 import com.rh.note.syntax.TitleSyntax;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -251,5 +252,40 @@ public class AdocTextPaneView extends BaseView<AdocTextPaneBuilder, AdocTextPane
             list.forEach(item ->
                     styledDocument.setCharacterAttributes(element.getStartOffset() + item.getOffset(), item.getLength(), item.getStyle(), false));
         }
+    }
+
+    /**
+     * 获得光标处的url
+     */
+    public @Nullable String getUrlByCaret() {
+        // 获得光标行内容
+        int dot = textPane().getCaret().getDot();
+        Element rootElement = textPane().getDocument().getDefaultRootElement();
+        int index = rootElement.getElementIndex(dot);
+        if (index < 0) {
+            return null;
+        }
+        Element element = rootElement.getElement(index);
+        if (element == null) {
+            return null;
+        }
+        String lineContent;
+        try {
+            lineContent = textPane().getText(element.getStartOffset(), element.getEndOffset() - element.getStartOffset());
+        } catch (Exception e) {
+            throw new ApplicationException(ErrorCodeEnum.FAILED_TO_GET_THE_CONTENT_OF_THE_EDIT_AREA, e);
+        }
+        // 识别url
+        HttpUrlSugar.HttpUrlSugarList sugars = new HttpUrlSugar.HttpUrlSugarList().init(lineContent);
+        if (sugars == null) {
+            return null;
+        }
+        // 通过光标偏移量获得指定url
+        int offset = dot - element.getStartOffset();
+        HttpUrlSugar sugar = sugars.get(offset);
+        if (sugar == null) {
+            return null;
+        }
+        return sugar.getUrl();
     }
 }

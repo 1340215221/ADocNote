@@ -58,7 +58,6 @@ public class InternetConnectionWordStyle implements ISyntaxStyleHandler {
         int startOffset = matcher.start(1);
         SimpleAttributeSet style = new SimpleAttributeSet();
         StyleConstants.setForeground(style, connectionColor);
-        StyleConstants.setUnderline(style, true);
         return StyleItem.getInstance(style, startOffset, head.length());
     }
 

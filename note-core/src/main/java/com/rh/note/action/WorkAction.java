@@ -310,4 +310,11 @@ public class WorkAction {
             }
         }
     }
+
+    /**
+     * 默认浏览器打开网址
+     */
+    public void openUrlOfSelectedTextPane() {
+        workViewApi.openUrlOfSelectedTextPane();
+    }
 }

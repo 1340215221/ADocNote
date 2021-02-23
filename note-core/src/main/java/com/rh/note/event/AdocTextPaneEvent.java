@@ -33,11 +33,20 @@ public class AdocTextPaneEvent {
     }
 
     /**
-     * ctrl左键点击
+     * ctrl左键点击 进入文件
      */
     public void enter_include_file(MouseEvent event) {
         if (operationAction.isCtrlLeftClick(event)) {
             workAction.openIncludePointingFileInSelectedTextPane(new OpenIncludePointingAdocFileAO());
+        }
+    }
+
+    /**
+     * ctrl左键点击 默认浏览器打开网址
+     */
+    public void enter_include_url(MouseEvent event) {
+        if (operationAction.isCtrlLeftClick(event)) {
+            workAction.openUrlOfSelectedTextPane();
         }
     }
 
