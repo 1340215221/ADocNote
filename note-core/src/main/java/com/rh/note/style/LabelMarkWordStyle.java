@@ -12,27 +12,27 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 注解 单词样式
+ * 标签符号 单词样式
  */
-public class AnnotationWordStyle implements ISyntaxStyleHandler {
+public class LabelMarkWordStyle implements ISyntaxStyleHandler {
     /**
-     * {@code @NotNull}
+     * <div></div><div/>
      */
-    private static final Color color = Color.decode("#BBB529");
+    private static final Color color = Color.decode("#E8BF6A");
     /**
-     * 边界正则
+     * 标签名正则
      */
-    private static final String border_regex = "\\s|@|[a-zA-Z]|\\(";
+    private static final String label_name_regex = "[a-zA-Z][a-zA-Z0-9.]*";
     /**
      * 正则
      */
-    private static final String regex = "(?:" + border_regex + "|^)(@[a-zA-Z]+)(?=" + border_regex + "|$)";
+    private static final String regex = "(<" + label_name_regex + ">?|<?/" + label_name_regex + ">|<" + label_name_regex + "/>|<\\?|\\?>)";
     /**
      * 匹配器
      */
     private Matcher matcher;
 
-    public AnnotationWordStyle(String lineContent) {
+    public LabelMarkWordStyle(String lineContent) {
         if (StringUtils.isNotBlank(lineContent)) {
             matcher = Pattern.compile(regex).matcher(lineContent);
         }
@@ -41,22 +41,22 @@ public class AnnotationWordStyle implements ISyntaxStyleHandler {
     public @NotNull StyleList getStyle() {
         StyleList list = new StyleList();
         while (matcher != null && matcher.find()) {
-            list.add(getAnnotationStyle());
+            list.add(getMarkPre());
         }
         return list;
     }
 
-    private @Nullable StyleItem getAnnotationStyle() {
+    private @Nullable StyleItem getMarkPre() {
         if (matcher == null) {
             return null;
         }
-        String annotation = matcher.group(1);
-        if (StringUtils.isBlank(annotation)) {
+        String word = matcher.group(1);
+        if (StringUtils.isBlank(word)) {
             return null;
         }
         int startOffset = matcher.start(1);
         SimpleAttributeSet style = new SimpleAttributeSet();
         StyleConstants.setForeground(style, color);
-        return StyleItem.getInstance(style, startOffset, annotation.length());
+        return StyleItem.getInstance(style, startOffset, word.length());
     }
 }

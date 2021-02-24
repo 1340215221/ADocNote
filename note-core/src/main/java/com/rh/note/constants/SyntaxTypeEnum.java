@@ -13,6 +13,7 @@ public enum SyntaxTypeEnum {
     ADOC,
     JAVA,
     JS,
+    XML,
     ;
 
     /**

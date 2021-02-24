@@ -1,10 +1,7 @@
 package com.rh.note.bean;
 
 import com.rh.note.common.ISyntaxStyle;
-import com.rh.note.constants.AdocSyntaxStyleEnum;
-import com.rh.note.constants.JavaSyntaxStyleEnum;
-import com.rh.note.constants.JsSyntaxStyleEnum;
-import com.rh.note.constants.SyntaxTypeEnum;
+import com.rh.note.constants.*;
 import com.rh.note.style.StyleList;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -69,6 +66,9 @@ public class SyntaxStyleContext {
         }
         if (SyntaxTypeEnum.JS.equals(styleType)) {
             stream = Arrays.stream(JsSyntaxStyleEnum.values());
+        }
+        if (SyntaxTypeEnum.XML.equals(styleType)) {
+            stream = Arrays.stream(XmlSyntaxStyleEnum.values());
         }
         if (stream == null) {
             return;
