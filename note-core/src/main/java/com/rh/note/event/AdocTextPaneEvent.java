@@ -99,4 +99,13 @@ public class AdocTextPaneEvent {
             workAction.loadRootNode();
         }
     }
+
+    /**
+     * 标记待完成
+     */
+    public void mark_todo(KeyEvent event) {
+        if (operationAction.isCtrlT(event)) {
+            workAction.markTodo();
+        }
+    }
 }

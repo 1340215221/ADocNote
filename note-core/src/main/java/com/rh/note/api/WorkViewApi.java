@@ -1,10 +1,7 @@
 package com.rh.note.api;
 
 import cn.hutool.core.io.FileUtil;
-import com.rh.note.ao.InitAdocTextPaneContentAO;
-import com.rh.note.ao.TextPaneFileWritersAO;
-import com.rh.note.ao.UpdateCaretLineAO;
-import com.rh.note.ao.UpdateRootTitleOfTextPaneAO;
+import com.rh.note.ao.*;
 import com.rh.note.bean.SyntaxStyleContext;
 import com.rh.note.common.IShowProgress;
 import com.rh.note.config.SyntaxHighlightConfig;
@@ -17,6 +14,7 @@ import com.rh.note.sugar.AdocIncludeSyntaxSugar;
 import com.rh.note.sugar.TitleSyntaxSugar;
 import com.rh.note.syntax.IncludeSyntax;
 import com.rh.note.syntax.TitleSyntax;
+import com.rh.note.syntax.TodoMarkSyntax;
 import com.rh.note.view.*;
 import com.rh.note.vo.*;
 import org.apache.commons.collections4.CollectionUtils;
@@ -456,5 +454,22 @@ public class WorkViewApi {
         } catch (IOException e) {
             throw new ApplicationException(ErrorCodeEnum.FAILED_TO_OPEN_URL_WITH_BROWSER);
         }
+    }
+
+    /**
+     * 标记待完成
+     */
+    public void markTodo() {
+        String filePath = this.getFilePathOfTextPaneSelected();
+        AdocTextPaneView textPaneView = new AdocTextPaneView().init(filePath);
+        if (textPaneView == null) {
+            return;
+        }
+        String lineContent = textPaneView.getCaretLineContent();
+        SelectAndReplaceAO srAO = TodoMarkSyntax.parsing(lineContent);
+        if (srAO == null) {
+            return;
+        }
+        textPaneView.selectAndReplace(srAO);
     }
 }

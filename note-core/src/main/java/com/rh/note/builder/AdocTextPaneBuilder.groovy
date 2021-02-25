@@ -60,6 +60,7 @@ class AdocTextPaneBuilder implements BaseBuilder, TextScrollPaneBuilder {
                     keyPressed: {
                         event.rename_include(it)
                         event.delete_include(it)
+                        event.mark_todo(it)
 //                        event.sink_title(it)
 //                        event.inline_title(it)
                     },

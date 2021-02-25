@@ -24,7 +24,7 @@ public class TodoWordStyle implements ISyntaxStyleHandler {
     /**
      * 正则
      */
-    private static final String regex = ".*?(//)\\s*((?:todo|TODO)(?:\\s+.*)?)\\s*$";
+    private static final String regex = "(//)\\s*((?:todo|TODO)(?:\\s+.*)?)\\s*$";
     /**
      * 匹配器
      */

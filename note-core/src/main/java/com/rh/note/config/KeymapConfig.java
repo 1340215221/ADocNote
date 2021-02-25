@@ -79,4 +79,11 @@ public class KeymapConfig {
     public boolean isAltDel(@NonNull KeyEvent event) {
         return event.getKeyCode() == 127 && event.getModifiers() == 8;
     }
+
+    /**
+     * ctrl + t
+     */
+    public boolean isCtrlT(@NonNull KeyEvent event) {
+        return event.getKeyCode() == 84 && event.getModifiers() == 2;
+    }
 }

@@ -1,6 +1,7 @@
 package com.rh.note.view;
 
 import cn.hutool.core.io.IoUtil;
+import com.rh.note.ao.SelectAndReplaceAO;
 import com.rh.note.bean.SyntaxStyleContext;
 import com.rh.note.builder.AdocTextPaneBuilder;
 import com.rh.note.common.BaseView;
@@ -11,7 +12,7 @@ import com.rh.note.exception.TextPaneInitContentException;
 import com.rh.note.exception.TextPaneWriterToFileException;
 import com.rh.note.path.FileBeanPath;
 import com.rh.note.style.StyleList;
-import com.rh.note.sugar.HttpUrlSugar;
+import com.rh.note.syntax.HttpUrlSyntax;
 import com.rh.note.syntax.TitleSyntax;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -276,16 +277,34 @@ public class AdocTextPaneView extends BaseView<AdocTextPaneBuilder, AdocTextPane
             throw new ApplicationException(ErrorCodeEnum.FAILED_TO_GET_THE_CONTENT_OF_THE_EDIT_AREA, e);
         }
         // 识别url
-        HttpUrlSugar.HttpUrlSugarList sugars = new HttpUrlSugar.HttpUrlSugarList().init(lineContent);
+        HttpUrlSyntax.HttpUrlSyntaxList sugars = new HttpUrlSyntax.HttpUrlSyntaxList().init(lineContent);
         if (sugars == null) {
             return null;
         }
         // 通过光标偏移量获得指定url
         int offset = dot - element.getStartOffset();
-        HttpUrlSugar sugar = sugars.get(offset);
+        HttpUrlSyntax sugar = sugars.get(offset);
         if (sugar == null) {
             return null;
         }
         return sugar.getUrl();
+    }
+
+    /**
+     * 选择替换
+     */
+    public void selectAndReplace(SelectAndReplaceAO ao) {
+        if (ao == null || ao.checkMissRequiredParams()) {
+            return;
+        }
+        if (ao.isCaretLineOffset()) {
+            Element element = this.getCaretLineElement();
+            if (element == null) {
+                return;
+            }
+            ao.completeOffset(element);
+        }
+        textPane().select(ao.getStartOffset(), ao.getEndOffset());
+        textPane().replaceSelection(ao.getReplaceContent());
     }
 }

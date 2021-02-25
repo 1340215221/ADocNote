@@ -1,4 +1,4 @@
-package com.rh.note.sugar;
+package com.rh.note.syntax;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
  */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class HttpUrlSugar {
+public class HttpUrlSyntax {
     /**
      * url地址
      */
@@ -28,11 +28,11 @@ public class HttpUrlSugar {
      */
     private String showContent;
 
-    private static @Nullable HttpUrlSugar getInstance(String url, String showContent) {
+    private static @Nullable HttpUrlSyntax getInstance(String url, String showContent) {
         if (StringUtils.isBlank(url) || !url.startsWith("http://") && !url.startsWith("https://")) {
             return null;
         }
-        HttpUrlSugar sugar = new HttpUrlSugar();
+        HttpUrlSyntax sugar = new HttpUrlSyntax();
         sugar.url = url;
         sugar.showContent = showContent;
         return sugar;
@@ -41,12 +41,12 @@ public class HttpUrlSugar {
     /**
      * 网络请求地址语法 集合
      */
-    public static class HttpUrlSugarList {
+    public static class HttpUrlSyntaxList {
 
         private static final String regex = "(http[s]?://.+?)\\[(.*?)\\]";
         private final List<Item> list = new ArrayList<>();
 
-        public @Nullable HttpUrlSugar.HttpUrlSugarList init(String lineContent) {
+        public @Nullable HttpUrlSyntax.HttpUrlSyntaxList init(String lineContent) {
             if (StringUtils.isBlank(lineContent)) {
                 return null;
             }
@@ -56,7 +56,7 @@ public class HttpUrlSugar {
                 if (StringUtils.isBlank(url)) {
                     continue;
                 }
-                HttpUrlSugar sugar = getInstance(url, matcher.group(2));
+                HttpUrlSyntax sugar = getInstance(url, matcher.group(2));
                 if (sugar == null) {
                     continue;
                 }
@@ -69,7 +69,7 @@ public class HttpUrlSugar {
             return list.isEmpty() ? null : this;
         }
 
-        public @Nullable HttpUrlSugar get(int offset) {
+        public @Nullable HttpUrlSyntax get(int offset) {
             if (list.isEmpty()) {
                 return null;
             }
@@ -96,7 +96,7 @@ public class HttpUrlSugar {
          * 语法对象
          */
         @NonNull
-        private HttpUrlSugar sugar;
+        private HttpUrlSyntax sugar;
 
         public boolean match(int offset) {
             return startOffset <= offset && offset < endOffset;

@@ -56,4 +56,11 @@ public class OperationAction {
     public boolean isAltDel(KeyEvent event) {
         return keymap.isAltDel(event);
     }
+
+    /**
+     * ctrl + t
+     */
+    public boolean isCtrlT(KeyEvent event) {
+        return keymap.isCtrlT(event);
+    }
 }
