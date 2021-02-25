@@ -39,6 +39,10 @@ public enum JavaSyntaxStyleEnum implements ISyntaxStyle {
      */
     METHOD_NAME(MethodNameLineStyle.class),
     /**
+     * 字符串
+     */
+    STRING(StringWordStyle.class),
+    /**
      * 泛型
      */
     ;

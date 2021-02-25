@@ -4,20 +4,7 @@ import cn.hutool.core.util.ReflectUtil;
 import com.rh.note.bean.SyntaxStyleContext;
 import com.rh.note.common.ISyntaxStyle;
 import com.rh.note.common.ISyntaxStyleHandler;
-import com.rh.note.style.BlockTitleLineStyle;
-import com.rh.note.style.BoldWordStyle;
-import com.rh.note.style.CodeWordStyle;
-import com.rh.note.style.FootnoteWordStyle;
-import com.rh.note.style.IncludeLineStyle;
-import com.rh.note.style.InternetConnectionWordStyle;
-import com.rh.note.style.ItalicWordStyle;
-import com.rh.note.style.LabelLineStyle;
-import com.rh.note.style.ListWordStyle;
-import com.rh.note.style.PauseWordStyle;
-import com.rh.note.style.StyleList;
-import com.rh.note.style.TitleLineStyle;
-import com.rh.note.style.TitleQuoteWordStyle;
-import com.rh.note.style.VariableLineStyle;
+import com.rh.note.style.*;
 import com.rh.note.util.LambdaUtil;
 import lombok.NonNull;
 
@@ -79,6 +66,10 @@ public enum AdocSyntaxStyleEnum implements ISyntaxStyle {
      * 网络链接
      */
     INTERNET_CONNECTION(InternetConnectionWordStyle.class),
+    /**
+     * 待完成
+     */
+    TODO(TodoWordStyle.class),
     ;
     /**
      * 解析样式类
