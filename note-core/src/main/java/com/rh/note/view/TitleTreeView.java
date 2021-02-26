@@ -68,7 +68,7 @@ public class TitleTreeView extends BaseView<TitleTreeBuilder, JTree> {
             if (currentLevel == null) {
                 continue;
             }
-            if (currentLevel <= level) {
+            if (currentLevel >= level) {
                 tree().collapsePath(treePath);
                 continue;
             }
