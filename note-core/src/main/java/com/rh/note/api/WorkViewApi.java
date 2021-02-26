@@ -14,7 +14,6 @@ import com.rh.note.sugar.AdocIncludeSyntaxSugar;
 import com.rh.note.sugar.TitleSyntaxSugar;
 import com.rh.note.syntax.IncludeSyntax;
 import com.rh.note.syntax.TitleSyntax;
-import com.rh.note.syntax.TodoMarkSyntax;
 import com.rh.note.view.*;
 import com.rh.note.vo.*;
 import org.apache.commons.collections4.CollectionUtils;
@@ -459,17 +458,37 @@ public class WorkViewApi {
     /**
      * 标记待完成
      */
-    public void markTodo() {
+    public void markTodo(MarkTodoAO ao) {
         String filePath = this.getFilePathOfTextPaneSelected();
         AdocTextPaneView textPaneView = new AdocTextPaneView().init(filePath);
         if (textPaneView == null) {
             return;
         }
         String lineContent = textPaneView.getCaretLineContent();
-        SelectAndReplaceAO srAO = TodoMarkSyntax.parsing(lineContent);
+        SelectAndReplaceAO srAO = ao.parsing(lineContent);
         if (srAO == null) {
             return;
         }
         textPaneView.selectAndReplace(srAO);
+    }
+
+    /**
+     * 获得被选择节点的级别
+     */
+    public @Nullable Integer getTitleLevelOfSelectedNode() {
+        TitleTreeView treeView = new TitleTreeView().init();
+        TitleLine titleLine = treeView.getTitleLineBySelectedNode();
+        return titleLine != null ? titleLine.getLevel() : null;
+    }
+
+    /**
+     * 展开指定级别的节点
+     */
+    public void expandNodeByLevel(Integer level) {
+        if (level == null || level < 1) {
+            return;
+        }
+        TitleTreeView treeView = new TitleTreeView().init();
+        treeView.expandNodeByLevel(level);
     }
 }

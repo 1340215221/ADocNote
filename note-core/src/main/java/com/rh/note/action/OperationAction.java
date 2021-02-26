@@ -63,4 +63,11 @@ public class OperationAction {
     public boolean isCtrlT(KeyEvent event) {
         return keymap.isCtrlT(event);
     }
+
+    /**
+     * ctrl + 1
+     */
+    public boolean isCtrl1(KeyEvent event) {
+        return keymap.isCtrl1(event);
+    }
 }

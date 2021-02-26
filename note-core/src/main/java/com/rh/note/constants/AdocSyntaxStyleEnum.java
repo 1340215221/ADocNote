@@ -70,6 +70,10 @@ public enum AdocSyntaxStyleEnum implements ISyntaxStyle {
      * 待完成
      */
     TODO(TodoWordStyle.class),
+    /**
+     * 标题注释
+     */
+    TITLE_COMMENT(TitleCommentLineStyle.class),
     ;
     /**
      * 解析样式类

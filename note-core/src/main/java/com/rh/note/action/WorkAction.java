@@ -315,7 +315,7 @@ public class WorkAction {
      * 标记待完成
      */
     public void markTodo() {
-        workViewApi.markTodo();
+        workViewApi.markTodo(new MarkTodoAO());
     }
 
     /**
@@ -323,5 +323,15 @@ public class WorkAction {
      */
     public void openUrlOfSelectedTextPane() {
         workViewApi.openUrlOfSelectedTextPane();
+    }
+
+    /**
+     * 展开被选择标题级别的节点
+     */
+    public void expandLevelOfSelectedNode() {
+        // 获得被选择节点的级别
+        Integer level = workViewApi.getTitleLevelOfSelectedNode();
+        // 展开指定级别的节点
+        workViewApi.expandNodeByLevel(level);
     }
 }

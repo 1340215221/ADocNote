@@ -86,4 +86,11 @@ public class KeymapConfig {
     public boolean isCtrlT(@NonNull KeyEvent event) {
         return event.getKeyCode() == 84 && event.getModifiers() == 2;
     }
+
+    /**
+     * ctrl + 1
+     */
+    public boolean isCtrl1(@NonNull KeyEvent event) {
+        return event.getKeyCode() == 49 && event.getModifiers() == 2;
+    }
 }

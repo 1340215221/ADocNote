@@ -46,4 +46,33 @@ public class TitleTreeView extends BaseView<TitleTreeBuilder, JTree> {
         }
         return ((TitleTreeNode) lastPathComponent).getTitleLine();
     }
+
+    public void expandNodeByLevel(Integer level) {
+        if (level == null || level < 1) {
+            return;
+        }
+        for (int i = 0; i < tree().getRowCount(); i++) {
+            TreePath treePath = tree().getPathForRow(i);
+            if (treePath == null) {
+                continue;
+            }
+            Object lastPathComponent = treePath.getLastPathComponent();
+            if (!(lastPathComponent instanceof TitleTreeNode)) {
+                continue;
+            }
+            TitleLine titleLine = ((TitleTreeNode) lastPathComponent).getTitleLine();
+            if (titleLine == null) {
+                continue;
+            }
+            Integer currentLevel = titleLine.getLevel();
+            if (currentLevel == null) {
+                continue;
+            }
+            if (currentLevel <= level) {
+                tree().collapsePath(treePath);
+                continue;
+            }
+            tree().expandPath(treePath);
+        }
+    }
 }

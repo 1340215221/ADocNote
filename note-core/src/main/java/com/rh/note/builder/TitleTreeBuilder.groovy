@@ -43,6 +43,10 @@ class TitleTreeBuilder implements BaseBuilder {
                     mouseClicked: {
                         event.clicked_title_node()
                     },
+                    keyPressed: {
+                        event.expand_level_of_selected_node(it)
+                        event.expand_designated_level(it)
+                    },
                     cellRenderer: new TitleTreeNodeIconRenderer(), // 用于处理树节点的图标
             ) {
                 event.load_root_node()
