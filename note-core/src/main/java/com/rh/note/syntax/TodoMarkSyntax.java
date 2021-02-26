@@ -49,7 +49,7 @@ public class TodoMarkSyntax {
         int length = lineContent.endsWith("\n") ? lineContent.length() - 1 : lineContent.length();
         vo.setStartOffset(length);
         vo.setEndOffset(vo.getStartOffset());
-        String content = lineContent.endsWith(" \n") || lineContent.endsWith(" ") ? "// todo" : " // todo";
+        String content = StringUtils.isBlank(lineContent) || lineContent.endsWith(" \n") || lineContent.endsWith(" ") ? "// todo" : " // todo";
         vo.setReplaceContent(content);
         return vo;
     }
